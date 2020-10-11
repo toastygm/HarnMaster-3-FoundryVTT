@@ -1,0 +1,29 @@
+{
+  "name": "hm3",
+  "title": "HarnMaster 3",
+  "description": "The HarnMaster 3 system for FoundryVTT!",
+  "version": "1.0.0",
+  "minimumCoreVersion": "0.5.5",
+  "compatibleCoreVersion": "0.5.5",
+  "templateVersion": 2,
+  "author": "Tom Rodriguez",
+  "esmodules": ["module/hm3.js"],
+  "styles": ["css/hm3.css"],
+  "scripts": [],
+  "packs": [],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "gridDistance": 5,
+  "gridUnits": "ft",
+  "primaryTokenAttribute": "health",
+  "secondaryTokenAttribute": "power",
+  "url": "",
+  "manifest": "",
+  "download": "",
+  "license": "LICENSE.txt"
+}

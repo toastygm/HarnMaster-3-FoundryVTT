@@ -1,0 +1,55 @@
+<form class="{{cssClass}}" autocomplete="off">
+    <header class="sheet-header">
+        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+        <div class="header-fields">
+            <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
+        </div>
+    </header>
+
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+        <div class="grid grid-2col">
+            <div class="resource">
+                <label class="resource-label">Quantity</label>
+                <input type="text" name="data.quantity" value="{{data.quantity}}" data-dtype="Number"/>
+            </div>
+            <div class="resource">
+                <label class="resource-label">Weight</label>
+                <input type="text" name="data.weight" value="{{data.weight}}" data-dtype="Number"/>
+            </div>
+            <div class="resource">
+                <label class="resource-label">Weapon Quality</label>
+                <input type="text" name="data.weaponquality" value="{{data.weaponquality}}" data-dtype="Number"/>
+            </div>
+            <div class="resource">
+                <label class="resource-label">Attack</label>
+                <input type="text" name="data.attack" value="{{data.attack}}" data-dtype="Number"/>
+            </div>
+            <div class="resource">
+                <label class="resource-label">Defense</label>
+                <input type="text" name="data.defense" value="{{data.defense}}" data-dtype="Number"/>
+            </div>
+            <div class="resource">
+                <label class="resource-label">Hand Mode</label>
+                <input type="text" name="data.handmode" value="{{data.handmode}}" data-dtype="Number"/>
+            </div>
+            <div class="resource">
+                <label class="resource-label">Blunt</label>
+                <input type="text" name="data.blunt" value="{{data.blunt}}" data-dtype="Number"/>
+            </div>
+            <div class="resource">
+                <label class="resource-label">Edged</label>
+                <input type="text" name="data.edged" value="{{data.edged}}" data-dtype="Number"/>
+            </div>
+            <div class="resource">
+                <label class="resource-label">Piercing</label>
+                <input type="text" name="data.piercing" value="{{data.piercing}}" data-dtype="Number"/>
+            </div>
+            <div class="resource">
+                <label class="resource-label">Notes</label>
+                <input type="text" name="data.notes" value="{{data.notes}}" data-dtype="String"/>
+            </div>
+        </div>
+    </section>
+
+</form>
