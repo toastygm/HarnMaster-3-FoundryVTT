@@ -207,16 +207,16 @@
                                 </div>
                             </div>
                             <div class="resource flexrow flex-group-left">
-                                <label for="data.haircolor" class="resource-label">Hair</label>
+                                <label for="data.hairColor" class="resource-label">Hair</label>
                                 <div class="resource-content flexrow flex-left flex-between">
-                                    <input type="text" name="data.haircolor" value="{{data.haircolor}}"
+                                    <input type="text" name="data.hairColor" value="{{data.hairColor}}"
                                         data-dtype="String" />
                                 </div>
                             </div>
                             <div class="resource flexrow flex-group-left">
-                                <label for="data.piety" class="resource-label">Eyes</label>
+                                <label for="data.eyeColor" class="resource-label">Eyes</label>
                                 <div class="resource-content flexrow flex-left flex-between">
-                                    <input type="text" name="data.eyecolor" value="{{data.eyecolor}}" data-dtype="String" />
+                                    <input type="text" name="data.eyeColor" value="{{data.eyeColor}}" data-dtype="String" />
                                 </div>
                             </div>
                         </div>
@@ -235,6 +235,7 @@
                     <div class="item-name">Skill Name</div>
                     <div class="item-ele">SB</div>
                     <div class="item-ele">ML</div>
+                    <div class="item-ele">EML</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create item" data-type="physicalskill"><i
                                 class="fas fa-plus"></i> Add item</a>
@@ -246,8 +247,9 @@
                             <div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24"
                                     height="24" /></div>
                             <h4 class="item-name">{{item.name}}</h4>
-                            <div class="item-ele">{{data.skillbase}}</div>
-                            <div class="item-ele">{{data.masterylevel}}</div>
+                            <div class="item-ele">{{data.skillBase}}</div>
+                            <div class="item-ele">{{data.masteryLevel}}</div>
+                            <div class="item-ele">{{data.effectiveMasteryLevel}}</div>
                             <div class="item-controls">
                                 <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
                                 <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
@@ -266,6 +268,7 @@
                     <div class="item-name">Skill Name</div>
                     <div class="item-ele">SB</div>
                     <div class="item-ele">ML</div>
+                    <div class="item-ele">EML</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create item" data-type="commskill"><i
                                 class="fas fa-plus"></i>
@@ -278,8 +281,9 @@
                             <div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24"
                                     height="24" /></div>
                             <h4 class="item-name">{{item.name}}</h4>
-                            <div class="item-ele">{{data.skillbase}}</div>
-                            <div class="item-ele">{{data.masterylevel}}</div>
+                            <div class="item-ele">{{data.skillBase}}</div>
+                            <div class="item-ele">{{data.masteryLevel}}</div>
+                            <div class="item-ele">{{data.effectiveMasteryLevel}}</div>
                             <div class="item-controls">
                                 <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
                                 <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
@@ -298,6 +302,7 @@
                     <div class="item-name">Skill Name</div>
                     <div class="item-ele">SB</div>
                     <div class="item-ele">ML</div>
+                    <div class="item-ele">EML</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create item" data-type="combatskill"><i
                                 class="fas fa-plus"></i>
@@ -310,8 +315,9 @@
                             <div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24"
                                     height="24" /></div>
                             <h4 class="item-name">{{item.name}}</h4>
-                            <div class="item-ele">{{data.skillbase}}</div>
-                            <div class="item-ele">{{data.masterylevel}}</div>
+                            <div class="item-ele">{{data.skillBase}}</div>
+                            <div class="item-ele">{{data.masteryLevel}}</div>
+                            <div class="item-ele">{{data.effectiveMasteryLevel}}</div>
                             <div class="item-controls">
                                 <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
                                 <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
@@ -330,6 +336,7 @@
                     <div class="item-name">Skill Name</div>
                     <div class="item-ele">SB</div>
                     <div class="item-ele">ML</div>
+                    <div class="item-ele">EML</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create item" data-type="craftskill"><i
                                 class="fas fa-plus"></i>
@@ -342,8 +349,9 @@
                             <div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24"
                                     height="24" /></div>
                             <h4 class="item-name">{{item.name}}</h4>
-                            <div class="item-ele">{{data.skillbase}}</div>
-                            <div class="item-ele">{{data.masterylevel}}</div>
+                            <div class="item-ele">{{data.skillBase}}</div>
+                            <div class="item-ele">{{data.masteryLevel}}</div>
+                            <div class="item-ele">{{data.effectiveMasteryLevel}}</div>
                             <div class="item-controls">
                                 <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
                                 <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
@@ -362,6 +370,7 @@
                     <div class="item-name">Convocation</div>
                     <div class="item-ele">SB</div>
                     <div class="item-ele">ML</div>
+                    <div class="item-ele">CML</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create item" data-type="magicskill"><i
                                 class="fas fa-plus"></i>
@@ -374,8 +383,9 @@
                             <div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24"
                                     height="24" /></div>
                             <h4 class="item-name">{{item.name}}</h4>
-                            <div class="item-ele">{{data.skillbase}}</div>
-                            <div class="item-ele">{{data.masterylevel}}</div>
+                            <div class="item-ele">{{data.skillBase}}</div>
+                            <div class="item-ele">{{data.masteryLevel}}</div>
+                            <div class="item-ele">{{data.effectiveMasteryLevel}}</div>
                             <div class="item-controls">
                                 <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
                                 <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
@@ -394,6 +404,7 @@
                     <div class="item-name">Diety</div>
                     <div class="item-ele">SB</div>
                     <div class="item-ele">ML</div>
+                    <div class="item-ele">RML</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create item" data-type="ritualskill"><i
                                 class="fas fa-plus"></i>
@@ -406,8 +417,9 @@
                             <div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24"
                                     height="24" /></div>
                             <h4 class="item-name">{{item.name}}</h4>
-                            <div class="item-ele">{{data.skillbase}}</div>
-                            <div class="item-ele">{{data.masterylevel}}</div>
+                            <div class="item-ele">{{data.skillBase}}</div>
+                            <div class="item-ele">{{data.masteryLevel}}</div>
+                            <div class="item-ele">{{data.effectiveMasteryLevel}}</div>
                             <div class="item-controls">
                                 <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
                                 <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
@@ -425,59 +437,59 @@
                 <div class="resource flexrow">
                     <label for="data.initiative" class="resource-label">Initiative</label>
                     <div class="resource-content">
-                        <input type="text" name="data.initiative" value="{{data.initiative}}" data-dtype="String" />
+                        <input type="text" name="data.initiative" value="{{data.initiative}}" data-dtype="Number" disabled />
                     </div>
                 </div>
                 <div class="resource flexrow">
                     <label for="data.endurance" class="resource-label">Endurance</label>
                     <div class="resource-content">
-                        <input type="text" name="data.endurance" value="{{data.endurance}}" data-dtype="String" />
+                        <input type="text" name="data.endurance" value="{{data.endurance}}" data-dtype="Number" disabled />
                     </div>
                 </div>
                 <div class="resource flexrow">
                     <label for="data.abilities.dex" class="resource-label">Dexterity</label>
                     <div class="resource-content">
                         <input type="text" name="data.abilities.dex" value="{{data.abilities.dex}}"
-                            data-dtype="String" />
+                            data-dtype="Number" disabled />
                     </div>
                 </div>
                 <div class="resource flexrow">
                     <label for="data.abilities.agl" class="resource-label">Agility</label>
                     <div class="resource-content">
                         <input type="text" name="data.abilities.agl" value="{{data.abilities.agl}}"
-                            data-dtype="String" />
+                            data-dtype="Number" disabled />
                     </div>
                 </div>
                 <div class="resource flexrow">
                     <label for="data.move" class="resource-label">Move</label>
                     <div class="resource-content">
-                        <input type="text" name="data.move" value="{{data.move}}" data-dtype="String" />
+                        <input type="text" name="data.move" value="{{data.move}}" data-dtype="Number" disabled />
                     </div>
                 </div>
                 <div class="resource flexrow">
                     <label for="data.dodge" class="resource-label">Dodge</label>
                     <div class="resource-content">
-                        <input type="text" name="data.dodge" value="{{data.dodge}}" data-dtype="String" />
+                        <input type="text" name="data.dodge" value="{{data.dodge}}" data-dtype="Number" disabled />
                     </div>
                 </div>
                 <div class="resource flexrow">
                     <label for="data.encumbrance" class="resource-label">Encumbrance</label>
                     <div class="resource-content">
-                        <input type="text" name="data.encumbrance" value="{{data.encumbrance}}" data-dtype="String" />
+                        <input type="text" name="data.encumbrance" value="{{data.encumbrance}}" data-dtype="Number" disabled />
                     </div>
                 </div>
                 <div class="resource flexrow">
-                    <label for="data.universalpenalty" class="resource-label">UP</label>
+                    <label for="data.universalPenalty" class="resource-label">UP</label>
                     <div class="resource-content">
-                        <input type="text" name="data.universalpenalty" value="{{data.universalpenalty}}"
-                            data-dtype="String" />
+                        <input type="text" name="data.universalPenalty" value="{{data.universalPenalty}}"
+                            data-dtype="Number" disabled />
                     </div>
                 </div>
                 <div class="resource flexrow">
-                    <label for="data.physicalpenalty" class="resource-label">PP</label>
+                    <label for="data.physicalPenalty" class="resource-label">PP</label>
                     <div class="resource-content">
-                        <input type="text" name="data.physicalpenalty" value="{{data.physicalpenalty}}"
-                            data-dtype="String" />
+                        <input type="text" name="data.physicalPenalty" value="{{data.physicalPenalty}}"
+                            data-dtype="Number" disabled />
                     </div>
                 </div>
             </div>
@@ -500,8 +512,8 @@
                     {{#if (eq item.type "injury")}}
                         <li class="item flexrow" data-item-id="{{item._id}}">
                             <h4 class="item-name">{{item.name}}</h4>
-                            <div class="item-ele">{{data.healrate}}</div>
-                            <div class="item-ele">{{data.injurylevel}}</div>
+                            <div class="item-ele">{{data.healRate}}</div>
+                            <div class="item-ele">{{data.injuryLevel}}</div>
                             <div class="item-ele">{{data.notes}}</div>
                             <div class="item-controls">
                                 <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
@@ -534,7 +546,7 @@
                         <li class="item flexrow" data-item-id="{{item._id}}">
                             <h4 class="item-name">{{item.name}}</h4>
                             <div class="item-ele">{{data.layers}}</div>
-                            <div class="item-ele">{{data.armorquality}}</div>
+                            <div class="item-ele">{{data.armorQuality}}</div>
                             <div class="item-ele">{{data.blunt}}</div>
                             <div class="item-ele">{{data.edged}}</div>
                             <div class="item-ele">{{data.piercing}}</div>
@@ -573,7 +585,7 @@
                             <h4 class="item-name">{{item.name}}</h4>
                             <div class="item-ele">{{data.convocation}}</div>
                             <div class="item-ele">{{data.level}}</div>
-                            <div class="item-ele">{{data.masterylevel}}</div>
+                            <div class="item-ele">{{data.effectiveMasteryLevel}}</div>
                             <div class="item-ele">{{data.notes}}</div>
                             <div class="item-controls">
                                 <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
@@ -606,7 +618,7 @@
                             <h4 class="item-name">{{item.name}}</h4>
                             <div class="item-ele">{{data.diety}}</div>
                             <div class="item-ele">{{data.circle}}</div>
-                            <div class="item-ele">{{data.masterylevel}}</div>
+                            <div class="item-ele">{{data.effectiveMasterylevel}}</div>
                             <div class="item-ele">{{data.notes}}</div>
                             <div class="item-controls">
                                 <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
@@ -620,6 +632,38 @@
 
         {{!-- Inventory Tab --}}
         <div class="tab inventory" data-group="primary" data-tab="inventory">
+            <h2>Inventory Statistics</h2>
+            <div class="resources flexcol">
+                <div class="resource flexrow">
+                    <label for="data.totalWeaponWeight" class="resource-label">Weapon Weight</label>
+                    <div class="resource-content">
+                        <input type="text" name="data.totalWeaponWeight" value="{{data.totalWeaponWeight}}"
+                            data-dtype="Number" disabled />
+                    </div>
+                </div>
+                <div class="resource flexrow">
+                    <label for="data.totalArmorWeight" class="resource-label">Armor Weight</label>
+                    <div class="resource-content">
+                        <input type="text" name="data.totalArmorWeight" value="{{data.totalArmorWeight}}"
+                        data-dtype="Number" disabled />
+                    </div>
+                </div>
+                <div class="resource flexrow">
+                    <label for="data.totalMiscGearWeight" class="resource-label">Misc Gear Weight</label>
+                    <div class="resource-content">
+                        <input type="text" name="data.totalMiscGearWeight" value="{{data.totalMiscGearWeight}}"
+                            data-dtype="Number" disabled />
+                    </div>
+                </div>
+                <div class="resource flexrow">
+                    <label for="data.totalWeight" class="resource-label">Total Weight</label>
+                    <div class="resource-content">
+                        <input type="text" name="data.totalWeight" value="{{data.totalWeight}}"
+                            data-dtype="Number" disabled />
+                    </div>
+                </div>
+            </div>
+
             <!-- Weapons -->
             <h2>Weapons</h2>
             <ol class="items-list">
@@ -646,9 +690,9 @@
                             <h4 class="item-name">{{item.name}}</h4>
                             <div class="item-ele">{{data.quantity}}</div>
                             <div class="item-ele">{{data.weight}}</div>
-                            <div class="item-ele">{{data.weaponquality}}</div>
+                            <div class="item-ele">{{data.weaponQuality}}</div>
                             <div class="item-ele">{{data.attack}}/{{data.defense}}</div>
-                            <div class="item-ele">{{data.handmode}}</div>
+                            <div class="item-ele">{{data.handMode}}</div>
                             <div class="item-ele">{{data.blunt}}</div>
                             <div class="item-ele">{{data.edged}}</div>
                             <div class="item-ele">{{data.piercing}}</div>
@@ -686,7 +730,7 @@
                             <div class="item-ele">{{data.material}}</div>
                             <div class="item-ele">{{data.quantity}}</div>
                             <div class="item-ele">{{data.weight}}</div>
-                            <div class="item-ele">{{data.armorquality}}</div>
+                            <div class="item-ele">{{data.armorQuality}}</div>
                             <div class="item-ele">{{data.notes}}</div>
                             <div class="item-controls">
                                 <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
