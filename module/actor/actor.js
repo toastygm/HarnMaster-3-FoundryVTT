@@ -54,10 +54,11 @@ export class HarnMasterActor extends Actor {
 
     this._calcSkillEMLWithPenalties(this.data.items, data.universalPenalty, data.physicalPenalty);
 
-    data.move = (data.abilities.agl - data.physicalPenalty) * 5;
+    data.move = (data.abilities.agility - data.physicalPenalty) * 5;
     if (data.move < 0) data.move = 0;
 
-    data.endurance = Math.round((data.abilities.str + data.abilities.sta + data.abilities.wil)/3) - data.physicalPenalty;
+    data.endurance = Math.round((data.abilities.strength + data.abilities.stamina + 
+      data.abilities.will)/3) - data.physicalPenalty;
     if (data.endurance < 0) data.endurance = 0;
     
     /*// Loop through ability scores, and add their modifiers to our sheet output.

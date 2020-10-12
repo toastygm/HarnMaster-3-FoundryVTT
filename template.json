@@ -36,19 +36,19 @@
       "otherPersonality": "",
       "fatigue": 0,
       "abilities": {
-        "str": 8,
-        "sta": 8,
-        "dex": 8,
-        "agl": 8,
-        "int": 8,
-        "aur": 8,
-        "wil": 8,
-        "eye": 8,
-        "hrg": 8,
-        "sml": 8,
-        "voi": 8,
-        "cml": 8,
-        "mor": 8
+        "strength": 8,
+        "stamina": 8,
+        "dexterity": 8,
+        "agility": 8,
+        "intelligence": 8,
+        "aura": 8,
+        "will": 8,
+        "eyesight": 8,
+        "hearing": 8,
+        "smell": 8,
+        "voice": 8,
+        "comliness": 8,
+        "morality": 8
       }
     }
   },
