@@ -7,6 +7,7 @@
     },
     "character": {
       "templates": ["base"],
+      "isInit": false,
       "biography": "",
       "species": "",
       "gender": "",
@@ -18,8 +19,8 @@
       "frame": "",
       "weight": 0,
       "skin": "",
-      "haircolor": "",
-      "eyecolor": "",
+      "hairColor": "",
+      "eyeColor": "",
       "birthplace": "",
       "culture": "",
       "socialClass": "",
@@ -33,10 +34,7 @@
       "psyche": "",
       "diety": "",
       "otherPersonality": "",
-      "physicalskills": [],
-      "commskills": [],
-      "combatskills": [],
-      "craftskills": [],
+      "fatigue": 0,
       "abilities": {
         "str": 8,
         "sta": 8,
@@ -62,8 +60,9 @@
         "note": ""
       },
       "skill": {
-        "skillbase": 0,
-        "masterylevel": 0
+        "skillBase": 0,
+        "masteryLevel": 0,
+        "effectiveMasteryLevel": 0
       },
       "gear": {
         "quantity": 0,
@@ -92,20 +91,20 @@
       "templates": ["base"],
       "convocation": "",
       "level": 0,
-      "masterylevel": 0
+      "effectiveMasteryLevel": 0
     },
     "invocation": {
       "templates": ["base"],
       "diety": "",
       "circle": 0,
-      "masterylevel": 0
+      "effectiveMasteryLevel": 0
     },
     "weapongear": {
       "templates": ["base", "gear"],
-      "weaponquality": 0,
+      "weaponQuality": 0,
       "attack": 0,
       "defense": 0,
-      "handmode": 0,
+      "handMode": 0,
       "blunt": 0,
       "edged": 0,
       "piercing": 0
@@ -113,20 +112,20 @@
     "armorgear": {
       "templates": ["base", "gear"],
       "material": "",
-      "armorquality": 0
+      "armorQuality": 0
     },
     "miscgear": {
       "templates": ["base", "gear"]
     },
     "injury": {
       "templates": ["base"],
-      "healrate": 0,
-      "injurylevel": 0
+      "healRate": 0,
+      "injuryLevel": 0
     },
     "armorlocation": {
       "templates": [],
       "layers": "",
-      "armorquality": 0,
+      "armorQuality": 0,
       "blunt": 0,
       "edged": 0,
       "piercing": 0,
