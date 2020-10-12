@@ -45,7 +45,8 @@ export class HarnMasterActor extends Actor {
       data.isInit = true;
     }
 
-    this._calcItemTotals(actorData);
+    this._calcGearWeightTotals(data);
+    this._calcInjuryTotal();
 
     data.totalWeight = data.totalWeaponWeight + data.totalArmorWeight + data.totalMiscGearWeight;
     data.encumbrance = Math.floor(data.totalWeight / 10);
@@ -136,15 +137,12 @@ export class HarnMasterActor extends Actor {
     return this.createOwnedItem(itemData);
   }
 
-  _calcItemTotals(actorData) {
-    const data = actorData.data;
-
+  _calcGearWeightTotals(data) {
     data.totalWeaponWeight = 0;
     data.totalArmorWeight = 0;
     data.totalMiscGearWeight = 0;
     data.totalInjuryLevels = 0;
-    data.initiative = 0;
-
+ 
     let tempWeight;
 
     this.data.items.forEach(it => {
@@ -170,6 +168,16 @@ export class HarnMasterActor extends Actor {
         case 'injury':
           data.totalInjuryLevels += it.data.injurylevel;
           break;
+      }
+    });
+    
+    data.totalGearWeight = data.totalWeaponWeight + data.totalArmorWeight + data.totalMiscGearWeight;
+  }
+
+  _calcInjuryTotal() {
+    this.data.items.forEach(it => {
+      if (it.type === 'injury') {
+        data.totalInjuryLevels += it.data.injuryLevel;
       }
     });
   }
