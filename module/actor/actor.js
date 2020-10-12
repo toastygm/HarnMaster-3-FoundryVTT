@@ -53,12 +53,16 @@ export class HarnMasterActor extends Actor {
     data.physicalPenalty = data.universalPenalty + data.encumbrance;
 
     this._calcSkillEMLWithPenalties(this.data.items, data.universalPenalty, data.physicalPenalty);
+    this._setPropertiesFromSkills(this.data.items);
 
     data.move = (data.abilities.agility - data.physicalPenalty) * 5;
     if (data.move < 0) data.move = 0;
 
-    data.endurance = Math.round((data.abilities.strength + data.abilities.stamina + 
-      data.abilities.will)/3) - data.physicalPenalty;
+    if (!hasCondition) {
+      data.endurance = Math.round((data.abilities.strength + data.abilities.stamina + 
+        data.abilities.will)/3);
+    }
+    data.endurance -= data.physicalPenalty;
     if (data.endurance < 0) data.endurance = 0;
     
     /*// Loop through ability scores, and add their modifiers to our sheet output.
@@ -66,6 +70,29 @@ export class HarnMasterActor extends Actor {
       // Calculate the modifier using d20 rules.
       ability.mod = Math.floor((ability.value - 10) / 2);
     }*/
+  }
+
+  _setPropertiesFromSkills(items, data) {
+    data.hasCondition = false;
+
+    items.forEach(it => {
+      if (it.type.endsWith('skill')) {
+        switch(it.name.toLowerCase()) {
+          case 'initiative':
+            data.initiative = it.effectiveMasteryLevel;
+            break;
+
+          case 'condition':
+            data.hasCondition = true;
+            data.endurance = it.skillBase;
+            break;
+
+          case 'dodge':
+            data.dodge = it.effectiveMasteryLevel;
+            break;
+        }
+      }
+    });
   }
 
   _calcSkillEMLWithPenalties(items, universalPenalty, physicalPenalty) {
