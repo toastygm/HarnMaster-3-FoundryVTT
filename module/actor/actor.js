@@ -41,6 +41,8 @@ export class HarnMasterActor extends Actor {
 
     this._calcSkillEMLWithPenalties(this.data.items, data.universalPenalty, data.physicalPenalty);
 
+    this._setPropertiesFromSkills(this.data.items, data);
+
     data.move = (data.abilities.agility - data.physicalPenalty) * 5;
     if (data.move < 0) data.move = 0;
 
@@ -51,6 +53,8 @@ export class HarnMasterActor extends Actor {
     data.endurance -= data.physicalPenalty;
     if (data.endurance < 0) data.endurance = 0;
 
+    this._refreshSpellsAndInvocations();
+
     /*// Loop through ability scores, and add their modifiers to our sheet output.
     for (let [key, ability] of Object.entries(data.abilities)) {
       // Calculate the modifier using d20 rules.
@@ -59,19 +63,37 @@ export class HarnMasterActor extends Actor {
   }
 
   async _createDefaultSkills() {
-    await this.createSkill('Climbing', 'physicalskill');
-    await this.createSkill('Condition', 'physicalskill');
-    await this.createSkill('Jumping', 'physicalskill');
-    await this.createSkill('Stealth', 'physicalskill');
-    await this.createSkill('Throwing', 'physicalskill');
-    await this.createSkill('Awareness', 'commskill');
-    await this.createSkill('Intrigue', 'commskill');
-    await this.createSkill('Oratory', 'commskill');
-    await this.createSkill('Rhetoric', 'commskill');
-    await this.createSkill('Singing', 'commskill');
-    await this.createSkill('Initiative', 'combatskill');
-    await this.createSkill('Unarmed', 'combatskill');
-    await this.createSkill('Dodge', 'combatskill');
+    await this.createOwnedItem([
+      {name: 'Climbing', type: 'physicalskill'},
+      {name: 'Condition', type: 'physicalskill'},
+      {name: 'Jumping', type: 'physicalskill'},
+      {name: 'Stealth', type: 'physicalskill'},
+      {name: 'Throwing', type: 'physicalskill'},
+      {name: 'Awareness', type: 'commskill'},
+      {name: 'Intrigue', type: 'commskill'},
+      {name: 'Oratory', type: 'commskill'},
+      {name: 'Rhetoric', type: 'commskill'},
+      {name: 'Singing', type: 'commskill'},
+      {name: 'Initiative', type: 'combatskill'},
+      {name: 'Unarmed', type: 'combatskill'},
+      {name: 'Dodge', type: 'combatskill'},
+      {name: 'Skull', type: 'armorlocation'},
+      {name: 'Face', type: 'armorlocation'},
+      {name: 'Neck', type: 'armorlocation'},
+      {name: 'Shoulder', type: 'armorlocation'},
+      {name: 'Upper Arm', type: 'armorlocation'},
+      {name: 'Elbow', type: 'armorlocation'},
+      {name: 'Forearm', type: 'armorlocation'},
+      {name: 'Hand', type: 'armorlocation'},
+      {name: 'Thorax', type: 'armorlocation'},
+      {name: 'Abdomen', type: 'armorlocation'},
+      {name: 'Hip', type: 'armorlocation'},
+      {name: 'Groin', type: 'armorlocation'},
+      {name: 'Thigh', type: 'armorlocation'},
+      {name: 'Knee', type: 'armorlocation'},
+      {name: 'Calf', type: 'armorlocation'},
+      {name: 'Foot', type: 'armorlocation'}
+    ]);
   }
   
   _setPropertiesFromSkills(items, data) {
@@ -118,20 +140,6 @@ export class HarnMasterActor extends Actor {
     });
   }
 
-  createSkill(name, type) {
-    const itemData = {
-      name: name,
-      type: type,
-      data: {
-        "skillBase": 0,
-        "masteryLevel": 0,
-        "effectiveMasteryLevel": 0
-      }
-    };
-
-    return this.createOwnedItem(itemData);
-  }
-
   _calcGearWeightTotals(data) {
     data.totalWeaponWeight = 0;
     data.totalArmorWeight = 0;
@@ -174,4 +182,45 @@ export class HarnMasterActor extends Actor {
     data.totalInjuryLevels = totalInjuryLevels;
   }
 
+  _refreshSpellsAndInvocations() {
+    this._resetAllSpellsAndInvocations();
+    this.data.items.forEach(it => {
+      if (it.type === 'magicskill') {
+        this._setConvocationSpells(it.name, it.data.effectiveMasteryLevel);
+      } else if (it.type === 'ritualskill') {
+        this._setRitualInvocations(it.name, it.data.effectiveMasteryLevel);
+      }
+    });
+  }
+  _resetAllSpellsAndInvocations() {
+    this.data.items.forEach(it => {
+      if (it.type === 'spell' || it.type === 'invocation') {
+        it.data.effectiveMasteryLevel = 0;
+      }
+    })
+  }
+
+  _setConvocationSpells(convocation, cml) {
+    if (!convocation || convocation.length == 0) return;
+
+    let lcConvocation = convocation.toLowerCase();
+    this.data.items.forEach(it => {
+      if (it.type === 'spell' && it.data.convocation && it.data.convocation.toLowerCase() === lcConvocation) {
+        it.data.effectiveMasteryLevel = cml - (it.data.level * 5);
+        if (it.data.effectiveMasteryLevel < 5) it.data.effectiveMasteryLevel = 5;
+      }
+    });
+  }
+
+  _setRitualInvocations(diety, rml) {
+    if (!diety || diety.length == 0) return;
+
+    let lcDiety = diety.toLowerCase();
+    this.data.items.forEach(it => {
+      if (it.type === 'invocation' && it.data.diety && it.data.diety.toLowerCase() === lcDiety) {
+        it.data.effectiveMasteryLevel = rml - (it.data.circle * 5);
+        if (it.data.effectiveMasteryLevel < 5) it.data.effectiveMasteryLevel = 5;
+      }
+    });
+  }
 }
