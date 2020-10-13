@@ -25,47 +25,32 @@ export class HarnMasterActor extends Actor {
    */
   _prepareCharacterData(actorData) {
     const data = actorData.data;
-
-    // Make modifications to data here. For example:
-
-    if (!data.isInit) {
-      this._createSkill('Climbing', 'physicalskill');
-      this._createSkill('Condition', 'physicalskill');
-      this._createSkill('Jumping', 'physicalskill');
-      this._createSkill('Stealth', 'physicalskill');
-      this._createSkill('Throwing', 'physicalskill');
-      this._createSkill('Awareness', 'commskill');
-      this._createSkill('Intrigue', 'commskill');
-      this._createSkill('Oratory', 'commskill');
-      this._createSkill('Rhetoric', 'commskill');
-      this._createSkill('Singing', 'commskill');
-      this._createSkill('Initiative', 'combatskill');
-      this._createSkill('Unarmed', 'combatskill');
-      this._createSkill('Dodge', 'combatskill');
+    
+    if (!data.isInit && this.data.items.length === 0) {
+      this._createDefaultSkills();
       data.isInit = true;
     }
-
+    
+    // Make modifications to data here. For example:
     this._calcGearWeightTotals(data);
-    this._calcInjuryTotal();
+    this._calcInjuryTotal(data);
 
-    data.totalWeight = data.totalWeaponWeight + data.totalArmorWeight + data.totalMiscGearWeight;
-    data.encumbrance = Math.floor(data.totalWeight / 10);
+    data.encumbrance = Math.floor(data.totalGearWeight / 10);
     data.universalPenalty = data.totalInjuryLevels + data.fatigue;
     data.physicalPenalty = data.universalPenalty + data.encumbrance;
 
     this._calcSkillEMLWithPenalties(this.data.items, data.universalPenalty, data.physicalPenalty);
-    this._setPropertiesFromSkills(this.data.items);
 
     data.move = (data.abilities.agility - data.physicalPenalty) * 5;
     if (data.move < 0) data.move = 0;
 
-    if (!hasCondition) {
+    if (!data.hasCondition) {
       data.endurance = Math.round((data.abilities.strength + data.abilities.stamina + 
         data.abilities.will)/3);
     }
     data.endurance -= data.physicalPenalty;
     if (data.endurance < 0) data.endurance = 0;
-    
+
     /*// Loop through ability scores, and add their modifiers to our sheet output.
     for (let [key, ability] of Object.entries(data.abilities)) {
       // Calculate the modifier using d20 rules.
@@ -73,6 +58,22 @@ export class HarnMasterActor extends Actor {
     }*/
   }
 
+  async _createDefaultSkills() {
+    await this.createSkill('Climbing', 'physicalskill');
+    await this.createSkill('Condition', 'physicalskill');
+    await this.createSkill('Jumping', 'physicalskill');
+    await this.createSkill('Stealth', 'physicalskill');
+    await this.createSkill('Throwing', 'physicalskill');
+    await this.createSkill('Awareness', 'commskill');
+    await this.createSkill('Intrigue', 'commskill');
+    await this.createSkill('Oratory', 'commskill');
+    await this.createSkill('Rhetoric', 'commskill');
+    await this.createSkill('Singing', 'commskill');
+    await this.createSkill('Initiative', 'combatskill');
+    await this.createSkill('Unarmed', 'combatskill');
+    await this.createSkill('Dodge', 'combatskill');
+  }
+  
   _setPropertiesFromSkills(items, data) {
     data.hasCondition = false;
 
@@ -80,16 +81,16 @@ export class HarnMasterActor extends Actor {
       if (it.type.endsWith('skill')) {
         switch(it.name.toLowerCase()) {
           case 'initiative':
-            data.initiative = it.effectiveMasteryLevel;
+            data.initiative = it.data.effectiveMasteryLevel;
             break;
 
           case 'condition':
             data.hasCondition = true;
-            data.endurance = it.skillBase;
+            data.endurance = it.data.skillBase;
             break;
 
           case 'dodge':
-            data.dodge = it.effectiveMasteryLevel;
+            data.dodge = it.data.effectiveMasteryLevel;
             break;
         }
       }
@@ -105,35 +106,29 @@ export class HarnMasterActor extends Actor {
         switch (it.type) {
           case 'combatskill':
           case 'physicalskill':
-            it.effectiveMasteryLevel = it.masteryLevel - pctPhysPen;
+            it.data.effectiveMasteryLevel = it.data.masteryLevel - pctPhysPen;
             break;
 
           default:
-            it.effectiveMasteryLevel = it.masteryLevel - pctUnivPen;
+            it.data.effectiveMasteryLevel = it.data.masteryLevel - pctUnivPen;
 
         }
-        if (it.effectiveMasteryLevel < 5) it.effectiveMasteryLevel = 5;
+        if (it.data.effectiveMasteryLevel < 5) it.data.effectiveMasteryLevel = 5;
       }
     });
   }
 
-  _createSkill(name, type) {
-    this._createOwnedItem(name, type, {
-      "skillBase": 0,
-      "masteryLevel": 0,
-      "effectiveMasteryLevel": 0
-    });
-  }
-
-  _createOwnedItem(name, type, data) {
-    // Prepare the item object.
+  createSkill(name, type) {
     const itemData = {
       name: name,
       type: type,
-      data: data
+      data: {
+        "skillBase": 0,
+        "masteryLevel": 0,
+        "effectiveMasteryLevel": 0
+      }
     };
 
-    // Finally, create the item!
     return this.createOwnedItem(itemData);
   }
 
@@ -141,7 +136,6 @@ export class HarnMasterActor extends Actor {
     data.totalWeaponWeight = 0;
     data.totalArmorWeight = 0;
     data.totalMiscGearWeight = 0;
-    data.totalInjuryLevels = 0;
  
     let tempWeight;
 
@@ -164,22 +158,20 @@ export class HarnMasterActor extends Actor {
           if (tempWeight < 0) tempWeight = 0;
           data.totalMiscGearWeight += tempWeight;
           break;
-
-        case 'injury':
-          data.totalInjuryLevels += it.data.injurylevel;
-          break;
       }
     });
     
     data.totalGearWeight = data.totalWeaponWeight + data.totalArmorWeight + data.totalMiscGearWeight;
   }
 
-  _calcInjuryTotal() {
+  _calcInjuryTotal(data) {
+    let totalInjuryLevels = 0;
     this.data.items.forEach(it => {
       if (it.type === 'injury') {
-        data.totalInjuryLevels += it.data.injuryLevel;
+        totalInjuryLevels += it.data.injuryLevel;
       }
     });
+    data.totalInjuryLevels = totalInjuryLevels;
   }
 
 }
