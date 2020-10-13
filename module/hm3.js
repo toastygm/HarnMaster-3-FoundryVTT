@@ -3,6 +3,7 @@ import { HarnMasterActor } from "./actor/actor.js";
 import { HarnMasterActorSheet } from "./actor/actor-sheet.js";
 import { HarnMasterItem } from "./item/item.js";
 import { HarnMasterItemSheet } from "./item/item-sheet.js";
+import { HM3 } from "./config.js";
 
 Hooks.once('init', async function() {
 
