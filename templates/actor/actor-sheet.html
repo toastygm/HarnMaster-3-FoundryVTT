@@ -127,33 +127,14 @@
                                 </div>
                             </div>
                             <div class="resource flexrow">
-                                <label for="data.sunsign" class="resource-label">Sunsign</label>
+                                <label class="resource-label">Sunsign</label>
                                 <div class="resource-content">
-                                    <select name="data.sunsign" data-dtype="String">
-                                        <option value="Ulandus">Ulandus</option>
-                                        <option value="Ulandus-Aralius">Ulandus-Aralius</option>
-                                        <option value="Aralius">Aralius</option>
-                                        <option value="Aralius-Feniri">Aralius-Feniri</option>
-                                        <option value="Feniri">Feniri</option>
-                                        <option value="Feniri-Ahnu">Feniri-Ahnu</option>
-                                        <option value="Ahnu">Ahnu</option>
-                                        <option value="Ahnu-Angberelius">Ahnu-Angberelius</option>
-                                        <option value="Angberelius">Angberelius</option>
-                                        <option value="Angberelius-Nadai">Angberelius-Nadai</option>
-                                        <option value="Nadai">Nadai</option>
-                                        <option value="Nadai-Hirin">Nadai-Hirin</option>
-                                        <option value="Hirin">Hirin</option>
-                                        <option value="Hirin-Tarael">Hirin-Tarael</option>
-                                        <option value="Tarael">Tarael</option>
-                                        <option value="Tarael-Tai">Tarael-Tai</option>
-                                        <option value="Tai">Tai</option>
-                                        <option value="Tai-Skorus">Tai-Skorus</option>
-                                        <option value="Skorus">Skorus</option>
-                                        <option value="Skorus-Masara">Skorus-Masara</option>
-                                        <option value="Masara">Masara</option>
-                                        <option value="Masara-Lado">Masara-Lado</option>
-                                        <option value="Lado">Lado</option>
-                                        <option value="Lado-Ulandus">Lado-Ulandus</option>
+                                    <select class="sunsign-name" name="data.sunsignName">
+                                        {{#select data.sunsignName}}
+                                        {{#each config.sunsignNames as |label ssname|}}
+                                            <option value="{{label}}">{{label}}</option>
+                                        {{/each}}
+                                        {{/select}}
                                     </select>
                                 </div>
                             </div>

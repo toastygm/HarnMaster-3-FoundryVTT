@@ -26,9 +26,12 @@ export class HarnMasterActor extends Actor {
   _prepareCharacterData(actorData) {
     const data = actorData.data;
     
+    console.log("Sunsign Name: " + data.sunsignName);
+    this._setupSunsigns(data);
+
     if (!data.isInit && this.data.items.length === 0) {
-      this._createDefaultSkills();
       data.isInit = true;
+      this._createDefaultItems();
     }
     
     // Make modifications to data here. For example:
@@ -62,8 +65,34 @@ export class HarnMasterActor extends Actor {
     }*/
   }
 
-  async _createDefaultSkills() {
-    await this.createOwnedItem([
+  _setupSunsigns(data) {
+    data.sunsign = {
+      "ulandus": false,
+      "aralius": false,
+      "feniri": false,
+      "ahnu": false,
+      "angberelius": false,
+      "nadai": false,
+      "hirin": false,
+      "tarael": false,
+      "tai": false,
+      "skorus": false,
+      "masara": false,
+      "lado": false
+    };
+
+    const sunsignParts = data.sunsignName.toLowerCase().split('-');
+
+    data.sunsign[sunsignParts[0]] = true;
+    if (sunsignParts.length === 2) {
+      data.sunsign[sunsignParts[1]] = true;
+    }
+
+    console.log(data.sunsign);
+  }
+
+  async _createDefaultItems() {
+    const result = await this.createOwnedItem([
       {name: 'Climbing', type: 'physicalskill'},
       {name: 'Condition', type: 'physicalskill'},
       {name: 'Jumping', type: 'physicalskill'},
