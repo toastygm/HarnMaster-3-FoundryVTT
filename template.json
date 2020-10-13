@@ -7,7 +7,6 @@
     },
     "character": {
       "templates": ["base"],
-      "isInit": false,
       "biography": "",
       "species": "",
       "gender": "",
@@ -49,7 +48,17 @@
         "voice": 8,
         "comliness": 8,
         "morality": 8
-      }
+      },
+      "isInit": false,
+      "hasCondition": false,
+      "dodge": 0,
+      "initiative": 0,
+      "endurance": 0,
+      "move": 0,
+      "encumbrance": 0,
+      "universalPenalty": 0,
+      "physicalPenalty": 0,
+      "totalWeight": 0
     }
   },
   "Item": {
