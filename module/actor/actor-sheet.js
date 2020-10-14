@@ -20,10 +20,8 @@ export class HarnMasterActorSheet extends ActorSheet {
   /** @override */
   getData() {
     const data = super.getData();
+    data.config = CONFIG.HM3;
     data.dtypes = ["String", "Number", "Boolean"];
-    /*for (let attr of Object.values(data.data.attributes)) {
-      attr.isCheckbox = attr.dtype === "Boolean";
-    }*/
     return data;
   }
 
