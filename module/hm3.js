@@ -7,9 +7,12 @@ import { HM3 } from "./config.js";
 
 Hooks.once('init', async function() {
 
+  console.log(`HM3 | Initializing the HM3 Game System\n${HM3.ASCII}`);
+
   game.hm3 = {
     HarnMasterActor,
-    HarnMasterItem
+    HarnMasterItem,
+    config: HM3
   };
 
   /**
@@ -21,6 +24,8 @@ Hooks.once('init', async function() {
     decimals: 2
   };
 
+  CONFIG.HM3 = HM3;
+  
   // Define custom Entity classes
   CONFIG.Actor.entityClass = HarnMasterActor;
   CONFIG.Item.entityClass = HarnMasterItem;
