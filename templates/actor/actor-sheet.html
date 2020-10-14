@@ -131,8 +131,8 @@
                                 <div class="resource-content">
                                     <select class="sunsign-name" name="data.sunsignName">
                                         {{#select data.sunsignName}}
-                                        {{#each config.sunsignNames as |label ssname|}}
-                                            <option value="{{label}}">{{label}}</option>
+                                        {{#each config.sunsignNames as |value key|}}
+                                            <option value="{{key}}">{{key}}</option>
                                         {{/each}}
                                         {{/select}}
                                     </select>
