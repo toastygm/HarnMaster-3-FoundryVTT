@@ -209,9 +209,23 @@ export class HarnMasterActor extends Actor {
     let totalInjuryLevels = 0;
     this.data.items.forEach(it => {
       if (it.type === 'injury') {
+        // Just make sure if injuryLevel is negative, we set it to zero
+        if (it.data.injuryLevel < 0) it.data.injuryLevel = 0;
+
         totalInjuryLevels += it.data.injuryLevel;
+        if (it.data.injuryLevel == 0) {
+          it.data.severity = '';
+          it.data.healRate = 0;
+        } else if (it.data.injuryLevel == 1) {
+          it.data.severity = 'M1';
+        } else if (it.data.injuryLevel <= 3) {
+          it.data.severity = 'S' + it.data.injuryLevel;
+        } else {
+          it.data.severity = 'G' + it.data.injuryLevel;
+        }
       }
     });
+
     data.totalInjuryLevels = totalInjuryLevels;
   }
 

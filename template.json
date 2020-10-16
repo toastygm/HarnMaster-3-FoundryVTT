@@ -69,7 +69,7 @@
         "effectiveMasteryLevel": 0
       },
       "gear": {
-        "quantity": 0,
+        "quantity": 1,
         "weight": 0
       }
     },
@@ -94,13 +94,13 @@
     "spell": {
       "templates": ["base"],
       "convocation": "",
-      "level": 0,
+      "level": 1,
       "effectiveMasteryLevel": 0
     },
     "invocation": {
       "templates": ["base"],
       "diety": "",
-      "circle": 0,
+      "circle": 1,
       "effectiveMasteryLevel": 0
     },
     "weapongear": {
@@ -124,7 +124,8 @@
     "injury": {
       "templates": ["base"],
       "healRate": 0,
-      "injuryLevel": 0
+      "injuryLevel": 0,
+      "severity": ""
     },
     "armorlocation": {
       "templates": [],
