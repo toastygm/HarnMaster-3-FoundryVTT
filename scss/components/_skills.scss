@@ -1,0 +1,43 @@
+.skills-list {
+    list-style: none;
+    margin: 7px 0;
+    padding: 0;
+    overflow-y: auto;
+  
+    .skill-header {
+      font-weight: bold;
+    }
+  
+    .item {
+      height: 30px;
+      line-height: 24px;
+      padding: 3px 0;
+      border-bottom: 1px solid #BBB;
+  
+      .skill-image {
+        flex: 0 0 24px;
+        margin-right: 5px;
+      }
+  
+      img {
+        display: block;
+      }
+    }
+  
+    .skill-name {
+      flex: 0 0 200px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+  }
+
+    .skill-ele {
+      flex: 0 0 40px;
+      text-align: center;
+    }
+  
+    .item-controls {
+      flex: 1 0 86px;
+      text-align: right;
+    }
+  }

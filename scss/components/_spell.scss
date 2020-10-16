@@ -1,0 +1,63 @@
+.spells-list {
+    list-style: none;
+    margin: 7px 0;
+    padding: 0;
+    overflow-y: auto;
+  
+    .spell-header {
+      font-weight: bold;
+    }
+  
+    .spell {
+      height: 30px;
+      line-height: 24px;
+      padding: 3px 0;
+      border-bottom: 1px solid #BBB;
+  
+      .spell-image {
+        flex: 0 0 24px;
+        margin-right: 5px;
+      }
+  
+      img {
+        display: block;
+      }
+    }
+  
+    .spell-name {
+      flex: 0 0 200px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+  }
+  
+    .spell-convocation {
+      flex: 0 0 80px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+  }
+  
+    .spell-level {
+      flex: 0 0 40px;
+      text-align: center;
+    }
+  
+    .spell-eml {
+      flex: 0 0 40px;
+      text-align: center;
+    }
+  
+    .spell-notes {
+      flex: 1 0 150;
+      padding-left: 10px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+  }
+    
+    .item-controls {
+      flex: 0 0 86px;
+      text-align: right;
+    }
+  }

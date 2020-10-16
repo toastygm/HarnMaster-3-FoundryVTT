@@ -29,7 +29,11 @@
         },
         "dodge": 0,
         "initiative": 0,
-        "endurance": 0,
+        "endurance": {
+          "value": 0,
+          "min": 0,
+          "max": 10
+        },
         "move": 0,
         "universalPenalty": 0,
         "physicalPenalty": 0
@@ -37,23 +41,10 @@
     },
     "character": {
       "templates": ["base"],
+      "isPC": true,
       "gender": "",
       "birthdate": "",
-      "sunsignName": "",
-      "sunsign": {
-        "ulandus": false,
-        "aralius": false,
-        "feniri": false,
-        "ahnu": false,
-        "angberelius": false,
-        "nadai": false,
-        "hirin": false,
-        "tarael": false,
-        "tai": false,
-        "skorus": false,
-        "masara": false,
-        "lado": false
-      },
+      "sunsign": "",
       "piety": 0,
       "frame": "",
       "skin": "",
@@ -78,7 +69,7 @@
         "effectiveMasteryLevel": 0
       },
       "gear": {
-        "quantity": 0,
+        "quantity": 1,
         "weight": 0
       }
     },
@@ -103,13 +94,13 @@
     "spell": {
       "templates": ["base"],
       "convocation": "",
-      "level": 0,
+      "level": 1,
       "effectiveMasteryLevel": 0
     },
     "invocation": {
       "templates": ["base"],
       "diety": "",
-      "circle": 0,
+      "circle": 1,
       "effectiveMasteryLevel": 0
     },
     "weapongear": {
@@ -133,7 +124,8 @@
     "injury": {
       "templates": ["base"],
       "healRate": 0,
-      "injuryLevel": 0
+      "injuryLevel": 0,
+      "severity": ""
     },
     "armorlocation": {
       "templates": [],
