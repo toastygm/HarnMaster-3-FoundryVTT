@@ -91,58 +91,42 @@ export class HarnMasterActor extends Actor {
   _prepareCharacterData(actorData) {
     const data = actorData.data;
     
-    console.log("Sunsign Name: " + data.sunsignName);
-    this._setupSunsigns(data);
-
-    // Make modifications to data here. For example:
+    // Calculate weight and injury level totals, used to calculate
+    // universal penalty below.
     this._calcGearWeightTotals(data);
     this._calcInjuryTotal(data);
 
     data.encumbrance = Math.floor(data.totalGearWeight / 10);
+
+    // Universal Penalty and Physical Penalty are used to calculate many
+    // things, including effectiveMasteryLevel for all skills,
+    // endurance, move, etc.
     data.universalPenalty = data.totalInjuryLevels + data.fatigue;
     data.physicalPenalty = data.universalPenalty + data.encumbrance;
 
+    // Go through all skills calculating their EML
     this._calcSkillEMLWithPenalties(this.data.items, data.universalPenalty, data.physicalPenalty);
 
+    // Some properties are calculated from skills.  Do that here.
     this._setPropertiesFromSkills(this.data.items, data);
 
+    // If we have a condition skill, endurance.max will have been set using that
+    // Otherwise, we will need to set it using the standard formula
+    if (!data.hasCondition) {
+      data.endurance.max = Math.round((data.abilities.strength + data.abilities.stamina + 
+        data.abilities.will)/3);
+    }
+
+    // Now calculate endurance.value; this value cannot go below 0
+    data.endurance.value = data.endurance.max - data.physicalPenalty;
+    if (data.endurance.value < 0) data.endurance.value = 0;
+
+    // Calculate current Move speed.  Cannot go below 0
     data.move = (data.abilities.agility - data.physicalPenalty) * 5;
     if (data.move < 0) data.move = 0;
 
-    if (!data.hasCondition) {
-      data.endurance = Math.round((data.abilities.strength + data.abilities.stamina + 
-        data.abilities.will)/3);
-    }
-    data.endurance -= data.physicalPenalty;
-    if (data.endurance < 0) data.endurance = 0;
-
+    // Calculate spell effective mastery level values
     this._refreshSpellsAndInvocations();
-  }
-
-  _setupSunsigns(data) {
-    data.sunsign = {
-      "ulandus": false,
-      "aralius": false,
-      "feniri": false,
-      "ahnu": false,
-      "angberelius": false,
-      "nadai": false,
-      "hirin": false,
-      "tarael": false,
-      "tai": false,
-      "skorus": false,
-      "masara": false,
-      "lado": false
-    };
-
-    const sunsignParts = data.sunsignName.toLowerCase().split('-');
-
-    data.sunsign[sunsignParts[0]] = true;
-    if (sunsignParts.length === 2) {
-      data.sunsign[sunsignParts[1]] = true;
-    }
-
-    console.log(data.sunsign);
   }
   
   _setPropertiesFromSkills(items, data) {
@@ -157,7 +141,7 @@ export class HarnMasterActor extends Actor {
 
           case 'condition':
             data.hasCondition = true;
-            data.endurance = it.data.skillBase;
+            data.endurance.max = Math.floor(it.data.masteryLevel / 5);
             break;
 
           case 'dodge':
