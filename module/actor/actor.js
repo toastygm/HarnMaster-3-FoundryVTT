@@ -5,6 +5,71 @@
 export class HarnMasterActor extends Actor {
 
   /**
+   * Override the create() function to initialize skills and locations. Original code taken
+   * from WFRP4e-FoundryVTT project.
+   */
+  static async create(data, options) {
+    // If the created actor has items (only applicable to duplicated actors) bypass the new actor creation logic
+    if (data.items) {
+      return super.create(data, options);
+    }
+
+    // Initialize empty items
+    data.items = [];
+
+    // If character, automatically add basic skills and armor locations
+    if (data.type == "character") {
+      this._createDefaultCharacterSkills(data);
+      this._createDefaultHumanoidLocations(data);
+    } else if (data.type == "beast") {
+      // Create Beast Default Skills
+      this._createDefaultBeastSkills(data);
+    }
+
+    super.create(data, options); // Follow through the the rest of the Actor creation process upstream
+  }
+
+  static _createDefaultCharacterSkills(data) {
+    data.items.push((new Item({name: 'Climbing', type: 'physicalskill', data: game.system.model.Item.physicalskill})).data);
+    data.items.push((new Item({name: 'Condition', type: 'physicalskill', data: game.system.model.Item.physicalskill})).data);
+    data.items.push((new Item({name: 'Jumping', type: 'physicalskill', data: game.system.model.Item.physicalskill})).data);
+    data.items.push((new Item({name: 'Stealth', type: 'physicalskill', data: game.system.model.Item.physicalskill})).data);
+    data.items.push((new Item({name: 'Throwing', type: 'physicalskill', data: game.system.model.Item.physicalskill})).data);
+    data.items.push((new Item({name: 'Awareness', type: 'commskill', data: game.system.model.Item.commskill})).data);
+    data.items.push((new Item({name: 'Intrigue', type: 'commskill', data: game.system.model.Item.commskill})).data);
+    data.items.push((new Item({name: 'Oratory', type: 'commskill', data: game.system.model.Item.commskill})).data);
+    data.items.push((new Item({name: 'Rhetoric', type: 'commskill', data: game.system.model.Item.commskill})).data);
+    data.items.push((new Item({name: 'Singing', type: 'commskill', data: game.system.model.Item.commskill})).data);
+    data.items.push((new Item({name: 'Initiative', type: 'combatskill', data: game.system.model.Item.combatskill})).data);
+    data.items.push((new Item({name: 'Unarmed', type: 'combatskill', data: game.system.model.Item.combatskill})).data);
+    data.items.push((new Item({name: 'Dodge', type: 'combatskill', data: game.system.model.Item.combatskill})).data);
+  }
+
+  static _createDefaultBeastSkills(data) {
+    data.items.push((new Item({name: 'Initiative', type: 'combatskill', data: game.system.model.Item.combatskill})).data);
+    data.items.push((new Item({name: 'Dodge', type: 'combatskill', data: game.system.model.Item.combatskill})).data);
+  }
+
+  static _createDefaultHumanoidLocations(data) {
+    data.items.push((new Item({name: 'Skull', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
+    data.items.push((new Item({name: 'Face', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
+    data.items.push((new Item({name: 'Neck', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
+    data.items.push((new Item({name: 'Shoulder', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
+    data.items.push((new Item({name: 'Upper Arm', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
+    data.items.push((new Item({name: 'Elbow', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
+    data.items.push((new Item({name: 'Forearm', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
+    data.items.push((new Item({name: 'Hand', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
+    data.items.push((new Item({name: 'Thorax', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
+    data.items.push((new Item({name: 'Abdomen', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
+    data.items.push((new Item({name: 'Hip', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
+    data.items.push((new Item({name: 'Groin', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
+    data.items.push((new Item({name: 'Thigh', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
+    data.items.push((new Item({name: 'Knee', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
+    data.items.push((new Item({name: 'Calf', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
+    data.items.push((new Item({name: 'Foot', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
+  }
+
+  /**
    * Augment the basic actor data with additional dynamic data.
    */
   prepareData() {
@@ -29,11 +94,6 @@ export class HarnMasterActor extends Actor {
     console.log("Sunsign Name: " + data.sunsignName);
     this._setupSunsigns(data);
 
-    if (!data.isInit && this.data.items.length === 0) {
-      data.isInit = true;
-      this._createDefaultItems();
-    }
-    
     // Make modifications to data here. For example:
     this._calcGearWeightTotals(data);
     this._calcInjuryTotal(data);
@@ -57,12 +117,6 @@ export class HarnMasterActor extends Actor {
     if (data.endurance < 0) data.endurance = 0;
 
     this._refreshSpellsAndInvocations();
-
-    /*// Loop through ability scores, and add their modifiers to our sheet output.
-    for (let [key, ability] of Object.entries(data.abilities)) {
-      // Calculate the modifier using d20 rules.
-      ability.mod = Math.floor((ability.value - 10) / 2);
-    }*/
   }
 
   _setupSunsigns(data) {
@@ -89,40 +143,6 @@ export class HarnMasterActor extends Actor {
     }
 
     console.log(data.sunsign);
-  }
-
-  async _createDefaultItems() {
-    const result = await this.createOwnedItem([
-      {name: 'Climbing', type: 'physicalskill'},
-      {name: 'Condition', type: 'physicalskill'},
-      {name: 'Jumping', type: 'physicalskill'},
-      {name: 'Stealth', type: 'physicalskill'},
-      {name: 'Throwing', type: 'physicalskill'},
-      {name: 'Awareness', type: 'commskill'},
-      {name: 'Intrigue', type: 'commskill'},
-      {name: 'Oratory', type: 'commskill'},
-      {name: 'Rhetoric', type: 'commskill'},
-      {name: 'Singing', type: 'commskill'},
-      {name: 'Initiative', type: 'combatskill'},
-      {name: 'Unarmed', type: 'combatskill'},
-      {name: 'Dodge', type: 'combatskill'},
-      {name: 'Skull', type: 'armorlocation'},
-      {name: 'Face', type: 'armorlocation'},
-      {name: 'Neck', type: 'armorlocation'},
-      {name: 'Shoulder', type: 'armorlocation'},
-      {name: 'Upper Arm', type: 'armorlocation'},
-      {name: 'Elbow', type: 'armorlocation'},
-      {name: 'Forearm', type: 'armorlocation'},
-      {name: 'Hand', type: 'armorlocation'},
-      {name: 'Thorax', type: 'armorlocation'},
-      {name: 'Abdomen', type: 'armorlocation'},
-      {name: 'Hip', type: 'armorlocation'},
-      {name: 'Groin', type: 'armorlocation'},
-      {name: 'Thigh', type: 'armorlocation'},
-      {name: 'Knee', type: 'armorlocation'},
-      {name: 'Calf', type: 'armorlocation'},
-      {name: 'Foot', type: 'armorlocation'}
-    ]);
   }
   
   _setPropertiesFromSkills(items, data) {
