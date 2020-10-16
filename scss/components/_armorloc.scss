@@ -1,0 +1,58 @@
+.armorlocations-list {
+    list-style: none;
+    margin: 7px 0;
+    padding: 0;
+    overflow-y: auto;
+  
+    .armorlocation-header {
+      font-weight: bold;
+    }
+  
+    .armorlocation {
+      height: 30px;
+      line-height: 24px;
+      padding: 3px 0;
+      border-bottom: 1px solid #BBB;
+  
+      .armorlocation-image {
+        flex: 0 0 24px;
+        margin-right: 5px;
+      }
+  
+      img {
+        display: block;
+      }
+    }
+  
+    .armorlocation-name {
+      margin: 0;
+    }
+  
+    .armorlocation-layers {
+      margin: 0;
+    }
+    
+    .armorlocation-quality {
+      margin: 0;
+    }
+
+    .armorlocation-blunt {
+      margin: 0;
+    }
+
+    .armorlocation-edged {
+      margin: 0;
+    }
+
+    .armorlocation-piercing {
+      margin: 0;
+    }
+
+    .armorlocation-fire {
+      margin: 0;
+    }
+
+    .armorlocation-notes {
+      margin: 0;
+    }
+  }

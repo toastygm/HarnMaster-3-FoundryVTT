@@ -1,0 +1,160 @@
+.weapon-list {
+    list-style: none;
+    margin: 7px 0;
+    padding: 0;
+    overflow-y: auto;
+
+    .weapon-header {
+        font-weight: bold;
+    }
+
+    .weapon {
+        height: 30px;
+        line-height: 24px;
+        padding: 3px 0;
+        border-bottom: 1px solid #bbb;
+
+        .weapon-image {
+            flex: 0 0 24px;
+            margin-right: 5px;
+        }
+
+        img {
+            display: block;
+        }
+    }
+
+    .weapon-name {
+        margin: 0;
+    }
+
+    .weapon-qty {
+        margin: 0;
+    }
+
+    .weapon-weight {
+        margin: 0;
+    }
+
+    .weapon-quality {
+        margin: 0;
+    }
+
+    .weapon-atkdef {
+        margin: 0;
+    }
+
+    .weapon-handmode {
+        margin: 0;
+    }
+
+    .weapon-blunt {
+        margin: 0;
+    }
+
+    .weapon-edged {
+        margin: 0;
+    }
+
+    .weapon-piercing {
+        margin: 0;
+    }
+
+    .weapon-notes {
+        margin: 0;
+    }
+}
+
+.armor-list {
+    list-style: none;
+    margin: 7px 0;
+    padding: 0;
+    overflow-y: auto;
+
+    .armor-header {
+        font-weight: bold;
+    }
+
+    .armor {
+        height: 30px;
+        line-height: 24px;
+        padding: 3px 0;
+        border-bottom: 1px solid #bbb;
+
+        .armor-image {
+            flex: 0 0 24px;
+            margin-right: 5px;
+        }
+
+        img {
+            display: block;
+        }
+    }
+
+    .armor-name {
+        margin: 0;
+    }
+
+    .armor-qty {
+        margin: 0;
+    }
+
+    .armor-material {
+        margin: 0;
+    }
+
+    .armor-quality {
+        margin: 0;
+    }
+
+    .armor-weight {
+        margin: 0;
+    }
+
+    .armor-notes {
+        margin: 0;
+    }
+}
+
+.gear-list {
+    list-style: none;
+    margin: 7px 0;
+    padding: 0;
+    overflow-y: auto;
+
+    .gear-header {
+        font-weight: bold;
+    }
+
+    .gear {
+        height: 30px;
+        line-height: 24px;
+        padding: 3px 0;
+        border-bottom: 1px solid #bbb;
+
+        .gear-image {
+            flex: 0 0 24px;
+            margin-right: 5px;
+        }
+
+        img {
+            display: block;
+        }
+    }
+
+    .gear-name {
+        margin: 0;
+    }
+
+    .gear-qty {
+        margin: 0;
+    }
+
+    .gear-weight {
+        margin: 0;
+    }
+
+    .gear-notes {
+        margin: 0;
+    }
+}

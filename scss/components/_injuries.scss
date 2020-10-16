@@ -1,0 +1,46 @@
+.injuries-list {
+    list-style: none;
+    margin: 7px 0;
+    padding: 0;
+    overflow-y: auto;
+  
+    .injury-header {
+      font-weight: bold;
+    }
+  
+    .injury {
+      height: 30px;
+      line-height: 24px;
+      padding: 3px 0;
+      border-bottom: 1px solid #BBB;
+  
+      .injury-image {
+        flex: 0 0 24px;
+        margin-right: 5px;
+      }
+  
+      img {
+        display: block;
+      }
+    }
+  
+    .injury-name {
+      margin: 0;
+    }
+  
+    .injury-location {
+        margin: 0;
+      }
+    
+    .injury-healrate {
+      margin: 0;
+    }
+
+    .injury-severity {
+      margin: 0;
+    }
+    
+    .injury-level {
+      margin: 0;
+    }
+  }

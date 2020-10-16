@@ -1,0 +1,46 @@
+.spells-list {
+    list-style: none;
+    margin: 7px 0;
+    padding: 0;
+    overflow-y: auto;
+  
+    .spell-header {
+      font-weight: bold;
+    }
+  
+    .spell {
+      height: 30px;
+      line-height: 24px;
+      padding: 3px 0;
+      border-bottom: 1px solid #BBB;
+  
+      .spell-image {
+        flex: 0 0 24px;
+        margin-right: 5px;
+      }
+  
+      img {
+        display: block;
+      }
+    }
+  
+    .spell-name {
+      margin: 0;
+    }
+  
+    .spell-convocation {
+      margin: 0;
+    }
+  
+    .spell-level {
+      margin: 0;
+    }
+  
+    .spell-eml {
+      margin: 0;
+    }
+  
+    .spell-notes {
+      margin: 0;
+    }
+}

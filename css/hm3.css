@@ -203,3 +203,209 @@
 
 .hm3 .sheet-body .profile-traits-section .profile-traits-group .profile-trait-value {
   flex: 0 0 120px; }
+
+.hm3 .injuries-list {
+  list-style: none;
+  margin: 7px 0;
+  padding: 0;
+  overflow-y: auto; }
+  .hm3 .injuries-list .injury-header {
+    font-weight: bold; }
+  .hm3 .injuries-list .injury {
+    height: 30px;
+    line-height: 24px;
+    padding: 3px 0;
+    border-bottom: 1px solid #BBB; }
+    .hm3 .injuries-list .injury .injury-image {
+      flex: 0 0 24px;
+      margin-right: 5px; }
+    .hm3 .injuries-list .injury img {
+      display: block; }
+  .hm3 .injuries-list .injury-name {
+    margin: 0; }
+  .hm3 .injuries-list .injury-location {
+    margin: 0; }
+  .hm3 .injuries-list .injury-healrate {
+    margin: 0; }
+  .hm3 .injuries-list .injury-severity {
+    margin: 0; }
+  .hm3 .injuries-list .injury-level {
+    margin: 0; }
+
+.hm3 .skills-list {
+  list-style: none;
+  margin: 7px 0;
+  padding: 0;
+  overflow-y: auto; }
+  .hm3 .skills-list .skill-header {
+    font-weight: bold; }
+  .hm3 .skills-list .skill {
+    height: 30px;
+    line-height: 24px;
+    padding: 3px 0;
+    border-bottom: 1px solid #BBB; }
+    .hm3 .skills-list .skill .skill-image {
+      flex: 0 0 24px;
+      margin-right: 5px; }
+    .hm3 .skills-list .skill img {
+      display: block; }
+  .hm3 .skills-list .skill-name {
+    margin: 0; }
+  .hm3 .skills-list .skill-ele {
+    margin: 0; }
+
+.hm3 .spells-list {
+  list-style: none;
+  margin: 7px 0;
+  padding: 0;
+  overflow-y: auto; }
+  .hm3 .spells-list .spell-header {
+    font-weight: bold; }
+  .hm3 .spells-list .spell {
+    height: 30px;
+    line-height: 24px;
+    padding: 3px 0;
+    border-bottom: 1px solid #BBB; }
+    .hm3 .spells-list .spell .spell-image {
+      flex: 0 0 24px;
+      margin-right: 5px; }
+    .hm3 .spells-list .spell img {
+      display: block; }
+  .hm3 .spells-list .spell-name {
+    margin: 0; }
+  .hm3 .spells-list .spell-convocation {
+    margin: 0; }
+  .hm3 .spells-list .spell-level {
+    margin: 0; }
+  .hm3 .spells-list .spell-eml {
+    margin: 0; }
+  .hm3 .spells-list .spell-notes {
+    margin: 0; }
+
+.hm3 .armorlocations-list {
+  list-style: none;
+  margin: 7px 0;
+  padding: 0;
+  overflow-y: auto; }
+  .hm3 .armorlocations-list .armorlocation-header {
+    font-weight: bold; }
+  .hm3 .armorlocations-list .armorlocation {
+    height: 30px;
+    line-height: 24px;
+    padding: 3px 0;
+    border-bottom: 1px solid #BBB; }
+    .hm3 .armorlocations-list .armorlocation .armorlocation-image {
+      flex: 0 0 24px;
+      margin-right: 5px; }
+    .hm3 .armorlocations-list .armorlocation img {
+      display: block; }
+  .hm3 .armorlocations-list .armorlocation-name {
+    margin: 0; }
+  .hm3 .armorlocations-list .armorlocation-layers {
+    margin: 0; }
+  .hm3 .armorlocations-list .armorlocation-quality {
+    margin: 0; }
+  .hm3 .armorlocations-list .armorlocation-blunt {
+    margin: 0; }
+  .hm3 .armorlocations-list .armorlocation-edged {
+    margin: 0; }
+  .hm3 .armorlocations-list .armorlocation-piercing {
+    margin: 0; }
+  .hm3 .armorlocations-list .armorlocation-fire {
+    margin: 0; }
+  .hm3 .armorlocations-list .armorlocation-notes {
+    margin: 0; }
+
+.hm3 .weapon-list {
+  list-style: none;
+  margin: 7px 0;
+  padding: 0;
+  overflow-y: auto; }
+  .hm3 .weapon-list .weapon-header {
+    font-weight: bold; }
+  .hm3 .weapon-list .weapon {
+    height: 30px;
+    line-height: 24px;
+    padding: 3px 0;
+    border-bottom: 1px solid #bbb; }
+    .hm3 .weapon-list .weapon .weapon-image {
+      flex: 0 0 24px;
+      margin-right: 5px; }
+    .hm3 .weapon-list .weapon img {
+      display: block; }
+  .hm3 .weapon-list .weapon-name {
+    margin: 0; }
+  .hm3 .weapon-list .weapon-qty {
+    margin: 0; }
+  .hm3 .weapon-list .weapon-weight {
+    margin: 0; }
+  .hm3 .weapon-list .weapon-quality {
+    margin: 0; }
+  .hm3 .weapon-list .weapon-atkdef {
+    margin: 0; }
+  .hm3 .weapon-list .weapon-handmode {
+    margin: 0; }
+  .hm3 .weapon-list .weapon-blunt {
+    margin: 0; }
+  .hm3 .weapon-list .weapon-edged {
+    margin: 0; }
+  .hm3 .weapon-list .weapon-piercing {
+    margin: 0; }
+  .hm3 .weapon-list .weapon-notes {
+    margin: 0; }
+
+.hm3 .armor-list {
+  list-style: none;
+  margin: 7px 0;
+  padding: 0;
+  overflow-y: auto; }
+  .hm3 .armor-list .armor-header {
+    font-weight: bold; }
+  .hm3 .armor-list .armor {
+    height: 30px;
+    line-height: 24px;
+    padding: 3px 0;
+    border-bottom: 1px solid #bbb; }
+    .hm3 .armor-list .armor .armor-image {
+      flex: 0 0 24px;
+      margin-right: 5px; }
+    .hm3 .armor-list .armor img {
+      display: block; }
+  .hm3 .armor-list .armor-name {
+    margin: 0; }
+  .hm3 .armor-list .armor-qty {
+    margin: 0; }
+  .hm3 .armor-list .armor-material {
+    margin: 0; }
+  .hm3 .armor-list .armor-quality {
+    margin: 0; }
+  .hm3 .armor-list .armor-weight {
+    margin: 0; }
+  .hm3 .armor-list .armor-notes {
+    margin: 0; }
+
+.hm3 .gear-list {
+  list-style: none;
+  margin: 7px 0;
+  padding: 0;
+  overflow-y: auto; }
+  .hm3 .gear-list .gear-header {
+    font-weight: bold; }
+  .hm3 .gear-list .gear {
+    height: 30px;
+    line-height: 24px;
+    padding: 3px 0;
+    border-bottom: 1px solid #bbb; }
+    .hm3 .gear-list .gear .gear-image {
+      flex: 0 0 24px;
+      margin-right: 5px; }
+    .hm3 .gear-list .gear img {
+      display: block; }
+  .hm3 .gear-list .gear-name {
+    margin: 0; }
+  .hm3 .gear-list .gear-qty {
+    margin: 0; }
+  .hm3 .gear-list .gear-weight {
+    margin: 0; }
+  .hm3 .gear-list .gear-notes {
+    margin: 0; }
