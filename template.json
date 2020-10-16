@@ -1,6 +1,6 @@
 {
   "Actor": {
-    "types": ["character", "beast"],
+    "types": ["character"],
     "templates": {
       "base": {
         "biography": "",
@@ -63,11 +63,7 @@
       "hasCondition": false,
       "encumbrance": 0,
       "totalWeight": 0
-    },
-    "beast": {
-      "templates": ["base"],
-      "length": 0
-   }
+    }
   },
   "Item": {
     "types": ["physicalskill", "commskill", "craftskill", "combatskill", "magicskill", "ritualskill",
