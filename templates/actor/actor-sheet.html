@@ -23,184 +23,136 @@
 
         {{!-- Profile Tab --}}
         <div class="tab profile" data-group="primary" data-tab="profile">
-            <div class="resources grid grid-2col">
-                <div class="resource flex-group-left profile-abilities">
-                    <div class="resource flexrow">
-                        <label for="data.abilities.strength" class="resource-label">STR</label>
-                        <div class="resource-content">
-                            <input type="text" name="data.abilities.strength" value="{{data.abilities.strength}}" data-dtype="Number" />
-                        </div>
-                    </div>
-                    <div class="resource flexrow">
-                        <label for="data.abilities.stamina" class="resource-label">STA</label>
-                        <div class="resource-content">
-                            <input type="text" name="data.abilities.stamina" value="{{data.abilities.stamina}}" data-dtype="Number" />
-                        </div>
-                    </div>
-                    <div class="resource flexrow">
-                        <label for="data.abilities.dexterity" class="resource-label">DEX</label>
-                        <div class="resource-content">
-                            <input type="text" name="data.abilities.dexterity" value="{{data.abilities.dexterity}}" data-dtype="Number" />
-                        </div>
-                    </div>
-                    <div class="resource flexrow">
-                        <label for="data.abilities.agility" class="resource-label">AGL</label>
-                        <div class="resource-content">
-                            <input type="text" name="data.abilities.agility" value="{{data.abilities.agility}}" data-dtype="Number" />
-                        </div>
-                    </div>
-                    <div class="resource flexrow">
-                        <label for="data.abilities.intelligence" class="resource-label">INT</label>
-                        <div class="resource-content">
-                            <input type="text" name="data.abilities.intelligence" value="{{data.abilities.intelligence}}" data-dtype="Number" />
-                        </div>
-                    </div>
-                    <div class="resource flexrow">
-                        <label for="data.abilities.aura" class="resource-label">AUR</label>
-                        <div class="resource-content">
-                            <input type="text" name="data.abilities.aura" value="{{data.abilities.aura}}" data-dtype="Number" />
-                        </div>
-                    </div>
-                    <div class="resource flexrow">
-                        <label for="data.abilities.will" class="resource-label">WIL</label>
-                        <div class="resource-content">
-                            <input type="text" name="data.abilities.will" value="{{data.abilities.will}}" data-dtype="Number" />
-                        </div>
-                    </div>
+            <div class="flexrow">
+                <ul class="ability-scores">
+                    <li class="ability flexrow">
+                        <label for="data.abilities.strength" class="ability-label">STR</label>
+                        <input class="ability-value" type="text" name="data.abilities.strength" value="{{data.abilities.strength}}" data-dtype="Number" />
+                    </li>
+                    <li class="ability flexrow">
+                        <label for="data.abilities.stamina" class="ability-label">STA</label>
+                        <input class="ability-value" type="text" name="data.abilities.stamina" value="{{data.abilities.stamina}}" data-dtype="Number" />
+                    </li>
+                    <li class="ability flexrow">
+                        <label for="data.abilities.dexterity" class="ability-label">DEX</label>
+                        <input class="ability-value" type="text" name="data.abilities.dexterity" value="{{data.abilities.dexterity}}" data-dtype="Number" />
+                    </li>
+                    <li class="ability flexrow">
+                        <label for="data.abilities.agility" class="ability-label">AGL</label>
+                        <input class="ability-value" type="text" name="data.abilities.agility" value="{{data.abilities.agility}}" data-dtype="Number" />
+                    </li>
+                    <li class="ability flexrow">
+                        <label for="data.abilities.intelligence" class="ability-label">INT</label>
+                        <input class="ability-value" type="text" name="data.abilities.intelligence" value="{{data.abilities.intelligence}}" data-dtype="Number" />
+                    </li>
+                    <li class="ability flexrow">
+                        <label for="data.abilities.aura" class="ability-label">AUR</label>
+                        <input class="ability-value" type="text" name="data.abilities.aura" value="{{data.abilities.aura}}" data-dtype="Number" />
+                    </li>
+                    <li class="ability flexrow">
+                        <label for="data.abilities.will" class="ability-label">WIL</label>
+                        <input class="ability-value" type="text" name="data.abilities.will" value="{{data.abilities.will}}" data-dtype="Number" />
+                    </li>
                     <hr class="sheet-hr"/>
-                    <div class="resource flexrow">
-                        <label for="data.abilities.eyesight" class="resource-label">EYE</label>
-                        <div class="resource-content">
-                            <input type="text" name="data.abilities.eyesight" value="{{data.abilities.eyesight}}" data-dtype="Number" />
-                        </div>
-                    </div>
-                    <div class="resource flexrow">
-                        <label for="data.abilities.hearing" class="resource-label">HRG</label>
-                        <div class="resource-content">
-                            <input type="text" name="data.abilities.hearing" value="{{data.abilities.hearing}}" data-dtype="Number" />
-                        </div>
-                    </div>
-                    <div class="resource flexrow">
-                        <label for="data.abilities.smell" class="resource-label">SML</label>
-                        <div class="resource-content">
-                            <input type="text" name="data.abilities.smell" value="{{data.abilities.smell}}" data-dtype="Number" />
-                        </div>
-                    </div>
-                    <div class="resource flexrow">
-                        <label for="data.abilities.voice" class="resource-label">VOI</label>
-                        <div class="resource-content">
-                            <input type="text" name="data.abilities.voice" value="{{data.abilities.voice}}" data-dtype="Number" />
-                        </div>
-                    </div>
-                    <div class="resource flexrow">
-                        <label for="data.abilities.comliness" class="resource-label">CML</label>
-                        <div class="resource-content">
-                            <input type="text" name="data.abilities.comliness" value="{{data.abilities.comliness}}" data-dtype="Number" />
-                        </div>
-                    </div>
-                    <div class="resource flexrow">
-                        <label for="data.abilities.morality" class="resource-label">MOR</label>
-                        <div class="resource-content">
-                            <input type="text" name="data.abilities.morality" value="{{data.abilities.morality}}" data-dtype="Number" />
-                        </div>
-                    </div>
-                </div>
-                <div class="resource flex-group-left profile-base">
-                    <div class="resources grid grid-2col">
-                        <div class="resource flex-group-left">
-                            <div class="resource flexrow">
-                                <label for="data.species" class="resource-label">Race</label>
-                                <div class="resource-content">
-                                    <input type="text" name="data.species" value="{{data.species}}" data-dtype="String" />
-                                </div>
-                            </div>
-                            <div class="resource flexrow">
-                                <label for="data.gender" class="resource-label">Gender</label>
-                                <div class="resource-content">
-                                    <input type="text" name="data.gender" value="{{data.gender}}" data-dtype="String" />
-                                </div>
-                            </div>
-                            <div class="resource flexrow">
-                                <label for="data.birthdate" class="resource-label">Birthdate</label>
-                                <div class="resource-content">
-                                    <input type="text" name="data.birthdate" value="{{data.birthdate}}" data-dtype="String" />
-                                </div>
-                            </div>
-                            <div class="resource flexrow">
-                                <label class="resource-label">Sunsign</label>
-                                <div class="resource-content">
-                                    <select class="sunsign-name" name="data.sunsignName">
-                                        {{#select data.sunsignName}}
-                                        {{#each config.sunsignNames as |value key|}}
-                                            <option value="{{key}}">{{key}}</option>
-                                        {{/each}}
-                                        {{/select}}
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="sheet-hr">
-                    <div class="resources grid grid-3col">
-                        {{!-- "flex-group-center" is also defined in the _grid.scss file
-                        and it will add a small amount of padding, a border, and will
-                        center all of its child elements content and text. --}}
-                        <div class="resource flex-group-left">
-                            <div class="resource flexrow flex-group-left">
-                                <label for="data.age" class="resource-label">Age</label>
-                                <div class="resource-content">
-                                    <input type="text" name="data.age" value="{{data.age}}" data-dtype="Number" />
-                                </div>
-                            </div>
-                            <div class="resource flexrow flex-group-left">
-                                <label for="data.piety" class="resource-label">Piety</label>
-                                <div class="resource-content flexrow flex-left flex-between">
-                                    <input type="text" name="data.piety" value="{{data.piety}}" data-dtype="Number" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="resource flex-group-left">
-                            <div class="resource flexrow flex-group-left">
-                                <label for="data.height" class="resource-label">Height</label>
-                                <div class="resource-content flexrow flex-left flex-between">
-                                    <input type="text" name="data.height" value="{{data.height}}" data-dtype="Number" />
-                                </div>
-                            </div>
-                            <div class="resource flexrow flex-group-left">
-                                <label for="data.frame" class="resource-label">Frame</label>
-                                <div class="resource-content flexrow flex-left flex-between">
-                                    <input type="text" name="data.frame" value="{{data.frame}}" data-dtype="String" />
-                                </div>
-                            </div>
-                            <div class="resource flexrow flex-group-left">
-                                <label for="data.weight" class="resource-label">Weight</label>
-                                <div class="resource-content flexrow flex-left flex-between">
-                                    <input type="text" name="data.weight" value="{{data.weight}}" data-dtype="Number" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="resource flex-group-left">
-                            <div class="resource flexrow flex-group-left">
-                                <label for="data.age" class="resource-label">Skin</label>
-                                <div class="resource-content flexrow flex-left flex-between">
-                                    <input type="text" name="data.complexion" value="{{data.complexion}}"
+                    <li class="ability flexrow">
+                        <label for="data.abilities.eyesight" class="ability-label">EYE</label>
+                        <input class="ability-value" type="text" name="data.abilities.eyesight" value="{{data.abilities.eyesight}}" data-dtype="Number" />
+                    </li>
+                    <li class="ability flexrow">
+                        <label for="data.abilities.hearing" class="ability-label">HRG</label>
+                        <input class="ability-value" type="text" name="data.abilities.hearing" value="{{data.abilities.hearing}}" data-dtype="Number" />
+                    </li>
+                    <li class="ability flexrow">
+                        <label for="data.abilities.smell" class="ability-label">SML</label>
+                        <input class="ability-value" type="text" name="data.abilities.smell" value="{{data.abilities.smell}}" data-dtype="Number" />
+                    </li>
+                    <li class="ability flexrow">
+                        <label for="data.abilities.voice" class="ability-label">VOI</label>
+                        <input class="ability-value" type="text" name="data.abilities.voice" value="{{data.abilities.voice}}" data-dtype="Number" />
+                    </li>
+                    <li class="ability flexrow">
+                        <label for="data.abilities.comliness" class="ability-label">CML</label>
+                        <input class="ability-value" type="text" name="data.abilities.comliness" value="{{data.abilities.comliness}}" data-dtype="Number" />
+                    </li>
+                    <li class="ability flexrow">
+                        <label for="data.abilities.morality" class="ability-label">MOR</label>
+                        <input class="ability-value" type="text" name="data.abilities.morality" value="{{data.abilities.morality}}" data-dtype="Number" />
+                    </li>
+                </ul>
+                <div class="profile-traits-section">
+                    <div class="grid grid-2col">
+                        <ul class="profile-traits-group flex-group-left">
+                            <li class="profile-trait flexrow">
+                                <label for="data.species" class="profile-trait-label">Race</label>
+                                <input class="profile-trait-value" type="text" name="data.species" value="{{data.species}}" data-dtype="String" />
+                            </li>
+                            <li class="profile-trait flexrow">
+                                <label for="data.gender" class="profile-trait-label">Gender</label>
+                                <input class="profile-trait-value" type="text" name="data.gender" value="{{data.gender}}" data-dtype="String" />
+                            </li>
+                            <li class="profile-trait flexrow">
+                                <label for="data.birthdate" class="profile-trait-label">Birthdate</label>
+                                <input class="profile-trait-value" type="text" name="data.birthdate" value="{{data.birthdate}}" data-dtype="String" />
+                            </li>
+                            <li class="profile-trait flexrow">
+                                <label for="data.sunsignName" class="profile-trait-label">Sunsign</label>
+                                <select class="profile-trait-value" name="data.sunsignName">
+                                    {{#select data.sunsignName}}
+                                    {{#each config.sunsignNames as |value key|}}
+                                        <option value="{{key}}">{{key}}</option>
+                                    {{/each}}
+                                    {{/select}}
+                                </select>
+                            </li>
+                            <li class="profile-trait flexrow">
+                                <label for="data.medical" class="profile-trait-label">Medical</label>
+                                <input class="profile-trait-value" type="text" name="data.medical" value="{{data.medical}}" data-dtype="String" />
+                            </li>
+                            <li class="profile-trait flexrow">
+                                <label for="data.otherAppearance" class="profile-trait-label">Appearance</label>
+                                <input class="profile-trait-value" type="text" name="data.otherAppearance" value="{{data.otherAppearance}}" data-dtype="String" />
+                            </li>
+                            <li class="profile-trait flexrow">
+                                <label for="data.psyche" class="profile-trait-label">Psyche</label>
+                                <input class="profile-trait-value" type="text" name="data.psyche" value="{{data.psyche}}" data-dtype="String" />
+                            </li>
+                            <li class="profile-trait flexrow">
+                                <label for="data.otherPersonality" class="profile-trait-label">Personality</label>
+                                <input class="profile-trait-value" type="text" name="data.otherPersonality" value="{{data.otherPersonality}}" data-dtype="String" />
+                            </li>
+                        </ul>
+                        <ul class="profile-traits-group flex-group-left">
+                            <li class="profile-trait flexrow">
+                                <label for="data.piety" class="profile-trait-label">Piety</label>
+                                <input class="profile-trait-value" type="text" name="data.piety" value="{{data.piety}}" data-dtype="Number" />
+                            </li>
+                            <li class="profile-trait flexrow">
+                                <label for="data.height" class="profile-trait-label">Height</label>
+                                <input class="profile-trait-value" type="text" name="data.height" value="{{data.height}}" data-dtype="Number" />
+                            </li>
+                            <li class="profile-trait flexrow">
+                                <label for="data.frame" class="profile-trait-label">Frame</label>
+                                <input class="profile-trait-value" type="text" name="data.frame" value="{{data.frame}}" data-dtype="String" />
+                            </li>
+                            <li class="profile-trait flexrow">
+                                <label for="data.weight" class="profile-trait-label">Weight</label>
+                                <input class="profile-trait-value" type="text" name="data.weight" value="{{data.weight}}" data-dtype="Number" />
+                            </li>
+                            <li class="profile-trait flexrow">
+                                <label for="data.age" class="profile-trait-label">Skin</label>
+                                <input class="profile-trait-value" type="text" name="data.complexion" value="{{data.complexion}}"
                                         data-dtype="String" />
-                                </div>
-                            </div>
-                            <div class="resource flexrow flex-group-left">
-                                <label for="data.hairColor" class="resource-label">Hair</label>
-                                <div class="resource-content flexrow flex-left flex-between">
-                                    <input type="text" name="data.hairColor" value="{{data.hairColor}}"
+                            </li>
+                            <li class="profile-trait flexrow">
+                                <label for="data.hairColor" class="profile-trait-label">Hair</label>
+                                <input class="profile-trait-value" type="text" name="data.hairColor" value="{{data.hairColor}}"
                                         data-dtype="String" />
-                                </div>
-                            </div>
-                            <div class="resource flexrow flex-group-left">
-                                <label for="data.eyeColor" class="resource-label">Eyes</label>
-                                <div class="resource-content flexrow flex-left flex-between">
-                                    <input type="text" name="data.eyeColor" value="{{data.eyeColor}}" data-dtype="String" />
-                                </div>
-                            </div>
-                        </div>
+                            </li>
+                            <li class="profile-trait flexrow">
+                                <label for="data.eyeColor" class="profile-trait-label">Eyes</label>
+                                <input class="profile-trait-value" type="text" name="data.eyeColor" value="{{data.eyeColor}}" data-dtype="String" />
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -414,48 +366,46 @@
         {{!-- Combat Tab --}}
         <div class="tab combat" data-group="primary" data-tab="combat">
             <h2>Combat Statistics</h2>
-            <div class="resources grid grid-3col">
-                <div class="resource flexrow">
-                    <label for="data.fatigue" class="resource-label">Fatigue</label>
-                    <div class="resource-content">
-                        <input type="text" name="data.fatigue" value="{{data.fatigue}}" data-dtype="Number" />
-                    </div>
+            <div class="combat-stats grid grid-4col">
+                <div class="combat-stat flexrow">
+                    <label for="data.fatigue" class="combat-stat-label">Fatigue</label>
+                    <input class="combat-stat-value" type="text" name="data.fatigue" value="{{data.fatigue}}" data-dtype="Number" />
                 </div>
-                <div class="resource flexrow">
-                    <div class="resource-label">Initiative</div>
-                    <div class="resource-content">{{data.initiative}}</div>
+                <div class="combat-stat flexrow">
+                    <label class="combat-stat-label">Initiative</label>
+                    <div class="combat-stat-value">{{data.initiative}}</div>
                 </div>
-                <div class="resource flexrow">
-                    <div class="resource-label">Endurance</div>
-                    <div class="resource-content">{{data.endurance}}</div>
+                <div class="combat-stat flexrow">
+                    <label class="combat-stat-label">Endur.</label>
+                    <div class="combat-stat-value">{{data.endurance}}</div>
                 </div>
-                <div class="resource flexrow">
-                    <div class="resource-label">Dexterity</div>
-                    <div class="resource-content">{{data.abilities.dexterity}}</div>
+                <div class="combat-stat flexrow">
+                    <label class="combat-stat-label">Dexterity</label>
+                    <div class="combat-stat-value">{{data.abilities.dexterity}}</div>
                 </div>
-                <div class="resource flexrow">
-                    <div class="resource-label">Agility</div>
-                    <div class="resource-content">{{data.abilities.agility}}</div>
+                <div class="combat-stat flexrow">
+                    <label class="combat-stat-label">Agility</label>
+                    <div class="combat-stat-value">{{data.abilities.agility}}</div>
                 </div>
-                <div class="resource flexrow">
-                    <div class="resource-label">Move</div>
-                    <div class="resource-content">{{data.move}}</div>
+                <div class="combat-stat flexrow">
+                    <label class="combat-stat-label">Move</label>
+                    <div class="combat-stat-value">{{data.move}}</div>
                 </div>
-                <div class="resource flexrow">
-                    <div class="resource-label">Dodge</div>
-                    <div class="resource-content">{{data.dodge}}</div>
+                <div class="combat-stat flexrow">
+                    <label class="combat-stat-label">Dodge</label>
+                    <div class="combat-stat-value">{{data.dodge}}</div>
                 </div>
-                <div class="resource flexrow">
-                    <div class="resource-label">Encumbrance</div>
-                    <div class="resource-content">{{data.encumbrance}}</div>
+                <div class="combat-stat flexrow">
+                    <label class="combat-stat-label">Encumb.</label>
+                    <div class="combat-stat-value">{{data.encumbrance}}</div>
                 </div>
-                <div class="resource flexrow">
-                    <div class="resource-label">UP</div>
-                    <div class="resource-content">{{data.universalPenalty}}</div>
+                <div class="combat-stat flexrow">
+                    <label class="combat-stat-label">Univ Pen</label>
+                    <div class="combat-stat-value">{{data.universalPenalty}}</div>
                 </div>
-                <div class="resource flexrow">
-                    <div class="resource-label">PP</div>
-                    <div class="resource-content">{{data.physicalPenalty}}</div>
+                <div class="combat-stat flexrow">
+                    <label class="combat-stat-label">Phys Pen</label>
+                    <div class="combat-stat-value">{{data.physicalPenalty}}</div>
                 </div>
             </div>
 
@@ -598,34 +548,22 @@
         {{!-- Inventory Tab --}}
         <div class="tab inventory" data-group="primary" data-tab="inventory">
             <h2>Inventory Statistics</h2>
-            <div class="resources flexcol">
-                <div class="resource flexrow">
-                    <label for="data.totalWeaponWeight" class="resource-label">Weapon Weight</label>
-                    <div class="resource-content">
-                        <input type="text" name="data.totalWeaponWeight" value="{{data.totalWeaponWeight}}"
-                            data-dtype="Number" disabled />
-                    </div>
+            <div class="inv-stats flexcol">
+                <div class="inv-stat flexrow">
+                    <label class="inv-stat-label" for="data.totalWeaponWeight">Weapon Weight</label>
+                    <input class="inv-stat-value" type="text" name="data.totalWeaponWeight" value="{{data.totalWeaponWeight}}" data-dtype="Number" disabled />
                 </div>
-                <div class="resource flexrow">
-                    <label for="data.totalArmorWeight" class="resource-label">Armor Weight</label>
-                    <div class="resource-content">
-                        <input type="text" name="data.totalArmorWeight" value="{{data.totalArmorWeight}}"
-                        data-dtype="Number" disabled />
-                    </div>
+                <div class="inv-stat flexrow">
+                    <label class="inv-stat-label" for="data.totalArmorWeight">Armor Weight</label>
+                    <input class="inv-stat-value" type="text" name="data.totalArmorWeight" value="{{data.totalArmorWeight}}" data-dtype="Number" disabled />
                 </div>
-                <div class="resource flexrow">
-                    <label for="data.totalMiscGearWeight" class="resource-label">Misc Gear Weight</label>
-                    <div class="resource-content">
-                        <input type="text" name="data.totalMiscGearWeight" value="{{data.totalMiscGearWeight}}"
-                            data-dtype="Number" disabled />
-                    </div>
+                <div class="inv-stat flexrow">
+                    <label class="inv-stat-label" for="data.totalMiscGearWeight">Misc Gear Weight</label>
+                    <input class="inv-stat-value" type="text" name="data.totalMiscGearWeight" value="{{data.totalMiscGearWeight}}" data-dtype="Number" disabled />
                 </div>
-                <div class="resource flexrow">
-                    <label for="data.totalGearWeight" class="resource-label">Total Weight</label>
-                    <div class="resource-content">
-                        <input type="text" name="data.totalGearWeight" value="{{data.totalGearWeight}}"
-                            data-dtype="Number" disabled />
-                    </div>
+                <div class="inv-stat flexrow">
+                    <label class="inv-stat-label" for="data.totalGearWeight">Total Weight</label>
+                    <input class="inv-stat-value" type="text" name="data.totalGearWeight" value="{{data.totalGearWeight}}" data-dtype="Number" disabled />
                 </div>
             </div>
 
