@@ -118,14 +118,6 @@
 .hm3 .sheet-body .tab .editor {
   height: 100%; }
 
-.hm3 .sheet-body .profile-abilities {
-  flex: 1 1 auto
-}
-
-.hm3 .sheet-body .profile-base {
-  flex: 3 1 auto
-}
-
 .hm3 .tox .tox-editor-container {
   background: #fff; }
 
@@ -169,3 +161,45 @@
   .hm3 .items-list .item-controls {
     flex: 0 0 86px;
     text-align: right; }
+
+.hm3 .sheet-body .combat-stats .combat-stat .combat-stat-label {
+  flex: 0 0 80px;
+  font-weight: bold;
+  text-transform: uppercase; }
+
+.hm3 .sheet-body .combat-stats .combat-stat .combat-stat-value {
+  flex: 0 0 40px; }
+
+.hm3 .sheet-body .inv-stats .inv-stat .inv-stat-label {
+  flex: 0 0 135px;
+  font-weight: bold;
+  text-transform: uppercase; }
+
+.hm3 .sheet-body .inv-stats .inv-stat .inv-stat-value {
+  flex: 0 0 40px; }
+
+.hm3 .sheet-body .ability-scores {
+  flex: 0 0 120px; }
+
+.hm3 .sheet-body .ability-scores .ability .ability-label {
+  flex: 0 0 40px;
+  font-weight: bold;
+  text-transform: uppercase; }
+
+.hm3 .sheet-body .ability-scores .ability .ability-value {
+  flex: 0 0 40px; }
+
+.hm3 .sheet-body .profile-traits-section {
+  flex: 0 0 480px; }
+
+.hm3 .sheet-body .profile-traits-section .profile-traits-group {
+  flex: 0 0 200px;
+  border: none; }
+
+.hm3 .sheet-body .profile-traits-section .profile-traits-group .profile-trait-label {
+  flex: 0 0 95px;
+  font-weight: bold;
+  text-transform: uppercase; }
+
+.hm3 .sheet-body .profile-traits-section .profile-traits-group .profile-trait-value {
+  flex: 0 0 120px; }

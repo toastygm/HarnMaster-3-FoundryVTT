@@ -1,0 +1,33 @@
+.sheet-body .ability-scores {
+  flex: 0 0 120px;
+}
+  
+.sheet-body .ability-scores .ability .ability-label {
+  flex: 0 0 40px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.sheet-body .ability-scores .ability .ability-value {
+  flex: 0 0 40px;
+}
+
+.sheet-body .profile-traits-section {
+  flex: 0 0 480px;
+}
+
+.sheet-body .profile-traits-section .profile-traits-group {
+  flex: 0 0 200px;
+  border: none;
+}
+
+.sheet-body .profile-traits-section .profile-traits-group .profile-trait-label {
+  flex: 0 0 95px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.sheet-body .profile-traits-section .profile-traits-group .profile-trait-value {
+  flex: 0 0 120px;
+}
+  
