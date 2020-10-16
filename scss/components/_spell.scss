@@ -25,22 +25,39 @@
     }
   
     .spell-name {
-      margin: 0;
-    }
+      flex: 0 0 200px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+  }
   
     .spell-convocation {
-      margin: 0;
-    }
+      flex: 0 0 80px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+  }
   
     .spell-level {
-      margin: 0;
+      flex: 0 0 40px;
+      text-align: center;
     }
   
     .spell-eml {
-      margin: 0;
+      flex: 0 0 40px;
+      text-align: center;
     }
   
     .spell-notes {
-      margin: 0;
+      flex: 1 0 150;
+      padding-left: 10px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+  }
+    
+    .item-controls {
+      flex: 0 0 86px;
+      text-align: right;
     }
-}
+  }

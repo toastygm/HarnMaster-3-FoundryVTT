@@ -25,22 +25,42 @@
     }
   
     .injury-name {
-      margin: 0;
+      flex: 0 0 200px;
     }
   
     .injury-location {
-        margin: 0;
-      }
+        flex: 0 0 40px;
+        text-align: right;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
     
     .injury-healrate {
-      margin: 0;
+      flex: 0 0 40px;
+      text-align: center;
     }
 
     .injury-severity {
-      margin: 0;
+      flex: 0 0 50px;
+      text-align: center;
     }
     
     .injury-level {
-      margin: 0;
+      flex: 1 0 40px;
+      text-align: center;
+    }
+  
+    .injury-notes {
+      flex: 1 0 200px;
+      padding-left: 10px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+  }
+  
+    .item-controls {
+      flex: 1 0 86px;
+      text-align: right;
     }
   }

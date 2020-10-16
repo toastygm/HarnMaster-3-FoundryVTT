@@ -25,34 +25,54 @@
     }
   
     .armorlocation-name {
-      margin: 0;
-    }
+      flex: 0 0 80px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+  }
   
     .armorlocation-layers {
-      margin: 0;
-    }
+      flex: 0 0 120px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+  }
     
     .armorlocation-quality {
-      margin: 0;
+      flex: 0 0 40px;
+      text-align: center;
     }
 
     .armorlocation-blunt {
-      margin: 0;
+      flex: 0 0 25px;
+      text-align: center;
     }
 
     .armorlocation-edged {
-      margin: 0;
+      flex: 0 0 25px;
+      text-align: center;
     }
 
     .armorlocation-piercing {
-      margin: 0;
+      flex: 0 0 25px;
+      text-align: center;
     }
 
     .armorlocation-fire {
-      margin: 0;
+      flex: 0 0 25px;
+      text-align: center;
     }
 
     .armorlocation-notes {
-      margin: 0;
+      flex: 1 0 150px;
+      padding-left: 10px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+  }
+  
+    .item-controls {
+      flex: 0 0 86px;
+      text-align: right;
     }
   }

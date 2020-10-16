@@ -1,4 +1,4 @@
-.weapon-list {
+.weapons-list {
     list-style: none;
     margin: 7px 0;
     padding: 0;
@@ -25,43 +25,63 @@
     }
 
     .weapon-name {
-        margin: 0;
+        flex: 0 0 120px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
     }
 
     .weapon-qty {
-        margin: 0;
+        flex: 0 0 40px;
+        text-align: center;
     }
 
     .weapon-weight {
-        margin: 0;
+        flex: 0 0 40px;
+        text-align: center;
     }
 
     .weapon-quality {
-        margin: 0;
+        flex: 0 0 40px;
+        text-align: center;
     }
 
     .weapon-atkdef {
-        margin: 0;
+        flex: 0 0 40px;
+        text-align: center;
     }
 
     .weapon-handmode {
-        margin: 0;
+        flex: 0 0 40px;
+        text-align: center;
     }
 
     .weapon-blunt {
-        margin: 0;
+        flex: 0 0 25px;
+        text-align: center;
     }
 
     .weapon-edged {
-        margin: 0;
+        flex: 0 0 25px;
+        text-align: center;
     }
 
     .weapon-piercing {
-        margin: 0;
+        flex: 0 0 25px;
+        text-align: center;
     }
 
     .weapon-notes {
-        margin: 0;
+        flex: 1 0 95px;
+        padding-left: 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+    
+    .item-controls {
+        flex: 0 0 86px;
+        text-align: right;
     }
 }
 
@@ -92,27 +112,45 @@
     }
 
     .armor-name {
-        margin: 0;
+        flex: 0 0 150px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
     }
 
     .armor-qty {
-        margin: 0;
+        flex: 0 0 40px;
+        text-align: center;
     }
 
     .armor-material {
-        margin: 0;
+        flex: 0 0 80px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
     }
 
     .armor-quality {
-        margin: 0;
+        flex: 0 0 40px;
+        text-align: center;
     }
 
     .armor-weight {
-        margin: 0;
+        flex: 0 0 40px;
+        text-align: center;
     }
 
     .armor-notes {
-        margin: 0;
+        flex: 1 0 150px;
+        padding-left: 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .item-controls {
+        flex: 0 0 86px;
+        text-align: right;
     }
 }
 
@@ -143,18 +181,32 @@
     }
 
     .gear-name {
-        margin: 0;
+        flex: 0 0 200px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
     }
 
     .gear-qty {
-        margin: 0;
+        flex: 0 0 40px;
+        text-align: center;
     }
 
     .gear-weight {
-        margin: 0;
+        flex: 0 0 40px;
+        text-align: center;
     }
 
     .gear-notes {
-        margin: 0;
+        flex: 1 0 150px;
+        padding-left: 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .item-controls {
+        flex: 0 0 86px;
+        text-align: right;
     }
 }
