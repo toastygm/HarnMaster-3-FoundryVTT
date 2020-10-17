@@ -21,9 +21,9 @@ export class HarnMasterActor extends Actor {
     if (data.type == "character") {
       this._createDefaultCharacterSkills(data);
       this._createDefaultHumanoidLocations(data);
-    } else if (data.type == "beast") {
-      // Create Beast Default Skills
-      this._createDefaultBeastSkills(data);
+    } else if (data.type == "creature") {
+      // Create Creature Default Skills
+      this._createDefaultCreatureSkills(data);
     }
 
     super.create(data, options); // Follow through the the rest of the Actor creation process upstream
@@ -45,7 +45,7 @@ export class HarnMasterActor extends Actor {
     data.items.push((new Item({name: 'Dodge', type: 'combatskill', data: game.system.model.Item.combatskill})).data);
   }
 
-  static _createDefaultBeastSkills(data) {
+  static _createDefaultCreatureSkills(data) {
     data.items.push((new Item({name: 'Initiative', type: 'combatskill', data: game.system.model.Item.combatskill})).data);
     data.items.push((new Item({name: 'Dodge', type: 'combatskill', data: game.system.model.Item.combatskill})).data);
   }
@@ -82,7 +82,11 @@ export class HarnMasterActor extends Actor {
 
     // Make separate methods for each Actor type (character, npc, etc.) to keep
     // things organized.
-    if (actorData.type === 'character') this._prepareCharacterData(actorData);
+    if (actorData.type === 'character') {
+      this._prepareCharacterData(actorData);
+    } else if (actorData.type === 'creature') {
+      this._prepareCreatureData(actorData);
+    }
   }
 
   /**
@@ -129,6 +133,43 @@ export class HarnMasterActor extends Actor {
     this._refreshSpellsAndInvocations();
   }
   
+  /**
+   * Prepare Creature type specific data
+   */
+  _prepareCreatureData(actorData) {
+    const data = actorData.data;
+    
+    // Calculate weight and injury level totals, used to calculate
+    // universal penalty below.
+    this._calcGearWeightTotals(data);
+    this._calcInjuryTotal(data);
+
+    data.encumbrance = Math.floor(data.totalGearWeight / 10);
+
+    // Universal Penalty and Physical Penalty are used to calculate many
+    // things, including effectiveMasteryLevel for all skills,
+    // endurance, move, etc.
+    data.universalPenalty = data.totalInjuryLevels + data.fatigue;
+    data.physicalPenalty = data.universalPenalty + data.encumbrance;
+
+    // Go through all skills calculating their EML
+    this._calcSkillEMLWithPenalties(this.data.items, data.universalPenalty, data.physicalPenalty);
+
+    // Some properties are calculated from skills.  Do that here.
+    this._setPropertiesFromSkills(this.data.items, data);
+
+    // Now calculate endurance.value; this value cannot go below 0
+    data.endurance.value = data.endurance.max - data.physicalPenalty;
+    if (data.endurance.value < 0) data.endurance.value = 0;
+
+    // Calculate current Move speed.  Cannot go below 0
+    data.move = (data.abilities.agility - data.physicalPenalty) * 5;
+    if (data.move < 0) data.move = 0;
+
+    // Calculate spell effective mastery level values
+    this._refreshSpellsAndInvocations();
+  }
+
   _setPropertiesFromSkills(items, data) {
     data.hasCondition = false;
 
@@ -239,6 +280,7 @@ export class HarnMasterActor extends Actor {
       }
     });
   }
+
   _resetAllSpellsAndInvocations() {
     this.data.items.forEach(it => {
       if (it.type === 'spell' || it.type === 'invocation') {

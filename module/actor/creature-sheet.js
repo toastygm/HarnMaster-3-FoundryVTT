@@ -2,13 +2,13 @@
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
  */
-export class HarnMasterActorSheet extends ActorSheet {
+export class HarnMasterCreatureSheet extends ActorSheet {
 
   /** @override */
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
-      classes: ["hm3", "sheet", "actor"],
-      template: "systems/hm3/templates/actor/actor-sheet.html",
+      classes: ["hm3", "sheet", "creature"],
+      template: "systems/hm3/templates/actor/creature-sheet.html",
       width: 620,
       height: 600,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "profile" }]

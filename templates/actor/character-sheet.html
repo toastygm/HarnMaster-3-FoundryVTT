@@ -16,6 +16,7 @@
         <a class="item" data-tab="magicreligion">Magic/Religion</a>
         <a class="item" data-tab="inventory">Gear</a>
         <a class="item" data-tab="biography">Biography</a>
+        <a class="item" data-tab="description">Description</a>
     </nav>
 
     {{!-- Sheet Body --}}
@@ -123,6 +124,10 @@
                         </ul>
                         <ul class="profile-traits-group flex-group-left">
                             <li class="profile-trait flexrow">
+                                <label for="data.occupation" class="profile-trait-label">Occupation</label>
+                                <input class="profile-trait-value" type="text" name="data.occupation" value="{{data.occupation}}" data-dtype="Number" />
+                            </li>
+                            <li class="profile-trait flexrow">
                                 <label for="data.piety" class="profile-trait-label">Piety</label>
                                 <input class="profile-trait-value" type="text" name="data.piety" value="{{data.piety}}" data-dtype="Number" />
                             </li>
@@ -137,11 +142,6 @@
                             <li class="profile-trait flexrow">
                                 <label for="data.weight" class="profile-trait-label">Weight</label>
                                 <input class="profile-trait-value" type="text" name="data.weight" value="{{data.weight}}" data-dtype="Number" />
-                            </li>
-                            <li class="profile-trait flexrow">
-                                <label for="data.age" class="profile-trait-label">Skin</label>
-                                <input class="profile-trait-value" type="text" name="data.complexion" value="{{data.complexion}}"
-                                        data-dtype="String" />
                             </li>
                             <li class="profile-trait flexrow">
                                 <label for="data.hairColor" class="profile-trait-label">Hair</label>
@@ -653,6 +653,11 @@
         {{!-- Biography Tab --}}
         <div class="tab biography" data-group="primary" data-tab="biography">
             {{editor content=data.biography target="data.biography" button=true owner=owner editable=editable}}
+        </div>
+
+        {{!-- Description Tab --}}
+        <div class="tab description" data-group="primary" data-tab="description">
+            {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
         </div>
 
     </section>

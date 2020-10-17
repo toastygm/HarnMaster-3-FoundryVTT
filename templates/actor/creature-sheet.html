@@ -1,0 +1,408 @@
+<form class="{{cssClass}} flexcol" autocomplete="off">
+
+    {{!-- Sheet Header --}}
+    <header class="sheet-header">
+        <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100" />
+        <div class="header-fields">
+            <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
+            <div class="grid grid-4col">
+                <div class="ability-scores flex-group-left">
+                    <div class="ability flexrow">
+                        <label for="data.abilities.strength" class="ability-label">STR</label>
+                        <input class="ability-value" type="text" name="data.abilities.strength" value="{{data.abilities.strength}}" data-dtype="Number" />
+                    </div>
+                </div>
+                <div class="ability-scores flex-group-left">
+                    <div class="ability flexrow">
+                        <label for="data.abilities.stamina" class="ability-label">STA</label>
+                        <input class="ability-value" type="text" name="data.abilities.stamina" value="{{data.abilities.stamina}}" data-dtype="Number" />
+                    </div>
+                </div>
+                <div class="ability-scores flex-group-left">
+                    <div class="ability flexrow">
+                        <label for="data.abilities.dexterity" class="ability-label">DEX</label>
+                        <input class="ability-value" type="text" name="data.abilities.dexterity" value="{{data.abilities.dexterity}}" data-dtype="Number" />
+                    </div>
+                </div>
+                <div class="ability-scores flex-group-left">
+                    <div class="ability flexrow">
+                        <label for="data.abilities.agility" class="ability-label">AGL</label>
+                        <input class="ability-value" type="text" name="data.abilities.agility" value="{{data.abilities.agility}}" data-dtype="Number" />
+                    </div>
+                </div>
+                <div class="ability-scores flex-group-left">
+                    <div class="ability flexrow">
+                        <label for="data.abilities.intelligence" class="ability-label">INT</label>
+                        <input class="ability-value" type="text" name="data.abilities.intelligence" value="{{data.abilities.intelligence}}" data-dtype="Number" />
+                    </div>
+                </div>
+                <div class="ability-scores flex-group-left">
+                    <div class="ability flexrow">
+                        <label for="data.abilities.aura" class="ability-label">AUR</label>
+                        <input class="ability-value" type="text" name="data.abilities.aura" value="{{data.abilities.aura}}" data-dtype="Number" />
+                    </div>
+                </div>
+                <div class="ability-scores flex-group-left">
+                    <div class="ability flexrow">
+                        <label for="data.abilities.will" class="ability-label">WIL</label>
+                        <input class="ability-value" type="text" name="data.abilities.will" value="{{data.abilities.will}}" data-dtype="Number" />
+                    </div>
+                </div>
+                <div class="ability-scores flex-group-left">
+                    <div class="ability flexrow">
+                        <label for="data.abilities.eyesight" class="ability-label">EYE</label>
+                        <input class="ability-value" type="text" name="data.abilities.eyesight" value="{{data.abilities.eyesight}}" data-dtype="Number" />
+                    </div>
+                </div>
+                <div class="ability-scores flex-group-left">
+                    <div class="ability flexrow">
+                        <label for="data.abilities.hearing" class="ability-label">HRG</label>
+                        <input class="ability-value" type="text" name="data.abilities.hearing" value="{{data.abilities.hearing}}" data-dtype="Number" />
+                    </div>
+                </div>
+                <div class="ability-scores flex-group-left">
+                    <div class="ability flexrow">
+                        <label for="data.abilities.smell" class="ability-label">SML</label>
+                        <input class="ability-value" type="text" name="data.abilities.smell" value="{{data.abilities.smell}}" data-dtype="Number" />
+                    </div>
+                </div>
+                <div class="ability-scores flex-group-left">
+                    <div class="ability flexrow">
+                        <label for="data.abilities.voice" class="ability-label">VOI</label>
+                        <input class="ability-value" type="text" name="data.abilities.voice" value="{{data.abilities.voice}}" data-dtype="Number" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    {{!-- Sheet Tab Navigation --}}
+    <nav class="sheet-tabs tabs" data-group="primary">
+        <a class="item" data-tab="description">Description</a>
+        <a class="item" data-tab="skills">Skills</a>
+        <a class="item" data-tab="combat">Combat</a>
+        <a class="item" data-tab="inventory">Inventory</a>
+    </nav>
+
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+
+        {{!-- Description Tab --}}
+        <div class="tab description" data-group="primary" data-tab="description">
+            {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+        </div>
+
+        {{!-- Skills Tab --}}
+        <div class="tab skills" data-group="primary" data-tab="skills">
+            <!-- Physical Skills -->
+            <h2>Physical Skills</h2>
+            <ol class="skills-list">
+                <li class="item flexrow skill-header">
+                    <div class="skill-name">Skill Name</div>
+                    <div class="skill-ele">SB</div>
+                    <div class="skill-ele">ML</div>
+                    <div class="skill-ele">EML</div>
+                    <div class="item-controls">
+                        <a class="item-control item-create" title="Create item" data-type="physicalskill"><i
+                                class="fas fa-plus"></i> Add item</a>
+                    </div>
+                </li>
+                {{#each actor.items as |item id|}}
+                    {{#if (eq item.type "physicalskill")}}
+                        <li class="item flexrow" data-item-id="{{item._id}}">
+                            <h4 class="skill-name">{{item.name}}</h4>
+                            <div class="skill-ele">{{data.skillBase}}</div>
+                            <div class="skill-ele">{{data.masteryLevel}}</div>
+                            <div class="skill-ele">{{data.effectiveMasteryLevel}}</div>
+                            <div class="item-controls">
+                                <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+                                <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                            </div>
+                        </li>
+                    {{/if}}
+                {{/each}}
+            </ol>
+
+            <!-- Communication Skills -->
+            <hr />
+            <h2>Communication Skills</h2>
+            <ol class="skills-list">
+                <li class="item flexrow skill-header">
+                    <div class="skill-name">Skill Name</div>
+                    <div class="skill-ele">SB</div>
+                    <div class="skill-ele">ML</div>
+                    <div class="skill-ele">EML</div>
+                    <div class="item-controls">
+                        <a class="item-control item-create" title="Create item" data-type="commskill"><i
+                                class="fas fa-plus"></i>
+                            Add item</a>
+                    </div>
+                </li>
+                {{#each actor.items as |item id|}}
+                    {{#if (eq item.type "commskill")}}
+                        <li class="item flexrow" data-item-id="{{item._id}}">
+                            <h4 class="skill-name">{{item.name}}</h4>
+                            <div class="skill-ele">{{data.skillBase}}</div>
+                            <div class="skill-ele">{{data.masteryLevel}}</div>
+                            <div class="skill-ele">{{data.effectiveMasteryLevel}}</div>
+                            <div class="item-controls">
+                                <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+                                <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                            </div>
+                        </li>
+                    {{/if}}
+                {{/each}}
+            </ol>
+
+            <!-- Combat Skills -->
+            <hr />
+            <h2>Combat Skills</h2>
+            <ol class="skills-list">
+                <li class="item flexrow skill-header">
+                    <div class="skill-name">Skill Name</div>
+                    <div class="skill-ele">SB</div>
+                    <div class="skill-ele">ML</div>
+                    <div class="skill-ele">EML</div>
+                    <div class="item-controls">
+                        <a class="item-control item-create" title="Create item" data-type="combatskill"><i
+                                class="fas fa-plus"></i>
+                            Add item</a>
+                    </div>
+                </li>
+                {{#each actor.items as |item id|}}
+                    {{#if (eq item.type "combatskill")}}
+                        <li class="item flexrow" data-item-id="{{item._id}}">
+                            <h4 class="skill-name">{{item.name}}</h4>
+                            <div class="skill-ele">{{data.skillBase}}</div>
+                            <div class="skill-ele">{{data.masteryLevel}}</div>
+                            <div class="skill-ele">{{data.effectiveMasteryLevel}}</div>
+                            <div class="item-controls">
+                                <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+                                <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                            </div>
+                        </li>
+                    {{/if}}
+                {{/each}}
+            </ol>
+
+            <!-- Craft Skills -->
+            <hr />
+            <h2>Craft Skills</h2>
+            <ol class="skills-list">
+                <li class="item flexrow skill-header">
+                    <div class="skill-name">Skill Name</div>
+                    <div class="skill-ele">SB</div>
+                    <div class="skill-ele">ML</div>
+                    <div class="skill-ele">EML</div>
+                    <div class="item-controls">
+                        <a class="item-control item-create" title="Create item" data-type="craftskill"><i
+                                class="fas fa-plus"></i>
+                            Add item</a>
+                    </div>
+                </li>
+                {{#each actor.items as |item id|}}
+                    {{#if (eq item.type "craftskill")}}
+                        <li class="item flexrow" data-item-id="{{item._id}}">
+                            <h4 class="skill-name">{{item.name}}</h4>
+                            <div class="skill-ele">{{data.skillBase}}</div>
+                            <div class="skill-ele">{{data.masteryLevel}}</div>
+                            <div class="skill-ele">{{data.effectiveMasteryLevel}}</div>
+                            <div class="item-controls">
+                                <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+                                <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                            </div>
+                        </li>
+                    {{/if}}
+                {{/each}}
+            </ol>
+        </div>
+
+        {{!-- Combat Tab --}}
+        <div class="tab combat" data-group="primary" data-tab="combat">
+            <h2>Combat Statistics</h2>
+            <div class="combat-stats grid grid-4col">
+                <div class="combat-stat flexrow">
+                    <label for="data.fatigue" class="combat-stat-label">Fatigue</label>
+                    <input class="combat-stat-value" type="text" name="data.fatigue" value="{{data.fatigue}}" data-dtype="Number" />
+                </div>
+                <div class="combat-stat flexrow">
+                    <label class="combat-stat-label">Initiative</label>
+                    <div class="combat-stat-value">{{data.initiative}}</div>
+                </div>
+                <div class="combat-stat flexrow">
+                    <label class="combat-stat-label">Endur.</label>
+                    <div class="combat-stat-value">{{data.endurance.value}}</div>
+                </div>
+                <div class="combat-stat flexrow">
+                    <label class="combat-stat-label">Dexterity</label>
+                    <div class="combat-stat-value">{{data.abilities.dexterity}}</div>
+                </div>
+                <div class="combat-stat flexrow">
+                    <label class="combat-stat-label">Agility</label>
+                    <div class="combat-stat-value">{{data.abilities.agility}}</div>
+                </div>
+                <div class="combat-stat flexrow">
+                    <label class="combat-stat-label">Move</label>
+                    <div class="combat-stat-value">{{data.move}}</div>
+                </div>
+                <div class="combat-stat flexrow">
+                    <label class="combat-stat-label">Dodge</label>
+                    <div class="combat-stat-value">{{data.dodge}}</div>
+                </div>
+                <div class="combat-stat flexrow">
+                    <label class="combat-stat-label">Univ Pen</label>
+                    <div class="combat-stat-value">{{data.universalPenalty}}</div>
+                </div>
+                <div class="combat-stat flexrow">
+                    <label class="combat-stat-label">Phys Pen</label>
+                    <div class="combat-stat-value">{{data.physicalPenalty}}</div>
+                </div>
+            </div>
+
+            <!-- Weapons -->
+            <h2>Weapons</h2>
+            <ol class="weapons-list">
+                <li class="item weapon flexrow weapon-header">
+                    <div class="weapon-name">Weapon Name</div>
+                    <div class="weapon-qty">Qty</div>
+                    <div class="weapon-weight">Wt</div>
+                    <div class="weapon-quality">WQ</div>
+                    <div class="weapon-atkdef">A/D</div>
+                    <div class="weapon-handmode">HM</div>
+                    <div class="weapon-blunt">B</div>
+                    <div class="weapon-edged">E</div>
+                    <div class="weapon-piercing">P</div>
+                    <div class="weapon-notes">Notes</div>
+                    <div class="item-controls">
+                        <a class="item-control item-create" title="Create item" data-type="weapongear"><i
+                                class="fas fa-plus"></i>
+                            Add item</a>
+                    </div>
+                </li>
+                {{#each actor.items as |item id|}}
+                    {{#if (eq item.type "weapongear")}}
+                        <li class="item weapon flexrow" data-item-id="{{item._id}}">
+                            <h4 class="weapon-name">{{item.name}}</h4>
+                            <div class="weapon-qty">{{data.quantity}}</div>
+                            <div class="weapon-weight">{{data.weight}}</div>
+                            <div class="weapon-quality">{{data.weaponQuality}}</div>
+                            <div class="weapon-atkdef">{{data.attack}}/{{data.defense}}</div>
+                            <div class="weapon-handmode">{{data.handMode}}</div>
+                            <div class="weapon-blunt">{{data.blunt}}</div>
+                            <div class="weapon-edged">{{data.edged}}</div>
+                            <div class="weapon-piercing">{{data.piercing}}</div>
+                            <div class="weapon-notes">{{data.notes}}</div>
+                            <div class="item-controls">
+                                <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+                                <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                            </div>
+                        </li>
+                    {{/if}}
+                {{/each}}
+            </ol>
+
+            <!-- Injuries -->
+            <h2>Injuries</h2>
+            <ol class="injuries-list">
+                <li class="item injury flexrow injury-header">
+                    <div class="injury-name">Location</div>
+                    <div class="injury-healrate">HR</div>
+                    <div class="injury-severity">IL</div>
+                    <div class="injury-notes">Notes</div>
+                    <div class="item-controls">
+                        <a class="item-control item-create" title="Create item" data-type="injury"><i
+                                class="fas fa-plus"></i> Add
+                            item</a>
+                    </div>
+                </li>
+                {{#each actor.items as |item id|}}
+                    {{#if (eq item.type "injury")}}
+                        <li class="item injury flexrow" data-item-id="{{item._id}}">
+                            <h4 class="injury-name">{{item.name}}</h4>
+                            <div class="injury-healrate">{{data.healRate}}</div>
+                            <div class="injury-severity">{{data.severity}}</div>
+                            <div class="injury-notes">{{data.notes}}</div>
+                            <div class="item-controls">
+                                <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+                                <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                            </div>
+                        </li>
+                    {{/if}}
+                {{/each}}
+            </ol>
+
+            <!-- Locations -->
+            <h2>Armor Locations</h2>
+            <ol class="armorlocations-list">
+                <li class="item armorlocation flexrow armorlocation-header">
+                    <div class="armorlocation-name">Location</div>
+                    <div class="armorlocation-layers">Layers</div>
+                    <div class="armorlocation-quality">AQ</div>
+                    <div class="armorlocation-blunt">B</div>
+                    <div class="armorlocation-edged">E</div>
+                    <div class="armorlocation-piercing">P</div>
+                    <div class="armorlocation-fire">F</div>
+                    <div class="armorlocation-notes">Notes</div>
+                    <div class="item-controls">
+                        <a class="item-control item-create" title="Create item" data-type="armorlocation"><i
+                                class="fas fa-plus"></i> Add item</a>
+                    </div>
+                </li>
+                {{#each actor.items as |item id|}}
+                    {{#if (eq item.type "armorlocation")}}
+                        <li class="item armorlocation flexrow" data-item-id="{{item._id}}">
+                            <h4 class="armorlocation-name">{{item.name}}</h4>
+                            <div class="armorlocation-layers">{{data.layers}}</div>
+                            <div class="armorlocation-quality">{{data.armorQuality}}</div>
+                            <div class="armorlocation-blunt">{{data.blunt}}</div>
+                            <div class="armorlocation-edged">{{data.edged}}</div>
+                            <div class="armorlocation-piercing">{{data.piercing}}</div>
+                            <div class="armorlocation-fire">{{data.fire}}</div>
+                            <div class="armorlocation-notes">{{data.notes}}</div>
+                            <div class="item-controls">
+                                <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+                                <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                            </div>
+                        </li>
+                    {{/if}}
+                {{/each}}
+            </ol>
+        </div>
+
+        {{!-- Inventory Tab --}}
+        <div class="tab inventory" data-group="primary" data-tab="inventory">
+            <!-- Misc Gear -->
+            <hr />
+            <h2>Miscellaneous Gear</h2>
+            <ol class="gear-list">
+                <li class="item gear flexrow gear-header">
+                    <div class="gear-name">Item</div>
+                    <div class="gear-qty">Qty</div>
+                    <div class="gear-weight">Weight</div>
+                    <div class="gear-notes">Notes</div>
+                    <div class="item-controls">
+                        <a class="item-control item-create" title="Create item" data-type="miscgear"><i
+                                class="fas fa-plus"></i> Add
+                            item</a>
+                    </div>
+                </li>
+                {{#each actor.items as |item id|}}
+                    {{#if (eq item.type "miscgear")}}
+                        <li class="item gear flexrow" data-item-id="{{item._id}}">
+                            <h4 class="gear-name">{{item.name}}</h4>
+                            <div class="gear-qty">{{data.quantity}}</div>
+                            <div class="gear-weight">{{data.weight}}</div>
+                            <div class="gear-notes">{{data.notes}}</div>
+                            <div class="item-controls">
+                                <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+                                <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                            </div>
+                        </li>
+                    {{/if}}
+                {{/each}}
+            </ol>
+        </div>
+
+    </section>
+
+</form>
