@@ -103,10 +103,9 @@
       "effectiveMasteryLevel": 0
     },
     "psionic": {
-      "templates": ["base"],
+      "templates": ["base", "skill"],
       "fatigue": 0,
-      "time": 0,
-      "effectiveMasteryLevel": 0
+      "time": 0
     },
     "invocation": {
       "templates": ["base"],
