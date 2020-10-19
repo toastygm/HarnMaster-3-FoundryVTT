@@ -1,3 +1,5 @@
+import { DiceHM3 } from "../dice-hm3.js";
+
 /**
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
@@ -61,6 +63,25 @@ export class HarnMasterCharacterSheet extends ActorSheet {
 
     // Rollable abilities.
     html.find('.rollable').click(this._onRoll.bind(this));
+
+    // Standard 1d100 vs. target number (asks for optional modifier)
+    html.find('.std-roll').click(this._onStdRoll.bind(this));
+
+    // Custom roll, specifying Roll Template
+    // html.find('.custom-roll').click(this._onCustomRoll.bind(this));
+    // standard Roll  1d100 vs. EML (data-eml) for Label (data-label) (skill, weapon-attack, weapon-defense, healing, spell, invocation, psionic)
+    // skill-roll 1d100 vs Skill EML
+    // dodge-roll 1d100 vs. Dodge Skill
+    // shock-roll (#IL of d6) vs. Endurance
+    // stumble-roll 3d6+PP vs. Agility
+    // fumble-roll 1d100 vs. (Dex * 5)-PP
+    // damage-roll (# of d6 + weapon mod)
+    // weapon-attack-roll 1d100 vs. AML
+    // weapon-defense-roll 1d100 vs. DML
+    // healing-roll 1d100 vs. HRxEndurance
+    // spell-roll 1d100 vs. CML
+    // invocation-roll 1d100 vs. RML
+    // psionic-roll 1d100 vs. EML
   }
 
   /* -------------------------------------------- */
@@ -90,6 +111,36 @@ export class HarnMasterCharacterSheet extends ActorSheet {
 
     // Finally, create the item!
     return this.actor.createOwnedItem(itemData);
+  }
+
+  /**
+   * Handle standard clickable rolls.  A "standard" roll is a 1d100
+   * roll vs. some target value, with success being less than or equal
+   * to the target value.
+   * 
+   * data-target = target value
+   * data-label = Label Text (will print "Test against <label text>")
+   * 
+   * @param {Event} event 
+   */
+  _onStdRoll(event) {
+    const element = event.currentTarget;
+    const dataset = element.dataset;
+
+    if (typeof dataset.target != "undefined") {
+      let result = DiceHM3.rollTest({
+        "data": this.actor.data.data,
+        "diceSides": 100,
+        "diceNum": 1,
+        "modifier": 0,
+        "target": dataset.target
+      });
+      let label = dataset.label ? `Test against ${dataset.label}` : '';
+      result.roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        flavor: label
+      });
+    }
   }
 
   /**

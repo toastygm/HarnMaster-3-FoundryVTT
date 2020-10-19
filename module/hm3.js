@@ -5,6 +5,7 @@ import { HarnMasterCreatureSheet } from "./actor/creature-sheet.js"
 import { HarnMasterItem } from "./item/item.js";
 import { HarnMasterItemSheet } from "./item/item-sheet.js";
 import { HM3 } from "./config.js";
+import { DiceHM3 } from "./dice-hm3.js";
 
 Hooks.once('init', async function() {
 
