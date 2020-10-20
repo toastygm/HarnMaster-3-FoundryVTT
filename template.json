@@ -1,64 +1,69 @@
 {
   "Actor": {
-    "types": ["character"],
+    "types": ["character", "creature"],
     "templates": {
       "base": {
-        "biography": "",
-        "species": "",
-        "medical": "",
-        "otherAppearance": "",
-        "psyche": "",
-        "otherPersonality": "",
         "fatigue": 0,
-        "height": 0,
-        "weight": 0,
         "abilities": {
-          "strength": 8,
-          "stamina": 8,
-          "dexterity": 8,
-          "agility": 8,
-          "intelligence": 8,
-          "aura": 8,
-          "will": 8,
-          "eyesight": 8,
-          "hearing": 8,
-          "smell": 8,
-          "voice": 8,
-          "comliness": 8,
-          "morality": 8
+          "strength": 0,
+          "stamina": 0,
+          "dexterity": 0,
+          "agility": 0,
+          "intelligence": 0,
+          "aura": 0,
+          "will": 0,
+          "eyesight": 0,
+          "hearing": 0,
+          "smell": 0,
+          "voice": 0,
+          "comliness": 0,
+          "morality": 0
         },
         "dodge": 0,
         "initiative": 0,
         "endurance": {
           "value": 0,
           "min": 0,
-          "max": 10
+          "max": 0
         },
         "move": 0,
+        "description": "",
+        "descImage": "icons/svg/d20-grey.svg",
         "universalPenalty": 0,
         "physicalPenalty": 0
       }
     },
     "character": {
       "templates": ["base"],
-      "isPC": true,
       "gender": "",
       "birthdate": "",
       "sunsign": "",
       "piety": 0,
+      "occupation": "",
       "frame": "",
+      "height": 0,
+      "weight": 0,
       "skin": "",
       "hairColor": "",
       "eyeColor": "",
       "diety": "",
       "hasCondition": false,
       "encumbrance": 0,
-      "totalWeight": 0
+      "totalWeight": 0,
+      "biography": "",
+      "species": "",
+      "medical": "",
+      "otherAppearance": "",
+      "psyche": "",
+      "otherPersonality": ""
+  },
+    "creature": {
+      "templates": ["base"]
     }
   },
   "Item": {
     "types": ["physicalskill", "commskill", "craftskill", "combatskill", "magicskill", "ritualskill",
-    "spell", "invocation", "weapongear", "armorgear", "miscgear", "injury", "armorlocation"],
+    "spell", "psionic", "invocation", "weapongear", "armorgear", "miscgear", "injury", "armorlocation"],
     "templates": {
       "base": {
         "note": ""
@@ -97,6 +102,11 @@
       "level": 1,
       "effectiveMasteryLevel": 0
     },
+    "psionic": {
+      "templates": ["base", "skill"],
+      "fatigue": 0,
+      "time": 0
+    },
     "invocation": {
       "templates": ["base"],
       "diety": "",
@@ -111,7 +121,10 @@
       "handMode": 0,
       "blunt": 0,
       "edged": 0,
-      "piercing": 0
+      "piercing": 0,
+      "attackMasteryLevel": 0,
+      "defenseMasteryLevel": 0,
+      "assocSkill": ""
     },
     "armorgear": {
       "templates": ["base", "gear"],
@@ -134,7 +147,12 @@
       "blunt": 0,
       "edged": 0,
       "piercing": 0,
-      "fire": 0
+      "fire": 0,
+      "probWeight": {
+        "high": 0,
+        "mid": 0,
+        "low": 0
+      }
     }
   }
 }

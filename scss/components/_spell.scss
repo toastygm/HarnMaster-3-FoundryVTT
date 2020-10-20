@@ -49,15 +49,78 @@
     }
   
     .spell-notes {
-      flex: 1 0 150;
+      flex: 1 0 150px;
       padding-left: 10px;
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
   }
-    
-    .item-controls {
-      flex: 0 0 86px;
-      text-align: right;
+
+  .item-controls {
+    flex: 0 0 45px;
+    text-align: right;
+  }
+
+}
+
+.psionics-list {
+  list-style: none;
+  margin: 7px 0;
+  padding: 0;
+  overflow-y: auto;
+
+  .psionic-header {
+    font-weight: bold;
+  }
+
+  .psionic {
+    height: 30px;
+    line-height: 24px;
+    padding: 3px 0;
+    border-bottom: 1px solid #BBB;
+
+    .psionic-image {
+      flex: 0 0 24px;
+      margin-right: 5px;
+    }
+
+    img {
+      display: block;
     }
   }
+
+  .psionic-name {
+      flex: 0 0 200px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .psionic-fatigue {
+      flex: 0 0 50px;
+      text-align: center;
+    }
+
+    .psionic-time {
+      flex: 0 0 60px;
+      text-align: center;
+    }
+
+    .psionic-eml {
+      flex: 0 0 40px;
+      text-align: center;
+    }
+
+    .psionic-notes {
+      flex: 1 0 150;
+      padding-left: 10px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    
+    .item-controls {
+      flex: 0 0 45px;
+      text-align: right;
+    }
+}

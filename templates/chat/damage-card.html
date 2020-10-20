@@ -1,0 +1,25 @@
+<div class="hm3 chat-card item-card" data-actor-id="{{actorId}}">
+    <header class="card-header flexrow">
+        <h3 class="title">{{title}}</h3>
+    </header>
+
+    <div class="card-content">
+        <span class="label">Num. Damage Dice:</span>
+        <span class="value">{{damageDice}}</span>
+    </div>
+
+    <div class="card-content">
+        <span class="label">Aspect:</span>
+        <span class="value">{{weaponAspect}} (base={{weaponImpact}})</span>
+    </div>
+
+    <div class="card-content">
+        <span class="label">Additional Damage:</span>
+        <span class="value">{{addlWeaponImpact}}</span>
+    </div>
+
+    <div class="card-content">
+        <span class="label">Impact (Base + Addl + Roll):</span>
+        <span class="value">{{weaponImpact}} + {{addlWeaponImpact}} + {{rollValue}} = <strong>{{totalImpact}}</strong></span>
+    </div>
+</div>

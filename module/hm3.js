@@ -1,9 +1,11 @@
 // Import Modules
 import { HarnMasterActor } from "./actor/actor.js";
-import { HarnMasterActorSheet } from "./actor/actor-sheet.js";
+import { HarnMasterCharacterSheet } from "./actor/character-sheet.js";
+import { HarnMasterCreatureSheet } from "./actor/creature-sheet.js"
 import { HarnMasterItem } from "./item/item.js";
 import { HarnMasterItemSheet } from "./item/item-sheet.js";
 import { HM3 } from "./config.js";
+import { DiceHM3 } from "./dice-hm3.js";
 
 Hooks.once('init', async function() {
 
@@ -32,7 +34,17 @@ Hooks.once('init', async function() {
 
   // Register sheet application classes
   Actors.unregisterSheet("core", ActorSheet);
-  Actors.registerSheet("hm3", HarnMasterActorSheet, { makeDefault: true });
+  Actors.registerSheet("hm3", HarnMasterCharacterSheet, {
+    types: ["character"], 
+    makeDefault: true, 
+    label: "Default HarnMaster Character Sheet"
+  });
+  Actors.registerSheet("hm3", HarnMasterCreatureSheet, {
+    types: ["creature"], 
+    makeDefault: true, 
+    label: "Default HarnMaster Creature Sheet"
+  });
+  
   Items.unregisterSheet("core", ItemSheet);
   Items.registerSheet("hm3", HarnMasterItemSheet, { makeDefault: true });
 

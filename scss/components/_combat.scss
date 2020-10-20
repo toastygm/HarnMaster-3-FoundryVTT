@@ -7,4 +7,100 @@
 .sheet-body .combat-stats .combat-stat .combat-stat-value {
   flex: 0 0 40px;
 }
+
+.weapons-list {
+  list-style: none;
+  margin: 7px 0;
+  padding: 0;
+  overflow-y: auto;
+
+  .weapon-header {
+      font-weight: bold;
+  }
+
+  .weapon {
+      height: 30px;
+      line-height: 24px;
+      padding: 3px 0;
+      border-bottom: 1px solid #bbb;
+
+      .weapon-image {
+          flex: 0 0 24px;
+          margin-right: 5px;
+      }
+
+      img {
+          display: block;
+      }
+  }
+
+  .weapon-name {
+      flex: 0 0 120px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+  }
+
+  .weapon-qty {
+      flex: 0 0 25px;
+      text-align: center;
+  }
+
+  .weapon-weight {
+      flex: 0 0 25px;
+      text-align: center;
+  }
+
+  .weapon-quality {
+      flex: 0 0 25px;
+      text-align: center;
+  }
+
+  .weapon-atkdef {
+      flex: 0 0 25px;
+      text-align: center;
+  }
+
+  .weapon-handmode {
+      flex: 0 0 25px;
+      text-align: center;
+  }
+
+  .weapon-blunt {
+      flex: 0 0 25px;
+      text-align: center;
+  }
+
+  .weapon-edged {
+      flex: 0 0 25px;
+      text-align: center;
+  }
+
+  .weapon-piercing {
+      flex: 0 0 25px;
+      text-align: center;
+  }
+
+  .weapon-attack {
+      flex: 0 0 30px;
+      text-align: center;
+  }
+
+  .weapon-defense {
+      flex: 0 0 30px;
+      text-align: center;
+  }
   
+  .weapon-notes {
+      flex: 1 0 95px;
+      padding-left: 10px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+  }
+  
+  .item-controls {
+      flex: 0 0 45px;
+      text-align: right;
+  }
+}

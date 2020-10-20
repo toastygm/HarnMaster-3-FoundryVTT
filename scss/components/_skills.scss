@@ -24,6 +24,11 @@
       }
     }
   
+    .skill-rolls {
+      flex: 0 0 10px;
+      text-align: left;
+  }
+
     .skill-name {
       flex: 0 0 200px;
       text-overflow: ellipsis;
@@ -37,7 +42,7 @@
     }
   
     .item-controls {
-      flex: 1 0 86px;
+      flex: 1 0 45px;
       text-align: right;
     }
-  }
+    }

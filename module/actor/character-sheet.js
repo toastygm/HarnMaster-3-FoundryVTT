@@ -1,21 +1,33 @@
+import { DiceHM3 } from "../dice-hm3.js";
+
 /**
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
  */
-export class HarnMasterActorSheet extends ActorSheet {
+export class HarnMasterCharacterSheet extends ActorSheet {
 
   /** @override */
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
-      classes: ["hm3", "sheet", "actor"],
-      template: "systems/hm3/templates/actor/actor-sheet.html",
-      width: 620,
+      classes: ["hm3", "sheet", "actor", "character-sheet"],
+      width: 650,
       height: 600,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "profile" }]
     });
   }
 
-  /* -------------------------------------------- */
+    /**
+   * Get the correct HTML template path to use for rendering this particular sheet
+   * @type {String}
+   */
+  get template()
+  {
+    if (!game.user.isGM && this.actor.limited) {
+      return "systems/hm3/templates/actor/character-limited.html";
+    } else {
+      return "systems/hm3/templates/actor/character-sheet.html";
+    }
+  }
 
   /** @override */
   getData() {
@@ -51,6 +63,15 @@ export class HarnMasterActorSheet extends ActorSheet {
 
     // Rollable abilities.
     html.find('.rollable').click(this._onRoll.bind(this));
+
+    // Standard 1d100 vs. target number (asks for optional modifier)
+    html.find('.std-roll').click(this._onStdRoll.bind(this));
+
+    // Standard 1d100 vs. target number (asks for optional modifier)
+    html.find('.d6-roll').click(this._onD6Roll.bind(this));
+
+    // Damage Roll
+    html.find('.damage-roll').click(this._onDamageRoll.bind(this));
   }
 
   /* -------------------------------------------- */
@@ -80,6 +101,62 @@ export class HarnMasterActorSheet extends ActorSheet {
 
     // Finally, create the item!
     return this.actor.createOwnedItem(itemData);
+  }
+
+  /**
+   * Handle standard clickable rolls.  A "standard" roll is a 1d100
+   * roll vs. some target value, with success being less than or equal
+   * to the target value.
+   * 
+   * data-target = target value
+   * data-label = Label Text (will print "Test against <label text>")
+   * 
+   * @param {Event} event 
+   */
+  _onStdRoll(event) {
+    event.preventDefault();
+    let fastforward = event.shiftKey || event.altKey || event.ctrlKey;
+
+    this.actor.stdRoll(event.currentTarget.dataset.label, {
+      target: Number(event.currentTarget.dataset.target),
+      fastforward: fastforward
+    });
+  }
+
+  /**
+   * Handle d6 rolls.  A "d6" roll is a roll of multiple d6 dice vs.
+   * some target value, with success being less than or equal
+   * to the target value.
+   * 
+   * data-numdice = number of d6 to roll
+   * data-target = target value
+   * data-label = Label Text (will print "Test against <label text>")
+   * 
+   * @param {Event} event 
+   */
+  _onD6Roll(event) {
+    event.preventDefault();
+    let fastforward = event.shiftKey || event.altKey || event.ctrlKey;
+
+    this.actor.d6Roll(event.currentTarget.dataset.label, {
+      target: Number(event.currentTarget.dataset.target),
+      numdice: Number(event.currentTarget.dataset.numdice),
+      fastforward: fastforward
+    });
+  }
+
+  /**
+   * Handle damage rolls.  A damage roll is a roll of multiple d6 dice
+   * plus weapon impact value (based on weapon aspect). This button
+   * handles both the case where a specific weapon is known and not.
+   * 
+   * data-weapon = Name of weapon being used (or blank for unknown)
+   * 
+   * @param {Event} event 
+   */
+  _onDamageRoll(event) {
+    event.preventDefault();
+    this.actor.damageRoll(event.currentTarget.dataset.weapon);
   }
 
   /**

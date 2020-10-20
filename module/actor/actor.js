@@ -1,3 +1,5 @@
+import { DiceHM3 } from "../dice-hm3.js";
+
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
  * @extends {Actor}
@@ -21,9 +23,9 @@ export class HarnMasterActor extends Actor {
     if (data.type == "character") {
       this._createDefaultCharacterSkills(data);
       this._createDefaultHumanoidLocations(data);
-    } else if (data.type == "beast") {
-      // Create Beast Default Skills
-      this._createDefaultBeastSkills(data);
+    } else if (data.type == "creature") {
+      // Create Creature Default Skills
+      this._createDefaultCreatureSkills(data);
     }
 
     super.create(data, options); // Follow through the the rest of the Actor creation process upstream
@@ -45,28 +47,66 @@ export class HarnMasterActor extends Actor {
     data.items.push((new Item({name: 'Dodge', type: 'combatskill', data: game.system.model.Item.combatskill})).data);
   }
 
-  static _createDefaultBeastSkills(data) {
+  static _createDefaultCreatureSkills(data) {
     data.items.push((new Item({name: 'Initiative', type: 'combatskill', data: game.system.model.Item.combatskill})).data);
     data.items.push((new Item({name: 'Dodge', type: 'combatskill', data: game.system.model.Item.combatskill})).data);
   }
 
   static _createDefaultHumanoidLocations(data) {
-    data.items.push((new Item({name: 'Skull', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
-    data.items.push((new Item({name: 'Face', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
-    data.items.push((new Item({name: 'Neck', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
-    data.items.push((new Item({name: 'Shoulder', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
-    data.items.push((new Item({name: 'Upper Arm', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
-    data.items.push((new Item({name: 'Elbow', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
-    data.items.push((new Item({name: 'Forearm', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
-    data.items.push((new Item({name: 'Hand', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
-    data.items.push((new Item({name: 'Thorax', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
-    data.items.push((new Item({name: 'Abdomen', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
-    data.items.push((new Item({name: 'Hip', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
-    data.items.push((new Item({name: 'Groin', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
-    data.items.push((new Item({name: 'Thigh', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
-    data.items.push((new Item({name: 'Knee', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
-    data.items.push((new Item({name: 'Calf', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
-    data.items.push((new Item({name: 'Foot', type: 'armorlocation', data: game.system.model.Item.armorlocation})).data);
+    let armorLocationData = {};
+    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+    armorLocationData.probWeight = {"high": 15, "mid": 5, "low": 0};
+    data.items.push((new Item({name: 'Skull', type: 'armorlocation', data: armorLocationData})).data);
+    armorLocationData.probWeight = {"high": 15, "mid": 5, "low": 0};
+    data.items.push((new Item({name: 'Face', type: 'armorlocation', data: armorLocationData})).data);
+    armorLocationData.probWeight = {"high": 15, "mid": 5, "low": 0};
+    data.items.push((new Item({name: 'Neck', type: 'armorlocation', data: armorLocationData})).data);
+    armorLocationData.probWeight = {"high": 6, "mid": 6, "low": 0};
+    data.items.push((new Item({name: 'Left Shoulder', type: 'armorlocation', data: armorLocationData})).data);
+    armorLocationData.probWeight = {"high": 6, "mid": 6, "low": 0};
+    data.items.push((new Item({name: 'Right Shoulder', type: 'armorlocation', data: armorLocationData})).data);
+    armorLocationData.probWeight = {"high": 6, "mid": 3, "low": 0};
+    data.items.push((new Item({name: 'Left Upper Arm', type: 'armorlocation', data: armorLocationData})).data);
+    armorLocationData.probWeight = {"high": 6, "mid": 3, "low": 0};
+    data.items.push((new Item({name: 'Right Upper Arm', type: 'armorlocation', data: armorLocationData})).data);
+    armorLocationData.probWeight = {"high": 2, "mid": 1, "low": 0};
+    data.items.push((new Item({name: 'Left Elbow', type: 'armorlocation', data: armorLocationData})).data);
+    armorLocationData.probWeight = {"high": 2, "mid": 1, "low": 0};
+    data.items.push((new Item({name: 'Right Elbow', type: 'armorlocation', data: armorLocationData})).data);
+    armorLocationData.probWeight = {"high": 4, "mid": 2, "low": 3};
+    data.items.push((new Item({name: 'Left Forearm', type: 'armorlocation', data: armorLocationData})).data);
+    armorLocationData.probWeight = {"high": 4, "mid": 2, "low": 3};
+    data.items.push((new Item({name: 'Right Forearm', type: 'armorlocation', data: armorLocationData})).data);
+    armorLocationData.probWeight = {"high": 2, "mid": 2, "low": 3};
+    data.items.push((new Item({name: 'Left Hand', type: 'armorlocation', data: armorLocationData})).data);
+    armorLocationData.probWeight = {"high": 2, "mid": 2, "low": 3};
+    data.items.push((new Item({name: 'Right Hand', type: 'armorlocation', data: armorLocationData})).data);
+    armorLocationData.probWeight = {"high": 10, "mid": 17, "low": 7};
+    data.items.push((new Item({name: 'Thorax', type: 'armorlocation', data: armorLocationData})).data);
+    armorLocationData.probWeight = {"high": 6, "mid": 10, "low": 10};
+    data.items.push((new Item({name: 'Abdomen', type: 'armorlocation', data: armorLocationData})).data);
+    armorLocationData.probWeight = {"high": 0, "mid": 4, "low": 6};
+    data.items.push((new Item({name: 'Groin', type: 'armorlocation', data: armorLocationData})).data);
+    armorLocationData.probWeight = {"high": 0, "mid": 3, "low": 7};
+    data.items.push((new Item({name: 'Left Hip', type: 'armorlocation', data: armorLocationData})).data);
+    armorLocationData.probWeight = {"high": 0, "mid": 3, "low": 7};
+    data.items.push((new Item({name: 'Right Hip', type: 'armorlocation', data: armorLocationData})).data);
+    armorLocationData.probWeight = {"high": 0, "mid": 4, "low": 10};
+    data.items.push((new Item({name: 'Left Thigh', type: 'armorlocation', data: armorLocationData})).data);
+    armorLocationData.probWeight = {"high": 0, "mid": 4, "low": 11};
+    data.items.push((new Item({name: 'Right Thigh', type: 'armorlocation', data: armorLocationData})).data);
+    armorLocationData.probWeight = {"high": 0, "mid": 1, "low": 4};
+    data.items.push((new Item({name: 'Left Knee', type: 'armorlocation', data: armorLocationData})).data);
+    armorLocationData.probWeight = {"high": 0, "mid": 1, "low": 4};
+    data.items.push((new Item({name: 'Right Knee', type: 'armorlocation', data: armorLocationData})).data);
+    armorLocationData.probWeight = {"high": 0, "mid": 3, "low": 7};
+    data.items.push((new Item({name: 'Left Calf', type: 'armorlocation', data: armorLocationData})).data);
+    armorLocationData.probWeight = {"high": 0, "mid": 3, "low": 7};
+    data.items.push((new Item({name: 'Right Calf', type: 'armorlocation', data: armorLocationData})).data);
+    armorLocationData.probWeight = {"high": 0, "mid": 2, "low": 4};
+    data.items.push((new Item({name: 'Left Foot', type: 'armorlocation', data: armorLocationData})).data);
+    armorLocationData.probWeight = {"high": 0, "mid": 2, "low": 4};
+    data.items.push((new Item({name: 'Right Foot', type: 'armorlocation', data: armorLocationData})).data);
   }
 
   /**
@@ -82,7 +122,12 @@ export class HarnMasterActor extends Actor {
 
     // Make separate methods for each Actor type (character, npc, etc.) to keep
     // things organized.
-    if (actorData.type === 'character') this._prepareCharacterData(actorData);
+    if (actorData.type === 'character') {
+      this._prepareCharacterData(actorData);
+    } else if (actorData.type === 'creature') {
+      this._prepareCreatureData(actorData);
+    }
+
   }
 
   /**
@@ -93,8 +138,8 @@ export class HarnMasterActor extends Actor {
     
     // Calculate weight and injury level totals, used to calculate
     // universal penalty below.
-    this._calcGearWeightTotals(data);
     this._calcInjuryTotal(data);
+    this._calcGearWeightTotals(data);
 
     data.encumbrance = Math.floor(data.totalGearWeight / 10);
 
@@ -118,17 +163,103 @@ export class HarnMasterActor extends Actor {
     }
 
     // Now calculate endurance.value; this value cannot go below 0
+    data.endurance.value = Math.max(data.endurance.max - data.physicalPenalty, 0);
+
+    // Calculate current Move speed.  Cannot go below 0
+    data.move = Math.max((data.abilities.agility - data.physicalPenalty) * 5, 0);
+
+    // Calculate Important Roll Targets
+    data.stumbleTarget = Math.max(data.abilities.agility - data.physicalPenalty, 0);
+    data.fumbleTarget = Math.max(data.abilities.dexterity - data.physicalPenalty, 0);
+    
+    // Calculate spell effective mastery level values
+    this._refreshSpellsAndInvocations();
+
+    this._setupWeaponData(data);
+
+    this._setupInjuryTargets(data);
+  }
+  
+  /**
+   * Prepare Creature type specific data
+   */
+  _prepareCreatureData(actorData) {
+    const data = actorData.data;
+    
+    this._calcInjuryTotal(data);
+
+    // Universal Penalty and Physical Penalty are used to calculate many
+    // things, including effectiveMasteryLevel for all skills,
+    // endurance, move, etc.
+    data.universalPenalty = data.totalInjuryLevels + data.fatigue;
+    data.physicalPenalty = data.universalPenalty;
+
+    // Go through all skills calculating their EML
+    this._calcSkillEMLWithPenalties(this.data.items, data.universalPenalty, data.physicalPenalty);
+
+    // Some properties are calculated from skills.  Do that here.
+    this._setPropertiesFromSkills(this.data.items, data);
+
+    // Now calculate endurance.value; this value cannot go below 0
     data.endurance.value = data.endurance.max - data.physicalPenalty;
     if (data.endurance.value < 0) data.endurance.value = 0;
 
-    // Calculate current Move speed.  Cannot go below 0
-    data.move = (data.abilities.agility - data.physicalPenalty) * 5;
-    if (data.move < 0) data.move = 0;
-
-    // Calculate spell effective mastery level values
-    this._refreshSpellsAndInvocations();
+    this._setupWeaponData(data);
   }
-  
+
+  _setupInjuryTargets(data) {
+    this.data.items.forEach(it => {
+      if (it.type === 'injury') {
+        // Injury Roll = HR*End (unaffected by UP or PP)
+        it.data.targetHealRoll = it.data.healRate * data.endurance.max;
+      }
+    });
+  }
+
+
+  _setupWeaponData(data) {
+
+    // Collect all combat skills into a map for use later
+    let combatSkills = {};
+    this.data.items.forEach(it => {
+      if (it.type === 'combatskill') {
+        combatSkills[it.name.toLowerCase()] = {
+          'name': it.name,
+          'eml': it.data.effectiveMasteryLevel
+        };
+      }
+    });
+
+    this.data.items.forEach(it => {
+      if (it.type === 'weapongear') {
+        // Reset mastery levels in case nothing matches
+        it.data.attackMasteryLevel = 0;
+        it.data.defenseMasteryLevel = 0;
+        let lcWeaponName = it.name.toLowerCase();
+
+        // If associated skill is blank, see if there is a skill with the
+        // same name as the weapon; if so, then set it to that skill.
+        if (it.data.assocSkill === '') {
+          // If no combat skill with this name exists, search for next weapon
+          if (typeof combatSkills[lcWeaponName] === "undefined") return;
+
+          // A matching skill was found, set associated Skill to that combat skill
+          it.data.assocSkill = combatSkills[lcWeaponName].name;
+        }
+
+        // At this point, we know the Associated Skill is not blank. If that
+        // associated skill is in our combat skills list, get EML from there
+        // and then calculate AML and DML.
+        let lcAssocSkill = it.data.assocSkill.toLowerCase();
+        if (typeof combatSkills[lcAssocSkill] != "undefined") {
+          let skillEml = combatSkills[lcAssocSkill].eml;
+          it.data.attackMasteryLevel = skillEml + it.data.attack;
+          it.data.defenseMasteryLevel = skillEml + it.data.defense;
+        }
+      }
+    });
+  }
+
   _setPropertiesFromSkills(items, data) {
     data.hasCondition = false;
 
@@ -157,7 +288,7 @@ export class HarnMasterActor extends Actor {
     const pctPhysPen = physicalPenalty * 5;
 
     items.forEach(it => {
-      if (it.type.endsWith('skill')) {
+      if (it.type.endsWith('skill') || it.type === 'psionic') {
         switch (it.type) {
           case 'combatskill':
           case 'physicalskill':
@@ -239,6 +370,7 @@ export class HarnMasterActor extends Actor {
       }
     });
   }
+
   _resetAllSpellsAndInvocations() {
     this.data.items.forEach(it => {
       if (it.type === 'spell' || it.type === 'invocation') {
@@ -269,5 +401,43 @@ export class HarnMasterActor extends Actor {
         if (it.data.effectiveMasteryLevel < 5) it.data.effectiveMasteryLevel = 5;
       }
     });
+  }
+
+  stdRoll(label, options={}) {
+
+    const rollData = {
+      label: `${label} Test`,
+      target: options.target,
+      fastforward: options.fastforward,
+      data: this.data,
+      speaker: ChatMessage.getSpeaker({actor: this})
+    };
+
+    return DiceHM3.d100StdRoll(rollData);
+  }
+
+  d6Roll(label, options={}) {
+
+    const rollData = {
+      label: `${label} Test`,
+      target: options.target,
+      numdice: options.numdice,
+      fastforward: options.fastforward,
+      data: this.data,
+      speaker: ChatMessage.getSpeaker({actor: this})
+    };
+
+    return DiceHM3.d6Roll(rollData);
+  }
+
+  damageRoll(weaponName) {
+
+    const rollData = {
+      weapon: weaponName,
+      data: this.data,
+      speaker: ChatMessage.getSpeaker({actor: this})
+    };
+
+    return DiceHM3.damageRoll(rollData);
   }
 }
