@@ -31,21 +31,21 @@ Although automatic dice rolling for attack rolls and damage rolls are provided, 
 The following actors are supported:
 
 * __Character:__ A standard humanoid character, such as a Human, Dwarf, or Elf.  This can also be used for other humanoid creatures, such as Gargun.  A character has the following features:
-  # Ability Scores
-  # Traits (Birthdate, Gender, Race, Sunsign, etc.)
-  # Basic Skills (Physical, Communication, Combat, and Craft)
-  # Esoteric Skills/Talents (Convocations, Rituals, and Psionics)
-  # Combat (Weapons, Injuries, Armor Locations)
-  # Inventory (Armor/Clothing, Misc. Gear)
-  # Public Description (what others can observe about you, your behavior, and your public backstory)
-  # Biography (your personal/real story, motivations, and attributes)
+  1. Ability Scores
+  2. Traits (Birthdate, Gender, Race, Sunsign, etc.)
+  3. Basic Skills (Physical, Communication, Combat, and Craft)
+  4. Esoteric Skills/Talents (Convocations, Rituals, and Psionics)
+  5. Combat (Weapons, Injuries, Armor Locations)
+  6. Inventory (Armor/Clothing, Misc. Gear)
+  7. Public Description (what others can observe about you, your behavior, and your public backstory)
+  8. Biography (your personal/real story, motivations, and attributes)
 
 * __Creature:__ Any being not a "character" (e.g., animals, Ivashu, etc.).  A creature has the following features:
-  # Ability Scores (except no Comliness or Morality)
-  # Basic Skills (Physical, Communication, Combat, and Craft)
-  # Combat (Weapons, Injuries, Armor Locations)
-  # Misc. Gear
-  # Description
+  1. Ability Scores (except no Comliness or Morality)
+  2. Basic Skills (Physical, Communication, Combat, and Craft)
+  3. Combat (Weapons, Injuries, Armor Locations)
+  4. Misc. Gear
+  5. Description
 
 Note that when creating a character, you will be prompted whether to install standard skills and standard humanoid armor locations.  When creating a creature, no armor locations will be preloaded, since each creature will have different armor locations (although a few basic combat skills are added).
 
