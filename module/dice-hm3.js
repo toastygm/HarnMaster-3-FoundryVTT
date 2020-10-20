@@ -200,7 +200,6 @@ export class DiceHM3 {
             modifier: dialogOptions.modifier
         };
         const html = await renderTemplate(dlgTemplate, dialogData);
-        console.log(html);
         
         // Create the dialog window
         return new Promise(resolve => {
@@ -219,6 +218,167 @@ export class DiceHM3 {
                                 diceNum: dialogOptions.numdice,
                                 modifier: formModifier
                             }));
+                        }
+                    }
+                },
+                default: "rollButton",
+                close: () => resolve(null)
+            }, dialogOptions).render(true)
+        });
+    }
+
+    /**
+     * Performs a damage roll, presenting a dialog
+     * to collect information about the damage.
+     * 
+     * rollData is expected to contain the following values:
+     *  weapon: Selected weapon (or blank for none)
+     *  speaker: the Speaker to use in Chat
+     *  rollMode: the rollMode to use
+     *  actorData: actor data
+     * 
+     * @param {Object} rollData 
+     */
+    static async damageRoll (rollData) {
+        
+        let weapon = DiceHM3._calcWeaponAspect(rollData.weapon, rollData.data.items);
+
+        const dialogOptions = {
+            weapon: rollData.weapon,
+            weaponAspect: weapon.defaultAspect,
+            weaponAspects: weapon.aspects,
+            data: rollData.actorData
+        };
+
+        // Create the Roll instance
+        const roll = await DiceHM3.damageDialog(dialogOptions);
+
+        // If user cancelled the roll, then return immediately
+        if (!roll) return null;
+
+        // Prepare for Chat Message
+        const chatTemplate = 'systems/hm3/templates/chat/damage-card.html';
+
+        let title = "Other Weapon Damage";
+        if (rollData.weapon != "") {
+            title = `${rollData.weapon} Damage`; 
+        }
+
+        const totalImpact = weapon.aspects[roll.chosenAspect] + roll.addlWeaponImpact + roll.rollObj.total;
+
+        const chatTemplateData = {
+            title: title,
+            weaponAspect: roll.chosenAspect,
+            damageDice: Number(roll.damageDice),
+            weaponImpact: weapon.aspects[roll.chosenAspect],
+            addlWeaponImpact: roll.addlWeaponImpact,
+            totalImpact: totalImpact,
+            rollValue: roll.rollObj.total,
+        };
+        const html = await renderTemplate(chatTemplate, chatTemplateData);
+
+        const messageData = {
+            speaker: rollData.speaker || ChatMessage.getSpeaker(),
+            content: html
+        };
+
+        const messageOptions = {
+            rollMode: game.settings.get("core", "rollMode")
+        };
+
+        // Create a chat message
+        roll.rollObj.toMessage(messageData, messageOptions);
+    
+        return roll;
+    }
+    
+    static _calcWeaponAspect(weapon, items) {
+
+        // Note that although "Fire" is in this list, because it is a
+        // type of damage, no normal weapon uses it as its aspect.
+        // It is here so that it can be selected (no default impact
+        // damage would be specified for that aspect).
+        const result = {
+            defaultAspect: "Other",
+            aspects: {
+                "Blunt": 0,
+                "Edged": 0,
+                "Piercing": 0,
+                "Fire": 0,
+                "Other": 0
+            }
+        }
+
+        // Search for the specified weapon, and then choose the aspect with
+        // the greatest impact (this will become the default aspect)
+        items.forEach(it => {
+            if (it.type === 'weapongear' && it.name === weapon) {
+                const maxImpact = Math.max(it.data.blunt, it.data.piercing, it.data.edged, 0);
+                result.aspects["Blunt"] = it.data.blunt;
+                result.aspects["Edged"] = it.data.edged;
+                result.aspects["Piercing"] = it.data.piercing;
+                if (maxImpact === it.data.piercing) {
+                    result.defaultAspect = "Piercing";
+                } else if (maxImpact === it.data.edged) {
+                    result.defaultAspect = "Edged";
+                } else if (maxImpact === it.data.blunt) {
+                    result.defaultAspect = "Blunt";
+                } else {
+                    // This shouldn't happen, but if all else fails, choose "Other"
+                    result.defaultAspect = "Other"
+                }
+            }
+        });
+
+        return result;
+    }
+    
+    /**
+     * Renders a dialog to get the information for a damage roll, and then
+     * perform a number of d6 dice rolls to determine results.  Returns Roll object
+     * representing outcome of die rolls, or null if user cancelled dialog.
+     *            
+     * @param {*} dialogOptions 
+     */
+    static async damageDialog(dialogOptions) {
+    
+        // Render modal dialog
+        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/chat/damage-dialog.html";
+        let dialogData = {
+            damageDice: 1,
+            weaponAspect: dialogOptions.weaponAspect,
+            weaponAspects: dialogOptions.weaponAspects,
+            addlWeaponImpact: 0
+        };
+        const html = await renderTemplate(dlgTemplate, dialogData);
+        
+        // Create the dialog window
+        return new Promise(resolve => {
+            new Dialog({
+                title: dialogOptions.label,
+                content: html,
+                buttons: {
+                    rollButton: {
+                        label: "Roll",
+                        callback: html => {
+                            const form = html[0].querySelector("form");
+                            const formAddlWeaponImpact = Number(form.addlWeaponImpact.value);
+                            const formDamageDice = Number(form.damageDice.value);
+                            const formWeaponAspect = form.weaponAspect.value;
+                            let roll = DiceHM3.rollTest({
+                                target: 0,
+                                data: dialogOptions.data,
+                                diceSides: 6,
+                                diceNum: formDamageDice,
+                                modifier: 0
+                            });
+                            let result = {
+                                chosenAspect: formWeaponAspect,
+                                damageDice: formDamageDice,
+                                addlWeaponImpact: formAddlWeaponImpact,
+                                rollObj: roll.rollObj
+                            }
+                            resolve(result);
                         }
                     }
                 },

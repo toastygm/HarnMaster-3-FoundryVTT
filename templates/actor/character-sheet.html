@@ -439,7 +439,7 @@
                 </div>
                 <div class="combat-stat flexrow">
                     <div class="item-dice">
-                        <a class="damage-roll" title="Damage Roll"><i class="fas fa-dice-d20"></i></a>
+                        <a class="damage-roll" data-weapon="" title="Damage Roll"><i class="fas fa-dice-d20"></i></a>
                     </div>
                     <label class="combat-stat-label">Damage</label>
                 </div>
@@ -449,6 +449,7 @@
             <h2>Weapons</h2>
             <ol class="weapons-list">
                 <li class="item weapon flexrow weapon-header">
+                    <div class="weapon-damage">Dmg</div>
                     <div class="weapon-name">Weapon Name</div>
                     <div class="weapon-qty">Qty</div>
                     <div class="weapon-weight">Wt</div>
@@ -471,6 +472,9 @@
                 {{#each actor.items as |item id|}}
                     {{#if (eq item.type "weapongear")}}
                         <li class="item weapon flexrow" data-item-id="{{item._id}}">
+                            <div class="item-dice">
+                                <a class="damage-roll" data-weapon="{{item.name}}" title="Damage Roll"><i class="fas fa-dice-d20"></i></a>
+                            </div>
                             <h4 class="weapon-name">{{item.name}}</h4>
                             <div class="weapon-qty">{{data.quantity}}</div>
                             <div class="weapon-weight">{{data.weight}}</div>

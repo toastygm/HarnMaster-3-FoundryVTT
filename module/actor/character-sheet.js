@@ -70,6 +70,9 @@ export class HarnMasterCharacterSheet extends ActorSheet {
     // Standard 1d100 vs. target number (asks for optional modifier)
     html.find('.d6-roll').click(this._onD6Roll.bind(this));
 
+    // Damage Roll
+    html.find('.damage-roll').click(this._onDamageRoll.bind(this));
+
     // Custom roll, specifying Roll Template
     // html.find('.custom-roll').click(this._onCustomRoll.bind(this));
     // standard Roll  1d100 vs. EML (data-eml) for Label (data-label) (skill, weapon-attack, weapon-defense, healing, spell, invocation, psionic)
@@ -156,6 +159,20 @@ export class HarnMasterCharacterSheet extends ActorSheet {
       numdice: Number(event.currentTarget.dataset.numdice),
       fastforward: fastforward
     });
+  }
+
+  /**
+   * Handle damage rolls.  A damage roll is a roll of multiple d6 dice
+   * plus weapon impact value (based on weapon aspect). This button
+   * handles both the case where a specific weapon is known and not.
+   * 
+   * data-weapon = Name of weapon being used (or blank for unknown)
+   * 
+   * @param {Event} event 
+   */
+  _onDamageRoll(event) {
+    event.preventDefault();
+    this.actor.damageRoll(event.currentTarget.dataset.weapon);
   }
 
   /**

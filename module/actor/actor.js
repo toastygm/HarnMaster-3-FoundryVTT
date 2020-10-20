@@ -430,4 +430,14 @@ export class HarnMasterActor extends Actor {
     return DiceHM3.d6Roll(rollData);
   }
 
+  damageRoll(weaponName) {
+
+    const rollData = {
+      weapon: weaponName,
+      data: this.data,
+      speaker: ChatMessage.getSpeaker({actor: this})
+    };
+
+    return DiceHM3.damageRoll(rollData);
+  }
 }
