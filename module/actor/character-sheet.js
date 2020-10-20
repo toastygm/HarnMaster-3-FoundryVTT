@@ -72,22 +72,6 @@ export class HarnMasterCharacterSheet extends ActorSheet {
 
     // Damage Roll
     html.find('.damage-roll').click(this._onDamageRoll.bind(this));
-
-    // Custom roll, specifying Roll Template
-    // html.find('.custom-roll').click(this._onCustomRoll.bind(this));
-    // standard Roll  1d100 vs. EML (data-eml) for Label (data-label) (skill, weapon-attack, weapon-defense, healing, spell, invocation, psionic)
-    // skill-roll 1d100 vs Skill EML
-    // dodge-roll 1d100 vs. Dodge Skill
-    // shock-roll (#IL of d6) vs. Endurance
-    // stumble-roll 3d6+PP vs. Agility
-    // fumble-roll 1d100 vs. (Dex * 5)-PP
-    // damage-roll (# of d6 + weapon mod)
-    // weapon-attack-roll 1d100 vs. AML
-    // weapon-defense-roll 1d100 vs. DML
-    // healing-roll 1d100 vs. HRxEndurance
-    // spell-roll 1d100 vs. CML
-    // invocation-roll 1d100 vs. RML
-    // psionic-roll 1d100 vs. EML
   }
 
   /* -------------------------------------------- */
