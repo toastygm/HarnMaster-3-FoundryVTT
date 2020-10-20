@@ -1,24 +1,24 @@
-<div class="hm3 chat-card" data-actor-id="{{actorId}}">
-    <div class="card-title">
-        <span class="title">{{title}}</span>
-    </div>
+<div class="hm3 chat-card item-card" data-actor-id="{{actorId}}">
+    <header class="card-header flexrow">
+        <h3 class="title">{{title}}</h3>
+    </header>
 
-    <div class="card-content card-row">
+    <div class="card-content">
         <span class="label">Original Target:</span>
         <span class="value">{{origTarget}}</span>
     </div>
 
-    <div class="card-content card-row">
+    <div class="card-content">
         <span class="label">Modifier:</span>
         <span class="value">{{modifier}}</span>
     </div>
 
-    <div class="card-content card-row">
+    <div class="card-content">
         <span class="label">Modified Target:</span>
         <span class="value">{{modifiedTarget}}</span>
     </div>
 
-    <div class="card-content card-row">
+    <div class="card-content">
         <span class="label">Roll:</span>
         {{#if isSuccess}}
         <span class="value success-text">
@@ -28,12 +28,12 @@
         {{rollValue}}</span>
     </div>
 
-    <div class="card-content card-footer">
+    <footer class="card-footer">
         {{#if isSuccess}}
         <span class="success-block">
         {{else}}
         <span class="failure-block">
         {{/if}}
         {{description}}</span>
-    </div>
+    </footer>
 </div>
