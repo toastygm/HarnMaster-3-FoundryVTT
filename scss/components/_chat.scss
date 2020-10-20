@@ -1,0 +1,67 @@
+.hm3.chat-card {
+    font-style: normal;
+    font-size: 12px;
+
+    .card-header {
+        text-align: center;
+        padding: 3px 0;
+        border-top: 2px groove #FFF;
+        border-bottom: 2px groove #FFF;
+        background-color: aqua;
+        color: #111;
+
+        h3 {
+            flex: 1;
+            margin: 0;
+            line-height: 36px;
+            font-family: "Modesto Condensed", "Palatino Linotype", serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #4b4a44;
+        }
+
+        h3:hover {
+            color: #111;
+            text-shadow: 0 0 10px red;
+        }
+    }
+
+    .card-content {
+        margin: 5px 0;
+    
+        h3 {
+            font-size: 12px;
+            margin: 0;
+            font-weight: bold;
+        }
+    }
+
+    .card-footer {
+        padding: 3px 0 0;
+        border-top: 2px groove #FFF;
+
+        span {
+            border-right: 2px groove #FFF;
+            padding: 0 5px 0 0;
+            font-size: 16px;
+        }
+    }
+
+    .success-text {
+        color: green;
+    }
+
+    .failure-text {
+        color: red;
+    }
+
+    .success-block {
+        background-color: green;
+        color: #111;
+    }
+
+    .failure-block {
+        background-color: red;
+        color: white;
+    }
+}
