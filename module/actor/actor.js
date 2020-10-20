@@ -21,14 +21,34 @@ export class HarnMasterActor extends Actor {
 
     // If character, automatically add basic skills and armor locations
     if (data.type == "character") {
-      this._createDefaultCharacterSkills(data);
-      this._createDefaultHumanoidLocations(data);
+      new Dialog({
+        title: 'Initialize Skills and Locations',
+        content: `<p>Add Default Skills and Locations?</p>`,
+        buttons: {
+          yes: {
+            label: "Yes",
+            callback: async dlg => {
+              HarnMasterActor._createDefaultCharacterSkills(data);
+              HarnMasterActor._createDefaultHumanoidLocations(data);          
+              super.create(data, options); // Follow through the the rest of the Actor creation process upstream
+            }
+          },
+          no: {
+            label: "No",
+            callback: async dlg => {
+              super.create(data, options); // Do not add new items, continue with the rest of the Actor creation process upstream
+            }
+          },
+        },
+        default: 'yes'
+      }).render(true);
     } else if (data.type == "creature") {
       // Create Creature Default Skills
       this._createDefaultCreatureSkills(data);
+      super.create(data, options); // Follow through the the rest of the Actor creation process upstream
+    } else {
+      super.create(data, options); // Follow through the the rest of the Actor creation process upstream
     }
-
-    super.create(data, options); // Follow through the the rest of the Actor creation process upstream
   }
 
   static _createDefaultCharacterSkills(data) {
