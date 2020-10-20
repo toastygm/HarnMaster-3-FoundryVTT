@@ -12,9 +12,19 @@ H&acirc;rn, H&acirc;rnMaster, and H&acirc;rnWorld are all &copy; 1987-2020 N. Ro
 
 Although most parts of this system should be self-explanatory to those familiar with H&acirc;rnMaster 3, there are some peculiarities that will be described here.
 
-## Skills Missing
+## Missing Components of H&acirc;rnMaster Rules
 
-Although basic laborious computations have been included in this system, only "default" skills and humanoid armor locations are loaded (on request).  However, the Skill Base and Mastery Level values are not precalculated even for "default" skills.  This is intentional.  Although entering these values is laborious, this has been done so that access to the rules is necessary to complete the character; this is not intended as a character generator.
+This system is not intented to replace the need for the HM3 rules, but to simplify running a HM3 game.  Therefore, certain aspects of HM3 have been intentionally left out.  This is not intended to be used as a character generator.  This section highlights a few specific items that were left out.
+
+### Skills Missing
+
+Although basic laborious computations have been included in this system, only "default" skills and humanoid armor locations are loaded (on request).  However, the Skill Base (SB) and Mastery Level (ML) values, although present, are not precalculated even for "default" skills.
+
+No other skills beyond the standard skills are provided; they must be manually entered along with their SB and ML characteristics.
+
+### Combat Tables Missing
+
+Although automatic dice rolling for attack rolls and damage rolls are provided, the actual combat mechanics (including the meele and missile attack tables and injury table) are not automated or included.  It is expected that the rules will be consulted for these actions.
 
 ## Actors Supported
 
