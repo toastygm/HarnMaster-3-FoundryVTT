@@ -31,21 +31,21 @@ Although automatic dice rolling for attack rolls and damage rolls are provided, 
 The following actors are supported:
 
 * __Character:__ A standard humanoid character, such as a Human, Dwarf, or Elf.  This can also be used for other humanoid creatures, such as Gargun.  A character has the following features:
-*# Ability Scores
-*# Traits (Birthdate, Gender, Race, Sunsign, etc.)
-*# Basic Skills (Physical, Communication, Combat, and Craft)
-*# Esoteric Skills/Talents (Convocations, Rituals, and Psionics)
-*# Combat (Weapons, Injuries, Armor Locations)
-*# Inventory (Armor/Clothing, Misc. Gear)
-*# Public Description (what others can observe about you, your behavior, and your public backstory)
-*# Biography (your personal/real story, motivations, and attributes)
+  # Ability Scores
+  # Traits (Birthdate, Gender, Race, Sunsign, etc.)
+  # Basic Skills (Physical, Communication, Combat, and Craft)
+  # Esoteric Skills/Talents (Convocations, Rituals, and Psionics)
+  # Combat (Weapons, Injuries, Armor Locations)
+  # Inventory (Armor/Clothing, Misc. Gear)
+  # Public Description (what others can observe about you, your behavior, and your public backstory)
+  # Biography (your personal/real story, motivations, and attributes)
 
 * __Creature:__ Any being not a "character" (e.g., animals, Ivashu, etc.).  A creature has the following features:
-*# Ability Scores (except no Comliness or Morality)
-*# Basic Skills (Physical, Communication, Combat, and Craft)
-*# Combat (Weapons, Injuries, Armor Locations)
-*# Misc. Gear
-*# Description
+  # Ability Scores (except no Comliness or Morality)
+  # Basic Skills (Physical, Communication, Combat, and Craft)
+  # Combat (Weapons, Injuries, Armor Locations)
+  # Misc. Gear
+  # Description
 
 Note that when creating a character, you will be prompted whether to install standard skills and standard humanoid armor locations.  When creating a creature, no armor locations will be preloaded, since each creature will have different armor locations (although a few basic combat skills are added).
 
@@ -54,30 +54,30 @@ Note that when creating a character, you will be prompted whether to install sta
 The following capabilities are supported in both characters and creatures:
 
 * Automatic Dice Rolls (click on the dice icon next to the item). Holding SHIFT, ALT, or CTRL keys while clicking the icon will use defaults and bypass the dialog (except for damage rolls which always require the dialog).
-** Skill check rolls
-** Spell success rolls (character only)
-** Ritual Invocation success rolls (character only)
-** Psionic Talent success rolls (character only)
-** Shock roll
-** Fumble roll
-** Stumble roll
-** General Damage roll (Non-weapon-specific)
-** Weapon Damage roll (weapon-specific)
-** Weapon Attack roll
-** Weapon Defense roll
-** Injury Healing roll
+  * Skill check rolls
+  * Spell success rolls (character only)
+  * Ritual Invocation success rolls (character only)
+  * Psionic Talent success rolls (character only)
+  * Shock roll
+  * Fumble roll
+  * Stumble roll
+  * General Damage roll (Non-weapon-specific)
+  * Weapon Damage roll (weapon-specific)
+  * Weapon Attack roll
+  * Weapon Defense roll
+  * Injury Healing roll
 
 * Automatic Calculations
-** Total Injury Levels
-** Total Gear Weight
-** Encumbrance (characters only)
-** Universal Penalty (UP)
-** Physical Penalty (PP)
-** All skill EMLs (based on ML minus UP or PP)
-** Endurance (based on Condition skill if present, otherwise calculated from abilities)
-** Move rate (characters only)
-** Spell CML and Ritual Invocation RML (accounting for spell level or invocation circle)
-** Weapon Attack ML (AML) and Defense ML (DML)
+  * Total Injury Levels
+  * Total Gear Weight
+  * Encumbrance (characters only)
+  * Universal Penalty (UP)
+  * Physical Penalty (PP)
+  * All skill EMLs (based on ML minus UP or PP)
+  * Endurance (based on Condition skill if present, otherwise calculated from abilities)
+  * Move rate (characters only)
+  * Spell CML and Ritual Invocation RML (accounting for spell level or invocation circle)
+  * Weapon Attack ML (AML) and Defense ML (DML)
 
 ## Special Considerations
 
