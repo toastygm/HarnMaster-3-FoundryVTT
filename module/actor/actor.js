@@ -163,17 +163,21 @@ export class HarnMasterActor extends Actor {
     }
 
     // Now calculate endurance.value; this value cannot go below 0
-    data.endurance.value = data.endurance.max - data.physicalPenalty;
-    if (data.endurance.value < 0) data.endurance.value = 0;
+    data.endurance.value = Math.max(data.endurance.max - data.physicalPenalty, 0);
 
     // Calculate current Move speed.  Cannot go below 0
-    data.move = (data.abilities.agility - data.physicalPenalty) * 5;
-    if (data.move < 0) data.move = 0;
+    data.move = Math.max((data.abilities.agility - data.physicalPenalty) * 5, 0);
 
+    // Calculate Important Roll Targets
+    data.stumbleTarget = Math.max(data.abilities.agility - data.physicalPenalty, 0);
+    data.fumbleTarget = Math.max(data.abilities.dexterity - data.physicalPenalty, 0);
+    
     // Calculate spell effective mastery level values
     this._refreshSpellsAndInvocations();
 
     this._setupWeaponData(data);
+
+    this._setupInjuryTargets(data);
   }
   
   /**
@@ -202,6 +206,16 @@ export class HarnMasterActor extends Actor {
 
     this._setupWeaponData(data);
   }
+
+  _setupInjuryTargets(data) {
+    this.data.items.forEach(it => {
+      if (it.type === 'injury') {
+        // Injury Roll = HR*End (unaffected by UP or PP)
+        it.data.targetHealRoll = it.data.healRate * data.endurance.max;
+      }
+    });
+  }
+
 
   _setupWeaponData(data) {
 
@@ -400,6 +414,20 @@ export class HarnMasterActor extends Actor {
     };
 
     return DiceHM3.d100StdRoll(rollData);
+  }
+
+  d6Roll(label, options={}) {
+
+    const rollData = {
+      label: `${label} Test`,
+      target: options.target,
+      numdice: options.numdice,
+      fastforward: options.fastforward,
+      data: this.data,
+      speaker: ChatMessage.getSpeaker({actor: this})
+    };
+
+    return DiceHM3.d6Roll(rollData);
   }
 
 }

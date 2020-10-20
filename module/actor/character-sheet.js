@@ -67,6 +67,9 @@ export class HarnMasterCharacterSheet extends ActorSheet {
     // Standard 1d100 vs. target number (asks for optional modifier)
     html.find('.std-roll').click(this._onStdRoll.bind(this));
 
+    // Standard 1d100 vs. target number (asks for optional modifier)
+    html.find('.d6-roll').click(this._onD6Roll.bind(this));
+
     // Custom roll, specifying Roll Template
     // html.find('.custom-roll').click(this._onCustomRoll.bind(this));
     // standard Roll  1d100 vs. EML (data-eml) for Label (data-label) (skill, weapon-attack, weapon-defense, healing, spell, invocation, psionic)
@@ -128,7 +131,29 @@ export class HarnMasterCharacterSheet extends ActorSheet {
     let fastforward = event.shiftKey || event.altKey || event.ctrlKey;
 
     this.actor.stdRoll(event.currentTarget.dataset.label, {
-      target: event.currentTarget.dataset.target,
+      target: Number(event.currentTarget.dataset.target),
+      fastforward: fastforward
+    });
+  }
+
+  /**
+   * Handle d6 rolls.  A "d6" roll is a roll of multiple d6 dice vs.
+   * some target value, with success being less than or equal
+   * to the target value.
+   * 
+   * data-numdice = number of d6 to roll
+   * data-target = target value
+   * data-label = Label Text (will print "Test against <label text>")
+   * 
+   * @param {Event} event 
+   */
+  _onD6Roll(event) {
+    event.preventDefault();
+    let fastforward = event.shiftKey || event.altKey || event.ctrlKey;
+
+    this.actor.d6Roll(event.currentTarget.dataset.label, {
+      target: Number(event.currentTarget.dataset.target),
+      numdice: Number(event.currentTarget.dataset.numdice),
       fastforward: fastforward
     });
   }

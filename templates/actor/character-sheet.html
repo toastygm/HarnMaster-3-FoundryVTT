@@ -421,19 +421,19 @@
                 <div class="combat-stat flexrow"></div>
                 <div class="combat-stat flexrow">
                     <div class="item-dice">
-                        <a class="shock-roll" title="Shock Roll"><i class="fas fa-dice-d20"></i></a>
+                        <a class="d6-roll" data-numdice="{{data.universalPenalty}}" data-label="Shock" data-target="{{data.endurance.value}}" title="Shock Roll"><i class="fas fa-dice-d20"></i></a>
                     </div>
                     <label class="combat-stat-label">Shock</label>
                 </div>
                 <div class="combat-stat flexrow">
                     <div class="item-dice">
-                        <a class="stumble-roll" title="Stumble Roll"><i class="fas fa-dice-d20"></i></a>
+                        <a class="d6-roll" data-numdice="3" data-label="Stumble" data-target="{{data.stumbleTarget}}" title="Stumble Roll"><i class="fas fa-dice-d20"></i></a>
                     </div>
                     <label class="combat-stat-label">Stumble</label>
                 </div>
                 <div class="combat-stat flexrow">
                     <div class="item-dice">
-                        <a class="fumble-roll" title="Fumble Roll"><i class="fas fa-dice-d20"></i></a>
+                        <a class="d6-roll" data-numdice="3" data-label="Fumble" data-target="{{data.fumbleTarget}}" title="Fumble Roll"><i class="fas fa-dice-d20"></i></a>
                     </div>
                     <label class="combat-stat-label">Fumble</label>
                 </div>
@@ -516,7 +516,7 @@
                     {{#if (eq item.type "injury")}}
                         <li class="item injury flexrow" data-item-id="{{item._id}}">
                             <div class="item-dice">
-                                <a class="healing-roll" title="Healing Roll"><i class="fas fa-dice-d20"></i></a>
+                                <a class="std-roll" data-label="{{item.name}} Healing Roll" data-target="{{data.targetHealRoll}}" title="Healing Roll"><i class="fas fa-dice-d20"></i></a>
                             </div>
                             <h4 class="injury-name">{{item.name}}</h4>
                             <div class="injury-healrate">{{data.healRate}}</div>
@@ -658,7 +658,7 @@
                     {{#if (eq item.type "psionic")}}
                         <li class="item psionic flexrow" data-item-id="{{item._id}}">
                             <div class="item-dice">
-                                <a class="psionic-roll" data-label="{{item.name}} Psionic Talent" data-target="{{data.effectiveMasteryLevel}}"title="Psionic Roll"><i class="fas fa-dice-d20"></i></a>
+                                <a class="std-roll" data-label="{{item.name}} Psionic Talent" data-target="{{data.effectiveMasteryLevel}}"title="Psionic Roll"><i class="fas fa-dice-d20"></i></a>
                             </div>
                             <h4 class="psionic-name">{{item.name}}</h4>
                             <div class="psionic-fatigue">{{data.fatigue}}</div>
