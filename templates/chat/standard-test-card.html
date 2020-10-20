@@ -1,0 +1,39 @@
+<div class="hm3 chat-card" data-actor-id="{{actorId}}">
+    <div class="card-title">
+        <span class="title">{{title}}</span>
+    </div>
+
+    <div class="card-content card-row">
+        <span class="label">Original Target:</span>
+        <span class="value">{{origTarget}}</span>
+    </div>
+
+    <div class="card-content card-row">
+        <span class="label">Modifier:</span>
+        <span class="value">{{modifier}}</span>
+    </div>
+
+    <div class="card-content card-row">
+        <span class="label">Modified Target:</span>
+        <span class="value">{{modifiedTarget}}</span>
+    </div>
+
+    <div class="card-content card-row">
+        <span class="label">Roll:</span>
+        {{#if isSuccess}}
+        <span class="value success-text">
+        {{else}}
+        <span class="value failure-text">
+        {{/if}}
+        {{rollValue}}</span>
+    </div>
+
+    <div class="card-content card-footer">
+        {{#if isSuccess}}
+        <span class="success-block">
+        {{else}}
+        <span class="failure-block">
+        {{/if}}
+        {{description}}</span>
+    </div>
+</div>

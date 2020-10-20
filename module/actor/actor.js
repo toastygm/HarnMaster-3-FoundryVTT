@@ -1,3 +1,5 @@
+import { DiceHM3 } from "../dice-hm3.js";
+
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
  * @extends {Actor}
@@ -386,4 +388,18 @@ export class HarnMasterActor extends Actor {
       }
     });
   }
+
+  stdRoll(label, options={}) {
+
+    const rollData = {
+      label: `${label} Test`,
+      target: options.target,
+      fastforward: options.fastforward,
+      data: this.data,
+      speaker: ChatMessage.getSpeaker({actor: this})
+    };
+
+    return DiceHM3.d100StdRoll(rollData);
+  }
+
 }

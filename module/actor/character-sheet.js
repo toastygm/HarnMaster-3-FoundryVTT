@@ -124,23 +124,13 @@ export class HarnMasterCharacterSheet extends ActorSheet {
    * @param {Event} event 
    */
   _onStdRoll(event) {
-    const element = event.currentTarget;
-    const dataset = element.dataset;
+    event.preventDefault();
+    let fastforward = event.shiftKey || event.altKey || event.ctrlKey;
 
-    if (typeof dataset.target != "undefined") {
-      let result = DiceHM3.rollTest({
-        "data": this.actor.data.data,
-        "diceSides": 100,
-        "diceNum": 1,
-        "modifier": 0,
-        "target": dataset.target
-      });
-      let label = dataset.label ? `Test against ${dataset.label}` : '';
-      result.roll.toMessage({
-        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: label
-      });
-    }
+    this.actor.stdRoll(event.currentTarget.dataset.label, {
+      target: event.currentTarget.dataset.target,
+      fastforward: fastforward
+    });
   }
 
   /**
