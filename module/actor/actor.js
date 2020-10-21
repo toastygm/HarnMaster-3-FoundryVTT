@@ -1,4 +1,5 @@
-import { DiceHM3 } from "../dice-hm3.js";
+import { HM3 } from '../config.js';
+import { DiceHM3 } from '../dice-hm3.js';
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
@@ -20,13 +21,13 @@ export class HarnMasterActor extends Actor {
     data.items = [];
 
     // If character, automatically add basic skills and armor locations
-    if (data.type == "character") {
+    if (data.type == 'character') {
       new Dialog({
         title: 'Initialize Skills and Locations',
         content: `<p>Add Default Skills and Locations?</p>`,
         buttons: {
           yes: {
-            label: "Yes",
+            label: 'Yes',
             callback: async dlg => {
               HarnMasterActor._createDefaultCharacterSkills(data);
               HarnMasterActor._createDefaultHumanoidLocations(data);          
@@ -34,7 +35,7 @@ export class HarnMasterActor extends Actor {
             }
           },
           no: {
-            label: "No",
+            label: 'No',
             callback: async dlg => {
               super.create(data, options); // Do not add new items, continue with the rest of the Actor creation process upstream
             }
@@ -42,7 +43,7 @@ export class HarnMasterActor extends Actor {
         },
         default: 'yes'
       }).render(true);
-    } else if (data.type == "creature") {
+    } else if (data.type == 'creature') {
       // Create Creature Default Skills
       this._createDefaultCreatureSkills(data);
       super.create(data, options); // Follow through the the rest of the Actor creation process upstream
@@ -75,57 +76,107 @@ export class HarnMasterActor extends Actor {
   static _createDefaultHumanoidLocations(data) {
     let armorLocationData = {};
     mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-    armorLocationData.probWeight = {"high": 15, "mid": 5, "low": 0};
+    mergeObject(armorLocationData, HM3.injuryLocations['Skull'])
     data.items.push((new Item({name: 'Skull', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData.probWeight = {"high": 15, "mid": 5, "low": 0};
+    armorLocationData = {};
+    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+    mergeObject(armorLocationData, HM3.injuryLocations['Face'])
     data.items.push((new Item({name: 'Face', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData.probWeight = {"high": 15, "mid": 5, "low": 0};
+    armorLocationData = {};
+    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+    mergeObject(armorLocationData, HM3.injuryLocations['Neck'])
     data.items.push((new Item({name: 'Neck', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData.probWeight = {"high": 6, "mid": 6, "low": 0};
+    armorLocationData = {};
+    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+    mergeObject(armorLocationData, HM3.injuryLocations['Shoulder'])
     data.items.push((new Item({name: 'Left Shoulder', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData.probWeight = {"high": 6, "mid": 6, "low": 0};
+    armorLocationData = {};
+    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+    mergeObject(armorLocationData, HM3.injuryLocations['Shoulder'])
     data.items.push((new Item({name: 'Right Shoulder', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData.probWeight = {"high": 6, "mid": 3, "low": 0};
+    armorLocationData = {};
+    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+    mergeObject(armorLocationData, HM3.injuryLocations['Upper Arm'])
     data.items.push((new Item({name: 'Left Upper Arm', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData.probWeight = {"high": 6, "mid": 3, "low": 0};
+    armorLocationData = {};
+    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+    mergeObject(armorLocationData, HM3.injuryLocations['Upper Arm'])
     data.items.push((new Item({name: 'Right Upper Arm', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData.probWeight = {"high": 2, "mid": 1, "low": 0};
+    armorLocationData = {};
+    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+    mergeObject(armorLocationData, HM3.injuryLocations['Elbow'])
     data.items.push((new Item({name: 'Left Elbow', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData.probWeight = {"high": 2, "mid": 1, "low": 0};
+    armorLocationData = {};
+    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+    mergeObject(armorLocationData, HM3.injuryLocations['Elbow'])
     data.items.push((new Item({name: 'Right Elbow', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData.probWeight = {"high": 4, "mid": 2, "low": 3};
+    armorLocationData = {};
+    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+    mergeObject(armorLocationData, HM3.injuryLocations['Forearm'])
     data.items.push((new Item({name: 'Left Forearm', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData.probWeight = {"high": 4, "mid": 2, "low": 3};
+    armorLocationData = {};
+    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+    mergeObject(armorLocationData, HM3.injuryLocations['Forearm'])
     data.items.push((new Item({name: 'Right Forearm', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData.probWeight = {"high": 2, "mid": 2, "low": 3};
+    armorLocationData = {};
+    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+    mergeObject(armorLocationData, HM3.injuryLocations['Hand'])
     data.items.push((new Item({name: 'Left Hand', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData.probWeight = {"high": 2, "mid": 2, "low": 3};
+    armorLocationData = {};
+    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+    mergeObject(armorLocationData, HM3.injuryLocations['Hand'])
     data.items.push((new Item({name: 'Right Hand', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData.probWeight = {"high": 10, "mid": 17, "low": 7};
+    armorLocationData = {};
+    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+    mergeObject(armorLocationData, HM3.injuryLocations['Thorax'])
     data.items.push((new Item({name: 'Thorax', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData.probWeight = {"high": 6, "mid": 10, "low": 10};
+    armorLocationData = {};
+    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+    mergeObject(armorLocationData, HM3.injuryLocations['Abdomen'])
     data.items.push((new Item({name: 'Abdomen', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData.probWeight = {"high": 0, "mid": 4, "low": 6};
+    armorLocationData = {};
+    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+    mergeObject(armorLocationData, HM3.injuryLocations['Groin'])
     data.items.push((new Item({name: 'Groin', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData.probWeight = {"high": 0, "mid": 3, "low": 7};
+    armorLocationData = {};
+    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+    mergeObject(armorLocationData, HM3.injuryLocations['Hip'])
     data.items.push((new Item({name: 'Left Hip', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData.probWeight = {"high": 0, "mid": 3, "low": 7};
+    armorLocationData = {};
+    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+    mergeObject(armorLocationData, HM3.injuryLocations['Hip'])
     data.items.push((new Item({name: 'Right Hip', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData.probWeight = {"high": 0, "mid": 4, "low": 10};
+    armorLocationData = {};
+    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+    mergeObject(armorLocationData, HM3.injuryLocations['Thigh'])
     data.items.push((new Item({name: 'Left Thigh', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData.probWeight = {"high": 0, "mid": 4, "low": 11};
+    armorLocationData = {};
+    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+    mergeObject(armorLocationData, HM3.injuryLocations['Thigh'])
     data.items.push((new Item({name: 'Right Thigh', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData.probWeight = {"high": 0, "mid": 1, "low": 4};
+    armorLocationData = {};
+    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+    mergeObject(armorLocationData, HM3.injuryLocations['Knee'])
     data.items.push((new Item({name: 'Left Knee', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData.probWeight = {"high": 0, "mid": 1, "low": 4};
+    armorLocationData = {};
+    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+    mergeObject(armorLocationData, HM3.injuryLocations['Knee'])
     data.items.push((new Item({name: 'Right Knee', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData.probWeight = {"high": 0, "mid": 3, "low": 7};
+    armorLocationData = {};
+    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+    mergeObject(armorLocationData, HM3.injuryLocations['Calf'])
     data.items.push((new Item({name: 'Left Calf', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData.probWeight = {"high": 0, "mid": 3, "low": 7};
+    armorLocationData = {};
+    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+    mergeObject(armorLocationData, HM3.injuryLocations['Calf'])
     data.items.push((new Item({name: 'Right Calf', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData.probWeight = {"high": 0, "mid": 2, "low": 4};
+    armorLocationData = {};
+    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+    mergeObject(armorLocationData, HM3.injuryLocations['Foot'])
     data.items.push((new Item({name: 'Left Foot', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData.probWeight = {"high": 0, "mid": 2, "low": 4};
+    armorLocationData = {};
+    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+    mergeObject(armorLocationData, HM3.injuryLocations['Foot'])
     data.items.push((new Item({name: 'Right Foot', type: 'armorlocation', data: armorLocationData})).data);
   }
 
@@ -261,7 +312,7 @@ export class HarnMasterActor extends Actor {
         // same name as the weapon; if so, then set it to that skill.
         if (it.data.assocSkill === '') {
           // If no combat skill with this name exists, search for next weapon
-          if (typeof combatSkills[lcWeaponName] === "undefined") return;
+          if (typeof combatSkills[lcWeaponName] === 'undefined') return;
 
           // A matching skill was found, set associated Skill to that combat skill
           it.data.assocSkill = combatSkills[lcWeaponName].name;
@@ -271,7 +322,7 @@ export class HarnMasterActor extends Actor {
         // associated skill is in our combat skills list, get EML from there
         // and then calculate AML and DML.
         let lcAssocSkill = it.data.assocSkill.toLowerCase();
-        if (typeof combatSkills[lcAssocSkill] != "undefined") {
+        if (typeof combatSkills[lcAssocSkill] != 'undefined') {
           let skillEml = combatSkills[lcAssocSkill].eml;
           it.data.attackMasteryLevel = skillEml + it.data.attack;
           it.data.defenseMasteryLevel = skillEml + it.data.defense;
