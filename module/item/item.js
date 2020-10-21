@@ -13,5 +13,13 @@ export class HarnMasterItem extends Item {
     const itemData = this.data;
     const actorData = this.actor ? this.actor.data : {};
     const data = itemData.data;
+
+    if (itemData.type == 'armorlocation') {
+      this._prepareArmorLocationData(itemData);
+    }
+  }
+
+  _prepareArmorLocationData(itemData) {
+    
   }
 }

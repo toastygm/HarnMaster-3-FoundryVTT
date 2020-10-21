@@ -8,8 +8,8 @@ export class HarnMasterItemSheet extends ItemSheet {
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       classes: ["hm3", "sheet", "item"],
-      width: 520,
-      height: 480,
+      width: 530,
+      height: 550,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }]
     });
   }
@@ -37,6 +37,7 @@ export class HarnMasterItemSheet extends ItemSheet {
   /** @override */
   getData() {
     const data = super.getData();
+    data.config = CONFIG.HM3;
     return data;
   }
 

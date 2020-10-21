@@ -148,6 +148,17 @@
       "edged": 0,
       "piercing": 0,
       "fire": 0,
+      "isFumble": false,
+      "isStumble": false,
+      "isAmputate": false,
+      "impactType": "custom",
+      "effectiveImpact": {
+        "ei1": "NA",
+        "ei5": "NA",
+        "ei9": "NA",
+        "ei13": "NA",
+        "ei17": "NA"
+      },
       "probWeight": {
         "high": 0,
         "mid": 0,
