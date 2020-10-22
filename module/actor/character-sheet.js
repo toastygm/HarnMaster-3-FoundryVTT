@@ -72,6 +72,9 @@ export class HarnMasterCharacterSheet extends ActorSheet {
 
     // Damage Roll
     html.find('.damage-roll').click(this._onDamageRoll.bind(this));
+
+    // Injury Roll
+    html.find('.injury-roll').click(this._onInjuryRoll.bind(this));
   }
 
   /* -------------------------------------------- */
@@ -179,4 +182,36 @@ export class HarnMasterCharacterSheet extends ActorSheet {
     }
   }
 
+  /**
+   * Handle injury rolls.  An injury roll is a randomly determined
+   * location, taking the impact and checking against the armor at
+   * that location to arrive at effective impact, and then determining
+   * injury level and other effects based on the result.
+   * 
+   * @param {Event} event 
+   */
+  _onInjuryRoll(event) {
+    event.preventDefault();
+    this.actor.injuryRoll(event.currentTarget.dataset.weapon);
+  }
+
+  /**
+   * Handle clickable rolls.
+   * @param {Event} event   The originating click event
+   * @private
+   */
+  _onRoll(event) {
+    event.preventDefault();
+    const element = event.currentTarget;
+    const dataset = element.dataset;
+
+    if (dataset.roll) {
+      let roll = new Roll(dataset.roll, this.actor.data.data);
+      let label = dataset.label ? `Rolling ${dataset.label}` : '';
+      roll.roll().toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        flavor: label
+      });
+    }
+  }
 }

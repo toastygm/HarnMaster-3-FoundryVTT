@@ -114,8 +114,8 @@ export class DiceHM3 {
     }
     
     /**
-     * Performs a standard d100 "skill" roll, optionally presenting a dialog
-     * to collect a modifier (although can be used for any straignt d100 roll
+     * Performs a standard d6 roll, optionally presenting a dialog
+     * to collect a modifier (although can be used for any straignt d6 roll
      * that takes an optional modifier and rolls against a target value).
      * 
      * Note that the modifier affects the target value, not the die roll.
@@ -139,7 +139,8 @@ export class DiceHM3 {
             label: rollData.label,
             modifier: 0,
             numdice: Number(rollData.numdice),
-            data: rollData.actorData
+            data: rollData.actorData,
+            items: rollData.items
         };
 
         // Create the Roll instance
@@ -185,8 +186,8 @@ export class DiceHM3 {
     
     
     /**
-     * Renders a dialog to get the modifier for a d100 skill roll, and then
-     * perform a d100 dice roll to determine results.  Returns Roll object
+     * Renders a dialog to get the modifier for a d6 roll, and then
+     * perform a d6 dice roll to determine results.  Returns Roll object
      * representing outcome of die roll, or null if user cancelled dialog.
      * 
      * @param {*} dialogOptions 
@@ -225,6 +226,305 @@ export class DiceHM3 {
                 close: () => resolve(null)
             }, dialogOptions).render(true)
         });
+    }
+
+    /**
+     * Performs processing, including a random roll, to determine
+     * injury location and effects.
+     * 
+     * @param {Object} rollData 
+     */
+    static async injuryRoll (rollData) {
+        
+        let hitLocations = DiceHM3._getHitLocations(rollData.items);
+
+        const dialogOptions = {
+            hitLocations: hitLocations,
+            data: rollData.data,
+            items: rollData.items
+        };
+
+        // Create the Roll instance
+        const result = await DiceHM3.injuryDialog(dialogOptions);
+
+        // If user cancelled the roll, then return immediately
+        if (!result) return null;
+
+        // Prepare for Chat Message
+        const chatTemplate = 'systems/hm3/templates/chat/injury-card.html';
+
+        const chatTemplateData = mergeObject({title: `${rollData.name} Injury`}, result);
+
+        console.log(result);
+        console.log(chatTemplateData);
+        const html = await renderTemplate(chatTemplate, chatTemplateData);
+
+        const messageData = {
+            speaker: rollData.speaker || ChatMessage.getSpeaker(),
+            content: html,
+            user: game.user._id,
+            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            sound: CONFIG.sounds.dice
+        };
+
+        const messageOptions = {
+            rollMode: game.settings.get("core", "rollMode")
+        };
+
+        // Create a chat message
+        ChatMessage.create(messageData, messageOptions);
+    
+        return result;
+    }
+    
+    static _getHitLocations(items) {
+        // Initialize list with an indicator for a Random roll
+        let hitLocations = ['Random'];
+
+        // get a list of unique hit location names
+        items.forEach(it => {
+            if (it.type === 'armorlocation') {
+                if (hitLocations.indexOf(it.name) === -1) {
+                    hitLocations.push(it.name);
+                }
+            }
+        });
+
+        return hitLocations;
+    }
+    
+    static async injuryDialog(dialogOptions) {
+    
+        // Render modal dialog
+        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/chat/injury-dialog.html";
+        let dialogData = {
+            aim: 'mid',
+            location: 'Random',
+            impact: 0,
+            aspect: 'Blunt',
+            hitLocations: dialogOptions.hitLocations
+        };
+
+        const html = await renderTemplate(dlgTemplate, dialogData);
+
+        // Create the dialog window
+        return new Promise(resolve => {
+            new Dialog({
+                title: dialogOptions.label,
+                content: html,
+                buttons: {
+                    injuryButton: {
+                        label: "Determine Injury",
+                        callback: html => {
+                            const formLocation = html[0].querySelector("form").location.value;
+                            const formImpact = html[0].querySelector("form").impact.value;
+                            const formAspect = html[0].querySelector("form").aspect.value;
+                            const formAim = html[0].querySelector("form").aim.value;
+                            resolve(DiceHM3._calcInjury(formLocation, formImpact, formAspect, formAim, dialogOptions));
+                        }
+                    }
+                },
+                default: "injuryButton",
+                close: () => resolve(null)
+            }, dialogOptions).render(true)
+        });
+    }
+
+    /**
+     * This method calculates many items related to injuries that are used to populate
+     * the chat message with the results of the injury
+     * 
+     * @param {String} location 
+     * @param {Number} impact 
+     * @param {String} aspect 
+     * @param {String} aim 
+     * @param {Object} dialogOptions 
+     */
+    static _calcInjury(location, impact, aspect, aim, dialogOptions) {
+        console.log(`Enter _calcInjury: location: ${location}, impact: ${impact}, aspect: ${aspect}, aim: ${aim}`)
+        const result = {
+            isRandom: location === 'Random',
+            aim: aim,
+            aspect: aspect,
+            location: location,
+            impact: impact,
+            armorType: 'None',
+            armorValue: 0,
+            effectiveImpact: impact,
+            isInjured: false,
+            injuryLevel: 0,
+            injuryLevelText: 'NA',
+            isBleeder: false,
+            isFumbleRoll: false,
+            isFumble: false,
+            isStumbleRoll: false,
+            isStumble: false,
+            isAmputate: false,
+            isKillShot: false
+        };
+
+        // determine location of injury
+        let armorLocation = DiceHM3._calcLocation(location, aim, dialogOptions.items);
+        if (armorLocation === null) return;  // this means we couldn't find the location, so no injury
+
+        // Just to make life simpler, get the data element which is what we really care about.
+        armorLocation = armorLocation.data;
+
+        console.log(armorLocation);
+        result.location = armorLocation.name;
+        result.armorType = armorLocation.data.layers === '' ? 'None' : armorLocation.data.layers;
+
+        // determine effective impact (impact - armor)
+        if (aspect === 'Blunt') {
+            result.armorValue = armorLocation.data.blunt;
+        } else if (aspect === 'Edged') {
+            result.armorValue = armorLocation.data.edged;
+        } else if (aspect === 'Piercing') {
+            result.armorValue = armorLocation.data.piercing;
+        } else {
+            result.armorValue = armorLocation.data.fire;
+        }
+        result.effectiveImpact = Math.max(impact - result.armorValue, 0);
+
+        // Determine Injury Level
+        if (result.effectiveImpact === 0) {
+            result.injuryLevelText = 'NA';
+        } else if (result.effectiveImpact >= 17) {
+            result.injuryLevelText = armorLocation.data.effectiveImpact.ei17;
+        } else if (result.effectiveImpact >= 13) {
+            result.injuryLevelText = armorLocation.data.effectiveImpact.ei13;
+        } else if (result.effectiveImpact >= 9) {
+            result.injuryLevelText = armorLocation.data.effectiveImpact.ei9;
+        } else if (result.effectiveImpact >= 5) {
+            result.injuryLevelText = armorLocation.data.effectiveImpact.ei5;
+        } else {
+            result.injuryLevelText = armorLocation.data.effectiveImpact.ei1;
+        }
+
+        // Calculate injury level and whether it is a kill shot.
+        // Convert all 'K4' and 'K5' to 'G4' and 'G5'
+        switch(result.injuryLevelText) {
+            case 'M1':
+                result.injuryLevel = 1;
+                break;
+
+            case 'S2':
+                result.injuryLevel = 2;
+                break;
+
+            case 'S3':
+                result .injuryLevel = 3;
+                break;
+
+            case 'G4':
+                result.injuryLevel = 4;
+                result.isAmputate = armorLocation.data.isAmputate && (aspect === 'Edged');
+                break;
+
+            case 'K4':
+                result.injuryLevel = 4;
+                result.isKillShot = true;
+                result.isAmputate = armorLocation.data.isAmputate && (aspect === 'Edged');
+                break;
+
+            case 'G5':
+                result.injuryLevel = 5;
+                result.isAmputate = armorLocation.data.isAmputate && (aspect === 'Edged');
+                break;
+
+            case 'K5':
+                result.injuryLevel = 5;
+                result.isKillShot = true;
+                result.isAmputate = armorLocation.data.isAmputate && (aspect === 'Edged');
+                break;
+
+            case 'NA':
+                result.injuryLevel = 0;
+                break;
+        }
+
+        // Either mark as injured, or if not injured just immediately return.
+        if (result.injuryLevel > 0) {
+            result.isInjured = true;
+        } else {
+            return result;
+        }
+
+        result.isBleeder = result.injuryLevel >= 4 && result.aspect != 'Fire';
+
+        if (armorLocation.data.isFumble) {
+            result.isFumble = result.injuryLevel >= 4;
+            result.isFumbleRoll = !result.isFumble && result.injuryLevel >= 2;
+        }
+
+        if (armorLocation.data.isStumble) {
+            result.isStumble = result.injuryLevel >= 4;
+            result.isStumbleRoll = !result.isStumble && result.injuryLevel >= 2;
+        }
+
+        return result;
+    }
+
+    static _calcLocation(location, aim, items) {
+        console.log('enter calcLocation');
+        const lcAim = aim.toLowerCase();
+        let result = null;
+        if (location.toLowerCase() === 'random') {
+            // First, get total of all probWeight for a given aim
+            let totalWeight = 0;
+            let numArmorLocations = 0;
+            items.forEach(it => {
+                if (it.data.type === 'armorlocation') {
+                    console.log(`armorlocation ${it.data.name}, weight ${it.data.data.probWeight[lcAim]}`);
+                    totalWeight += it.data.data.probWeight[lcAim];
+                    numArmorLocations++;
+                }
+            });
+
+            console.log(`Total Weight: ${totalWeight}`);
+            // if no armorlocations found, then return null
+            if (numArmorLocations === 0) {
+                return null;
+            }
+
+            // At this point, we know we found armorlocations,
+            // but it is possible that they all have a weight
+            // of zero.  In that case, we will end up just
+            // picking the first one.
+
+            // Assuming we have found some weights, we can now
+            // roll to get a random number.
+            let rollWeight = 0;
+            if (totalWeight > 0) {
+                // now, roll for a random number
+                let roll = new Roll(`1d${totalWeight}`).roll();
+                rollWeight = roll.total;
+            }
+
+            console.log(`Roll Weight: ${rollWeight}`);
+
+            // find the location that meets that number
+            let done = false;
+            items.forEach(it => {
+                if (!done && it.data.type === 'armorlocation') {
+                    rollWeight -= it.data.data.probWeight[lcAim];
+                    console.log(`Found ${it.data.name}, rollWeight=${rollWeight}`);
+                    if (rollWeight <= 0) {
+                        result = it;
+                        done = true;
+                    }
+                }
+            });
+        } else {
+            // Not random, let's just find the designated item
+            items.forEach(it => {
+                if (result === null && it.data.type === 'armorlocation' && it.data.name === location) {
+                    result = it;
+                }
+            });
+        }
+
+        return result;
     }
 
     /**
