@@ -1,9 +1,35 @@
-.sheet-body .inv-stats .inv-stat .inv-stat-label {
-  flex: 0 0 135px;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-  
-.sheet-body .inv-stats .inv-stat .inv-stat-value {
-  flex: 0 0 40px;
+.inventory {
+    h2 {
+        flex: 1;
+        margin: 0;
+        line-height: 36px;
+        font-family: "Modesto Condensed", "Palatino Linotype", serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: #4b4a44;
+        background-color: #bbb;
+        border-top: 2px groove #FFF;
+        border-bottom: 2px groove #FFF;
+        padding: 5px;
+    }
+
+    .inv-stats {
+        .inv-stat {
+            align-items: center;
+
+            .inv-stat-label {
+                flex: 0 0 135px;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+          
+            .inv-stat-value {
+                flex: 0 0 40px;
+                background: #bbb;
+                padding: 2px;
+                text-align: center;
+
+            }
+        }
+    }
 }

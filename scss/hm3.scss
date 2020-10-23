@@ -8,6 +8,8 @@
 @import 'global/window';
 @import 'global/grid';
 @import 'global/flex';
+@import 'global/chat';
+@import 'global/tooltip';
 
 /* Styles limited to hm3 sheets */
 .hm3 {
@@ -23,5 +25,4 @@
   @import 'components/spell';
   @import 'components/armorloc';
   @import 'components/gear';
-  @import 'components/chat';
 }
