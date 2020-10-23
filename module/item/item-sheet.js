@@ -38,6 +38,34 @@ export class HarnMasterItemSheet extends ItemSheet {
   getData() {
     const data = super.getData();
     data.config = CONFIG.HM3;
+
+    // Fill appropriate lists for individual item sheets
+    if (this.item.data.type === 'spell') {
+      // Spells need a list of convocations
+      data.convocations = [];
+      this.actor.itemTypes.magicskill.forEach(it => {
+        data.convocations.push(it.data.name);
+      });
+    } else if (this.item.data.type === 'invocation') {
+      // Invocations need a list of dieties
+      data.dieties = [];
+      this.actor.itemTypes.ritualskill.forEach(it => {
+        data.dieties.push(it.data.name);
+      });
+    } else if (this.item.data.type === 'weapongear') {
+      // weapons need a list of combat skills; but, we
+      // are going to ignore the 'Dodge' and 'Initiative' skills,
+      // since you never want a weapon based on those skills.
+      // Also, we add a "None" item to the front of the list
+      // as a default (in case no other combat skill applies)
+      data.combatSkills = ["None"];
+      this.actor.itemTypes.combatskill.forEach(it => {
+        const lcName = it.data.name.toLowerCase();
+        if (!(lcName === 'initiative' || lcName === 'dodge')) {
+          data.combatSkills.push(it.data.name);
+        }
+      });
+    }
     return data;
   }
 
