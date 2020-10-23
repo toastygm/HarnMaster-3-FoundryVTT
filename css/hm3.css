@@ -182,7 +182,7 @@
 .hm3 .item-form {
   font-family: "Roboto", sans-serif; }
 
-.hm3 .sheet-header {
+.hm3 .sheet-header-character {
   flex: 0 0 100px;
   overflow: hidden;
   display: flex;
@@ -190,18 +190,42 @@
   flex-wrap: wrap;
   justify-content: flex-start;
   margin-bottom: 10px; }
-  .hm3 .sheet-header .profile-img {
+  .hm3 .sheet-header-character .profile-img {
     flex: 0 0 100px;
     height: 100px;
     margin-right: 10px; }
-  .hm3 .sheet-header .header-fields {
+  .hm3 .sheet-header-character .header-fields {
     flex: 1; }
-  .hm3 .sheet-header h1.charname {
+  .hm3 .sheet-header-character h1.charname {
     height: 50px;
     padding: 0px;
     margin: 5px 0;
     border-bottom: 0; }
-    .hm3 .sheet-header h1.charname input {
+    .hm3 .sheet-header-character h1.charname input {
+      width: 100%;
+      height: 100%;
+      margin: 0; }
+
+.hm3 .sheet-header-creature {
+  flex: 0 0 200px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-bottom: 10px; }
+  .hm3 .sheet-header-creature .profile-img {
+    flex: 0 0 100px;
+    height: 100px;
+    margin-right: 10px; }
+  .hm3 .sheet-header-creature .header-fields {
+    flex: 1; }
+  .hm3 .sheet-header-creature h1.charname {
+    height: 50px;
+    padding: 0px;
+    margin: 5px 0;
+    border-bottom: 0; }
+    .hm3 .sheet-header-creature h1.charname input {
       width: 100%;
       height: 100%;
       margin: 0; }
@@ -262,20 +286,21 @@
   flex: 0 0 25px;
   text-align: center; }
 
+.hm3 .combat h2 {
+  flex: 1;
+  margin: 0;
+  line-height: 36px;
+  font-family: "Modesto Condensed", "Palatino Linotype", serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #4b4a44;
+  background-color: #bbb;
+  border-top: 2px groove #FFF;
+  border-bottom: 2px groove #FFF;
+  padding: 5px; }
+
 .hm3 .combat .combat-stats {
   gap: 2px; }
-  .hm3 .combat .combat-stats h2 {
-    flex: 1;
-    margin: 0;
-    line-height: 36px;
-    font-family: "Modesto Condensed", "Palatino Linotype", serif;
-    font-size: 20px;
-    font-weight: 700;
-    color: #4b4a44;
-    background-color: #bbb;
-    border-top: 2px groove #FFF;
-    border-bottom: 2px groove #FFF;
-    padding: 5px; }
   .hm3 .combat .combat-stats .combat-stat {
     align-items: center; }
     .hm3 .combat .combat-stats .combat-stat .combat-stat-label {
@@ -286,6 +311,9 @@
       flex: 0 0 40px;
       background: #bbb;
       padding: 2px;
+      text-align: center; }
+    .hm3 .combat .combat-stats .combat-stat .combat-stat-input {
+      flex: 0 0 40px;
       text-align: center; }
 
 .hm3 .combat .weapons-list {
