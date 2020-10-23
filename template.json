@@ -153,16 +153,16 @@
       "isAmputate": false,
       "impactType": "custom",
       "effectiveImpact": {
-        "ei1": "NA",
-        "ei5": "NA",
-        "ei9": "NA",
-        "ei13": "NA",
-        "ei17": "NA"
+        "ei1": "M1",
+        "ei5": "S2",
+        "ei9": "S3",
+        "ei13": "G4",
+        "ei17": "G5"
       },
       "probWeight": {
-        "high": 0,
-        "mid": 0,
-        "low": 0
+        "high": 1,
+        "mid": 1,
+        "low": 1
       }
     }
   }
