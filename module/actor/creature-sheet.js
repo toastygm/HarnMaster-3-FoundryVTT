@@ -9,7 +9,7 @@ export class HarnMasterCreatureSheet extends ActorSheet {
     return mergeObject(super.defaultOptions, {
       classes: ["hm3", "sheet", "creature"],
       template: "systems/hm3/templates/actor/creature-sheet.html",
-      width: 620,
+      width: 650,
       height: 600,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "profile" }]
     });

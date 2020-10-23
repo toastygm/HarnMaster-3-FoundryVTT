@@ -105,7 +105,7 @@
                     <div class="skill-ele">EML</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create item" data-type="physicalskill"><i
-                                class="fas fa-plus"></i> Add item</a>
+                                class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 {{#each actor.items as |item id|}}
@@ -139,8 +139,7 @@
                     <div class="skill-ele">EML</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create item" data-type="commskill"><i
-                                class="fas fa-plus"></i>
-                            Add item</a>
+                                class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 {{#each actor.items as |item id|}}
@@ -174,8 +173,7 @@
                     <div class="skill-ele">EML</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create item" data-type="combatskill"><i
-                                class="fas fa-plus"></i>
-                            Add item</a>
+                                class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 {{#each actor.items as |item id|}}
@@ -209,8 +207,7 @@
                     <div class="skill-ele">EML</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create item" data-type="craftskill"><i
-                                class="fas fa-plus"></i>
-                            Add item</a>
+                                class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 {{#each actor.items as |item id|}}
@@ -332,11 +329,14 @@
                     <div class="weapon-blunt">B</div>
                     <div class="weapon-edged">E</div>
                     <div class="weapon-piercing">P</div>
+                    <div class="weapon-attack">AML</div>
+                    <div class="item-dice"></div>
+                    <div class="weapon-defense">DML</div>
+                    <div class="item-dice"></div>
                     <div class="weapon-notes">Notes</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create item" data-type="weapongear"><i
-                                class="fas fa-plus"></i>
-                            Add item</a>
+                                class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 {{#each actor.items as |item id|}}
@@ -354,6 +354,14 @@
                             <div class="weapon-blunt">{{data.blunt}}</div>
                             <div class="weapon-edged">{{data.edged}}</div>
                             <div class="weapon-piercing">{{data.piercing}}</div>
+                            <div class="weapon-attack">{{data.attackMasteryLevel}}</div>
+                            <div class="item-dice">
+                                <a class="std-roll"  data-label="{{item.name}} Attack" data-target="{{data.attackMasteryLevel}}" title="Weapon Attack Roll"><i class="fas fa-dice-d20"></i></a>
+                            </div>
+                            <div class="weapon-defense">{{data.defenseMasteryLevel}}</div>
+                            <div class="item-dice">
+                                <a class="std-roll" data-label="{{item.name}} Defense" data-target="{{data.defenseMasteryLevel}}" title="Weapon Defense Roll"><i class="fas fa-dice-d20"></i></a>
+                            </div>
                             <div class="weapon-notes">{{data.notes}}</div>
                             <div class="item-controls">
                                 <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
@@ -375,8 +383,7 @@
                     <div class="injury-notes">Notes</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create item" data-type="injury"><i
-                                class="fas fa-plus"></i> Add
-                            item</a>
+                                class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 {{#each actor.items as |item id|}}
@@ -412,7 +419,7 @@
                     <div class="armorlocation-notes">Notes</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create item" data-type="armorlocation"><i
-                                class="fas fa-plus"></i> Add item</a>
+                                class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 {{#each actor.items as |item id|}}
@@ -449,8 +456,7 @@
                     <div class="gear-notes">Notes</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create item" data-type="miscgear"><i
-                                class="fas fa-plus"></i> Add
-                            item</a>
+                                class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 {{#each actor.items as |item id|}}
