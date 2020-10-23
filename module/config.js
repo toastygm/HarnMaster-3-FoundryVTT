@@ -37,6 +37,7 @@ HM3.sunsignNames = {
 };
 
 HM3.injuryLocations = {
+    "Custom": {impactType: "custom", probWeight: {"high": 1, "mid": 1, "low": 1}, isStumble: false, isFumble: false, isAmputate: false, effectiveImpact: { ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "G5"}},
     "Skull": {impactType: "skull", probWeight: {"high": 15, "mid": 5, "low": 0}, isStumble: false, isFumble: false, isAmputate: false, effectiveImpact: { ei1: "M1", ei5: "S2", ei9: "S3", ei13: "K4", ei17: "K5"}},
     "Face": {impactType: "face", probWeight: {"high": 15, "mid": 5, "low": 0}, isStumble: false, isFumble: false, isAmputate: false, effectiveImpact: {ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "K5"}},
     "Neck": {impactType: "neck", probWeight: {"high": 15, "mid": 5, "low": 0}, isStumble: false, isFumble: false, isAmputate: true, effectiveImpact: {ei1: "M1", ei5: "S2", ei9: "S3", ei13: "K4", ei17: "K5"}},
