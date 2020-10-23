@@ -1,0 +1,103 @@
+<div class="hm3 chat-card item-card" data-actor-id="{{actorId}}">
+    <header class="card-header flexrow">
+        <h3 class="title">{{location}} Injury</h3>
+    </header>
+
+    {{#unless isRandom}}
+    <div class="card-content notice-body">
+        <span>Location Not Random!</span>
+    </div>
+    {{/unless}}
+
+    <div class="card-content">
+        <span class="label">Aim:</span>
+        <span class="value">{{aim}}</span>
+    </div>
+
+    <div class="card-content">
+        <span class="label">Weapon Aspect:</span>
+        <span class="value">{{aspect}}</span>
+    </div>
+
+    <div class="card-content">
+        <span class="label">Armor Layers (protection):</span>
+        <span class="value">{{armorType}} ({{armorValue}})</span>
+    </div>
+
+    <div class="card-content">
+        <span class="label">Weapon Impact:</span>
+        <span class="value">{{impact}}</span>
+    </div>
+
+     <div class="card-content">
+        <span class="label">Effective Impact:</span>
+        <span class="value">{{impact}} - {{armorValue}} = <strong>{{effectiveImpact}}</strong></span>
+    </div>
+
+    {{#unless isInjured}}
+        <div class="card-content">
+            <span class="label">Injury Level:</span>
+            <span class="value">No Injury</span>
+        </div>
+    {{else}}
+        <div class="card-content">
+            <span class="label">Injury Level:</span>
+            <span class="value">{{injuryLevelText}}</span>
+        </div>
+
+        {{#if addToCharSheet}}
+        <div class="card-content">
+            <span>Injury recorded on character sheet</span>
+        </div>
+        {{/if}}
+        
+        {{#if isBleeder}}
+        <div class="card-content">
+            <span class="note">NOTE: Injury is a bleeder<br/>(Bloodloss must be manually recorded)</span>
+        </div>
+        {{/if}}
+
+        {{#if isFumbleRoll}}
+        <div class="card-content">
+            <span class="note">NOTE: Make a Fumble roll</span>
+        </div>
+        {{/if}}
+
+        {{#if isFumble}}
+        <div class="card-content">
+            <span class="note">NOTE: {{name}} Fumbles (no roll)</span>
+        </div>
+        {{/if}}
+
+        {{#if isStumbleRoll}}
+        <div class="card-content">
+            <span class="note">NOTE: Make a Stumble roll</span>
+        </div>
+        {{/if}}
+
+        {{#if isStumble}}
+        <div class="card-content">
+            <span class="note">NOTE: {{name}} Stumbles (no roll)</span>
+        </div>
+        {{/if}}
+
+        {{#if isAmputate}}
+        <div class="card-content">
+            <span class="note failure-text">NOTE: Roll for Amputation</span>
+        </div>
+        {{/if}}
+
+        {{#if isKillShot}}
+        <div class="card-content notice-header">
+            <span>{{name}} recieved a Kill shot!!</span>
+        </div>
+        <div class="card-content notice-body">
+            <span>Roll against Endurance<br/>
+                to determine if killed.<br/>
+                Recording as Grevious injury<br/>
+                in case not killed.<br/>
+                Good Luck!</span>
+        </div>
+        {{/if}}
+    {{/unless}}
+</div>

@@ -1,7 +1,7 @@
 <form class="{{cssClass}} flexcol" autocomplete="off">
 
     {{!-- Sheet Header --}}
-    <header class="sheet-header">
+    <header class="sheet-header-character">
         <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100" />
         <div class="header-fields">
             <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
@@ -178,7 +178,7 @@
                     {{#if (eq item.type "physicalskill")}}
                         <li class="item flexrow" data-item-id="{{item._id}}">
                             <div class="item-dice">
-                                <a class="std-roll" data-label="{{item.name}} Skill" data-target="{{data.effectiveMasteryLevel}}" title="Skill Roll"><i class="fas fa-dice-d20"></i></a>
+                                <a class="std-roll" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}" title="Skill Roll"><i class="fas fa-dice-d20"></i></a>
                             </div>
                             <h4 class="skill-name">{{item.name}}</h4>
                             <div class="skill-ele">{{data.skillBase}}</div>
@@ -212,7 +212,7 @@
                     {{#if (eq item.type "commskill")}}
                         <li class="item flexrow" data-item-id="{{item._id}}">
                             <div class="item-dice">
-                                <a class="std-roll" data-label="{{item.name}} Skill" data-target="{{data.effectiveMasteryLevel}}" title="Skill Roll"><i class="fas fa-dice-d20"></i></a>
+                                <a class="std-roll" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}" title="Skill Roll"><i class="fas fa-dice-d20"></i></a>
                             </div>
                            <h4 class="skill-name">{{item.name}}</h4>
                             <div class="skill-ele">{{data.skillBase}}</div>
@@ -246,7 +246,7 @@
                     {{#if (eq item.type "combatskill")}}
                         <li class="item flexrow" data-item-id="{{item._id}}">
                             <div class="item-dice">
-                                <a class="std-roll" data-label="{{item.name}} Skill" data-target="{{data.effectiveMasteryLevel}}" title="Skill Roll"><i class="fas fa-dice-d20"></i></a>
+                                <a class="std-roll" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}" title="Skill Roll"><i class="fas fa-dice-d20"></i></a>
                             </div>
                             <h4 class="skill-name">{{item.name}}</h4>
                             <div class="skill-ele">{{data.skillBase}}</div>
@@ -279,7 +279,7 @@
                     {{#if (eq item.type "craftskill")}}
                         <li class="item flexrow" data-item-id="{{item._id}}">
                             <div class="item-dice">
-                                <a class="std-roll" data-label="{{item.name}} Skill" data-target="{{data.effectiveMasteryLevel}}" title="Skill Roll"><i class="fas fa-dice-d20"></i></a>
+                                <a class="std-roll" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}" title="Skill Roll"><i class="fas fa-dice-d20"></i></a>
                             </div>
                             <h4 class="skill-name">{{item.name}}</h4>
                             <div class="skill-ele">{{data.skillBase}}</div>
@@ -312,7 +312,7 @@
                     {{#if (eq item.type "magicskill")}}
                         <li class="item flexrow" data-item-id="{{item._id}}">
                             <div class="item-dice">
-                                <a class="std-roll" data-label="{{item.name}} Convocation Skill" data-target="{{data.effectiveMasteryLevel}}" title="Skill Roll"><i class="fas fa-dice-d20"></i></a>
+                                <a class="std-roll" data-label="{{item.name}} Convocation Skill Test" data-target="{{data.effectiveMasteryLevel}}" title="Skill Roll"><i class="fas fa-dice-d20"></i></a>
                             </div>
                             <h4 class="skill-name">{{item.name}}</h4>
                             <div class="skill-ele">{{data.skillBase}}</div>
@@ -345,7 +345,7 @@
                     {{#if (eq item.type "ritualskill")}}
                         <li class="item flexrow" data-item-id="{{item._id}}">
                             <div class="item-dice">
-                                <a class="std-roll" data-label="{{item.name}} Ritual Skill" data-target="{{data.effectiveMasteryLevel}}" title="Skill Roll"><i class="fas fa-dice-d20"></i></a>
+                                <a class="std-roll" data-label="{{item.name}} Ritual Skill Test" data-target="{{data.effectiveMasteryLevel}}" title="Skill Roll"><i class="fas fa-dice-d20"></i></a>
                             </div>
                             <h4 class="skill-name">{{item.name}}</h4>
                             <div class="skill-ele">{{data.skillBase}}</div>
@@ -368,7 +368,7 @@
                 <div class="combat-stat flexrow">
                     <div class="item-dice"></div>
                     <label for="data.fatigue" class="combat-stat-label">Fatigue</label>
-                    <input class="combat-stat-value" type="text" name="data.fatigue" value="{{data.fatigue}}" data-dtype="Number" />
+                    <input class="combat-stat-input" type="text" name="data.fatigue" value="{{data.fatigue}}" data-dtype="Number" />
                 </div>
                 <div class="combat-stat flexrow">
                     <div class="item-dice"></div>
@@ -397,7 +397,7 @@
                 </div>
                 <div class="combat-stat flexrow">
                     <div class="item-dice">
-                        <a class="std-roll" data-label="Dodge Skill" data-target="{{data.dodge}}" title="Dodge Roll"><i class="fas fa-dice-d20"></i></a>
+                        <a class="std-roll" data-label="Dodge Roll" data-target="{{data.dodge}}" title="Dodge Roll"><i class="fas fa-dice-d20"></i></a>
                     </div>
                     <label class="combat-stat-label">Dodge</label>
                     <div class="combat-stat-value">{{data.dodge}}</div>
@@ -419,21 +419,29 @@
                 </div>
                 <div class="combat-stat flexrow"></div>
                 <div class="combat-stat flexrow"></div>
+            </div>
+            <div class="combat-stats grid grid-5col">
                 <div class="combat-stat flexrow">
                     <div class="item-dice">
-                        <a class="d6-roll" data-numdice="{{data.universalPenalty}}" data-label="Shock" data-target="{{data.endurance.value}}" title="Shock Roll"><i class="fas fa-dice-d20"></i></a>
+                        <a class="injury-roll" title="Injury Roll"><i class="fas fa-dice-d20"></i></a>
+                    </div>
+                    <label class="combat-stat-label tooltip">Injury<span class="tooltiptext">Calculate my hit location and injury level</span></label>
+                </div>
+                <div class="combat-stat flexrow">
+                    <div class="item-dice">
+                        <a class="d6-roll" data-numdice="{{data.universalPenalty}}" data-label="Shock Roll" data-target="{{data.endurance.value}}" title="Shock Roll"><i class="fas fa-dice-d20"></i></a>
                     </div>
                     <label class="combat-stat-label">Shock</label>
                 </div>
                 <div class="combat-stat flexrow">
                     <div class="item-dice">
-                        <a class="d6-roll" data-numdice="3" data-label="Stumble" data-target="{{data.stumbleTarget}}" title="Stumble Roll"><i class="fas fa-dice-d20"></i></a>
+                        <a class="d6-roll" data-numdice="3" data-label="Stumble Roll" data-target="{{data.stumbleTarget}}" title="Stumble Roll"><i class="fas fa-dice-d20"></i></a>
                     </div>
                     <label class="combat-stat-label">Stumble</label>
                 </div>
                 <div class="combat-stat flexrow">
                     <div class="item-dice">
-                        <a class="d6-roll" data-numdice="3" data-label="Fumble" data-target="{{data.fumbleTarget}}" title="Fumble Roll"><i class="fas fa-dice-d20"></i></a>
+                        <a class="d6-roll" data-numdice="3" data-label="Fumble Roll" data-target="{{data.fumbleTarget}}" title="Fumble Roll"><i class="fas fa-dice-d20"></i></a>
                     </div>
                     <label class="combat-stat-label">Fumble</label>
                 </div>
@@ -441,7 +449,7 @@
                     <div class="item-dice">
                         <a class="damage-roll" data-weapon="" title="Damage Roll"><i class="fas fa-dice-d20"></i></a>
                     </div>
-                    <label class="combat-stat-label">Damage</label>
+                    <label class="combat-stat-label tooltip">Damage<span class="tooltiptext">Roll damage not associated with any specific weapon</span></label>
                 </div>
             </div>
 
@@ -472,7 +480,7 @@
                 {{#each actor.items as |item id|}}
                     {{#if (eq item.type "weapongear")}}
                         <li class="item weapon flexrow" data-item-id="{{item._id}}">
-                            <div class="item-dice">
+                            <div class="weapon-damage">
                                 <a class="damage-roll" data-weapon="{{item.name}}" title="Damage Roll"><i class="fas fa-dice-d20"></i></a>
                             </div>
                             <h4 class="weapon-name">{{item.name}}</h4>
@@ -593,7 +601,7 @@
                     {{#if (eq item.type "spell")}}
                         <li class="item spell flexrow" data-item-id="{{item._id}}">
                             <div class="item-dice">
-                                <a class="std-roll" data-label="{{item.name}} Spell" data-target="{{data.effectiveMasteryLevel}}" title="Spell Casting Roll"><i class="fas fa-dice-d20"></i></a>
+                                <a class="std-roll" data-label="{{item.name}} Spell Test" data-target="{{data.effectiveMasteryLevel}}" title="Spell Casting Roll"><i class="fas fa-dice-d20"></i></a>
                             </div>
                             <h4 class="spell-name">{{item.name}}</h4>
                             <div class="spell-convocation">{{data.convocation}}</div>
@@ -628,7 +636,7 @@
                     {{#if (eq item.type "invocation")}}
                         <li class="item spell flexrow" data-item-id="{{item._id}}">
                             <div class="item-dice">
-                                <a class="std-roll"  data-label="{{item.name}} Invocation" data-target="{{data.effectiveMasteryLevel}}"title="Invocation Roll"><i class="fas fa-dice-d20"></i></a>
+                                <a class="std-roll"  data-label="{{item.name}} Invocation Test" data-target="{{data.effectiveMasteryLevel}}"title="Invocation Roll"><i class="fas fa-dice-d20"></i></a>
                             </div>
                             <h4 class="spell-name">{{item.name}}</h4>
                             <div class="spell-convocation">{{data.diety}}</div>
@@ -662,7 +670,7 @@
                     {{#if (eq item.type "psionic")}}
                         <li class="item psionic flexrow" data-item-id="{{item._id}}">
                             <div class="item-dice">
-                                <a class="std-roll" data-label="{{item.name}} Psionic Talent" data-target="{{data.effectiveMasteryLevel}}"title="Psionic Roll"><i class="fas fa-dice-d20"></i></a>
+                                <a class="std-roll" data-label="{{item.name}} Psionic Talent Test" data-target="{{data.effectiveMasteryLevel}}"title="Psionic Roll"><i class="fas fa-dice-d20"></i></a>
                             </div>
                             <h4 class="psionic-name">{{item.name}}</h4>
                             <div class="psionic-fatigue">{{data.fatigue}}</div>
@@ -685,20 +693,20 @@
             <h2>Inventory Statistics</h2>
             <div class="inv-stats flexcol">
                 <div class="inv-stat flexrow">
-                    <label class="inv-stat-label" for="data.totalWeaponWeight">Weapon Weight</label>
-                    <input class="inv-stat-value" type="text" name="data.totalWeaponWeight" value="{{data.totalWeaponWeight}}" data-dtype="Number" disabled />
+                    <label class="inv-stat-label">Weapon Weight</label>
+                    <div class="inv-stat-value">{{data.totalWeaponWeight}}</div>
                 </div>
                 <div class="inv-stat flexrow">
-                    <label class="inv-stat-label" for="data.totalArmorWeight">Armor Weight</label>
-                    <input class="inv-stat-value" type="text" name="data.totalArmorWeight" value="{{data.totalArmorWeight}}" data-dtype="Number" disabled />
+                    <label class="inv-stat-label">Armor Weight</label>
+                    <div class="inv-stat-value">{{data.totalArmorWeight}}</div>
                 </div>
                 <div class="inv-stat flexrow">
-                    <label class="inv-stat-label" for="data.totalMiscGearWeight">Misc Gear Weight</label>
-                    <input class="inv-stat-value" type="text" name="data.totalMiscGearWeight" value="{{data.totalMiscGearWeight}}" data-dtype="Number" disabled />
+                    <label class="inv-stat-label">Misc Gear Weight</label>
+                    <div class="inv-stat-value">{{data.totalMiscGearWeight}}</div>
                 </div>
                 <div class="inv-stat flexrow">
-                    <label class="inv-stat-label" for="data.totalGearWeight">Total Weight</label>
-                    <input class="inv-stat-value" type="text" name="data.totalGearWeight" value="{{data.totalGearWeight}}" data-dtype="Number" disabled />
+                    <label class="inv-stat-label">Total Weight</label>
+                    <div class="inv-stat-value">{{data.totalGearWeight}}</div>
                 </div>
             </div>
 

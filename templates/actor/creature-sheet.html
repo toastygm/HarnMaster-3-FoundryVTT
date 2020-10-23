@@ -1,7 +1,7 @@
 <form class="{{cssClass}} flexcol" autocomplete="off">
 
     {{!-- Sheet Header --}}
-    <header class="sheet-header">
+    <header class="sheet-header-creature">
         <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100" />
         <div class="header-fields">
             <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
@@ -105,14 +105,14 @@
                     <div class="skill-ele">EML</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create item" data-type="physicalskill"><i
-                                class="fas fa-plus"></i> Add item</a>
+                                class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 {{#each actor.items as |item id|}}
                     {{#if (eq item.type "physicalskill")}}
                         <li class="item flexrow" data-item-id="{{item._id}}">
                             <div class="item-dice">
-                                <a class="std-roll" data-label="{{item.name}} Skill" data-target="{{data.effectiveMasteryLevel}}" title="Skill Roll"><i class="fas fa-dice-d20"></i></a>
+                                <a class="std-roll" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}" title="Skill Roll"><i class="fas fa-dice-d20"></i></a>
                             </div>
                             <h4 class="skill-name">{{item.name}}</h4>
                             <div class="skill-ele">{{data.skillBase}}</div>
@@ -139,15 +139,14 @@
                     <div class="skill-ele">EML</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create item" data-type="commskill"><i
-                                class="fas fa-plus"></i>
-                            Add item</a>
+                                class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 {{#each actor.items as |item id|}}
                     {{#if (eq item.type "commskill")}}
                         <li class="item flexrow" data-item-id="{{item._id}}">
                             <div class="item-dice">
-                                <a class="std-roll" data-label="{{item.name}} Skill" data-target="{{data.effectiveMasteryLevel}}" title="Skill Roll"><i class="fas fa-dice-d20"></i></a>
+                                <a class="std-roll" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}" title="Skill Roll"><i class="fas fa-dice-d20"></i></a>
                             </div>
                             <h4 class="skill-name">{{item.name}}</h4>
                             <div class="skill-ele">{{data.skillBase}}</div>
@@ -174,15 +173,14 @@
                     <div class="skill-ele">EML</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create item" data-type="combatskill"><i
-                                class="fas fa-plus"></i>
-                            Add item</a>
+                                class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 {{#each actor.items as |item id|}}
                     {{#if (eq item.type "combatskill")}}
                         <li class="item flexrow" data-item-id="{{item._id}}">
                             <div class="item-dice">
-                                <a class="std-roll" data-label="{{item.name}} Skill" data-target="{{data.effectiveMasteryLevel}}" title="Skill Roll"><i class="fas fa-dice-d20"></i></a>
+                                <a class="std-roll" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}" title="Skill Roll"><i class="fas fa-dice-d20"></i></a>
                             </div>
                             <h4 class="skill-name">{{item.name}}</h4>
                             <div class="skill-ele">{{data.skillBase}}</div>
@@ -209,15 +207,14 @@
                     <div class="skill-ele">EML</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create item" data-type="craftskill"><i
-                                class="fas fa-plus"></i>
-                            Add item</a>
+                                class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 {{#each actor.items as |item id|}}
                     {{#if (eq item.type "craftskill")}}
                         <li class="item flexrow" data-item-id="{{item._id}}">
                             <div class="item-dice">
-                                <a class="std-roll" data-label="{{item.name}} Skill" data-target="{{data.effectiveMasteryLevel}}" title="Skill Roll"><i class="fas fa-dice-d20"></i></a>
+                                <a class="std-roll" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}" title="Skill Roll"><i class="fas fa-dice-d20"></i></a>
                             </div>
                             <h4 class="skill-name">{{item.name}}</h4>
                             <div class="skill-ele">{{data.skillBase}}</div>
@@ -240,7 +237,7 @@
                 <div class="combat-stat flexrow">
                     <div class="item-dice"></div>
                     <label for="data.fatigue" class="combat-stat-label">Fatigue</label>
-                    <input class="combat-stat-value" type="text" name="data.fatigue" value="{{data.fatigue}}" data-dtype="Number" />
+                    <input class="combat-stat-input" type="text" name="data.fatigue" value="{{data.fatigue}}" data-dtype="Number" />
                 </div>
                 <div class="combat-stat flexrow">
                     <div class="item-dice"></div>
@@ -265,11 +262,11 @@
                 <div class="combat-stat flexrow">
                     <div class="item-dice"></div>
                     <label for="data.move" class="combat-stat-label">Move</label>
-                    <input class="combat-stat-value" type="text" name="data.move" value="{{data.move}}" data-dtype="Number" />
+                    <input class="combat-stat-input" type="text" name="data.move" value="{{data.move}}" data-dtype="Number" />
                 </div>
                 <div class="combat-stat flexrow">
                     <div class="item-dice">
-                        <a class="std-roll" data-label="Dodge Skill" data-target="{{data.dodge}}" title="Dodge Roll"><i class="fas fa-dice-d20"></i></a>
+                        <a class="std-roll" data-label="Dodge Roll" data-target="{{data.dodge}}" title="Dodge Roll"><i class="fas fa-dice-d20"></i></a>
                     </div>
                     <label class="combat-stat-label">Dodge</label>
                     <div class="combat-stat-value">{{data.dodge}}</div>
@@ -286,22 +283,29 @@
                     <div class="combat-stat-value">{{data.physicalPenalty}}</div>
                 </div>
                 <div class="combat-stat flexrow"></div>
-                <div class="combat-stat flexrow"></div>
+            </div>
+            <div class="combat-stats grid grid-5col">
                 <div class="combat-stat flexrow">
                     <div class="item-dice">
-                        <a class="d6-roll" data-numdice="{{data.universalPenalty}}" data-label="Shock" data-target="{{data.endurance.value}}" title="Shock Roll"><i class="fas fa-dice-d20"></i></a>
+                        <a class="injury-roll" title="Injury Roll"><i class="fas fa-dice-d20"></i></a>
+                    </div>
+                    <label class="combat-stat-label">Injury</label>
+                </div>
+                <div class="combat-stat flexrow">
+                    <div class="item-dice">
+                        <a class="d6-roll" data-numdice="{{data.universalPenalty}}" data-label="Shock Roll" data-target="{{data.endurance.value}}" title="Shock Roll"><i class="fas fa-dice-d20"></i></a>
                     </div>
                     <label class="combat-stat-label">Shock</label>
                 </div>
                 <div class="combat-stat flexrow">
                     <div class="item-dice">
-                        <a class="d6-roll" data-numdice="3" data-label="Stumble" data-target="{{data.stumbleTarget}}" title="Stumble Roll"><i class="fas fa-dice-d20"></i></a>
+                        <a class="d6-roll" data-numdice="3" data-label="Stumble Roll" data-target="{{data.stumbleTarget}}" title="Stumble Roll"><i class="fas fa-dice-d20"></i></a>
                     </div>
                     <label class="combat-stat-label">Stumble</label>
                 </div>
                 <div class="combat-stat flexrow">
                     <div class="item-dice">
-                        <a class="d6-roll" data-numdice="3" data-label="Fumble" data-target="{{data.fumbleTarget}}" title="Fumble Roll"><i class="fas fa-dice-d20"></i></a>
+                        <a class="d6-roll" data-numdice="3" data-label="Fumble Roll" data-target="{{data.fumbleTarget}}" title="Fumble Roll"><i class="fas fa-dice-d20"></i></a>
                     </div>
                     <label class="combat-stat-label">Fumble</label>
                 </div>
@@ -327,17 +331,20 @@
                     <div class="weapon-blunt">B</div>
                     <div class="weapon-edged">E</div>
                     <div class="weapon-piercing">P</div>
+                    <div class="weapon-attack">AML</div>
+                    <div class="item-dice"></div>
+                    <div class="weapon-defense">DML</div>
+                    <div class="item-dice"></div>
                     <div class="weapon-notes">Notes</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create item" data-type="weapongear"><i
-                                class="fas fa-plus"></i>
-                            Add item</a>
+                                class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 {{#each actor.items as |item id|}}
                     {{#if (eq item.type "weapongear")}}
                         <li class="item weapon flexrow" data-item-id="{{item._id}}">
-                            <div class="item-dice">
+                            <div class="weapon-damage">
                                 <a class="damage-roll" data-weapon="{{item.name}}" title="Damage Roll"><i class="fas fa-dice-d20"></i></a>
                             </div>
                             <h4 class="weapon-name">{{item.name}}</h4>
@@ -349,6 +356,14 @@
                             <div class="weapon-blunt">{{data.blunt}}</div>
                             <div class="weapon-edged">{{data.edged}}</div>
                             <div class="weapon-piercing">{{data.piercing}}</div>
+                            <div class="weapon-attack">{{data.attackMasteryLevel}}</div>
+                            <div class="item-dice">
+                                <a class="std-roll"  data-label="{{item.name}} Attack" data-target="{{data.attackMasteryLevel}}" title="Weapon Attack Roll"><i class="fas fa-dice-d20"></i></a>
+                            </div>
+                            <div class="weapon-defense">{{data.defenseMasteryLevel}}</div>
+                            <div class="item-dice">
+                                <a class="std-roll" data-label="{{item.name}} Defense" data-target="{{data.defenseMasteryLevel}}" title="Weapon Defense Roll"><i class="fas fa-dice-d20"></i></a>
+                            </div>
                             <div class="weapon-notes">{{data.notes}}</div>
                             <div class="item-controls">
                                 <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
@@ -370,8 +385,7 @@
                     <div class="injury-notes">Notes</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create item" data-type="injury"><i
-                                class="fas fa-plus"></i> Add
-                            item</a>
+                                class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 {{#each actor.items as |item id|}}
@@ -407,7 +421,7 @@
                     <div class="armorlocation-notes">Notes</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create item" data-type="armorlocation"><i
-                                class="fas fa-plus"></i> Add item</a>
+                                class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 {{#each actor.items as |item id|}}
@@ -444,8 +458,7 @@
                     <div class="gear-notes">Notes</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create item" data-type="miscgear"><i
-                                class="fas fa-plus"></i> Add
-                            item</a>
+                                class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 {{#each actor.items as |item id|}}

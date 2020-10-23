@@ -1,13 +1,13 @@
-.hm3.chat-card {
+.chat-card {
     font-style: normal;
-    font-size: 12px;
+    font-size: 15px;
 
     .card-header {
         text-align: center;
         padding: 3px 0;
         border-top: 2px groove #FFF;
         border-bottom: 2px groove #FFF;
-        background-color: aqua;
+        background-color: #bbb;
         color: #111;
 
         h3 {
@@ -34,19 +34,55 @@
             margin: 0;
             font-weight: bold;
         }
+
+        .label {
+            font-weight: bold
+        }
     }
 
     .card-footer {
         padding: 3px 0 0;
         border-top: 2px groove #FFF;
-
-        span {
-            border-right: 2px groove #FFF;
-            padding: 0 5px 0 0;
-            font-size: 16px;
-        }
+        text-align: center;
+        font-size: 16px;
     }
 
+    .critical-success-block {
+        background-color: green;
+        color: white;
+    }
+
+    .critical-failure-block {
+        background-color: red;
+        color: white;
+    }
+    
+    .critical-success-text {
+        color: green;
+        font-weight: bold;
+    }
+
+    .critical-failure-text {
+        color: red;
+        font-weight: bold;
+    }
+
+    .note {
+        font-style: italic;
+    }
+
+    .notice-header {
+        border-top: 2px groove;
+        color: red;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .notice-body {
+        color: red;
+        text-align: center;
+    }
+    
     .success-text {
         color: green;
     }
@@ -55,13 +91,8 @@
         color: red;
     }
 
-    .success-block {
-        background-color: green;
-        color: #111;
+    .emphasize-text {
+        font-style: italic;
     }
 
-    .failure-block {
-        background-color: red;
-        color: white;
-    }
 }

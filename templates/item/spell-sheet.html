@@ -10,8 +10,14 @@
     <section class="sheet-body">
         <div class="grid grid-2col">
             <div class="resource">
-                <label class="resource-label">Convocation</label>
-                <input type="text" name="data.convocation" value="{{data.convocation}}" data-dtype="String"/>
+                <label class="resource-label" for="data.convocation">Convocation</label>
+                <select class="resource-value" name="data.convocation" data-dtype="String">
+                    {{#select data.convocation}}
+                    {{#each convocations}}
+                        <option value="{{this}}">{{this}}</option>
+                    {{/each}}
+                    {{/select}}
+                </select>
             </div>
             <div class="resource">
                 <label class="resource-label">Level</label>

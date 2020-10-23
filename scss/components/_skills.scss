@@ -1,4 +1,19 @@
-.skills-list {
+.skills {
+  h2 {
+    flex: 1;
+    margin: 0;
+    line-height: 36px;
+    font-family: "Modesto Condensed", "Palatino Linotype", serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #4b4a44;
+    background-color: #bbb;
+    border-top: 2px groove #FFF;
+    border-bottom: 2px groove #FFF;
+    padding: 5px;
+  }
+
+  .skills-list {
     list-style: none;
     margin: 7px 0;
     padding: 0;
@@ -27,14 +42,14 @@
     .skill-rolls {
       flex: 0 0 10px;
       text-align: left;
-  }
+    }
 
     .skill-name {
       flex: 0 0 200px;
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
-  }
+    }
 
     .skill-ele {
       flex: 0 0 40px;
@@ -45,4 +60,5 @@
       flex: 1 0 45px;
       text-align: right;
     }
-    }
+  }
+}

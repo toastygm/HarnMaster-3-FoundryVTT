@@ -9,7 +9,7 @@ export class HarnMasterCreatureSheet extends ActorSheet {
     return mergeObject(super.defaultOptions, {
       classes: ["hm3", "sheet", "creature"],
       template: "systems/hm3/templates/actor/creature-sheet.html",
-      width: 620,
+      width: 650,
       height: 600,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "profile" }]
     });
@@ -60,6 +60,9 @@ export class HarnMasterCreatureSheet extends ActorSheet {
 
     // Rollable abilities.
     html.find('.rollable').click(this._onRoll.bind(this));
+
+    // Injury Roll
+    html.find('.injury-roll').click(this._onInjuryRoll.bind(this));
   }
 
   /* -------------------------------------------- */
@@ -97,7 +100,7 @@ export class HarnMasterCreatureSheet extends ActorSheet {
    * to the target value.
    * 
    * data-target = target value
-   * data-label = Label Text (will print "Test against <label text>")
+   * data-label = Label Text
    * 
    * @param {Event} event 
    */
@@ -118,7 +121,7 @@ export class HarnMasterCreatureSheet extends ActorSheet {
    * 
    * data-numdice = number of d6 to roll
    * data-target = target value
-   * data-label = Label Text (will print "Test against <label text>")
+   * data-label = Label Text
    * 
    * @param {Event} event 
    */
@@ -145,6 +148,19 @@ export class HarnMasterCreatureSheet extends ActorSheet {
   _onDamageRoll(event) {
     event.preventDefault();
     this.actor.damageRoll(event.currentTarget.dataset.weapon);
+  }
+
+  /**
+   * Handle injury rolls.  An injury roll is a randomly determined
+   * location, taking the impact and checking against the armor at
+   * that location to arrive at effective impact, and then determining
+   * injury level and other effects based on the result.
+   * 
+   * @param {Event} event 
+   */
+  _onInjuryRoll(event) {
+    event.preventDefault();
+    this.actor.injuryRoll();
   }
 
   /**

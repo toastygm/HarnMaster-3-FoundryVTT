@@ -46,8 +46,14 @@
                 <input type="text" name="data.piercing" value="{{data.piercing}}" data-dtype="Number"/>
             </div>
             <div class="resource">
-                <label class="resource-label">Associated Skill</label>
-                <input type="text" name="data.assocSkill" value="{{data.assocSkill}}" data-dtype="String"/>
+                <label class="resource-label" for="data.assocSkill">Associated Skill</label>
+                <select class="resource-value" name="data.assocSkill" data-dtype="String">
+                    {{#select data.assocSkill}}
+                    {{#each combatSkills}}
+                        <option value="{{this}}">{{this}}</option>
+                    {{/each}}
+                    {{/select}}
+                </select>
             </div>
             <div class="resource">
                 <label class="resource-label">Notes</label>
