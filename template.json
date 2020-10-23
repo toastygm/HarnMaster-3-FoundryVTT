@@ -124,7 +124,7 @@
       "piercing": 0,
       "attackMasteryLevel": 0,
       "defenseMasteryLevel": 0,
-      "assocSkill": ""
+      "assocSkill": "None"
     },
     "armorgear": {
       "templates": ["base", "gear"],
