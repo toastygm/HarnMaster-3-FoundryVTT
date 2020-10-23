@@ -4,8 +4,8 @@
     </header>
 
     {{#unless isRandom}}
-    <div class="card-content">
-        <h3><strong>Location Not Random!</strong></h3>
+    <div class="card-content notice-body">
+        <span>Location Not Random!</span>
     </div>
     {{/unless}}
 
@@ -53,47 +53,50 @@
         
         {{#if isBleeder}}
         <div class="card-content">
-            <span>NOTE: Injury is a bleeder</span>
-            <span>(Bloodloss must be manually recorded)</span>
+            <span class="note">NOTE: Injury is a bleeder<br/>(Bloodloss must be manually recorded)</span>
         </div>
         {{/if}}
 
         {{#if isFumbleRoll}}
         <div class="card-content">
-            <span>NOTE: Make a Fumble roll</span>
+            <span class="note">NOTE: Make a Fumble roll</span>
         </div>
         {{/if}}
 
         {{#if isFumble}}
         <div class="card-content">
-            <span>NOTE: {{name}} Fumbles (no roll)</span>
+            <span class="note">NOTE: {{name}} Fumbles (no roll)</span>
         </div>
         {{/if}}
 
         {{#if isStumbleRoll}}
         <div class="card-content">
-            <span>NOTE: Make a Stumble roll</span>
+            <span class="note">NOTE: Make a Stumble roll</span>
         </div>
         {{/if}}
 
         {{#if isStumble}}
         <div class="card-content">
-            <span>NOTE: {{name}} Stumbles (no roll)</span>
+            <span class="note">NOTE: {{name}} Stumbles (no roll)</span>
         </div>
         {{/if}}
 
         {{#if isAmputate}}
         <div class="card-content">
-            <span>NOTE: Roll for Amputation</span>
+            <span class="note failure-text">NOTE: Roll for Amputation</span>
         </div>
         {{/if}}
 
         {{#if isKillShot}}
-        <div class="card-content">
-            <span><br/><strong>{{name}} recieved a Kill shot!!</strong><br/></span>
-            <span>Roll against Endurance to determine if killed<br/></span>
-            <span>Recording as Grevious injury in case not killed<br/></span>
-            <span>Good Luck!</span>
+        <div class="card-content notice-header">
+            <span>{{name}} recieved a Kill shot!!</span>
+        </div>
+        <div class="card-content notice-body">
+            <span>Roll against Endurance<br/>
+                to determine if killed.<br/>
+                Recording as Grevious injury<br/>
+                in case not killed.<br/>
+                Good Luck!</span>
         </div>
         {{/if}}
     {{/unless}}

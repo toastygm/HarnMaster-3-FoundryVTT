@@ -13,6 +13,7 @@
         <span class="value">{{weaponAspect}} (base={{weaponImpact}})</span>
     </div>
 
+    {{#if (ne addlWeaponImpact 0)}}
     <div class="card-content">
         <span class="label">Additional Damage:</span>
         <span class="value">{{addlWeaponImpact}}</span>
@@ -22,4 +23,10 @@
         <span class="label">Impact (Base + Addl + Roll):</span>
         <span class="value">{{weaponImpact}} + {{addlWeaponImpact}} + {{rollValue}} = <strong>{{totalImpact}}</strong></span>
     </div>
+    {{else}}
+    <div class="card-content">
+        <span class="label">Impact (Base + Roll):</span>
+        <span class="value">{{weaponImpact}} + {{rollValue}} = <strong>{{totalImpact}}</strong></span>
+    </div>
+    {{/if}}
 </div>
