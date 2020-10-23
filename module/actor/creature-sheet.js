@@ -100,7 +100,7 @@ export class HarnMasterCreatureSheet extends ActorSheet {
    * to the target value.
    * 
    * data-target = target value
-   * data-label = Label Text (will print "Test against <label text>")
+   * data-label = Label Text
    * 
    * @param {Event} event 
    */
@@ -121,7 +121,7 @@ export class HarnMasterCreatureSheet extends ActorSheet {
    * 
    * data-numdice = number of d6 to roll
    * data-target = target value
-   * data-label = Label Text (will print "Test against <label text>")
+   * data-label = Label Text
    * 
    * @param {Event} event 
    */
