@@ -1,20 +1,20 @@
 .combat {
+    h2 {
+        flex: 1;
+        margin: 0;
+        line-height: 36px;
+        font-family: "Modesto Condensed", "Palatino Linotype", serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: #4b4a44;
+        background-color: #bbb;
+        border-top: 2px groove #FFF;
+        border-bottom: 2px groove #FFF;
+        padding: 5px;
+    }
+
     .combat-stats {
         gap: 2px;
-
-        h2 {
-            flex: 1;
-            margin: 0;
-            line-height: 36px;
-            font-family: "Modesto Condensed", "Palatino Linotype", serif;
-            font-size: 20px;
-            font-weight: 700;
-            color: #4b4a44;
-            background-color: #bbb;
-            border-top: 2px groove #FFF;
-            border-bottom: 2px groove #FFF;
-            padding: 5px;
-        }
 
         .combat-stat {
             align-items: center;
@@ -29,6 +29,11 @@
                 flex: 0 0 40px;
                 background: #bbb;
                 padding: 2px;
+                text-align: center;
+            }
+
+            .combat-stat-input {
+                flex: 0 0 40px;
                 text-align: center;
             }
         }
