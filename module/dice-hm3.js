@@ -24,7 +24,7 @@ export class DiceHM3 {
         const dialogOptions = {
             target: rollData.target,
             label: rollData.label,
-            modifier: rollData.modifier,
+            modifier: 0,
             data: rollData.actorData
         };
 
@@ -46,7 +46,8 @@ export class DiceHM3 {
         const chatTemplateData = {
             title: rollData.label,
             origTarget: rollData.target,
-            modifier: roll.modifier,
+            modifier: Math.abs(roll.modifier),
+            plusMinus: roll.modifier < 0 ? '-' : '+',
             modifiedTarget: roll.target,
             isSuccess: roll.isSuccess,
             isCritical: roll.isCritical,

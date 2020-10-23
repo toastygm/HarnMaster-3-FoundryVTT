@@ -16,7 +16,7 @@
 
     <div class="card-content">
         <span class="label">Effective Target:</span>
-        <span class="value">{{origTarget}} - {{modifier}} = <strong>{{modifiedTarget}}</strong></span>
+        <span class="value">{{origTarget}} {{plusMinus}} {{modifier}} = <strong>{{modifiedTarget}}</strong></span>
     </div>
     {{else}}
     <div class="card-content">
@@ -34,19 +34,26 @@
         {{/if}}
     </div>
 
-    <footer class="card-footer">
-        {{#if isSuccess}}
-            {{#if isCritical}}
-                <span class="critical-success-block">{{description}}</span>
-            {{else}}
-                <span class="success-text">{{description}}</span>
-            {{/if}}
+    {{#if isSuccess}}
+        {{#if isCritical}}
+        <footer class="card-footer critical-success-block">
+            <span>{{description}}</span>
+        </footer>
         {{else}}
-            {{#if isCritical}}
-                <span class="critical-failure-block">{{description}}</span>
-            {{else}}
-                <span class="failure-text">{{description}}</span>
-            {{/if}}
+        <footer class="card-footer success-text">
+            <span>{{description}}</span>
+        </footer>
         {{/if}}
+    {{else}}
+        {{#if isCritical}}
+        <footer class="card-footer critical-failure-block">
+            <span>{{description}}</span>
+        </footer>
+        {{else}}
+        <footer class="card-footer failure-text">
+            <span>{{description}}</span>
+        </footer>
+        {{/if}}
+    {{/if}}
     </footer>
 </div>
