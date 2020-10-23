@@ -49,6 +49,7 @@ export class DiceHM3 {
             modifier: roll.modifier,
             modifiedTarget: roll.target,
             isSuccess: roll.isSuccess,
+            isCritical: roll.isCritical,
             rollValue: roll.rollObj.total,
             description: roll.description
         };
@@ -340,11 +341,12 @@ export class DiceHM3 {
                     injuryButton: {
                         label: "Determine Injury",
                         callback: html => {
-                            const formLocation = html[0].querySelector("form").location.value;
-                            const formImpact = html[0].querySelector("form").impact.value;
-                            const formAspect = html[0].querySelector("form").aspect.value;
-                            const formAim = html[0].querySelector("form").aim.value;
-                            const formAddToCharSheet = html[0].querySelector("form").addToCharSheet.value;
+                            const form = html[0].querySelector("form");
+                            const formLocation = form.location.value;
+                            const formImpact = form.impact.value;
+                            const formAspect = form.aspect.value;
+                            const formAim = form.aim.value;
+                            const formAddToCharSheet = form.addToCharSheet.checked;
                             resolve(DiceHM3._calcInjury(formLocation, formImpact, formAspect, 
                                 formAddToCharSheet, formAim, dialogOptions));
                         }
