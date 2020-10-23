@@ -1,8 +1,9 @@
-<div class="hm3 chat-card item-card" data-actor-id="{{actorId}}">
+<div class="chat-card item-card" data-actor-id="{{actorId}}">
     <header class="card-header flexrow">
         <h3 class="title">{{title}}</h3>
     </header>
 
+    {{#if (gt modifier 0)}}
     <div class="card-content">
         <span class="label">Original Target:</span>
         <span class="value">{{origTarget}}</span>
@@ -14,26 +15,38 @@
     </div>
 
     <div class="card-content">
-        <span class="label">Modified Target:</span>
+        <span class="label">Effective Target:</span>
+        <span class="value">{{origTarget}} - {{modifier}} = <strong>{{modifiedTarget}}</strong></span>
+    </div>
+    {{else}}
+    <div class="card-content">
+        <span class="label">Target:</span>
         <span class="value">{{modifiedTarget}}</span>
     </div>
+    {{/if}}
 
     <div class="card-content">
         <span class="label">Roll:</span>
         {{#if isSuccess}}
-        <span class="value success-text">
+            <span class="value success-text">{{rollValue}}</span>
         {{else}}
-        <span class="value failure-text">
+            <span class="value failure-text">{{rollValue}}</span>
         {{/if}}
-        {{rollValue}}</span>
     </div>
 
     <footer class="card-footer">
         {{#if isSuccess}}
-        <span class="success-block">
+            {{#if isCritical}}
+                <span class="critical-success-block">{{description}}</span>
+            {{else}}
+                <span class="success-text">{{description}}</span>
+            {{/if}}
         {{else}}
-        <span class="failure-block">
+            {{#if isCritical}}
+                <span class="critical-failure-block">{{description}}</span>
+            {{else}}
+                <span class="failure-text">{{description}}</span>
+            {{/if}}
         {{/if}}
-        {{description}}</span>
     </footer>
 </div>
