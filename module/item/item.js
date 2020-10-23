@@ -1,3 +1,5 @@
+import { HM3 } from "../config.js";
+
 /**
  * Extend the basic Item with some very simple modifications.
  * @extends {Item}
@@ -20,6 +22,15 @@ export class HarnMasterItem extends Item {
   }
 
   _prepareArmorLocationData(itemData) {
+    // If impactType isn't custom, then set all properties from the selected impactType
+    if (itemData.data.impactType != "custom") {
+      Object.keys(HM3.injuryLocations).forEach(key => {
+        if (HM3.injuryLocations[key].impactType === itemData.data.impactType) {
+          mergeObject(itemData.data, HM3.injuryLocations[key]);
+        }
+      });
+    }
+
     if (isNaN(itemData.data.probWeight['low'])) {
       itemData.data.probWeight['low'] = 0;
     }
