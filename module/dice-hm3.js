@@ -236,12 +236,13 @@ export class DiceHM3 {
      */
     static async injuryRoll (rollData) {
         
-        let hitLocations = DiceHM3._getHitLocations(rollData.items);
+        let hitLocations = DiceHM3._getHitLocations(rollData.actor.items);
 
         const dialogOptions = {
             hitLocations: hitLocations,
-            data: rollData.data,
-            items: rollData.items
+            data: rollData.actor.data,
+            items: rollData.actor.items,
+            name: rollData.actor.name
         };
 
         // Create the Roll instance
@@ -250,13 +251,15 @@ export class DiceHM3 {
         // If user cancelled the roll, then return immediately
         if (!result) return null;
 
+        if (result.addToCharSheet) {
+            DiceHM3.createInjury(rollData.actor, result);
+        }
+
         // Prepare for Chat Message
         const chatTemplate = 'systems/hm3/templates/chat/injury-card.html';
 
         const chatTemplateData = mergeObject({title: `${rollData.name} Injury`}, result);
 
-        console.log(result);
-        console.log(chatTemplateData);
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
@@ -277,6 +280,26 @@ export class DiceHM3 {
         return result;
     }
     
+    static createInjury(actor, result) {
+        if (result.injuryLevel === 0) return;
+
+        let injuryData = {};
+        mergeObject(injuryData, game.system.model.Item.injury);
+
+        injuryData.injuryLevel = result.injuryLevel;
+        if (injuryData.injuryLevel === 1) {
+            injuryData.severity = 'M';
+        } else if (injuryData.injuryLevel <= 3) {
+            injuryData.severity = 'S';
+        } else {
+            injuryData.severity = 'G';
+        }
+        injuryData.healRate = 0;  // until it is tended, we can't determine HR
+        let item = actor.createOwnedItem({name: result.location, type: 'injury', data: injuryData});
+
+        return item;
+    }
+
     static _getHitLocations(items) {
         // Initialize list with an indicator for a Random roll
         let hitLocations = ['Random'];
@@ -302,6 +325,7 @@ export class DiceHM3 {
             location: 'Random',
             impact: 0,
             aspect: 'Blunt',
+            addToCharSheet: true,
             hitLocations: dialogOptions.hitLocations
         };
 
@@ -320,7 +344,9 @@ export class DiceHM3 {
                             const formImpact = html[0].querySelector("form").impact.value;
                             const formAspect = html[0].querySelector("form").aspect.value;
                             const formAim = html[0].querySelector("form").aim.value;
-                            resolve(DiceHM3._calcInjury(formLocation, formImpact, formAspect, formAim, dialogOptions));
+                            const formAddToCharSheet = html[0].querySelector("form").addToCharSheet.value;
+                            resolve(DiceHM3._calcInjury(formLocation, formImpact, formAspect, 
+                                formAddToCharSheet, formAim, dialogOptions));
                         }
                     }
                 },
@@ -337,13 +363,14 @@ export class DiceHM3 {
      * @param {String} location 
      * @param {Number} impact 
      * @param {String} aspect 
+     * @param {Boolean} addToCharSheet
      * @param {String} aim 
      * @param {Object} dialogOptions 
      */
-    static _calcInjury(location, impact, aspect, aim, dialogOptions) {
-        console.log(`Enter _calcInjury: location: ${location}, impact: ${impact}, aspect: ${aspect}, aim: ${aim}`)
+    static _calcInjury(location, impact, aspect, addToCharSheet, aim, dialogOptions) {
         const result = {
             isRandom: location === 'Random',
+            name: dialogOptions.name,
             aim: aim,
             aspect: aspect,
             location: location,
@@ -360,7 +387,8 @@ export class DiceHM3 {
             isStumbleRoll: false,
             isStumble: false,
             isAmputate: false,
-            isKillShot: false
+            isKillShot: false,
+            addToCharSheet: addToCharSheet
         };
 
         // determine location of injury
@@ -370,7 +398,6 @@ export class DiceHM3 {
         // Just to make life simpler, get the data element which is what we really care about.
         armorLocation = armorLocation.data;
 
-        console.log(armorLocation);
         result.location = armorLocation.name;
         result.armorType = armorLocation.data.layers === '' ? 'None' : armorLocation.data.layers;
 
@@ -466,7 +493,6 @@ export class DiceHM3 {
     }
 
     static _calcLocation(location, aim, items) {
-        console.log('enter calcLocation');
         const lcAim = aim.toLowerCase();
         let result = null;
         if (location.toLowerCase() === 'random') {
@@ -475,13 +501,11 @@ export class DiceHM3 {
             let numArmorLocations = 0;
             items.forEach(it => {
                 if (it.data.type === 'armorlocation') {
-                    console.log(`armorlocation ${it.data.name}, weight ${it.data.data.probWeight[lcAim]}`);
                     totalWeight += it.data.data.probWeight[lcAim];
                     numArmorLocations++;
                 }
             });
 
-            console.log(`Total Weight: ${totalWeight}`);
             // if no armorlocations found, then return null
             if (numArmorLocations === 0) {
                 return null;
@@ -501,14 +525,11 @@ export class DiceHM3 {
                 rollWeight = roll.total;
             }
 
-            console.log(`Roll Weight: ${rollWeight}`);
-
             // find the location that meets that number
             let done = false;
             items.forEach(it => {
                 if (!done && it.data.type === 'armorlocation') {
                     rollWeight -= it.data.data.probWeight[lcAim];
-                    console.log(`Found ${it.data.name}, rollWeight=${rollWeight}`);
                     if (rollWeight <= 0) {
                         result = it;
                         done = true;
