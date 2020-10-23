@@ -294,7 +294,7 @@ export class HarnMasterActor extends Actor {
     let combatSkills = {};
     this.data.items.forEach(it => {
       if (it.type === 'combatskill') {
-        combatSkills[it.name.toLowerCase()] = {
+        combatSkills[it.name] = {
           'name': it.name,
           'eml': it.data.effectiveMasteryLevel
         };
@@ -304,29 +304,34 @@ export class HarnMasterActor extends Actor {
     this.data.items.forEach(it => {
       if (it.type === 'weapongear') {
         // Reset mastery levels in case nothing matches
-        it.data.attackMasteryLevel = 0;
-        it.data.defenseMasteryLevel = 0;
-        let lcWeaponName = it.name.toLowerCase();
+        it.data.attackMasteryLevel = 5;
+        it.data.defenseMasteryLevel = 5;
+        let weaponName = it.name;
 
-        // If associated skill is blank, see if there is a skill with the
+        // If associated skill is 'None', see if there is a skill with the
         // same name as the weapon; if so, then set it to that skill.
-        if (it.data.assocSkill === '') {
+        if (it.data.assocSkill === 'None') {
           // If no combat skill with this name exists, search for next weapon
-          if (typeof combatSkills[lcWeaponName] === 'undefined') return;
+          if (typeof combatSkills[weaponName] === 'undefined') return;
 
           // A matching skill was found, set associated Skill to that combat skill
-          it.data.assocSkill = combatSkills[lcWeaponName].name;
+          it.data.assocSkill = combatSkills[weaponName].name;
         }
-
+        
         // At this point, we know the Associated Skill is not blank. If that
         // associated skill is in our combat skills list, get EML from there
         // and then calculate AML and DML.
-        let lcAssocSkill = it.data.assocSkill.toLowerCase();
-        if (typeof combatSkills[lcAssocSkill] != 'undefined') {
-          let skillEml = combatSkills[lcAssocSkill].eml;
+        let assocSkill = it.data.assocSkill;
+        if (typeof combatSkills[assocSkill] != 'undefined') {
+          let skillEml = combatSkills[assocSkill].eml;
           it.data.attackMasteryLevel = skillEml + it.data.attack;
           it.data.defenseMasteryLevel = skillEml + it.data.defense;
         }
+
+        // No matter what, we always have at least a 5% chance of attacking or
+        // defending.
+        it.data.defenseMasteryLevel = Math.max(it.data.defenseMasteryLevel, 5);
+        it.data.attackMasteryLevel = Math.max(it.data.attackMasteryLevel, 5);
       }
     });
   }
@@ -477,7 +482,7 @@ export class HarnMasterActor extends Actor {
   stdRoll(label, options={}) {
 
     const rollData = {
-      label: `${label} Test`,
+      label: label,
       target: options.target,
       fastforward: options.fastforward,
       data: this.data,
@@ -490,7 +495,7 @@ export class HarnMasterActor extends Actor {
   d6Roll(label, options={}) {
 
     const rollData = {
-      label: `${label} Test`,
+      label: label,
       target: options.target,
       numdice: options.numdice,
       fastforward: options.fastforward,
