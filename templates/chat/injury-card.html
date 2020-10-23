@@ -1,6 +1,6 @@
 <div class="hm3 chat-card item-card" data-actor-id="{{actorId}}">
     <header class="card-header flexrow">
-        <h3 class="title">{{title}}</h3>
+        <h3 class="title">{{location}} Injury</h3>
     </header>
 
     {{#unless isRandom}}
@@ -17,11 +17,6 @@
     <div class="card-content">
         <span class="label">Weapon Aspect:</span>
         <span class="value">{{aspect}}</span>
-    </div>
-
-    <div class="card-content">
-        <span class="label">Location:</span>
-        <span class="value">{{location}}</span>
     </div>
 
     <div class="card-content">
@@ -50,10 +45,12 @@
             <span class="value">{{injuryLevelText}}</span>
         </div>
 
+        {{#if addToCharSheet}}
         <div class="card-content">
             <span>Injury recorded on character sheet</span>
         </div>
-
+        {{/if}}
+        
         {{#if isBleeder}}
         <div class="card-content">
             <span>NOTE: Injury is a bleeder</span>
