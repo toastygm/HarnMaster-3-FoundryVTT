@@ -1,7 +1,7 @@
 <form class="{{cssClass}} flexcol" autocomplete="off">
 
     {{!-- Sheet Header --}}
-    <header class="sheet-header">
+    <header class="sheet-header-character">
         <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100" />
         <div class="header-fields">
             <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
@@ -120,7 +120,7 @@
         </div>
 
         {{!-- Injuries Tab --}}
-        <div class="tab injuries" data-group="primary" data-tab="injuries">
+        <div class="tab combat" data-group="primary" data-tab="injuries">
             <!-- Injuries -->
             <h2>Injuries</h2>
             <ol class="injuries-list">
