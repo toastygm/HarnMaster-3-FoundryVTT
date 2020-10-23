@@ -192,7 +192,7 @@ export class HarnMasterCharacterSheet extends ActorSheet {
    */
   _onInjuryRoll(event) {
     event.preventDefault();
-    this.actor.injuryRoll(event.currentTarget.dataset.weapon);
+    this.actor.injuryRoll();
   }
 
   /**

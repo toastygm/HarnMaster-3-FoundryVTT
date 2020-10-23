@@ -515,9 +515,7 @@ export class HarnMasterActor extends Actor {
   injuryRoll() {
 
     const rollData = {
-      data: this.data,
-      items: this.items,
-      name: this.name,
+      actor: this,
       speaker: ChatMessage.getSpeaker({actor: this})
     };
 
