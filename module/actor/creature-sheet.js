@@ -60,6 +60,9 @@ export class HarnMasterCreatureSheet extends ActorSheet {
 
     // Rollable abilities.
     html.find('.rollable').click(this._onRoll.bind(this));
+
+    // Injury Roll
+    html.find('.injury-roll').click(this._onInjuryRoll.bind(this));
   }
 
   /* -------------------------------------------- */
@@ -145,6 +148,19 @@ export class HarnMasterCreatureSheet extends ActorSheet {
   _onDamageRoll(event) {
     event.preventDefault();
     this.actor.damageRoll(event.currentTarget.dataset.weapon);
+  }
+
+  /**
+   * Handle injury rolls.  An injury roll is a randomly determined
+   * location, taking the impact and checking against the armor at
+   * that location to arrive at effective impact, and then determining
+   * injury level and other effects based on the result.
+   * 
+   * @param {Event} event 
+   */
+  _onInjuryRoll(event) {
+    event.preventDefault();
+    this.actor.injuryRoll();
   }
 
   /**
