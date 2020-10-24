@@ -57,8 +57,12 @@ export class DiceHM3 {
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
+            user: game.user._id,
             speaker: rollData.speaker || ChatMessage.getSpeaker(),
-            content: html
+            content: html.trim(),
+            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            sound: CONFIG.sounds.dice,
+            roll: roll.rollObj
         };
 
         const messageOptions = {
@@ -66,7 +70,7 @@ export class DiceHM3 {
         };
 
         // Create a chat message
-        roll.rollObj.toMessage(messageData, messageOptions);
+        await ChatMessage.create(messageData, messageOptions)
     
         return roll;
     }
@@ -93,7 +97,7 @@ export class DiceHM3 {
         return new Promise(resolve => {
             new Dialog({
                 title: dialogOptions.label,
-                content: html,
+                content: html.trim(),
                 buttons: {
                     rollButton: {
                         label: "Roll",
@@ -172,8 +176,12 @@ export class DiceHM3 {
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
+            user: game.user._id,
             speaker: rollData.speaker || ChatMessage.getSpeaker(),
-            content: html
+            content: html.trim(),
+            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            sound: CONFIG.sounds.dice,
+            roll: roll.rollObj
         };
 
         const messageOptions = {
@@ -181,7 +189,7 @@ export class DiceHM3 {
         };
 
         // Create a chat message
-        roll.rollObj.toMessage(messageData, messageOptions);
+        await ChatMessage.create(messageData, messageOptions)
     
         return roll;
     }
@@ -208,7 +216,7 @@ export class DiceHM3 {
         return new Promise(resolve => {
             new Dialog({
                 title: dialogOptions.label,
-                content: html,
+                content: html.trim(),
                 buttons: {
                     rollButton: {
                         label: "Roll",
@@ -266,10 +274,10 @@ export class DiceHM3 {
 
         const messageData = {
             speaker: rollData.speaker || ChatMessage.getSpeaker(),
-            content: html,
+            content: html.trim(),
             user: game.user._id,
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
-            sound: CONFIG.sounds.dice
+            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+            sound: CONFIG.sounds.notify
         };
 
         const messageOptions = {
@@ -277,7 +285,7 @@ export class DiceHM3 {
         };
 
         // Create a chat message
-        ChatMessage.create(messageData, messageOptions);
+        await ChatMessage.create(messageData, messageOptions);
     
         return result;
     }
@@ -337,7 +345,7 @@ export class DiceHM3 {
         return new Promise(resolve => {
             new Dialog({
                 title: dialogOptions.label,
-                content: html,
+                content: html.trim(),
                 buttons: {
                     injuryButton: {
                         label: "Determine Injury",
@@ -602,8 +610,12 @@ export class DiceHM3 {
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
+            user: game.user._id,
             speaker: rollData.speaker || ChatMessage.getSpeaker(),
-            content: html
+            content: html.trim(),
+            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            sound: CONFIG.sounds.dice,
+            roll: roll.rollObj
         };
 
         const messageOptions = {
@@ -611,7 +623,7 @@ export class DiceHM3 {
         };
 
         // Create a chat message
-        roll.rollObj.toMessage(messageData, messageOptions);
+        await ChatMessage.create(messageData, messageOptions)
     
         return roll;
     }
@@ -680,7 +692,7 @@ export class DiceHM3 {
         return new Promise(resolve => {
             new Dialog({
                 title: dialogOptions.label,
-                content: html,
+                content: html.trim(),
                 buttons: {
                     rollButton: {
                         label: "Roll",
