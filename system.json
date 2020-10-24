@@ -3,7 +3,7 @@
   "title": "HarnMaster 3",
   "description": "The HarnMaster 3 system for FoundryVTT!",
   "version": "0.3.1",
-  "minimumCoreVersion": "0.5.5",
+  "minimumCoreVersion": "0.6.5",
   "compatibleCoreVersion": "0.7.5",
   "templateVersion": 2,
   "author": "Tom Rodriguez",
