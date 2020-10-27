@@ -8,10 +8,25 @@
                 <div class="flexrow name-attribute">
                     <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
                 </div>
-                <div class="flexrow header-attributes">
-                    <input class="species" type="text" name="data.species" value="{{data.species}}" data-dtype="String" placeholder="Race"/>
-                    <input class="gender" type="text" name="data.gender" value="{{data.gender}}" data-dtype="String" placeholder="Gender"/>
-                    <input class="occupation" type="text" name="data.occupation" value="{{data.occupation}}" data-dtype="String" placeholder="Occupation" />
+                <div class="header-attributes">
+                    <ol class="flexrow">
+                        <li class="attribute species flexcol">
+                            <label class="label">Race</label>
+                            <input class="value" type="text" name="data.species" value="{{data.species}}" data-dtype="String"/>
+                        </li>
+                        <li class="attribute gender flexcol">
+                            <label class="label">Gender</label>
+                            <input class="value" type="text" name="data.gender" value="{{data.gender}}" data-dtype="String"/>
+                        </li>
+                        <li class="attribute occupation flexcol">
+                            <label class="label">Occupation</label>
+                            <input class="value" type="text" name="data.occupation" value="{{data.occupation}}" data-dtype="String"/>
+                        </li>
+                        <li class="attribute move-base flexcol">
+                            <label class="label">Move Base</label>
+                            <input class="value" type="text" name="data.move.base" value="{{data.move.base}}" data-dtype="Number"/>
+                        </li>
+                    </ol>
                 </div>
             </div>
         </div>
@@ -25,7 +40,6 @@
         <a class="item" data-tab="esoteric">Esoterics</a>
         <a class="item" data-tab="inventory">Gear</a>
         <a class="item" data-tab="biography">Biography</a>
-        <a class="item" data-tab="description">Description</a>
     </nav>
 
     {{!-- Sheet Body --}}
@@ -92,8 +106,11 @@
                         </li>
                     </ul>
                 </div>
-                <div class="profile-description">
-                    {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+                <div class="profile-desc flexcol">
+                    <label class="label">Description</label>
+                    <div class="profile-description">
+                        {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+                    </div>
                 </div>        
             </div>
         </div>
@@ -718,11 +735,6 @@
         {{!-- Biography Tab --}}
         <div class="tab biography" data-group="primary" data-tab="biography">
             {{editor content=data.biography target="data.biography" button=true owner=owner editable=editable}}
-        </div>
-
-        {{!-- Description Tab --}}
-        <div class="tab description" data-group="primary" data-tab="description">
-            {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
         </div>
 
     </section>
