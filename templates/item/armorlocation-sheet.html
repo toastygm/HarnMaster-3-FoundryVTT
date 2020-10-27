@@ -7,59 +7,69 @@
     </header>
 
     {{!-- Sheet Body --}}
-    <section class="sheet-body">
+    <section class="armorlocation sheet-body">
+        <h3 class="header">Basic Armor Settings</h3>
         <div class="grid grid-2col">
-            <div class="resource">
-                <label class="resource-label">Layers</label>
-                <input type="text" name="data.layers" value="{{data.layers}}" data-dtype="String"/>
+            <div class="basic-setting">
+                <label class="label">Layers</label>
+                <input class="value" type="text" name="data.layers" value="{{data.layers}}" data-dtype="String"/>
             </div>
-            <div class="resource">
-                <label class="resource-label">Armor Quality (AQ)</label>
-                <input type="text" name="data.armorQuality" value="{{data.armorQuality}}" data-dtype="Number"/>
+            <div class="basic-setting">
+                <label class="label">Armor Quality (AQ)</label>
+                <input class="value" type="text" name="data.armorQuality" value="{{data.armorQuality}}" data-dtype="Number"/>
             </div>
-            <div class="resource">
-                <label class="resource-label">Blunt</label>
-                <input type="text" name="data.blunt" value="{{data.blunt}}" data-dtype="Number"/>
+        </div>
+        <h3 class="header">Armor Protection</h3>
+        <div class="grid grid-4col">
+            <div class="protection">
+                <label class="label">Blunt</label>
+                <input class="value" type="text" name="data.blunt" value="{{data.blunt}}" data-dtype="Number"/>
             </div>
-            <div class="resource">
-                <label class="resource-label">Edged</label>
-                <input type="text" name="data.edged" value="{{data.edged}}" data-dtype="Number"/>
+            <div class="protection">
+                <label class="label">Edged</label>
+                <input class="value" type="text" name="data.edged" value="{{data.edged}}" data-dtype="Number"/>
             </div>
-            <div class="resource">
-                <label class="resource-label">Piercing</label>
-                <input type="text" name="data.piercing" value="{{data.piercing}}" data-dtype="Number"/>
+            <div class="protection">
+                <label class="label">Piercing</label>
+                <input class="value" type="text" name="data.piercing" value="{{data.piercing}}" data-dtype="Number"/>
             </div>
-            <div class="resource">
-                <label class="resource-label">Fire</label>
-                <input type="text" name="data.fire" value="{{data.fire}}" data-dtype="Number"/>
+            <div class="protection">
+                <label class="label">Fire</label>
+                <input class="value" type="text" name="data.fire" value="{{data.fire}}" data-dtype="Number"/>
             </div>
-            <div class="resource">
-                <label class="resource-label">Prob. Weight High</label>
-                <input type="text" name="data.probWeight.high" value="{{data.probWeight.high}}" data-dtype="Number"/>
+        </div>
+        <h3 class="header">Hit Probability Weights</h3>
+        <div class="weight grid grid-3col">
+            <div class="prob-weight">
+                <label class="label">High Aim</label>
+                <input class="value" type="text" name="data.probWeight.high" value="{{data.probWeight.high}}" data-dtype="Number"/>
             </div>
-            <div class="resource">
-                <label class="resource-label">Prob. Weight Medium</label>
-                <input type="text" name="data.probWeight.mid" value="{{data.probWeight.mid}}" data-dtype="Number"/>
+            <div class="prob-weight">
+                <label class="label">Medium Aim</label>
+                <input class="value" type="text" name="data.probWeight.mid" value="{{data.probWeight.mid}}" data-dtype="Number"/>
             </div>
-            <div class="resource">
-                <label class="resource-label">Prob. Weight Low</label>
-                <input type="text" name="data.probWeight.low" value="{{data.probWeight.low}}" data-dtype="Number"/>
+            <div class="prob-weight">
+                <label class="label">Low Aim</label>
+                <input class="value" type="text" name="data.probWeight.low" value="{{data.probWeight.low}}" data-dtype="Number"/>
             </div>
-            <div class="resource">
-                <label class="resource-label">Fumble</label>
-                <input type="checkbox" name="data.isFumble" value="{{data.isFumble}}" data-dtype="Boolean" {{checked data.isFumble}} />
+        </div>
+        <h3 class="header">Hit Location Settings</h3>
+        <div class="grid grid-4col">
+            <div class="adv-setting">
+                <label class="label">Fumble Risk</label>
+                <input class="value" type="checkbox" name="data.isFumble" value="{{data.isFumble}}" data-dtype="Boolean" {{checked data.isFumble}} />
             </div>
-            <div class="resource">
-                <label class="resource-label">Stumble</label>
-                <input type="checkbox" name="data.isStumble" value="{{data.isStumble}}" data-dtype="Boolean" {{checked data.isStumble}} />
+            <div class="adv-setting">
+                <label class="label">Stumble Risk</label>
+                <input class="value" type="checkbox" name="data.isStumble" value="{{data.isStumble}}" data-dtype="Boolean" {{checked data.isStumble}} />
             </div>
-            <div class="resource">
-                <label class="resource-label">Amputate Risk</label>
-                <input type="checkbox" name="data.isAmputate" value="{{data.isAmputate}}" data-dtype="Boolean" {{checked data.isAmputate}} />
+            <div class="adv-setting">
+                <label class="label">Amputate Risk</label>
+                <input class="value" type="checkbox" name="data.isAmputate" value="{{data.isAmputate}}" data-dtype="Boolean" {{checked data.isAmputate}} />
             </div>
-            <div class="resource">
-                <label for="data.impactType" class="resource-label">Impact Type</label>
-                <select class="resource-value" name="data.impactType">
+            <div class="adv-setting">
+                <label class="label" for="data.impactType">Impact Type</label>
+                <select class="value" name="data.impactType">
                     {{#select data.impactType}}
                     {{#each config.injuryLocations as |value key|}}
                         <option value="{{value.impactType}}">{{key}}</option>
