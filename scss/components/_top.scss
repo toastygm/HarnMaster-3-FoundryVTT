@@ -1,3 +1,69 @@
+.window-content {
+    background: url("../ui/parchment.jpg") repeat;
+    font-size: 13px;
+    color: #191813;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+    height: calc(100% - 2px);
+    border: 1px solid #7a7971;
+    background: rgba(0, 0, 0, 0.05);
+    color: #191813;
+}
+
+input[type="text"]:hover,
+input[type="number"]:hover,
+input[type="text"]:focus,
+input[type="number"]:focus {
+    border: 1px solid #111;
+    box-shadow: 0 0 8px red;
+}
+
+input:disabled,
+select:disabled,
+textarea:disabled {
+    color: #4b4a44;
+}
+
+input:disabled:hover,
+select:disabled:hover,
+textarea:disabled:hover,
+input:disabled:focus,
+select:disabled:focus,
+textarea:disabled:focus {
+    box-shadow: none !important;
+    border: 1px solid transparent !important;
+    outline: none !important;
+}
+
+button {
+    background: rgba(0, 0, 0, 0.1);
+    border: 2px groove #eeede0;
+}
+
+label.checkbox {
+    flex: auto;
+    padding: 0;
+    margin: 0;
+    height: 22px;
+    line-height: 22px;
+    font-size: 11px;
+}
+
+label.checkbox > input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin: 0 2px 0 0;
+    position: relative;
+    top: 4px;
+}
+
+label.checkbox.right > input[type="checkbox"] {
+    margin: 0 0 0 2px;
+}
+
 .sheet {
 
     .window-content {
@@ -61,14 +127,6 @@
     .editor .tox-toolbar-overlord,
     .editor .tox-toolbar__primary {
         background: none;
-    }
-
-    .sheet-header-character {
-        flex: 0 0 100px;
-        border-bottom: 2px groove #eeede0;
-        /* Character Name */
-        /* Profile Image */
-        /* Header Summary Details */
     }
 
     .sheet-header .header-details {

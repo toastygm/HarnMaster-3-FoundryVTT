@@ -2,14 +2,15 @@
   font-family: $font-primary;
 }
 
-.sheet-header-character {
-  flex: 0 0 100px;
+.sheet .sheet-header-character {
+  flex: 0 0 120px;
   overflow: hidden;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-start;
   margin-bottom: 10px;
+  border-bottom: 2px groove #eeede0;
 
   .profile-img {
     flex: 0 0 100px;
@@ -20,6 +21,7 @@
   .header-fields {
     
     .name-attribute {
+      border-bottom: 2px groove #eeede0;
 
       h1.charname {
         height: 50px;
@@ -36,20 +38,42 @@
 
     .header-attributes {
 
+      .attribute {
+        min-height: 40px;
+        margin: 2px;
+
+        .label {
+          font-size: 10px;
+          text-transform: uppercase;
+          font-weight: bold;
+        }
+
+        .value {
+          font-size: 15px;
+          height: calc(100% - 6px)
+        }
+      }
+      
       .species {
-        flex: 0 0 70px;
+        flex: 0 0 80px;
+        border-right: 2px groove #eeede0;
       }
 
       .gender {
-        flex: 0 0 70px;
+        flex: 0 0 80px;
+        border-right: 2px groove #eeede0;
+      }
+
+      .move-base {
+        flex: 0 0 80px;
       }
 
       .occupation {
         flex: 1;
+        border-right: 2px groove #eeede0;
       }
     }
   }
-
 }
 
 .sheet-header-creature {
