@@ -179,6 +179,127 @@
   visibility: visible; }
 
 /* Styles limited to hm3 sheets */
+.hm3 .sheet .window-content {
+  overflow-y: hidden;
+  padding: 5px;
+  background: url("../ui/parchment.jpg") repeat;
+  font-size: 13px;
+  color: #191813; }
+
+.hm3 .sheet .window-content form {
+  height: 100%;
+  overflow: hidden; }
+
+.hm3 .sheet .window-content .tab {
+  height: 100%;
+  overflow-y: auto;
+  align-content: flex-start; }
+
+.hm3 .sheet input[type="text"],
+.hm3 .sheet input[type="number"] {
+  background: none;
+  border: 1px solid transparent; }
+
+.hm3 .sheet input[type="text"]:hover,
+.hm3 .sheet input[type="number"]:hover,
+.hm3 .sheet input[type="text"]:focus,
+.hm3 .sheet input[type="number"]:focus {
+  border: 1px solid #111; }
+
+.hm3 .sheet select {
+  flex: 1;
+  font-size: 12px;
+  height: 22px;
+  background: transparent; }
+
+.hm3 .sheet .editable .rollable:hover {
+  color: #000;
+  text-shadow: 0 0 10px red;
+  cursor: pointer; }
+
+.hm3 .sheet span.sep {
+  flex: none;
+  margin: 0 1px;
+  display: inline;
+  position: relative;
+  color: #7a7971;
+  font-weight: normal; }
+
+.hm3 .sheet .editor {
+  height: 100%; }
+
+.hm3 .sheet .editor .tox-toolbar-overlord,
+.hm3 .sheet .editor .tox-toolbar__primary {
+  background: none; }
+
+.hm3 .sheet .sheet-header-character {
+  flex: 0 0 100px;
+  border-bottom: 2px groove #eeede0;
+  /* Character Name */
+  /* Profile Image */
+  /* Header Summary Details */ }
+
+.hm3 .sheet .sheet-header .header-details {
+  font-size: 20px;
+  font-weight: 700; }
+
+.hm3 .sheet .sheet-header h1 {
+  flex: 1;
+  border-bottom: none;
+  height: 60px;
+  margin: 0;
+  padding: 5px; }
+
+.hm3 .sheet .sheet-header h1 input {
+  display: block;
+  height: 50px;
+  font-size: 32px;
+  margin: 0; }
+
+.hm3 .sheet .sheet-header img.profile {
+  flex: 0 0 100px;
+  max-width: 100px;
+  height: 100px;
+  object-fit: contain;
+  border: none;
+  border-right: 2px groove #eeede0; }
+
+.hm3 .sheet .sheet-header .summary {
+  flex: 0 0 100%;
+  height: 40px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 2px groove #eeede0;
+  border-bottom: none; }
+
+.hm3 .sheet .sheet-header .summary li {
+  height: calc(100% - 6px);
+  float: left;
+  margin: 2px 0;
+  padding: 0;
+  border-right: 2px groove #eeede0;
+  line-height: 34px;
+  color: #4b4a44; }
+
+.hm3 .sheet .sheet-header .summary li:last-child {
+  border-right: none; }
+
+.hm3 .sheet .sheet-navigation {
+  flex: 0 0 30px;
+  margin-bottom: 5px;
+  font-size: 20px;
+  font-weight: 700; }
+
+.hm3 .sheet .sheet-navigation .item {
+  height: 30px;
+  line-height: 32px;
+  margin: 0 24px;
+  border-bottom: 3px solid #b5b3a4; }
+
+.hm3 .sheet .sheet-navigation .item.active {
+  border-bottom: 3px solid #44191A; }
+
 .hm3 .item-form {
   font-family: "Roboto", sans-serif; }
 
@@ -194,17 +315,21 @@
     flex: 0 0 100px;
     height: 100px;
     margin-right: 10px; }
-  .hm3 .sheet-header-character .header-fields {
-    flex: 1; }
-  .hm3 .sheet-header-character h1.charname {
+  .hm3 .sheet-header-character .header-fields .name-attribute h1.charname {
     height: 50px;
     padding: 0px;
     margin: 5px 0;
     border-bottom: 0; }
-    .hm3 .sheet-header-character h1.charname input {
+    .hm3 .sheet-header-character .header-fields .name-attribute h1.charname input {
       width: 100%;
       height: 100%;
       margin: 0; }
+  .hm3 .sheet-header-character .header-fields .header-attributes .species {
+    flex: 0 0 70px; }
+  .hm3 .sheet-header-character .header-fields .header-attributes .gender {
+    flex: 0 0 70px; }
+  .hm3 .sheet-header-character .header-fields .header-attributes .occupation {
+    flex: 1; }
 
 .hm3 .sheet-header-creature {
   flex: 0 0 200px;
@@ -407,29 +532,20 @@
     text-align: center; }
 
 .hm3 .sheet-body .ability-scores {
-  flex: 0 0 120px; }
-  .hm3 .sheet-body .ability-scores .ability {
-    align-items: center; }
-    .hm3 .sheet-body .ability-scores .ability .ability-label {
-      flex: 0 0 40px;
-      font-weight: bold;
-      text-transform: uppercase; }
-    .hm3 .sheet-body .ability-scores .ability .ability-value {
-      flex: 0 0 40px; }
-
-.hm3 .sheet-body .profile-traits-section {
-  flex: 0 0 480px; }
-  .hm3 .sheet-body .profile-traits-section .profile-traits-group {
-    flex: 0 0 200px;
-    border: none; }
-    .hm3 .sheet-body .profile-traits-section .profile-traits-group .profile-trait {
-      align-items: center; }
-      .hm3 .sheet-body .profile-traits-section .profile-traits-group .profile-trait .profile-trait-label {
-        flex: 0 0 95px;
+  flex: 0 0 145px; }
+  .hm3 .sheet-body .ability-scores .ability-scores-column {
+    margin: 0;
+    padding: 0 0 0 5px; }
+    .hm3 .sheet-body .ability-scores .ability-scores-column .ability {
+      align-items: center;
+      text-align: center;
+      padding: 3px 0 0 0; }
+      .hm3 .sheet-body .ability-scores .ability-scores-column .ability .label {
+        flex: 0 0 40px;
         font-weight: bold;
         text-transform: uppercase; }
-      .hm3 .sheet-body .profile-traits-section .profile-traits-group .profile-trait .profile-trait-value {
-        flex: 0 0 120px; }
+      .hm3 .sheet-body .ability-scores .ability-scores-column .ability .value {
+        flex: 0 0 40px; }
 
 .hm3 .injuries-list {
   list-style: none;

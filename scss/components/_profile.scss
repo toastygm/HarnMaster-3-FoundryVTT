@@ -1,40 +1,24 @@
 .sheet-body {
   .ability-scores {
-    flex: 0 0 120px;
+    flex: 0 0 145px;
     
-    .ability {
-      align-items: center;
+    .ability-scores-column { 
+      margin: 0;
+      padding: 0 0 0 5px;
 
-      .ability-label {
-        flex: 0 0 40px;
-        font-weight: bold;
-        text-transform: uppercase;
-      }
-
-      .ability-value {
-        flex: 0 0 40px;
-      }
-    }
-  }
-
-  .profile-traits-section {
-    flex: 0 0 480px;
-
-    .profile-traits-group {
-      flex: 0 0 200px;
-      border: none;
-
-      .profile-trait {
+      .ability {
         align-items: center;
+        text-align: center;
+        padding: 3px 0 0 0;
 
-        .profile-trait-label {
-          flex: 0 0 95px;
+        .label {
+          flex: 0 0 40px;
           font-weight: bold;
           text-transform: uppercase;
         }
 
-        .profile-trait-value {
-          flex: 0 0 120px;
+        .value {
+          flex: 0 0 40px;
         }
       }
     }
