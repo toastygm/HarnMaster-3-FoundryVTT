@@ -237,7 +237,7 @@ export class HarnMasterActor extends Actor {
     data.endurance.value = Math.max(data.endurance.max - data.physicalPenalty, 0);
 
     // Calculate current Move speed.  Cannot go below 0
-    data.move = Math.max(data.abilities.agility - data.physicalPenalty, 0);
+    data.move.effective = Math.max(data.move.base - data.physicalPenalty, 0);
 
     // Calculate Important Roll Targets
     data.stumbleTarget = Math.max(data.abilities.agility - data.physicalPenalty, 0);
