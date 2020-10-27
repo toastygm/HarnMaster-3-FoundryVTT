@@ -766,17 +766,29 @@ export class DiceHM3 {
     }
 
     static hitLocation(items, aim) {
+        const hlAim = aim === 'high' || aim === 'low' ? aim : 'mid';
         let roll = new Roll("1d100");
         let rollResult = roll.total;
         let result = `Unknown (roll=${rollResult})`;
+        let done = false;
         items.forEach(it => {
-            if (it.type === "hitlocation") {
-                let probWeight = it.data.probWeight[aim];
-                if (probWeight === 0) continue;
-                rollResult -= probWeight;
-                if (rollResult <= 0)
-                    result = it.name;
-                    break;
+            // If we finally exhaust rollResult, just return immediately,
+            // so we finish this forEach as quickly as possible
+            if (rollResult > 0) {
+                if (it.type === "hitlocation") {
+                    let probWeight = it.data.probWeight[hlAim];
+                    // if probWeight is not zero, then there is a possiblity
+                    // of a match
+                    if (probWeight != 0) {
+                        rollResult -= probWeight;
+                        if (rollResult <= 0) {
+                            // At this point, we have a match! We have
+                            // exhausted the rollResult, so we can
+                            // set the result equal to this location name
+                            result = it.name;
+                        }
+                    }
+                }
             }
         });
 
