@@ -1,159 +1,109 @@
-<form class="{{cssClass}} flexcol" autocomplete="off">
+<form class="{{cssClass}} sheet flexcol" autocomplete="off">
 
     {{!-- Sheet Header --}}
-    <header class="sheet-header-character">
-        <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100" />
-        <div class="header-fields">
-            <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
+    <header class="sheet-header sheet-header-character">
+        <div class="flexrow">
+            <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100" />
+            <div class="flexcol header-fields">
+                <div class="flexrow name-attribute">
+                    <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
+                </div>
+                <div class="header-attributes">
+                    <ol class="flexrow">
+                        <li class="attribute species flexcol">
+                            <label class="label">Race</label>
+                            <input class="value" type="text" name="data.species" value="{{data.species}}" data-dtype="String"/>
+                        </li>
+                        <li class="attribute gender flexcol">
+                            <label class="label">Gender</label>
+                            <input class="value" type="text" name="data.gender" value="{{data.gender}}" data-dtype="String"/>
+                        </li>
+                        <li class="attribute occupation flexcol">
+                            <label class="label">Occupation</label>
+                            <input class="value" type="text" name="data.occupation" value="{{data.occupation}}" data-dtype="String"/>
+                        </li>
+                        <li class="attribute move-base flexcol">
+                            <label class="label">Move Base</label>
+                            <input class="value" type="text" name="data.move.base" value="{{data.move.base}}" data-dtype="Number"/>
+                        </li>
+                    </ol>
+                </div>
+            </div>
         </div>
     </header>
-
-    {{!-- Sheet Tab Navigation --}}
-    <nav class="sheet-tabs tabs" data-group="primary">
-        <a class="item" data-tab="profile">Profile</a>
-        <a class="item" data-tab="injuries">Injuries</a>
-        <a class="item" data-tab="description">Description</a>
-    </nav>
 
     {{!-- Sheet Body --}}
     <section class="sheet-body">
 
         {{!-- Profile Tab --}}
-        <div class="tab profile" data-group="primary" data-tab="profile">
+        <div class="profile" data-group="primary" data-tab="profile">
             <div class="flexrow">
-                <ul class="ability-scores">
-                    <li class="ability flexrow">
-                        <label for="data.abilities.strength" class="ability-label">STR</label>
-                        <input class="ability-value" type="text" name="data.abilities.strength" value="{{data.abilities.strength}}" readonly />
-                    </li>
-                    <li class="ability flexrow">
-                        <label for="data.abilities.stamina" class="ability-label">STA</label>
-                        <input class="ability-value" type="text" name="data.abilities.stamina" value="{{data.abilities.stamina}}" readonly />
-                    </li>
-                    <li class="ability flexrow">
-                        <label for="data.abilities.dexterity" class="ability-label">DEX</label>
-                        <input class="ability-value" type="text" name="data.abilities.dexterity" value="{{data.abilities.dexterity}}" readonly />
-                    </li>
-                    <li class="ability flexrow">
-                        <label for="data.abilities.agility" class="ability-label">AGL</label>
-                        <input class="ability-value" type="text" name="data.abilities.agility" value="{{data.abilities.agility}}" readonly />
-                    </li>
-                    <li class="ability flexrow">
-                        <label for="data.abilities.intelligence" class="ability-label">INT</label>
-                        <input class="ability-value" type="text" name="data.abilities.intelligence" value="{{data.abilities.intelligence}}" readonly />
-                    </li>
-                    <li class="ability flexrow">
-                        <label for="data.abilities.aura" class="ability-label">AUR</label>
-                        <input class="ability-value" type="text" name="data.abilities.aura" value="{{data.abilities.aura}}" readonly />
-                    </li>
-                    <li class="ability flexrow">
-                        <label for="data.abilities.will" class="ability-label">WIL</label>
-                        <input class="ability-value" type="text" name="data.abilities.will" value="{{data.abilities.will}}" readonly />
-                    </li>
-                    <hr class="sheet-hr"/>
-                    <li class="ability flexrow">
-                        <label for="data.abilities.eyesight" class="ability-label">EYE</label>
-                        <input class="ability-value" type="text" name="data.abilities.eyesight" value="{{data.abilities.eyesight}}" readonly />
-                    </li>
-                    <li class="ability flexrow">
-                        <label for="data.abilities.hearing" class="ability-label">HRG</label>
-                        <input class="ability-value" type="text" name="data.abilities.hearing" value="{{data.abilities.hearing}}" readonly />
-                    </li>
-                    <li class="ability flexrow">
-                        <label for="data.abilities.smell" class="ability-label">SML</label>
-                        <input class="ability-value" type="text" name="data.abilities.smell" value="{{data.abilities.smell}}" readonly />
-                    </li>
-                    <li class="ability flexrow">
-                        <label for="data.abilities.voice" class="ability-label">VOI</label>
-                        <input class="ability-value" type="text" name="data.abilities.voice" value="{{data.abilities.voice}}" readonly />
-                    </li>
-                    <li class="ability flexrow">
-                        <label for="data.abilities.comliness" class="ability-label">CML</label>
-                        <input class="ability-value" type="text" name="data.abilities.comliness" value="{{data.abilities.comliness}}" readonly />
-                    </li>
-                </ul>
-                <div class="profile-traits-section">
-                    <div class="grid grid-2col">
-                        <ul class="profile-traits-group flex-group-left">
-                            <li class="profile-trait flexrow">
-                                <label for="data.species" class="profile-trait-label">Race</label>
-                                <input class="profile-trait-value" type="text" name="data.species" value="{{data.species}}" readonly />
-                            </li>
-                            <li class="profile-trait flexrow">
-                                <label for="data.gender" class="profile-trait-label">Gender</label>
-                                <input class="profile-trait-value" type="text" name="data.gender" value="{{data.gender}}" readonly />
-                            </li>
-                            <li class="profile-trait flexrow">
-                                <label for="data.otherAppearance" class="profile-trait-label">Appearance</label>
-                                <input class="profile-trait-value" type="text" name="data.otherAppearance" value="{{data.otherAppearance}}" readonly />
-                            </li>
-                        </ul>
-                        <ul class="profile-traits-group flex-group-left">
-                            <li class="profile-trait flexrow">
-                                <label for="data.occupation" class="profile-trait-label">Occupation</label>
-                                <input class="profile-trait-value" type="text" name="data.occupation" value="{{data.occupation}}" readonly />
-                            </li>
-                            <li class="profile-trait flexrow">
-                                <label for="data.height" class="profile-trait-label">Height</label>
-                                <input class="profile-trait-value" type="text" name="data.height" value="{{data.height}}" readonly />
-                            </li>
-                            <li class="profile-trait flexrow">
-                                <label for="data.frame" class="profile-trait-label">Frame</label>
-                                <input class="profile-trait-value" type="text" name="data.frame" value="{{data.frame}}" readonly />
-                            </li>
-                            <li class="profile-trait flexrow">
-                                <label for="data.weight" class="profile-trait-label">Weight</label>
-                                <input class="profile-trait-value" type="text" name="data.weight" value="{{data.weight}}" readonly />
-                            </li>
-                            <li class="profile-trait flexrow">
-                                <label for="data.hairColor" class="profile-trait-label">Hair</label>
-                                <input class="profile-trait-value" type="text" name="data.hairColor" value="{{data.hairColor}}" readonly />
-                            </li>
-                            <li class="profile-trait flexrow">
-                                <label for="data.eyeColor" class="profile-trait-label">Eyes</label>
-                                <input class="profile-trait-value" type="text" name="data.eyeColor" value="{{data.eyeColor}}" readonly />
-                            </li>
-                        </ul>
-                    </div>
+                <div class="grid grid-2col ability-scores">
+                    <ul class="ability-scores-column">
+                        <li class="ability flexrow">
+                            <label for="data.abilities.strength" class="label">STR</label>
+                            <input class="value" type="text" name="data.abilities.strength" value="{{data.abilities.strength}}" data-dtype="Number" />
+                        </li>
+                        <li class="ability flexrow">
+                            <label for="data.abilities.stamina" class="label">STA</label>
+                            <input class="value" type="text" name="data.abilities.stamina" value="{{data.abilities.stamina}}" data-dtype="Number" />
+                        </li>
+                        <li class="ability flexrow">
+                            <label for="data.abilities.dexterity" class="label">DEX</label>
+                            <input class="value" type="text" name="data.abilities.dexterity" value="{{data.abilities.dexterity}}" data-dtype="Number" />
+                        </li>
+                        <li class="ability flexrow">
+                            <label for="data.abilities.agility" class="label">AGL</label>
+                            <input class="value" type="text" name="data.abilities.agility" value="{{data.abilities.agility}}" data-dtype="Number" />
+                        </li>
+                        <li class="ability flexrow">
+                            <label for="data.abilities.intelligence" class="label">INT</label>
+                            <input class="value" type="text" name="data.abilities.intelligence" value="{{data.abilities.intelligence}}" data-dtype="Number" />
+                        </li>
+                        <li class="ability flexrow">
+                            <label for="data.abilities.aura" class="label">AUR</label>
+                            <input class="value" type="text" name="data.abilities.aura" value="{{data.abilities.aura}}" data-dtype="Number" />
+                        </li>
+                        <li class="ability flexrow">
+                            <label for="data.abilities.will" class="label">WIL</label>
+                            <input class="value" type="text" name="data.abilities.will" value="{{data.abilities.will}}" data-dtype="Number" />
+                        </li>
+                    </ul>
+                    <ul class="ability-scores-column">
+                        <li class="ability flexrow">
+                            <label for="data.abilities.eyesight" class="label">EYE</label>
+                            <input class="value" type="text" name="data.abilities.eyesight" value="{{data.abilities.eyesight}}" data-dtype="Number" />
+                        </li>
+                        <li class="ability flexrow">
+                            <label for="data.abilities.hearing" class="label">HRG</label>
+                            <input class="value" type="text" name="data.abilities.hearing" value="{{data.abilities.hearing}}" data-dtype="Number" />
+                        </li>
+                        <li class="ability flexrow">
+                            <label for="data.abilities.smell" class="label">SML</label>
+                            <input class="value" type="text" name="data.abilities.smell" value="{{data.abilities.smell}}" data-dtype="Number" />
+                        </li>
+                        <li class="ability flexrow">
+                            <label for="data.abilities.voice" class="label">VOI</label>
+                            <input class="value" type="text" name="data.abilities.voice" value="{{data.abilities.voice}}" data-dtype="Number" />
+                        </li>
+                        <li class="ability flexrow">
+                            <label for="data.abilities.comliness" class="label">CML</label>
+                            <input class="value" type="text" name="data.abilities.comliness" value="{{data.abilities.comliness}}" data-dtype="Number" />
+                        </li>
+                        <li class="ability flexrow">
+                            <label for="data.abilities.morality" class="label">MOR</label>
+                            <input class="value" type="text" name="data.abilities.morality" value="{{data.abilities.morality}}" data-dtype="Number" />
+                        </li>
+                    </ul>
                 </div>
+                <div class="profile-desc flexcol">
+                    <label class="label">Description</label>
+                    <div class="profile-description">
+                        {{editor content=data.description target="data.description" button=false owner=owner editable=false}}
+                    </div>
+                </div>        
             </div>
         </div>
-
-        {{!-- Injuries Tab --}}
-        <div class="tab combat" data-group="primary" data-tab="injuries">
-            <!-- Injuries -->
-            <h2>Injuries</h2>
-            <ol class="injuries-list">
-                <li class="item injury flexrow injury-header">
-                    <div class="injury-name">Location</div>
-                    <div class="injury-healrate">HR</div>
-                    <div class="injury-severity">IL</div>
-                    <div class="injury-notes">Notes</div>
-                </li>
-                {{#each actor.items as |item id|}}
-                    {{#if (eq item.type "injury")}}
-                        <li class="item injury flexrow" data-item-id="{{item._id}}">
-                            <h4 class="injury-name">{{item.name}}</h4>
-                            <div class="injury-healrate">{{data.healRate}}</div>
-                            <div class="injury-severity">{{data.severity}}</div>
-                            <div class="injury-notes">{{data.notes}}</div>
-                        </li>
-                    {{/if}}
-                {{/each}}
-            </ol>
-        </div>
-
-        {{!-- Description Tab --}}
-        <div class="tab description" data-group="primary" data-tab="description">
-            <div class="flexrow">
-                <div class="desc-img-boundary">
-                    <img class="desc-img" src="{{data.descImage}}" data-edit="img" title="{{actor.name}}" />
-                </div>
-                <div class="desc-text">
-                    {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
-                </div>
-        </div>
-
     </section>
 
 </form>
