@@ -8,46 +8,59 @@ This is an unofficial H&acirc;rnFanon work. It is a derivative work from materia
 
 H&acirc;rn, H&acirc;rnMaster, and H&acirc;rnWorld are all &copy; 1987-2020 N. Robin Crossby and Columbia Games Inc. Their works are available for sale on the [Columbia Games Ltd website](http://columbiagames.com/harn/).
 
+# Features
+
+The following features are included in this system.
+
+* Characters and Creatures sheets
+* Tracking of all abilities and functional characteristics
+* Separate tracking of Description (publicly apparent information) and Biography (private information and backstory)
+* Tracking of all skills, convocations, religion(s), spells, ritual invocations, psionics, etc.
+* Support for "limited" permission on characters (so only basic readily-apparent information is viewable)
+* Injury tracking and Fatigue tracking
+* Automatic calculation of EML based on UP and PP
+* Automatic dice rolls (skills, spells, ritual invocations, healing, shock, fumble, stumble, attack/defend, weapon damage, and injury)
+* Compatible with "Dice So Nice" module.
+
 # Usage
 
 Although most parts of this system should be self-explanatory to those familiar with H&acirc;rnMaster 3, there are some peculiarities that will be described here.
 
 ## Missing Components of H&acirc;rnMaster Rules
 
-This system is not intented to replace the need for the HM3 rules, but to simplify running a HM3 game.  Therefore, certain aspects of HM3 have been intentionally left out.  This is not intended to be used as a character generator.  This section highlights a few specific items that were left out.
+This system requires the user to have a copy of the H&acirc;rnMaster rules. Most skills and mechanisms for calculating SB and ML, as well as rules use mechanics have been intentionally left out.  This is not intended to be used as a character generator.  This section highlights a few specific items that were left out.
 
 ### Skills Missing
 
-Although basic laborious computations have been included in this system, only "default" skills and humanoid armor locations are loaded (on request).  However, the Skill Base (SB) and Mastery Level (ML) values, although present, are not precalculated even for "default" skills.
+Although basic laborious computations have been included in this system, only "default" skills and humanoid armor locations are loaded (on request); specifically those already on the publicly-available [character sheet and combat tables](https://secure.columbiagames.com/product/4001-PDF).  However, the Skill Base (SB) and Mastery Level (ML) values, although present, are not precalculated even for "default" skills.
 
-No other skills beyond the standard skills are provided; they must be manually entered along with their SB and ML characteristics.
+No other skills beyond the standard skills are provided; they must be manually entered along with all SB and ML characteristics.
 
 ### Combat Tables Missing
 
-Although automatic dice rolling for attack rolls and damage rolls are provided, the actual combat mechanics (including the meele and missile attack tables and injury table) are not automated or included.  It is expected that the rules will be consulted for these actions.
+Although automatic dice rolling for attack/defense rolls, damage rolls, and injuries are provided, the actual combat mechanics (including the meele and missile attack tables) are not automated or included.  It is expected that the rules will be consulted to determine the effect of attacks and defense.
 
 ## Actors Supported
 
 The following actors are supported:
 
-* __Character:__ A standard humanoid character, such as a Human, Dwarf, or Elf.  This can also be used for other humanoid creatures, such as Gargun.  A character has the following features:
+* __Character:__ A standard humanoid character, such as a Human, Khuzdul, or Sindarin.  This can also be used for other humanoid creatures, such as Gargun.  A character has the following features:
   1. Ability Scores
-  2. Traits (Birthdate, Gender, Race, Sunsign, etc.)
+  2. Public Description (characteristics others can observe about you, your behavior, and your public backstory)
   3. Basic Skills (Physical, Communication, Combat, and Craft)
   4. Esoteric Skills/Talents (Convocations, Rituals, and Psionics)
   5. Combat (Weapons, Injuries, Armor Locations)
   6. Inventory (Armor/Clothing, Misc. Gear)
-  7. Public Description (what others can observe about you, your behavior, and your public backstory)
-  8. Biography (your personal/real story, motivations, and attributes)
+  7. Biography (your personal/real characteristics, story, motivations, and attributes)
 
 * __Creature:__ Any being not a "character" (e.g., animals, Ivashu, etc.).  A creature has the following features:
   1. Ability Scores (except no Comliness or Morality)
-  2. Basic Skills (Physical, Communication, Combat, and Craft)
+  2. Basic Skills
   3. Combat (Weapons, Injuries, Armor Locations)
   4. Misc. Gear
   5. Description
 
-Note that when creating a character, you will be prompted whether to install standard skills and standard humanoid armor locations.  When creating a creature, no armor locations will be preloaded, since each creature will have different armor locations (although a few basic combat skills are added).
+Note that when creating a character, you will be prompted whether to install standard skills and standard humanoid armor locations.  When creating a creature, no armor locations will be preloaded, since each creature will have different armor locations (although a few basic combat skills are preloaded).
 
 ## Supported Capabilities
 
@@ -65,7 +78,7 @@ The following capabilities are supported in both characters and creatures:
   * Weapon Damage roll (weapon-specific)
   * Weapon Attack roll
   * Weapon Defense roll
-  * Injury Healing roll
+  * Injury roll (calculates location and Injury Level)
 
 * Automatic Calculations
   * Total Injury Levels
@@ -83,12 +96,26 @@ The following capabilities are supported in both characters and creatures:
 
 There are a few things to keep in mind as you are filling out your characters.
 
+### Description and Biography
+
+The Description represents readily-apparent information about your character; this information is available to anyone who observes or interacts with your character. Any information you would share with others (even if untrue) can be placed in this area, and anyone with even limited access to your character sheet can observe it.
+
+Your Biography represents your personal characteristics and backstory; those things that are not apparent to others unless you choose to share it. This may contain personal motivations as well as personal characteristics. Your biography will only be available to those will full access to your character, not to those with only limited access.
+
+### Diety and Piety
+
+The assumption is that a character may have one or more religions, and a piety associated with each one.  If a character is initiated into a religion, they are assumed to have a base ML in the religion (presumably opening at SBx1) representing basic understanding of the rituals and requirements of the religion.
+
+Piety is therefore assocated with the religion/diety, and is indicated as part of the ritual skill for that diety.  If you choose to not require characters to have any Ritual skill to get piety, you may simply leave the SB/ML at 0.
+
 ### Weapon Associated Skill
 
 A skill in a type of weapon is distinct from the weapon itself.  For example, you might have skill in Dagger, but you actually have a Knife weapon.  For a Knife, you use the Dagger skill.  In the details for each weapon, you will see an input for the Associated Skill.  This should default to the same name as the weapon, but in many cases you will need to change this to refer to the actual skill used (for example, a Staff might use the "Spear" Associated Skill; or, alternatively, you may have a specific Staff skill that should be used instead).
 
+Only combat skills may be chosen as an "Associated Skill" for a weapon.
+
 ### Armor Locations Probability Weight (Prob. Weight)
 
-Hit locations play a big part in the HM3 combat system.  In order to correctly calculate hit location, each armor location is designated with a Probability Weight.  You can think of this as the percentage chance of that location getting hit.  In that case, the total of all armor location probability weights must add up to 100.
+Hit locations play a big part in the H&acirc;rnMaster combat system.  In order to correctly calculate hit location, each armor location is designated with a Probability Weight.  You can think of this as the percentage chance of that location getting hit.  In that case, the total of all armor location probability weights must add up to 100.
 
-There are separate probability weights for High, Medium, and Low aiming points.  For humanoid characters, if you chose to have the armor locations pre-loaded, these will already be setup to default values.  For creatures, no armor locations are available so you will need to enter your own armor locations and the probability weights for those.
+There are separate probability weights for High, Mid, and Low aiming points.  For humanoid characters, if you chose to have the armor locations pre-loaded, these will already be setup to default values.  For creatures, no armor locations are available so you will need to enter your own armor locations and the probability weights for those.
