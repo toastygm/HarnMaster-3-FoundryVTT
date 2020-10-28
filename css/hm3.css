@@ -408,8 +408,8 @@
   justify-content: flex-start;
   margin-bottom: 10px; }
   .hm3 .sheet-header-creature .profile-img {
-    flex: 0 0 100px;
-    height: 100px;
+    flex: 0 0 160px;
+    height: 160px;
     margin-right: 10px; }
   .hm3 .sheet-header-creature .header-fields {
     flex: 1; }
@@ -422,6 +422,25 @@
       width: 100%;
       height: 100%;
       margin: 0; }
+  .hm3 .sheet-header-creature .ability-scores {
+    flex: 0 0 110px;
+    gap: 0;
+    margin: 10px; }
+    .hm3 .sheet-header-creature .ability-scores .ability-scores-column {
+      border: 2px groove #eeede0;
+      padding: 3px; }
+      .hm3 .sheet-header-creature .ability-scores .ability-scores-column .ability {
+        align-items: center;
+        text-align: center;
+        padding: 3px 0 0 0;
+        border-bottom: 2px groove #eeede0; }
+        .hm3 .sheet-header-creature .ability-scores .ability-scores-column .ability .label {
+          flex: 0 0 40px;
+          font-weight: bold;
+          text-transform: uppercase; }
+        .hm3 .sheet-header-creature .ability-scores .ability-scores-column .ability .value {
+          flex: 0 0 40px;
+          font-size: 20pt; }
 
 .hm3 .sheet-tabs {
   flex: 0; }
