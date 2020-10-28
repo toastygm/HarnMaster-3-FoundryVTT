@@ -2,76 +2,66 @@
 
     {{!-- Sheet Header --}}
     <header class="sheet-header-creature">
-        <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100" />
+        <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="160" width="160" />
         <div class="header-fields">
             <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
-            <div class="grid grid-4col">
-                <div class="ability-scores flex-group-left">
-                    <div class="ability flexrow">
-                        <label for="data.abilities.strength" class="ability-label">STR</label>
-                        <input class="ability-value" type="text" name="data.abilities.strength" value="{{data.abilities.strength}}" data-dtype="Number" />
-                    </div>
-                </div>
-                <div class="ability-scores flex-group-left">
-                    <div class="ability flexrow">
-                        <label for="data.abilities.stamina" class="ability-label">STA</label>
-                        <input class="ability-value" type="text" name="data.abilities.stamina" value="{{data.abilities.stamina}}" data-dtype="Number" />
-                    </div>
-                </div>
-                <div class="ability-scores flex-group-left">
-                    <div class="ability flexrow">
-                        <label for="data.abilities.dexterity" class="ability-label">DEX</label>
-                        <input class="ability-value" type="text" name="data.abilities.dexterity" value="{{data.abilities.dexterity}}" data-dtype="Number" />
-                    </div>
-                </div>
-                <div class="ability-scores flex-group-left">
-                    <div class="ability flexrow">
-                        <label for="data.abilities.agility" class="ability-label">AGL</label>
-                        <input class="ability-value" type="text" name="data.abilities.agility" value="{{data.abilities.agility}}" data-dtype="Number" />
-                    </div>
-                </div>
-                <div class="ability-scores flex-group-left">
-                    <div class="ability flexrow">
-                        <label for="data.abilities.intelligence" class="ability-label">INT</label>
-                        <input class="ability-value" type="text" name="data.abilities.intelligence" value="{{data.abilities.intelligence}}" data-dtype="Number" />
-                    </div>
-                </div>
-                <div class="ability-scores flex-group-left">
-                    <div class="ability flexrow">
-                        <label for="data.abilities.aura" class="ability-label">AUR</label>
-                        <input class="ability-value" type="text" name="data.abilities.aura" value="{{data.abilities.aura}}" data-dtype="Number" />
-                    </div>
-                </div>
-                <div class="ability-scores flex-group-left">
-                    <div class="ability flexrow">
-                        <label for="data.abilities.will" class="ability-label">WIL</label>
-                        <input class="ability-value" type="text" name="data.abilities.will" value="{{data.abilities.will}}" data-dtype="Number" />
-                    </div>
-                </div>
-                <div class="ability-scores flex-group-left">
-                    <div class="ability flexrow">
-                        <label for="data.abilities.eyesight" class="ability-label">EYE</label>
-                        <input class="ability-value" type="text" name="data.abilities.eyesight" value="{{data.abilities.eyesight}}" data-dtype="Number" />
-                    </div>
-                </div>
-                <div class="ability-scores flex-group-left">
-                    <div class="ability flexrow">
-                        <label for="data.abilities.hearing" class="ability-label">HRG</label>
-                        <input class="ability-value" type="text" name="data.abilities.hearing" value="{{data.abilities.hearing}}" data-dtype="Number" />
-                    </div>
-                </div>
-                <div class="ability-scores flex-group-left">
-                    <div class="ability flexrow">
-                        <label for="data.abilities.smell" class="ability-label">SML</label>
-                        <input class="ability-value" type="text" name="data.abilities.smell" value="{{data.abilities.smell}}" data-dtype="Number" />
-                    </div>
-                </div>
-                <div class="ability-scores flex-group-left">
-                    <div class="ability flexrow">
-                        <label for="data.abilities.voice" class="ability-label">VOI</label>
-                        <input class="ability-value" type="text" name="data.abilities.voice" value="{{data.abilities.voice}}" data-dtype="Number" />
-                    </div>
-                </div>
+            <div class="grid grid-4col ability-scores">
+                <ul class="ability-scores-column">
+                    <li class="ability flexrow">
+                        <label for="data.abilities.strength" class="label">STR</label>
+                        <input class="value" type="text" name="data.abilities.strength" value="{{data.abilities.strength}}" data-dtype="Number" />
+                    </li>
+                    <li class="ability flexrow">
+                        <label for="data.abilities.stamina" class="label">STA</label>
+                        <input class="value" type="text" name="data.abilities.stamina" value="{{data.abilities.stamina}}" data-dtype="Number" />
+                    </li>
+                    <li class="ability flexrow">
+                        <label for="data.abilities.dexterity" class="label">DEX</label>
+                        <input class="value" type="text" name="data.abilities.dexterity" value="{{data.abilities.dexterity}}" data-dtype="Number" />
+                    </li>
+                </ul>
+                <ul class="ability-scores-column">
+                    <li class="ability flexrow">
+                        <label for="data.abilities.agility" class="label">AGL</label>
+                        <input class="value" type="text" name="data.abilities.agility" value="{{data.abilities.agility}}" data-dtype="Number" />
+                    </li>
+                    <li class="ability flexrow">
+                        <label for="data.abilities.intelligence" class="label">INT</label>
+                        <input class="value" type="text" name="data.abilities.intelligence" value="{{data.abilities.intelligence}}" data-dtype="Number" />
+                    </li>
+                    <li class="ability flexrow">
+                        <label for="data.abilities.aura" class="label">AUR</label>
+                        <input class="value" type="text" name="data.abilities.aura" value="{{data.abilities.aura}}" data-dtype="Number" />
+                    </li>
+                </ul>
+                <ul class="ability-scores-column">
+                    <li class="ability flexrow">
+                        <label for="data.abilities.will" class="label">WIL</label>
+                        <input class="value" type="text" name="data.abilities.will" value="{{data.abilities.will}}" data-dtype="Number" />
+                    </li>
+                    <li class="ability flexrow">
+                        <label for="data.abilities.eyesight" class="label">EYE</label>
+                        <input class="value" type="text" name="data.abilities.eyesight" value="{{data.abilities.eyesight}}" data-dtype="Number" />
+                    </li>
+                    <li class="ability flexrow">
+                        <label for="data.abilities.hearing" class="label">HRG</label>
+                        <input class="value" type="text" name="data.abilities.hearing" value="{{data.abilities.hearing}}" data-dtype="Number" />
+                    </li>
+                </ul>
+                <ul class="ability-scores-column">
+                    <li class="ability flexrow">
+                        <label for="data.abilities.smell" class="label">SML</label>
+                        <input class="value" type="text" name="data.abilities.smell" value="{{data.abilities.smell}}" data-dtype="Number" />
+                    </li>
+                    <li class="ability flexrow">
+                        <label for="data.abilities.voice" class="label">VOI</label>
+                        <input class="value" type="text" name="data.abilities.voice" value="{{data.abilities.voice}}" data-dtype="Number" />
+                    </li>
+                    <li class="ability flexrow">
+                        <label for="data.move.base" class="label">Move Base</label>
+                        <input class="value" type="text" name="data.move.base" value="{{data.move.base}}" data-dtype="Number" />
+                    </li>
+                </ul>
             </div>
         </div>
     </header>
@@ -261,8 +251,8 @@
                 </div>
                 <div class="combat-stat flexrow">
                     <div class="item-dice"></div>
-                    <label for="data.move" class="combat-stat-label">Move</label>
-                    <input class="combat-stat-input" type="text" name="data.move" value="{{data.move}}" data-dtype="Number" />
+                    <label for="data.move.effective" class="combat-stat-label">Move</label>
+                    <div class="combat-stat-value">{{data.move.effective}}</div>
                 </div>
                 <div class="combat-stat flexrow">
                     <div class="item-dice">

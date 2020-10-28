@@ -17,6 +17,12 @@
               <label class="resource-label">Mastery Level (ML)</label>
                 <input type="text" name="data.masteryLevel" value="{{data.masteryLevel}}" data-dtype="Number"/>
             </div>
-        </div>
+            {{#if (eq itemType "ritualskill")}}
+            <div class="resource">
+                <label class="resource-label">Piety</label>
+                  <input type="text" name="data.piety" value="{{data.piety}}" data-dtype="Number"/>
+            </div>
+            {{/if}}
+          </div>
     </section>
 </form>

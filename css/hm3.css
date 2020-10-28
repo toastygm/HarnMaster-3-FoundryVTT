@@ -179,32 +179,225 @@
   visibility: visible; }
 
 /* Styles limited to hm3 sheets */
+.hm3 .window-content {
+  background: url("../ui/parchment.jpg") repeat;
+  font-size: 13px;
+  color: #191813; }
+
+.hm3 input[type="text"],
+.hm3 input[type="number"],
+.hm3 select {
+  height: calc(100% - 2px);
+  border: 1px solid #7a7971;
+  background: rgba(0, 0, 0, 0.05);
+  color: #191813; }
+
+.hm3 input[type="text"]:hover,
+.hm3 input[type="number"]:hover,
+.hm3 input[type="text"]:focus,
+.hm3 input[type="number"]:focus {
+  border: 1px solid #111;
+  box-shadow: 0 0 8px red; }
+
+.hm3 input:disabled,
+.hm3 select:disabled,
+.hm3 textarea:disabled {
+  color: #4b4a44; }
+
+.hm3 input:disabled:hover,
+.hm3 select:disabled:hover,
+.hm3 textarea:disabled:hover,
+.hm3 input:disabled:focus,
+.hm3 select:disabled:focus,
+.hm3 textarea:disabled:focus {
+  box-shadow: none !important;
+  border: 1px solid transparent !important;
+  outline: none !important; }
+
+.hm3 button {
+  background: rgba(0, 0, 0, 0.1);
+  border: 2px groove #eeede0; }
+
+.hm3 label.checkbox {
+  flex: auto;
+  padding: 0;
+  margin: 0;
+  height: 22px;
+  line-height: 22px;
+  font-size: 11px; }
+
+.hm3 label.checkbox > input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0 2px 0 0;
+  position: relative;
+  top: 4px; }
+
+.hm3 label.checkbox.right > input[type="checkbox"] {
+  margin: 0 0 0 2px; }
+
+.hm3 .sheet .window-content {
+  overflow-y: hidden;
+  padding: 5px;
+  background: url("../ui/parchment.jpg") repeat;
+  font-size: 13px;
+  color: #191813; }
+
+.hm3 .sheet .window-content form {
+  height: 100%;
+  overflow: hidden; }
+
+.hm3 .sheet .window-content .tab {
+  height: 100%;
+  overflow-y: auto;
+  align-content: flex-start; }
+
+.hm3 .sheet input[type="text"],
+.hm3 .sheet input[type="number"] {
+  background: none;
+  border: 1px solid transparent; }
+
+.hm3 .sheet input[type="text"]:hover,
+.hm3 .sheet input[type="number"]:hover,
+.hm3 .sheet input[type="text"]:focus,
+.hm3 .sheet input[type="number"]:focus {
+  border: 1px solid #111; }
+
+.hm3 .sheet select {
+  flex: 1;
+  font-size: 12px;
+  height: 22px;
+  background: transparent; }
+
+.hm3 .sheet .editable .rollable:hover {
+  color: #000;
+  text-shadow: 0 0 10px red;
+  cursor: pointer; }
+
+.hm3 .sheet span.sep {
+  flex: none;
+  margin: 0 1px;
+  display: inline;
+  position: relative;
+  color: #7a7971;
+  font-weight: normal; }
+
+.hm3 .sheet .editor {
+  height: 100%; }
+
+.hm3 .sheet .editor .tox-toolbar-overlord,
+.hm3 .sheet .editor .tox-toolbar__primary {
+  background: none; }
+
+.hm3 .sheet .sheet-header .header-details {
+  font-size: 20px;
+  font-weight: 700; }
+
+.hm3 .sheet .sheet-header h1 {
+  flex: 1;
+  border-bottom: none;
+  height: 60px;
+  margin: 0;
+  padding: 5px; }
+
+.hm3 .sheet .sheet-header h1 input {
+  display: block;
+  height: 50px;
+  font-size: 32px;
+  margin: 0; }
+
+.hm3 .sheet .sheet-header img.profile {
+  flex: 0 0 100px;
+  max-width: 100px;
+  height: 100px;
+  object-fit: contain;
+  border: none;
+  border-right: 2px groove #eeede0; }
+
+.hm3 .sheet .sheet-header .summary {
+  flex: 0 0 100%;
+  height: 40px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 2px groove #eeede0;
+  border-bottom: none; }
+
+.hm3 .sheet .sheet-header .summary li {
+  height: calc(100% - 6px);
+  float: left;
+  margin: 2px 0;
+  padding: 0;
+  border-right: 2px groove #eeede0;
+  line-height: 34px;
+  color: #4b4a44; }
+
+.hm3 .sheet .sheet-header .summary li:last-child {
+  border-right: none; }
+
+.hm3 .sheet .sheet-navigation {
+  flex: 0 0 30px;
+  margin-bottom: 5px;
+  font-size: 20px;
+  font-weight: 700; }
+
+.hm3 .sheet .sheet-navigation .item {
+  height: 30px;
+  line-height: 32px;
+  margin: 0 24px;
+  border-bottom: 3px solid #b5b3a4; }
+
+.hm3 .sheet .sheet-navigation .item.active {
+  border-bottom: 3px solid #44191A; }
+
 .hm3 .item-form {
   font-family: "Roboto", sans-serif; }
 
-.hm3 .sheet-header-character {
-  flex: 0 0 100px;
+.hm3 .sheet .sheet-header-character {
+  flex: 0 0 120px;
   overflow: hidden;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-start;
-  margin-bottom: 10px; }
-  .hm3 .sheet-header-character .profile-img {
+  margin-bottom: 10px;
+  border-bottom: 2px groove #eeede0; }
+  .hm3 .sheet .sheet-header-character .profile-img {
     flex: 0 0 100px;
     height: 100px;
     margin-right: 10px; }
-  .hm3 .sheet-header-character .header-fields {
-    flex: 1; }
-  .hm3 .sheet-header-character h1.charname {
-    height: 50px;
-    padding: 0px;
-    margin: 5px 0;
-    border-bottom: 0; }
-    .hm3 .sheet-header-character h1.charname input {
-      width: 100%;
-      height: 100%;
-      margin: 0; }
+  .hm3 .sheet .sheet-header-character .header-fields .name-attribute {
+    border-bottom: 2px groove #eeede0; }
+    .hm3 .sheet .sheet-header-character .header-fields .name-attribute h1.charname {
+      height: 50px;
+      padding: 0px;
+      margin: 5px 0;
+      border-bottom: 0; }
+      .hm3 .sheet .sheet-header-character .header-fields .name-attribute h1.charname input {
+        width: 100%;
+        height: 100%;
+        margin: 0; }
+  .hm3 .sheet .sheet-header-character .header-fields .header-attributes .attribute {
+    min-height: 40px;
+    margin: 2px; }
+    .hm3 .sheet .sheet-header-character .header-fields .header-attributes .attribute .label {
+      font-size: 10px;
+      text-transform: uppercase;
+      font-weight: bold; }
+    .hm3 .sheet .sheet-header-character .header-fields .header-attributes .attribute .value {
+      font-size: 15px;
+      height: calc(100% - 6px); }
+  .hm3 .sheet .sheet-header-character .header-fields .header-attributes .species {
+    flex: 0 0 80px;
+    border-right: 2px groove #eeede0; }
+  .hm3 .sheet .sheet-header-character .header-fields .header-attributes .gender {
+    flex: 0 0 80px;
+    border-right: 2px groove #eeede0; }
+  .hm3 .sheet .sheet-header-character .header-fields .header-attributes .move-base {
+    flex: 0 0 80px; }
+  .hm3 .sheet .sheet-header-character .header-fields .header-attributes .occupation {
+    flex: 1;
+    border-right: 2px groove #eeede0; }
 
 .hm3 .sheet-header-creature {
   flex: 0 0 200px;
@@ -215,8 +408,8 @@
   justify-content: flex-start;
   margin-bottom: 10px; }
   .hm3 .sheet-header-creature .profile-img {
-    flex: 0 0 100px;
-    height: 100px;
+    flex: 0 0 160px;
+    height: 160px;
     margin-right: 10px; }
   .hm3 .sheet-header-creature .header-fields {
     flex: 1; }
@@ -229,6 +422,25 @@
       width: 100%;
       height: 100%;
       margin: 0; }
+  .hm3 .sheet-header-creature .ability-scores {
+    flex: 0 0 110px;
+    gap: 0;
+    margin: 10px; }
+    .hm3 .sheet-header-creature .ability-scores .ability-scores-column {
+      border: 2px groove #eeede0;
+      padding: 3px; }
+      .hm3 .sheet-header-creature .ability-scores .ability-scores-column .ability {
+        align-items: center;
+        text-align: center;
+        padding: 3px 0 0 0;
+        border-bottom: 2px groove #eeede0; }
+        .hm3 .sheet-header-creature .ability-scores .ability-scores-column .ability .label {
+          flex: 0 0 40px;
+          font-weight: bold;
+          text-transform: uppercase; }
+        .hm3 .sheet-header-creature .ability-scores .ability-scores-column .ability .value {
+          flex: 0 0 40px;
+          font-size: 20pt; }
 
 .hm3 .sheet-tabs {
   flex: 0; }
@@ -237,9 +449,6 @@
 .hm3 .sheet-body .tab,
 .hm3 .sheet-body .tab .editor {
   height: 100%; }
-
-.hm3 .tox .tox-editor-container {
-  background: #fff; }
 
 .hm3 .tox .tox-edit-area {
   padding: 0 8px; }
@@ -407,29 +616,30 @@
     text-align: center; }
 
 .hm3 .sheet-body .ability-scores {
-  flex: 0 0 120px; }
-  .hm3 .sheet-body .ability-scores .ability {
-    align-items: center; }
-    .hm3 .sheet-body .ability-scores .ability .ability-label {
-      flex: 0 0 40px;
-      font-weight: bold;
-      text-transform: uppercase; }
-    .hm3 .sheet-body .ability-scores .ability .ability-value {
-      flex: 0 0 40px; }
-
-.hm3 .sheet-body .profile-traits-section {
-  flex: 0 0 480px; }
-  .hm3 .sheet-body .profile-traits-section .profile-traits-group {
-    flex: 0 0 200px;
-    border: none; }
-    .hm3 .sheet-body .profile-traits-section .profile-traits-group .profile-trait {
-      align-items: center; }
-      .hm3 .sheet-body .profile-traits-section .profile-traits-group .profile-trait .profile-trait-label {
-        flex: 0 0 95px;
+  flex: 0 0 110px;
+  gap: 0;
+  margin: 10px; }
+  .hm3 .sheet-body .ability-scores .ability-scores-column {
+    border: 2px groove #eeede0;
+    padding: 3px; }
+    .hm3 .sheet-body .ability-scores .ability-scores-column .ability {
+      align-items: center;
+      text-align: center;
+      padding: 3px 0 0 0;
+      border-bottom: 2px groove #eeede0; }
+      .hm3 .sheet-body .ability-scores .ability-scores-column .ability .label {
+        flex: 0 0 40px;
         font-weight: bold;
         text-transform: uppercase; }
-      .hm3 .sheet-body .profile-traits-section .profile-traits-group .profile-trait .profile-trait-value {
-        flex: 0 0 120px; }
+      .hm3 .sheet-body .ability-scores .ability-scores-column .ability .value {
+        flex: 0 0 40px;
+        font-size: 20pt; }
+
+.hm3 .sheet-body .profile-desc .label {
+  flex: 0 0 18px;
+  margin-top: 5px;
+  font-weight: bold;
+  text-transform: uppercase; }
 
 .hm3 .injuries-list {
   list-style: none;

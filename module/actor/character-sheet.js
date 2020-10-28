@@ -11,7 +11,7 @@ export class HarnMasterCharacterSheet extends ActorSheet {
     return mergeObject(super.defaultOptions, {
       classes: ["hm3", "sheet", "actor", "character-sheet"],
       width: 650,
-      height: 600,
+      height: 640,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "profile" }]
     });
   }

@@ -1,42 +1,40 @@
 .sheet-body {
   .ability-scores {
-    flex: 0 0 120px;
+    flex: 0 0 110px;
+    gap: 0;
+    margin: 10px;
     
-    .ability {
-      align-items: center;
+    .ability-scores-column { 
+      border: 2px groove #eeede0;
+      padding: 3px;
 
-      .ability-label {
-        flex: 0 0 40px;
-        font-weight: bold;
-        text-transform: uppercase;
-      }
-
-      .ability-value {
-        flex: 0 0 40px;
-      }
-    }
-  }
-
-  .profile-traits-section {
-    flex: 0 0 480px;
-
-    .profile-traits-group {
-      flex: 0 0 200px;
-      border: none;
-
-      .profile-trait {
+      .ability {
         align-items: center;
+        text-align: center;
+        padding: 3px 0 0 0;
+        border-bottom: 2px groove #eeede0;
 
-        .profile-trait-label {
-          flex: 0 0 95px;
+        .label {
+          flex: 0 0 40px;
           font-weight: bold;
           text-transform: uppercase;
         }
 
-        .profile-trait-value {
-          flex: 0 0 120px;
+        .value {
+          flex: 0 0 40px;
+          font-size: 20pt;
         }
       }
+    }
+  }
+
+  .profile-desc {
+
+    .label {
+      flex: 0 0 18px;
+      margin-top: 5px;
+      font-weight: bold;
+      text-transform: uppercase;  
     }
   }
 }

@@ -38,6 +38,7 @@ export class HarnMasterItemSheet extends ItemSheet {
   getData() {
     const data = super.getData();
     data.config = CONFIG.HM3;
+    data.itemType = this.item.data.type;
 
     // Fill appropriate lists for individual item sheets
     if (this.item.data.type === 'spell') {

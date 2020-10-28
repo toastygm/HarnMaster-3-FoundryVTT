@@ -2,8 +2,82 @@
   font-family: $font-primary;
 }
 
-.sheet-header-character {
-  flex: 0 0 100px;
+.sheet .sheet-header-character {
+  flex: 0 0 120px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+  border-bottom: 2px groove #eeede0;
+
+  .profile-img {
+    flex: 0 0 100px;
+    height: 100px;
+    margin-right: 10px;
+  }
+
+  .header-fields {
+    
+    .name-attribute {
+      border-bottom: 2px groove #eeede0;
+
+      h1.charname {
+        height: 50px;
+        padding: 0px;
+        margin: 5px 0;
+        border-bottom: 0;
+        input {
+          width: 100%;
+          height: 100%;
+          margin: 0;
+        }
+      }
+    }
+
+    .header-attributes {
+
+      .attribute {
+        min-height: 40px;
+        margin: 2px;
+
+        .label {
+          font-size: 10px;
+          text-transform: uppercase;
+          font-weight: bold;
+        }
+
+        .value {
+          font-size: 15px;
+          height: calc(100% - 6px)
+        }
+      }
+      
+      .species {
+        flex: 0 0 80px;
+        border-right: 2px groove #eeede0;
+      }
+
+      .gender {
+        flex: 0 0 80px;
+        border-right: 2px groove #eeede0;
+      }
+
+      .move-base {
+        flex: 0 0 80px;
+      }
+
+      .occupation {
+        flex: 1;
+        border-right: 2px groove #eeede0;
+      }
+    }
+  }
+}
+
+.sheet-header-creature {
+  flex: 0 0 200px;
   overflow: hidden;
   display: flex;
   flex-direction: row;
@@ -12,8 +86,8 @@
   margin-bottom: 10px;
 
   .profile-img {
-    flex: 0 0 100px;
-    height: 100px;
+    flex: 0 0 160px;
+    height: 160px;
     margin-right: 10px;
   }
 
@@ -32,36 +106,33 @@
       margin: 0;
     }
   }
-}
 
-.sheet-header-creature {
-  flex: 0 0 200px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  margin-bottom: 10px;
+  .ability-scores {
+    flex: 0 0 110px;
+    gap: 0;
+    margin: 10px;
+    
+    .ability-scores-column { 
+      border: 2px groove #eeede0;
+      padding: 3px;
 
-  .profile-img {
-    flex: 0 0 100px;
-    height: 100px;
-    margin-right: 10px;
-  }
+      .ability {
+        align-items: center;
+        text-align: center;
+        padding: 3px 0 0 0;
+        border-bottom: 2px groove #eeede0;
 
-  .header-fields {
-    flex: 1;
-  }
+        .label {
+          flex: 0 0 40px;
+          font-weight: bold;
+          text-transform: uppercase;
+        }
 
-  h1.charname {
-    height: 50px;
-    padding: 0px;
-    margin: 5px 0;
-    border-bottom: 0;
-    input {
-      width: 100%;
-      height: 100%;
-      margin: 0;
+        .value {
+          flex: 0 0 40px;
+          font-size: 20pt;
+        }
+      }
     }
   }
 }
@@ -77,10 +148,6 @@
 }
 
 .tox {
-  .tox-editor-container {
-    background: $c-white;
-  }
-
   .tox-edit-area {
     padding: 0 8px;
   }

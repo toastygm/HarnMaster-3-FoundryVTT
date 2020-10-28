@@ -26,36 +26,24 @@
           "min": 0,
           "max": 0
         },
-        "move": 0,
-        "description": "",
-        "descImage": "icons/svg/d20-grey.svg",
+        "move": {
+          "base": 0,
+          "effective": 0
+        },
+        "description": "***INIT***",
         "universalPenalty": 0,
         "physicalPenalty": 0
       }
     },
     "character": {
       "templates": ["base"],
+      "species": "",
       "gender": "",
-      "birthdate": "",
-      "sunsign": "",
-      "piety": 0,
       "occupation": "",
-      "frame": "",
-      "height": 0,
-      "weight": 0,
-      "skin": "",
-      "hairColor": "",
-      "eyeColor": "",
-      "diety": "",
       "hasCondition": false,
       "encumbrance": 0,
       "totalWeight": 0,
-      "biography": "",
-      "species": "",
-      "medical": "",
-      "otherAppearance": "",
-      "psyche": "",
-      "otherPersonality": ""
+      "biography": ""
   },
     "creature": {
       "templates": ["base"]
@@ -94,7 +82,8 @@
       "templates": ["skill"]
     },
     "ritualskill": {
-      "templates": ["skill"]
+      "templates": ["skill"],
+      "piety": 0
     },
     "spell": {
       "templates": ["base"],

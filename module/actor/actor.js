@@ -22,6 +22,7 @@ export class HarnMasterActor extends Actor {
 
     // If character, automatically add basic skills and armor locations
     if (data.type == 'character') {
+      // Request whether to initialize skills and armor locations
       new Dialog({
         title: 'Initialize Skills and Locations',
         content: `<p>Add Default Skills and Locations?</p>`,
@@ -37,13 +38,14 @@ export class HarnMasterActor extends Actor {
           no: {
             label: 'No',
             callback: async dlg => {
-              super.create(data, options); // Do not add new items, continue with the rest of the Actor creation process upstream
+              super.create(data, options); // Do not add new items, continue with the rest of the Actor creation process upstream          
             }
           },
         },
         default: 'yes'
       }).render(true);
     } else if (data.type == 'creature') {
+
       // Create Creature Default Skills
       this._createDefaultCreatureSkills(data);
       super.create(data, options); // Follow through the the rest of the Actor creation process upstream
@@ -206,6 +208,19 @@ export class HarnMasterActor extends Actor {
    */
   _prepareCharacterData(actorData) {
     const data = actorData.data;
+
+    // If description has not been initialized, then initialize it
+    if (data.description === '***INIT***') {
+        // Set default character biography and description
+        data.biography = '<p>Birthdate:</p>\n<p>Sunsign:</p>\n<p>Birthplace:</p>\n' +
+          '<p>Culture:</p>\n<p>Sibling Rank: x of y</p>\n<p>Parent(s):</p>\n' +
+          '<p>Parent Occupation:</p>\n<p>Estrangement:</p>\n<p>Clanhead:</p>\n' +
+          '<p>Medical Traits:</p>\n<p>Psyche Traits:</p>\n<p>&nbsp;</p>';
+
+        data.description = '<p>Apparent Age:</p>\n<p>Social Class:</p>\n' +
+          '<p>Frame:</p>\n<p>Height:</p>\n<p>Weight:</p>\n<p>Comliness:</p>\n' +
+          '<p>Appearance:</p>\n<p>&nbsp;</p>';
+    }
     
     // Calculate weight and injury level totals, used to calculate
     // universal penalty below.
@@ -237,7 +252,7 @@ export class HarnMasterActor extends Actor {
     data.endurance.value = Math.max(data.endurance.max - data.physicalPenalty, 0);
 
     // Calculate current Move speed.  Cannot go below 0
-    data.move = Math.max(data.abilities.agility - data.physicalPenalty, 0);
+    data.move.effective = Math.max(data.move.base - data.physicalPenalty, 0);
 
     // Calculate Important Roll Targets
     data.stumbleTarget = Math.max(data.abilities.agility - data.physicalPenalty, 0);
@@ -257,7 +272,14 @@ export class HarnMasterActor extends Actor {
   _prepareCreatureData(actorData) {
     const data = actorData.data;
     
-    this._calcInjuryTotal(data);
+    if (data.description === '***INIT***') {
+      // Set default creature description
+      data.description = '<p>Habitat:</p>\n<p>Height:</p>\n<p>Weight:</p>\n' +
+        '<p>Diet:</p>\n<p>Lifespan:</p>\n<p>Group:</p>\n<p>Special Abilities:</p>\n' +
+        '<p>Attacks:</p>\n<p>&nbsp;</p>';
+    }
+
+      this._calcInjuryTotal(data);
 
     // Universal Penalty and Physical Penalty are used to calculate many
     // things, including effectiveMasteryLevel for all skills,
@@ -274,6 +296,9 @@ export class HarnMasterActor extends Actor {
     // Now calculate endurance.value; this value cannot go below 0
     data.endurance.value = data.endurance.max - data.physicalPenalty;
     if (data.endurance.value < 0) data.endurance.value = 0;
+
+    // Calculate current Move speed.  Cannot go below 0
+    data.move.effective = Math.max(data.move.base - data.physicalPenalty, 0);
 
     this._setupWeaponData(data);
   }
