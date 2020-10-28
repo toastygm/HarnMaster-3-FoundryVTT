@@ -30,7 +30,7 @@
           "base": 0,
           "effective": 0
         },
-        "description": "<p>Apparent Age:</p>\n<p>Social Class:</p>\n<p>Frame:</p>\n<p>Height:</p>\n<p>Weight:</p>\n<p>Comliness:</p>\n<p>Appearance:</p>\n<p>&nbsp;</p>",
+        "description": "***INIT***",
         "universalPenalty": 0,
         "physicalPenalty": 0
       }
@@ -43,7 +43,7 @@
       "hasCondition": false,
       "encumbrance": 0,
       "totalWeight": 0,
-      "biography": "<p>Birthdate:</p>\n<p>Sunsign:</p>\n<p>Birthplace:</p>\n<p>Culture:</p>\n<p>Sibling Rank: x of y</p>\n<p>Parent(s):</p>\n<p>Parent Occupation:</p>\n<p>Estrangement:</p>\n<p>Clanhead:</p>\n<p>Medical Traits:</p>\n<p>Psyche Traits:</p>\n<p>&nbsp;</p>"
+      "biography": ""
   },
     "creature": {
       "templates": ["base"]
