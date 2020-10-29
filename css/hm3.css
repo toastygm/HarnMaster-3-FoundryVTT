@@ -827,6 +827,13 @@
     flex: 0 0 45px;
     text-align: right; }
 
+.hm3 .armorlocation .adv-setting {
+  align-items: center;
+  display: flex;
+  height: 26px; }
+  .hm3 .armorlocation .adv-setting .label {
+    padding-right: 5px; }
+
 .hm3 .armorlocations-list {
   list-style: none;
   margin: 7px 0;
