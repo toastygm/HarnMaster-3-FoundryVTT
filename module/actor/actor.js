@@ -262,6 +262,7 @@ export class HarnMasterActor extends Actor {
     this._refreshSpellsAndInvocations();
 
     this._setupWeaponData(data);
+    this._setupMissileData(data);
 
     this._setupInjuryTargets(data);
   }
@@ -301,6 +302,7 @@ export class HarnMasterActor extends Actor {
     data.move.effective = Math.max(data.move.base - data.physicalPenalty, 0);
 
     this._setupWeaponData(data);
+    this._setupMissileData(data);
   }
 
   _setupInjuryTargets(data) {
@@ -360,6 +362,51 @@ export class HarnMasterActor extends Actor {
       }
     });
   }
+
+
+  _setupMissileData(data) {
+
+    // Collect all combat skills into a map for use later
+    let combatSkills = {};
+    this.data.items.forEach(it => {
+      if (it.type === 'combatskill' || it.name.toLowerCase() === 'throwing') {
+        combatSkills[it.name] = {
+          'name': it.name,
+          'eml': it.data.effectiveMasteryLevel
+        };
+      }
+    });
+
+    this.data.items.forEach(it => {
+      if (it.type === 'missilegear') {
+        // Reset mastery levels in case nothing matches
+        it.data.attackMasteryLevel.short = 5;
+        it.data.attackMasteryLevel.medium = 5;
+        it.data.attackMasteryLevel.long = 5;
+        it.data.attackMasteryLevel.extreme = 5;
+
+        let missileName = it.name;
+        
+        // If the associated skill is in our combat skills list, get EML from there
+        // and then calculate AML.
+        let assocSkill = it.data.assocSkill;
+        if (typeof combatSkills[assocSkill] != 'undefined') {
+          let skillEml = combatSkills[assocSkill].eml;
+          it.data.attackMasteryLevel.short = skillEml;
+          it.data.attackMasteryLevel.medium = skillEml - 20;
+          it.data.attackMasteryLevel.long = skillEml - 40;
+          it.data.attackMasteryLevel.extreme = skillEml - 80;
+        }
+
+        // No matter what, we always have at least a 5% chance of attacking
+        it.data.attackMasteryLevel.short = Math.max(it.data.attackMasteryLevel.short, 5);
+        it.data.attackMasteryLevel.medium = Math.max(it.data.attackMasteryLevel.medium, 5);
+        it.data.attackMasteryLevel.long = Math.max(it.data.attackMasteryLevel.long, 5);
+        it.data.attackMasteryLevel.extreme = Math.max(it.data.attackMasteryLevel.extreme, 5);
+      }
+    });
+  }
+
 
   _setPropertiesFromSkills(items, data) {
     data.hasCondition = false;

@@ -51,7 +51,8 @@
   },
   "Item": {
     "types": ["physicalskill", "commskill", "craftskill", "combatskill", "magicskill", "ritualskill",
-    "spell", "psionic", "invocation", "weapongear", "armorgear", "miscgear", "injury", "armorlocation"],
+    "spell", "psionic", "invocation", "weapongear", "missilegear", "armorgear", "miscgear", "injury",
+    "armorlocation"],
     "templates": {
       "base": {
         "note": ""
@@ -114,6 +115,29 @@
       "attackMasteryLevel": 0,
       "defenseMasteryLevel": 0,
       "assocSkill": "None"
+    },
+    "missilegear": {
+      "templates": ["base", "gear"],
+      "weaponAspect": "Piercing",
+      "assocSkill": "Throwing",
+      "range": {
+        "short": 0,
+        "medium": 0,
+        "long": 0,
+        "extreme": 0
+      },
+      "impact": {
+        "short": 0,
+        "medium": 0,
+        "long": 0,
+        "extreme": 0
+      },
+      "attackMasteryLevel": {
+        "short": 0,
+        "medium": 0,
+        "long": 0,
+        "extreme": 0
+      }
     },
     "armorgear": {
       "templates": ["base", "gear"],

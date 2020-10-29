@@ -590,6 +590,68 @@
       flex: 0 0 45px;
       text-align: right; }
 
+.hm3 .combat .missiles-list {
+  list-style: none;
+  margin: 7px 0;
+  padding: 0;
+  overflow-y: auto; }
+  .hm3 .combat .missiles-list .missile-header {
+    font-weight: bold; }
+  .hm3 .combat .missiles-list .missile {
+    height: 30px;
+    line-height: 24px;
+    padding: 3px 0;
+    border-bottom: 1px solid #bbb; }
+    .hm3 .combat .missiles-list .missile .missile-image {
+      flex: 0 0 24px;
+      margin-right: 5px; }
+    .hm3 .combat .missiles-list .missile img {
+      display: block; }
+    .hm3 .combat .missiles-list .missile .missile-damage {
+      flex: 0 0 35px;
+      text-align: center; }
+    .hm3 .combat .missiles-list .missile .missile-name {
+      flex: 0 0 80px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden; }
+    .hm3 .combat .missiles-list .missile .missile-qty {
+      flex: 0 0 25px;
+      text-align: center; }
+    .hm3 .combat .missiles-list .missile .missile-weight {
+      flex: 0 0 30px;
+      text-align: center; }
+    .hm3 .combat .missiles-list .missile .missile-skill {
+      flex: 0 0 65px;
+      text-align: left;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden; }
+    .hm3 .combat .missiles-list .missile .missile-short {
+      flex: 0 0 55px;
+      text-align: center; }
+    .hm3 .combat .missiles-list .missile .missile-medium {
+      flex: 0 0 55px;
+      text-align: center; }
+    .hm3 .combat .missiles-list .missile .missile-long {
+      flex: 0 0 55px;
+      text-align: center; }
+    .hm3 .combat .missiles-list .missile .missile-extreme {
+      flex: 0 0 55px;
+      text-align: center; }
+    .hm3 .combat .missiles-list .missile .missile-attack {
+      flex: 0 0 30px;
+      text-align: center; }
+    .hm3 .combat .missiles-list .missile .missile-notes {
+      flex: 1 0 50px;
+      padding-left: 10px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden; }
+    .hm3 .combat .missiles-list .missile .item-controls {
+      flex: 0 0 45px;
+      text-align: right; }
+
 .hm3 .inventory h2 {
   flex: 1;
   margin: 0;
