@@ -170,7 +170,7 @@
                 text-align: center;
             }
             .missile-name {
-                flex: 0 0 80px;
+                flex: 0 0 90px;
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 overflow: hidden;
@@ -187,7 +187,7 @@
             }
 
             .missile-skill {
-                flex: 0 0 65px;
+                flex: 0 0 75px;
                 text-align: left;
                 text-overflow: ellipsis;
                 white-space: nowrap;
@@ -195,22 +195,22 @@
             }
 
             .missile-short {
-                flex: 0 0 55px;
+                flex: 0 0 45px;
                 text-align: center;
             }
 
             .missile-medium {
-                flex: 0 0 55px;
+                flex: 0 0 45px;
                 text-align: center;
             }
 
             .missile-long {
-                flex: 0 0 55px;
+                flex: 0 0 45px;
                 text-align: center;
             }
 
             .missile-extreme {
-                flex: 0 0 55px;
+                flex: 0 0 45px;
                 text-align: center;
             }
 
@@ -232,5 +232,23 @@
                 text-align: right;
             }
         }
+    }
+}
+
+.range-table {
+    .range-header {
+        font-weight: bold;
+    }
+
+    .range-label {
+        flex: 0 0 50px;
+        font-weight: bold;
+        text-align: left;
+    }
+
+    .range-value {
+        flex: 0 0 60px;
+        margin: 0 2px;
+        text-align: center;
     }
 }

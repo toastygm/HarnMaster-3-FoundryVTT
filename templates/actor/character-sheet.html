@@ -413,11 +413,11 @@
             </div>
 
             <!-- Weapons -->
-            <h2>Weapons</h2>
+            <h2>Meele Weapons</h2>
             <ol class="weapons-list">
                 <li class="item weapon flexrow weapon-header">
                     <div class="weapon-damage">Dmg</div>
-                    <div class="weapon-name">Weapon Name</div>
+                    <div class="weapon-name">Name</div>
                     <div class="weapon-qty">Qty</div>
                     <div class="weapon-weight">Wt</div>
                     <div class="weapon-quality">WQ</div>
@@ -482,7 +482,8 @@
                     <div class="missile-medium">Med</div>
                     <div class="missile-long">Long</div>
                     <div class="missile-extreme">Ext</div>
-                    <div class="item-dice">Atk</div>
+                    <div class="missile-attack">AML</div>
+                    <div class="item-dice"></div>
                     <div class="missile-notes">Notes</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create item" data-type="missilegear"><i
@@ -493,7 +494,10 @@
                     {{#if (eq item.type "missilegear")}}
                         <li class="item missile flexrow" data-item-id="{{item._id}}">
                             <div class="missile-damage">
-                                <a class="missile-damage-roll" data-weapon="{{item.name}}" title="Missile Damage Roll"><i class="fas fa-dice-d20"></i></a>
+                                <a class="missile-damage-roll" data-missile="{{item.name}}" data-aspect="{{data.weaponAspect}}" 
+                                    data-impact-short="{{data.impact.short}}" data-impact-medium="{{data.impact.medium}}"
+                                    data-impact-long="{{data.impact.long}}" data-impact-extreme="{{data.impact.extreme}}"
+                                    title="Missile Damage Roll"><i class="fas fa-dice-d20"></i></a>
                             </div>
                             <h4 class="missile-name">{{item.name}}</h4>
                             <div class="missile-qty">{{data.quantity}}</div>
@@ -501,10 +505,14 @@
                             <div class="missile-skill">{{data.assocSkill}}</div>
                             <div class="missile-short">{{data.range.short}}/{{data.impact.short}}</div>
                             <div class="missile-medium">{{data.range.medium}}/{{data.impact.medium}}</div>
-                            <div class="missile-long">{{data.range.long}}/{{data.impact.long}}</strong></div>
-                            <div class="missile-extreme">{{data.range.extreme}}/{{data.impact.extreme}}</strong></div>
+                            <div class="missile-long">{{data.range.long}}/{{data.impact.long}}</div>
+                            <div class="missile-extreme">{{data.range.extreme}}/{{data.impact.extreme}}</div>
+                            <div class="missile-attack">{{data.attackMasteryLevel}}</div>
                             <div class="item-dice">
-                                <a class="missile-attack-roll"  data-label="{{item.name}} Attack" data-target="{{data.attackMasteryLevel}}" title="Missile Attack Roll"><i class="fas fa-dice-d20"></i></a>
+                                <a class="missile-attack-roll"  data-range-short="{{data.range.short}}" data-range-medium="{{data.range.medium}}"
+                                    data-range-long="{{data.range.long}}" data-range-extreme="{{data.range.extreme}}" data-missile="{{item.name}}"
+                                    data-target="{{data.attackMasteryLevel}}" data-aspect="{{data.weaponAspect}}"
+                                    title="Missile Attack Roll"><i class="fas fa-dice-d20"></i></a>
                             </div>
                             <div class="missile-notes">{{data.notes}}</div>
                             <div class="item-controls">
@@ -597,7 +605,7 @@
                     <div class="spell-name">Spell Name</div>
                     <div class="spell-convocation">Convoc.</div>
                     <div class="spell-level">Level</div>
-                    <div class="spell-eml">CML</div>
+                    <div class="spell-eml">EML</div>
                     <div class="spell-notes">Notes</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create item" data-type="spell"><i class="fas fa-plus"></i> Add</a>
@@ -632,7 +640,7 @@
                     <div class="spell-name">Invocation Name</div>
                     <div class="spell-convocation">Diety</div>
                     <div class="spell-level">Circle</div>
-                    <div class="spell-eml">RML</div>
+                    <div class="spell-eml">EML</div>
                     <div class="spell-notes">Notes</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create item" data-type="invocation"><i class="fas fa-plus"></i> Add</a>

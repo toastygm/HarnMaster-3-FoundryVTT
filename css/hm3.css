@@ -611,7 +611,7 @@
       flex: 0 0 35px;
       text-align: center; }
     .hm3 .combat .missiles-list .missile .missile-name {
-      flex: 0 0 80px;
+      flex: 0 0 90px;
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden; }
@@ -622,22 +622,22 @@
       flex: 0 0 30px;
       text-align: center; }
     .hm3 .combat .missiles-list .missile .missile-skill {
-      flex: 0 0 65px;
+      flex: 0 0 75px;
       text-align: left;
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden; }
     .hm3 .combat .missiles-list .missile .missile-short {
-      flex: 0 0 55px;
+      flex: 0 0 45px;
       text-align: center; }
     .hm3 .combat .missiles-list .missile .missile-medium {
-      flex: 0 0 55px;
+      flex: 0 0 45px;
       text-align: center; }
     .hm3 .combat .missiles-list .missile .missile-long {
-      flex: 0 0 55px;
+      flex: 0 0 45px;
       text-align: center; }
     .hm3 .combat .missiles-list .missile .missile-extreme {
-      flex: 0 0 55px;
+      flex: 0 0 45px;
       text-align: center; }
     .hm3 .combat .missiles-list .missile .missile-attack {
       flex: 0 0 30px;
@@ -651,6 +651,19 @@
     .hm3 .combat .missiles-list .missile .item-controls {
       flex: 0 0 45px;
       text-align: right; }
+
+.hm3 .range-table .range-header {
+  font-weight: bold; }
+
+.hm3 .range-table .range-label {
+  flex: 0 0 50px;
+  font-weight: bold;
+  text-align: left; }
+
+.hm3 .range-table .range-value {
+  flex: 0 0 60px;
+  margin: 0 2px;
+  text-align: center; }
 
 .hm3 .inventory h2 {
   flex: 1;
