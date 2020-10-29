@@ -380,10 +380,7 @@ export class HarnMasterActor extends Actor {
     this.data.items.forEach(it => {
       if (it.type === 'missilegear') {
         // Reset mastery levels in case nothing matches
-        it.data.attackMasteryLevel.short = 5;
-        it.data.attackMasteryLevel.medium = 5;
-        it.data.attackMasteryLevel.long = 5;
-        it.data.attackMasteryLevel.extreme = 5;
+        it.data.attackMasteryLevel = 5;
 
         let missileName = it.name;
         
@@ -392,17 +389,11 @@ export class HarnMasterActor extends Actor {
         let assocSkill = it.data.assocSkill;
         if (typeof combatSkills[assocSkill] != 'undefined') {
           let skillEml = combatSkills[assocSkill].eml;
-          it.data.attackMasteryLevel.short = skillEml;
-          it.data.attackMasteryLevel.medium = skillEml - 20;
-          it.data.attackMasteryLevel.long = skillEml - 40;
-          it.data.attackMasteryLevel.extreme = skillEml - 80;
+          it.data.attackMasteryLevel = skillEml;
         }
 
         // No matter what, we always have at least a 5% chance of attacking
-        it.data.attackMasteryLevel.short = Math.max(it.data.attackMasteryLevel.short, 5);
-        it.data.attackMasteryLevel.medium = Math.max(it.data.attackMasteryLevel.medium, 5);
-        it.data.attackMasteryLevel.long = Math.max(it.data.attackMasteryLevel.long, 5);
-        it.data.attackMasteryLevel.extreme = Math.max(it.data.attackMasteryLevel.extreme, 5);
+        it.data.attackMasteryLevel = Math.max(it.data.attackMasteryLevel, 5);
       }
     });
   }
@@ -492,9 +483,8 @@ export class HarnMasterActor extends Actor {
         if (it.data.injuryLevel < 0) it.data.injuryLevel = 0;
 
         totalInjuryLevels += it.data.injuryLevel;
-        if (it.data.injuryLevel == 0) {
+        if (it.data.injuryLevel === 0) {
           it.data.severity = '';
-          it.data.healRate = 0;
         } else if (it.data.injuryLevel == 1) {
           it.data.severity = 'M1';
         } else if (it.data.injuryLevel <= 3) {
@@ -589,6 +579,36 @@ export class HarnMasterActor extends Actor {
     return DiceHM3.damageRoll(rollData);
   }
 
+  missileDamageRoll(eventData) {
+    const rollData = {
+      name: eventData.missile,
+      aspect: eventData.aspect,
+      impactShort: eventData.impactShort,
+      impactMedium: eventData.impactMedium,
+      impactLong: eventData.impactLong,
+      impactExtreme: eventData.impactExtreme,
+      data: this.data,
+      speaker: ChatMessage.getSpeaker({actor: this})
+    }
+
+    console.log(rollData);
+  }
+
+  missileAttackRoll(eventData) {
+    const rollData = {
+      name: eventData.missile,
+      target: eventData.target,
+      aspect: eventData.aspect,
+      rangeShort: eventData.rangeShort,
+      rangeMedium: eventData.rangeMedium,
+      rangeLong: eventData.rangeLong,
+      rangeExtreme: eventData.rangeExtreme,
+      data: this.data,
+      speaker: ChatMessage.getSpeaker({actor: this})
+    }
+    console.log(rollData);
+  }
+  
   injuryRoll() {
 
     const rollData = {

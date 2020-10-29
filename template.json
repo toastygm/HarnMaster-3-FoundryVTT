@@ -132,12 +132,7 @@
         "long": 0,
         "extreme": 0
       },
-      "attackMasteryLevel": {
-        "short": 0,
-        "medium": 0,
-        "long": 0,
-        "extreme": 0
-      }
+      "attackMasteryLevel": 0
     },
     "armorgear": {
       "templates": ["base", "gear"],
