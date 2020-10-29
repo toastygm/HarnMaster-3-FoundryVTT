@@ -20,9 +20,11 @@
             <div class="resource">
                 <label class="resource-label" for="data.weaponAspect">Weapon Aspect</label>
                 <select class="resource-value" name="data.weaponAspect" data-dtype="String">
-                    <option value="Piercing">Piercing</option>
-                    <option value="Blunt">Blunt</option>
-                    <option value="Edged">Edged</option>
+                    {{#select data.weaponAspect}}
+                        <option value="Piercing">Piercing</option>
+                        <option value="Blunt">Blunt</option>
+                        <option value="Edged">Edged</option>
+                    {{/select}}
                 </select>
             </div>
             <div class="resource">
@@ -41,7 +43,7 @@
             <input type="text" name="data.notes" value="{{data.notes}}" data-dtype="String"/>
         </div>
         <ol class="range-table">
-            <li class="flexrow">
+            <li class="flexrow range-header">
                 <div class="range-label"></div>
                 <div class="range-value">Short</div>
                 <div class="range-value">Medium</div>
