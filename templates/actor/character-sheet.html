@@ -413,11 +413,11 @@
             </div>
 
             <!-- Weapons -->
-            <h2>Weapons</h2>
+            <h2>Meele Weapons</h2>
             <ol class="weapons-list">
                 <li class="item weapon flexrow weapon-header">
                     <div class="weapon-damage">Dmg</div>
-                    <div class="weapon-name">Weapon Name</div>
+                    <div class="weapon-name">Name</div>
                     <div class="weapon-qty">Qty</div>
                     <div class="weapon-weight">Wt</div>
                     <div class="weapon-quality">WQ</div>
@@ -460,6 +460,61 @@
                                 <a class="std-roll" data-label="{{item.name}} Defense" data-target="{{data.defenseMasteryLevel}}" title="Weapon Defense Roll"><i class="fas fa-dice-d20"></i></a>
                             </div>
                             <div class="weapon-notes">{{data.notes}}</div>
+                            <div class="item-controls">
+                                <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+                                <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                            </div>
+                        </li>
+                    {{/if}}
+                {{/each}}
+            </ol>
+
+            <!-- Missiles -->
+            <h2>Missiles</h2>
+            <ol class="missiles-list">
+                <li class="item missile flexrow missile-header">
+                    <div class="missile-damage">Dmg</div>
+                    <div class="missile-name">Name</div>
+                    <div class="missile-qty">Qty</div>
+                    <div class="missile-weight">Wt</div>
+                    <div class="missile-skill">Skill</div>
+                    <div class="missile-short">Short</div>
+                    <div class="missile-medium">Med</div>
+                    <div class="missile-long">Long</div>
+                    <div class="missile-extreme">Ext</div>
+                    <div class="missile-attack">AML</div>
+                    <div class="item-dice"></div>
+                    <div class="missile-notes">Notes</div>
+                    <div class="item-controls">
+                        <a class="item-control item-create" title="Create item" data-type="missilegear"><i
+                                class="fas fa-plus"></i> Add</a>
+                    </div>
+                </li>
+                {{#each actor.items as |item id|}}
+                    {{#if (eq item.type "missilegear")}}
+                        <li class="item missile flexrow" data-item-id="{{item._id}}">
+                            <div class="missile-damage">
+                                <a class="missile-damage-roll" data-missile="{{item.name}}" data-aspect="{{data.weaponAspect}}" 
+                                    data-impact-short="{{data.impact.short}}" data-impact-medium="{{data.impact.medium}}"
+                                    data-impact-long="{{data.impact.long}}" data-impact-extreme="{{data.impact.extreme}}"
+                                    title="Missile Damage Roll"><i class="fas fa-dice-d20"></i></a>
+                            </div>
+                            <h4 class="missile-name">{{item.name}}</h4>
+                            <div class="missile-qty">{{data.quantity}}</div>
+                            <div class="missile-weight">{{data.weight}}</div>
+                            <div class="missile-skill">{{data.assocSkill}}</div>
+                            <div class="missile-short">{{data.range.short}}/{{data.impact.short}}</div>
+                            <div class="missile-medium">{{data.range.medium}}/{{data.impact.medium}}</div>
+                            <div class="missile-long">{{data.range.long}}/{{data.impact.long}}</div>
+                            <div class="missile-extreme">{{data.range.extreme}}/{{data.impact.extreme}}</div>
+                            <div class="missile-attack">{{data.attackMasteryLevel}}</div>
+                            <div class="item-dice">
+                                <a class="missile-attack-roll"  data-range-short="{{data.range.short}}" data-range-medium="{{data.range.medium}}"
+                                    data-range-long="{{data.range.long}}" data-range-extreme="{{data.range.extreme}}" data-missile="{{item.name}}"
+                                    data-target="{{data.attackMasteryLevel}}" data-aspect="{{data.weaponAspect}}"
+                                    title="Missile Attack Roll"><i class="fas fa-dice-d20"></i></a>
+                            </div>
+                            <div class="missile-notes">{{data.notes}}</div>
                             <div class="item-controls">
                                 <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
                                 <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
@@ -550,7 +605,7 @@
                     <div class="spell-name">Spell Name</div>
                     <div class="spell-convocation">Convoc.</div>
                     <div class="spell-level">Level</div>
-                    <div class="spell-eml">CML</div>
+                    <div class="spell-eml">EML</div>
                     <div class="spell-notes">Notes</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create item" data-type="spell"><i class="fas fa-plus"></i> Add</a>
@@ -585,7 +640,7 @@
                     <div class="spell-name">Invocation Name</div>
                     <div class="spell-convocation">Diety</div>
                     <div class="spell-level">Circle</div>
-                    <div class="spell-eml">RML</div>
+                    <div class="spell-eml">EML</div>
                     <div class="spell-notes">Notes</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create item" data-type="invocation"><i class="fas fa-plus"></i> Add</a>
@@ -652,8 +707,8 @@
             <h2>Inventory Statistics</h2>
             <div class="inv-stats flexcol">
                 <div class="inv-stat flexrow">
-                    <label class="inv-stat-label">Weapon Weight</label>
-                    <div class="inv-stat-value">{{data.totalWeaponWeight}}</div>
+                    <label class="inv-stat-label">missile Weight</label>
+                    <div class="inv-stat-value">{{data.totalmissileWeight}}</div>
                 </div>
                 <div class="inv-stat flexrow">
                     <label class="inv-stat-label">Armor Weight</label>

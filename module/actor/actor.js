@@ -262,6 +262,7 @@ export class HarnMasterActor extends Actor {
     this._refreshSpellsAndInvocations();
 
     this._setupWeaponData(data);
+    this._setupMissileData(data);
 
     this._setupInjuryTargets(data);
   }
@@ -295,12 +296,13 @@ export class HarnMasterActor extends Actor {
 
     // Now calculate endurance.value; this value cannot go below 0
     data.endurance.value = data.endurance.max - data.physicalPenalty;
-    if (data.endurance.value < 0) data.endurance.value = 0;
+    Math.max(data.endurance.value, 0);
 
     // Calculate current Move speed.  Cannot go below 0
     data.move.effective = Math.max(data.move.base - data.physicalPenalty, 0);
 
     this._setupWeaponData(data);
+    this._setupMissileData(data);
   }
 
   _setupInjuryTargets(data) {
@@ -360,6 +362,42 @@ export class HarnMasterActor extends Actor {
       }
     });
   }
+
+
+  _setupMissileData(data) {
+
+    // Collect all combat skills into a map for use later
+    let combatSkills = {};
+    this.data.items.forEach(it => {
+      if (it.type === 'combatskill' || it.name.toLowerCase() === 'throwing') {
+        combatSkills[it.name] = {
+          'name': it.name,
+          'eml': it.data.effectiveMasteryLevel
+        };
+      }
+    });
+
+    this.data.items.forEach(it => {
+      if (it.type === 'missilegear') {
+        // Reset mastery levels in case nothing matches
+        it.data.attackMasteryLevel = 5;
+
+        let missileName = it.name;
+        
+        // If the associated skill is in our combat skills list, get EML from there
+        // and then calculate AML.
+        let assocSkill = it.data.assocSkill;
+        if (typeof combatSkills[assocSkill] != 'undefined') {
+          let skillEml = combatSkills[assocSkill].eml;
+          it.data.attackMasteryLevel = skillEml;
+        }
+
+        // No matter what, we always have at least a 5% chance of attacking
+        it.data.attackMasteryLevel = Math.max(it.data.attackMasteryLevel, 5);
+      }
+    });
+  }
+
 
   _setPropertiesFromSkills(items, data) {
     data.hasCondition = false;
@@ -445,9 +483,8 @@ export class HarnMasterActor extends Actor {
         if (it.data.injuryLevel < 0) it.data.injuryLevel = 0;
 
         totalInjuryLevels += it.data.injuryLevel;
-        if (it.data.injuryLevel == 0) {
+        if (it.data.injuryLevel === 0) {
           it.data.severity = '';
-          it.data.healRate = 0;
         } else if (it.data.injuryLevel == 1) {
           it.data.severity = 'M1';
         } else if (it.data.injuryLevel <= 3) {
@@ -542,6 +579,36 @@ export class HarnMasterActor extends Actor {
     return DiceHM3.damageRoll(rollData);
   }
 
+  missileDamageRoll(eventData) {
+    const rollData = {
+      name: eventData.missile,
+      aspect: eventData.aspect,
+      impactShort: eventData.impactShort,
+      impactMedium: eventData.impactMedium,
+      impactLong: eventData.impactLong,
+      impactExtreme: eventData.impactExtreme,
+      data: this.data,
+      speaker: ChatMessage.getSpeaker({actor: this})
+    }
+
+    return DiceHM3.missileDamageRoll(rollData);
+  }
+
+  missileAttackRoll(eventData) {
+    const rollData = {
+      name: eventData.missile,
+      target: eventData.target,
+      aspect: eventData.aspect,
+      rangeShort: eventData.rangeShort,
+      rangeMedium: eventData.rangeMedium,
+      rangeLong: eventData.rangeLong,
+      rangeExtreme: eventData.rangeExtreme,
+      data: this.data,
+      speaker: ChatMessage.getSpeaker({actor: this})
+    }
+    return DiceHM3.missileAttackRoll(rollData);
+  }
+  
   injuryRoll() {
 
     const rollData = {

@@ -53,15 +53,26 @@ export class HarnMasterItemSheet extends ItemSheet {
       this.actor.itemTypes.ritualskill.forEach(it => {
         data.dieties.push(it.data.name);
       });
-    } else if (this.item.data.type === 'weapongear') {
-      // weapons need a list of combat skills; but, we
-      // are going to ignore the 'Dodge' and 'Initiative' skills,
-      // since you never want a weapon based on those skills.
-      // Also, we add a "None" item to the front of the list
-      // as a default (in case no other combat skill applies)
-      data.combatSkills = ["None"];
+    } else if (this.item.data.type === 'weapongear' ||
+              this.item.data.type === 'missilegear') {
+      
+      // Weapons need a list of combat skills
+
+      if (this.item.data.type === 'weapongear') {
+        // For weapons, we add a "None" item to the front of the list
+        // as a default (in case no other combat skill applies)
+        data.combatSkills = ["None"];
+      } else {
+        // For missiles, we add the "Throwing" skill to the front
+        // of the list as a default (in case no other combat
+        // skill applies)
+        data.combatSkills = ["Throwing"];
+      }
+
       this.actor.itemTypes.combatskill.forEach(it => {
         const lcName = it.data.name.toLowerCase();
+        // Ignore the 'Dodge' and 'Initiative' skills,
+        // since you never want a weapon based on those skills.
         if (!(lcName === 'initiative' || lcName === 'dodge')) {
           data.combatSkills.push(it.data.name);
         }

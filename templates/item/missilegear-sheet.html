@@ -1,0 +1,70 @@
+<form class="{{cssClass}}" autocomplete="off">
+    <header class="sheet-header">
+        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+        <div class="header-fields">
+            <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
+        </div>
+    </header>
+
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+        <div class="grid grid-2col">
+            <div class="resource">
+                <label class="resource-label">Quantity</label>
+                <input type="text" name="data.quantity" value="{{data.quantity}}" data-dtype="Number"/>
+            </div>
+            <div class="resource">
+                <label class="resource-label">Weight</label>
+                <input type="text" name="data.weight" value="{{data.weight}}" data-dtype="Number"/>
+            </div>
+            <div class="resource">
+                <label class="resource-label" for="data.weaponAspect">Weapon Aspect</label>
+                <select class="resource-value" name="data.weaponAspect" data-dtype="String">
+                    {{#select data.weaponAspect}}
+                        <option value="Piercing">Piercing</option>
+                        <option value="Blunt">Blunt</option>
+                        <option value="Edged">Edged</option>
+                    {{/select}}
+                </select>
+            </div>
+            <div class="resource">
+                <label class="resource-label" for="data.assocSkill">Associated Skill</label>
+                <select class="resource-value" name="data.assocSkill" data-dtype="String">
+                    {{#select data.assocSkill}}
+                    {{#each combatSkills}}
+                        <option value="{{this}}">{{this}}</option>
+                    {{/each}}
+                    {{/select}}
+                </select>
+            </div>
+        </div>
+        <div class="resource">
+            <label class="resource-label">Notes</label>
+            <input type="text" name="data.notes" value="{{data.notes}}" data-dtype="String"/>
+        </div>
+        <ol class="range-table">
+            <li class="flexrow range-header">
+                <div class="range-label"></div>
+                <div class="range-value">Short</div>
+                <div class="range-value">Medium</div>
+                <div class="range-value">Long</div>
+                <div class="range-value">Extreme</div>
+            </li>
+            <li class="flexrow">
+                <div class="range-label">Range</div>
+                <div class="range-value"><input type="text" name="data.range.short" value="{{data.range.short}}" data-dtype="Number" /></div>
+                <div class="range-value"><input type="text" name="data.range.medium" value="{{data.range.medium}}" data-dtype="Number" /></div>
+                <div class="range-value"><input type="text" name="data.range.long" value="{{data.range.long}}" data-dtype="Number" /></div>
+                <div class="range-value"><input type="text" name="data.range.extreme" value="{{data.range.extreme}}" data-dtype="Number" /></div>
+            </li>
+            <li class="flexrow">
+                <div class="range-label">Impact</div>
+                <div class="range-value"><input type="text" name="data.impact.short" value="{{data.impact.short}}" data-dtype="Number" /></div>
+                <div class="range-value"><input type="text" name="data.impact.medium" value="{{data.impact.medium}}" data-dtype="Number" /></div>
+                <div class="range-value"><input type="text" name="data.impact.long" value="{{data.impact.long}}" data-dtype="Number" /></div>
+                <div class="range-value"><input type="text" name="data.impact.extreme" value="{{data.impact.extreme}}" data-dtype="Number" /></div>
+            </li>
+        </ol>
+    </section>
+
+</form>

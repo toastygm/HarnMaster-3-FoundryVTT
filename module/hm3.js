@@ -63,3 +63,13 @@ Hooks.once('init', async function() {
     return str.toLowerCase();
   });
 });
+
+// Since HM3 does not have the concept of rolling for initiative,
+// this hook simply prepopulates the initiative value. This ensures
+// that no die roll is needed.
+Hooks.on('preCreateCombatant', (combat, combatant, options, id) => {
+  if (!combatant.initiative) {
+    let token = canvas.tokens.get(combatant.tokenId);
+    combatant.initiative = token.actor.data.data.initiative;
+  }
+});

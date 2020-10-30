@@ -139,4 +139,116 @@
             }
         }
     }
+
+    .missiles-list {
+        list-style: none;
+        margin: 7px 0;
+        padding: 0;
+        overflow-y: auto;
+
+        .missile-header {
+            font-weight: bold;
+        }
+
+        .missile {
+            height: 30px;
+            line-height: 24px;
+            padding: 3px 0;
+            border-bottom: 1px solid #bbb;
+
+            .missile-image {
+                flex: 0 0 24px;
+                margin-right: 5px;
+            }
+
+            img {
+                display: block;
+            }
+
+            .missile-damage {
+                flex: 0 0 35px;
+                text-align: center;
+            }
+            .missile-name {
+                flex: 0 0 90px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+
+            .missile-qty {
+                flex: 0 0 25px;
+                text-align: center;
+            }
+
+            .missile-weight {
+                flex: 0 0 30px;
+                text-align: center;
+            }
+
+            .missile-skill {
+                flex: 0 0 75px;
+                text-align: left;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+
+            .missile-short {
+                flex: 0 0 45px;
+                text-align: center;
+            }
+
+            .missile-medium {
+                flex: 0 0 45px;
+                text-align: center;
+            }
+
+            .missile-long {
+                flex: 0 0 45px;
+                text-align: center;
+            }
+
+            .missile-extreme {
+                flex: 0 0 45px;
+                text-align: center;
+            }
+
+            .missile-attack {
+                flex: 0 0 30px;
+                text-align: center;
+            }
+            
+            .missile-notes {
+                flex: 1 0 50px;
+                padding-left: 10px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+            
+            .item-controls {
+                flex: 0 0 45px;
+                text-align: right;
+            }
+        }
+    }
+}
+
+.range-table {
+    .range-header {
+        font-weight: bold;
+    }
+
+    .range-label {
+        flex: 0 0 50px;
+        font-weight: bold;
+        text-align: left;
+    }
+
+    .range-value {
+        flex: 0 0 60px;
+        margin: 0 2px;
+        text-align: center;
+    }
 }
