@@ -1,4 +1,7 @@
 export class DiceHM3 {
+    /*--------------------------------------------------------------------------------*/
+    /*        STANDARD D100 ROLL PROCESSING
+    /*--------------------------------------------------------------------------------*/
 
     /**
      * Performs a standard d100 "skill" roll, optionally presenting a dialog
@@ -119,6 +122,10 @@ export class DiceHM3 {
         });
     }
     
+    /*--------------------------------------------------------------------------------*/
+    /*        STANDARD D6 ROLL PROCESSING
+    /*--------------------------------------------------------------------------------*/
+
     /**
      * Performs a standard d6 roll, optionally presenting a dialog
      * to collect a modifier (although can be used for any straignt d6 roll
@@ -238,6 +245,10 @@ export class DiceHM3 {
         });
     }
 
+    /*--------------------------------------------------------------------------------*/
+    /*        INJURY ROLL PROCESSING
+    /*--------------------------------------------------------------------------------*/
+
     /**
      * Performs processing, including a random roll, to determine
      * injury location and effects.
@@ -290,6 +301,11 @@ export class DiceHM3 {
         return result;
     }
     
+    /**
+     * 
+     * @param {*} actor 
+     * @param {*} result 
+     */
     static createInjury(actor, result) {
         if (result.injuryLevel === 0) return;
 
@@ -310,6 +326,12 @@ export class DiceHM3 {
         return item;
     }
 
+    /**
+     * Returns a list of unique hit location names, including a single "Random" entry.
+     * Used for filling a dropdown during hit-location calculation.
+     * 
+     * @param {*} items List of items including armorlocation items
+     */
     static _getHitLocations(items) {
         // Initialize list with an indicator for a Random roll
         let hitLocations = ['Random'];
@@ -326,6 +348,11 @@ export class DiceHM3 {
         return hitLocations;
     }
     
+    /**
+     * Render a dialog box for gathering information for use in the Injury roll
+     * 
+     * @param {*} dialogOptions 
+     */
     static async injuryDialog(dialogOptions) {
     
         // Render modal dialog
@@ -503,6 +530,14 @@ export class DiceHM3 {
         return result;
     }
 
+    /**
+     * Return either the item specified by location, or if location === 'Random',
+     * then randomly chooses a location and returns the item associated with it.
+     * 
+     * @param {*} location 
+     * @param {*} aim 
+     * @param {*} items 
+     */
     static _calcLocation(location, aim, items) {
         const lcAim = aim.toLowerCase();
         let result = null;
@@ -558,6 +593,10 @@ export class DiceHM3 {
 
         return result;
     }
+
+    /*--------------------------------------------------------------------------------*/
+    /*        GENERAL DAMAGE ROLL PROCESSING
+    /*--------------------------------------------------------------------------------*/
 
     /**
      * Performs a damage roll, presenting a dialog
@@ -628,6 +667,14 @@ export class DiceHM3 {
         return roll;
     }
     
+    /**
+     * Returns a structure specifying the default aspect for a weapon, as well as the
+     * impact values for all other aspects.  The default aspect is always the aspect
+     * with the greatest impact.
+     * 
+     * @param {*} weapon Name of weapon
+     * @param {*} items List of items containing 'weapongear' items.
+     */
     static _calcWeaponAspect(weapon, items) {
 
         // Note that although "Fire" is in this list, because it is a
@@ -724,6 +771,253 @@ export class DiceHM3 {
         });
     }
 
+    /*--------------------------------------------------------------------------------*/
+    /*        MISSILE ATTACK ROLL PROCESSING
+    /*--------------------------------------------------------------------------------*/
+
+    static async missileAttackRoll(rollData) {
+        // Create the Roll instance
+        const roll = await DiceHM3.missileAttackDialog(rollData);
+
+        // If user cancelled the roll, then return immediately
+        if (!roll) return null;
+
+        // Prepare for Chat Message
+        const chatTemplate = 'systems/hm3/templates/chat/missile-attack-card.html';
+
+        const chatTemplateData = {
+            title: `${rollData.name} Attack`,
+            aspect: rollData.aspect,
+            range: roll.range,
+            origTarget: rollData.target,
+            rangeModifier: Math.abs(roll.rangeModifier),
+            addlModifier: Math.abs(roll.addlModifier),
+            plusMinus: roll.addlModifier < 0 ? '-' : '+',
+            modifiedTarget: roll.modifiedTarget,
+            isSuccess: roll.isSuccess,
+            isCritical: roll.isCritical,
+            rollValue: roll.rollObj.total,
+            description: roll.description
+        };
+        const html = await renderTemplate(chatTemplate, chatTemplateData);
+
+        const messageData = {
+            user: game.user._id,
+            speaker: rollData.speaker || ChatMessage.getSpeaker(),
+            content: html.trim(),
+            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            sound: CONFIG.sounds.dice,
+            roll: roll.rollObj
+        };
+
+        const messageOptions = {
+            rollMode: game.settings.get("core", "rollMode")
+        };
+
+        // Create a chat message
+        console.log(messageData);
+        await ChatMessage.create(messageData, messageOptions);
+    
+        return roll;
+    }
+
+    static async missileAttackDialog(dialogOptions) {
+    
+        // Render modal dialog
+        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/chat/missile-attack-dialog.html";
+        let dialogData = {
+            rangeShort: dialogOptions.rangeShort,
+            rangeMedium: dialogOptions.rangeMedium,
+            rangeLong: dialogOptions.rangeLong,
+            rangeExtreme: dialogOptions.rangeExtreme,
+            target: dialogOptions.target
+        };
+        const html = await renderTemplate(dlgTemplate, dialogData);
+        const title = `${dialogOptions.name} Attack`;
+
+        // Create the dialog window
+        return new Promise(resolve => {
+            new Dialog({
+                title: title,
+                content: html.trim(),
+                buttons: {
+                    rollButton: {
+                        label: "Roll",
+                        callback: html => {
+                            const form = html[0].querySelector("form");
+                            const formAddlModifier = Number(form.addlModifier.value);
+                            const formRange = form.range.value;
+                            let rangeModifier = -80;
+                            if (formRange === 'short') {
+                                rangeModifier = 0;
+                            } else if (formRange === 'medium') {
+                                rangeModifier = -20;
+                            } else if (formRange === 'long') {
+                                rangeModifier = -40;
+                            }
+
+                            let roll = DiceHM3.rollTest({
+                                target: dialogOptions.target,
+                                data: dialogOptions.data,
+                                diceSides: 100,
+                                diceNum: 1,
+                                modifier: formAddlModifier + rangeModifier
+                            });
+
+                            let result = {
+                                origTarget: dialogOptions.target,
+                                range: formRange,
+                                rangeModifier: rangeModifier,
+                                addlModifier: formAddlModifier,
+                                modifiedTarget: Number(dialogOptions.target) + rangeModifier + formAddlModifier,
+                                isSuccess: roll.isSuccess,
+                                isCritical: roll.isCritical,
+                                description: roll.description,
+                                rollObj: roll.rollObj
+                            }
+                            resolve(result);
+                        }
+                    }
+                },
+                default: "rollButton",
+                close: () => resolve(null)
+            }, dialogOptions).render(true)
+        });
+    }
+
+    /*--------------------------------------------------------------------------------*/
+    /*        MISSILE DAMAGE ROLL PROCESSING
+    /*--------------------------------------------------------------------------------*/
+
+    static async missileDamageRoll(rollData) {
+        // name: eventData.missile,
+        // aspect: eventData.aspect,
+        // impactShort: eventData.impactShort,
+        // impactMedium: eventData.impactMedium,
+        // impactLong: eventData.impactLong,
+        // impactExtreme: eventData.impactExtreme,
+        // data: this.data,
+        // speaker: ChatMessage.getSpeaker({actor: this})
+        const dialogOptions = {
+            name: rollData.name,
+            impactShort: rollData.impactShort,
+            impactMedium: rollData.impactMedium,
+            impactLong: rollData.impactLong,
+            impactExtreme: rollData.impactExtreme,
+            data: rollData.data
+        };
+
+        // Create the Roll instance
+        const roll = await DiceHM3.missileDamageDialog(dialogOptions);
+
+        // If user cancelled the roll, then return immediately
+        if (!roll) return null;
+
+        // Prepare for Chat Message
+        const chatTemplate = 'systems/hm3/templates/chat/missile-damage-card.html';
+
+        let title = "Missile Damage";
+        if (rollData.name != "") {
+            title = `${rollData.name} Damage`; 
+        }
+
+        let rangeImpact = rollData.impactExtreme;
+        if (roll.range === 'short') {
+            rangeImpact = rollData.impactShort;
+        } else if (roll.range === 'medium') {
+            rangeImpact = rollData.impactMedium;
+        } else if (roll.range === 'long') {
+            rangeImpact = rollData.impactLong;
+        }
+
+        const totalImpact = Number(rangeImpact) + Number(roll.addlImpact) + Number(roll.rollObj.total);
+
+        const chatTemplateData = {
+            title: title,
+            aspect: rollData.aspect,
+            range: roll.range,
+            damageDice: Number(roll.damageDice),
+            rangeImpact: rangeImpact,
+            addlImpact: roll.addlImpact,
+            totalImpact: totalImpact,
+            rollValue: roll.rollObj.total,
+        };
+        const html = await renderTemplate(chatTemplate, chatTemplateData);
+
+        const messageData = {
+            user: game.user._id,
+            speaker: rollData.speaker || ChatMessage.getSpeaker(),
+            content: html.trim(),
+            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            sound: CONFIG.sounds.dice,
+            roll: roll.rollObj
+        };
+
+        const messageOptions = {
+            rollMode: game.settings.get("core", "rollMode")
+        };
+
+        // Create a chat message
+        await ChatMessage.create(messageData, messageOptions)
+    
+        return roll;
+    }
+
+    static async missileDamageDialog(dialogOptions) {
+    
+        // Render modal dialog
+        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/chat/missile-damage-dialog.html";
+        let dialogData = {
+            name: dialogOptions.name,
+            impactShort: dialogOptions.impactShort,
+            impactMedium: dialogOptions.impactMedium,
+            impactLong: dialogOptions.impactLong,
+            impactExtreme: dialogOptions.impactExtreme
+        };
+        const html = await renderTemplate(dlgTemplate, dialogData);
+        
+        const title = `${dialogOptions.name} Missile Damage`;
+
+        // Create the dialog window
+        return new Promise(resolve => {
+            new Dialog({
+                title: title,
+                content: html.trim(),
+                buttons: {
+                    rollButton: {
+                        label: "Roll",
+                        callback: html => {
+                            const form = html[0].querySelector("form");
+                            const formAddlImpact = Number(form.addlImpact.value);
+                            const formDamageDice = Number(form.damageDice.value);
+                            const formRange = form.range.value;
+                            let roll = DiceHM3.rollTest({
+                                target: 0,
+                                data: dialogOptions.data,
+                                diceSides: 6,
+                                diceNum: formDamageDice,
+                                modifier: 0
+                            });
+                            let result = {
+                                range: formRange,
+                                damageDice: formDamageDice,
+                                addlImpact: formAddlImpact,
+                                rollObj: roll.rollObj
+                            }
+                            resolve(result);
+                        }
+                    }
+                },
+                default: "rollButton",
+                close: () => resolve(null)
+            }, dialogOptions).render(true)
+        });
+    }
+
+    /*--------------------------------------------------------------------------------*/
+    /*        GENERIC DICE ROLLING PROCESSING
+    /*--------------------------------------------------------------------------------*/
+
     static rollTest(testData) {
 
         let diceType = testData.diceSides === 6 ? "d6" : "d100";
@@ -765,6 +1059,16 @@ export class DiceHM3 {
         return rollResults;
     }
 
+    /*--------------------------------------------------------------------------------*/
+    /*        UTILITY FUNCTIONS
+    /*--------------------------------------------------------------------------------*/
+
+    /**
+     * Calculate and return the name of a random hit location based on weights.
+     * 
+     * @param {*} items List of items containing hitlocation items
+     * @param {*} aim One of 'low', 'mid', or 'high'
+     */
     static hitLocation(items, aim) {
         const hlAim = aim === 'high' || aim === 'low' ? aim : 'mid';
         let roll = new Roll("1d100");
