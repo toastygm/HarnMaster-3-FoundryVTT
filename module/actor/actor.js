@@ -235,6 +235,9 @@ export class HarnMasterActor extends Actor {
     data.universalPenalty = data.totalInjuryLevels + data.fatigue;
     data.physicalPenalty = data.universalPenalty + data.encumbrance;
 
+    // Setup ephemeral effective abilities (accounting for UP and PP)
+    this._setupEffectiveAbilities(data);
+
     // Go through all skills calculating their EML
     this._calcSkillEMLWithPenalties(this.data.items, data.universalPenalty, data.physicalPenalty);
 
@@ -250,6 +253,7 @@ export class HarnMasterActor extends Actor {
 
     // Now calculate endurance.value; this value cannot go below 0
     data.endurance.value = Math.max(data.endurance.max - data.physicalPenalty, 0);
+    data.endurance.pct = Math.round((data.endurance.value / data.endurance.max)*100);
 
     // Calculate current Move speed.  Cannot go below 0
     data.move.effective = Math.max(data.move.base - data.physicalPenalty, 0);
@@ -303,6 +307,32 @@ export class HarnMasterActor extends Actor {
 
     this._setupWeaponData(data);
     this._setupMissileData(data);
+  }
+
+  _setupEffectiveAbilities(data) {
+    // Creating ephemeral "effectiveAbilities" object
+    if (typeof data.effectiveAbilities === 'undefined') {
+      data.effectiveAbilities = {};
+    }
+
+    // Affected by physical penalty
+    data.effectiveAbilities.strength = data.abilities.strength - data.physicalPenalty;
+    data.effectiveAbilities.stamina = data.abilities.stamina - data.physicalPenalty;
+    data.effectiveAbilities.agility = data.abilities.agility - data.physicalPenalty;
+    data.effectiveAbilities.dexterity = data.abilities.dexterity - data.physicalPenalty;
+    data.effectiveAbilities.eyesight = data.abilities.eyesight - data.physicalPenalty;
+    data.effectiveAbilities.hearing = data.abilities.hearing - data.physicalPenalty;
+    data.effectiveAbilities.smell = data.abilities.smell - data.physicalPenalty;
+    data.effectiveAbilities.voice = data.abilities.voice - data.physicalPenalty;
+
+    // Affected by universal penalty
+    data.effectiveAbilities.intelligence = data.abilities.intelligence - data.universalPenalty;
+    data.effectiveAbilities.aura = data.abilities.aura - data.universalPenalty;
+    data.effectiveAbilities.will = data.abilities.will - data.universalPenalty;
+
+    // Not affected by any penalties
+    data.effectiveAbilities.comliness = data.abilities.comliness;
+    data.effectiveAbilities.morality = data.abilities.morality;
   }
 
   _setupInjuryTargets(data) {
