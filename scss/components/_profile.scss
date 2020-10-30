@@ -1,6 +1,6 @@
 .sheet-body {
   .ability-scores {
-    flex: 0 0 110px;
+    flex: 0 0 260px;
     gap: 0;
     margin: 10px;
     
@@ -9,11 +9,26 @@
       padding: 3px;
 
       .ability {
+        display: block;
         align-items: center;
         text-align: center;
         padding: 3px 0 0 0;
         border-bottom: 2px groove #eeede0;
 
+        .ability-name {
+          margin: 0 0 2px;
+          font-size: 13px;
+        }
+
+        .ability-value {
+          font-size: 25px;
+          font-weight: bold;
+          margin: 0 0 2px;
+        }
+
+        .ability-box {
+          border-top: 1px solid black;
+        }
         .label {
           flex: 0 0 40px;
           font-weight: bold;
