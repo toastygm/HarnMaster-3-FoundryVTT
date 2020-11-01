@@ -221,7 +221,7 @@ export class HarnMasterActor extends Actor {
           '<p>Frame:</p>\n<p>Height:</p>\n<p>Weight:</p>\n<p>Comliness:</p>\n' +
           '<p>Appearance:</p>\n<p>&nbsp;</p>';
     }
-    
+
     // Calculate weight and injury level totals, used to calculate
     // universal penalty below.
     this._calcInjuryTotal(data);
@@ -631,11 +631,14 @@ export class HarnMasterActor extends Actor {
       }
     });
 
+    // For efficiency, convert the map into an Array
+    const armorArray = Object.values(armorMap);
+
     // We now have a full map of all of the armor, let's apply it to
     // existing armor locations
     this.data.items.forEach(it => {
       if (it.type === 'armorlocation') {
-        const armorProt = Object.values(armorMap).find(a => a.name === it.data.impactType);
+        const armorProt = armorArray.find(a => a.name === it.data.impactType);
         if (armorProt) {
           it.data.blunt = armorProt.blunt;
           it.data.edged = armorProt.edged;
