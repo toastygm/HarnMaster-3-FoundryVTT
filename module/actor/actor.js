@@ -475,6 +475,7 @@ export class HarnMasterActor extends Actor {
 
   _calcGearWeightTotals(data) {
     data.totalWeaponWeight = 0;
+    data.totalMissileWeight = 0;
     data.totalArmorWeight = 0;
     data.totalMiscGearWeight = 0;
  
@@ -488,7 +489,13 @@ export class HarnMasterActor extends Actor {
           data.totalWeaponWeight += tempWeight;
           break;
 
-        case 'armorgear':
+        case 'missilegear':
+          tempWeight = it.data.weight * it.data.quantity;
+          if (tempWeight < 0) tempWeight = 0;
+          data.totalMissileWeight += tempWeight;
+          break;
+  
+          case 'armorgear':
           tempWeight = it.data.weight * it.data.quantity;
           if (tempWeight < 0) tempWeight = 0;
           data.totalArmorWeight += tempWeight;
@@ -502,7 +509,7 @@ export class HarnMasterActor extends Actor {
       }
     });
     
-    data.totalGearWeight = data.totalWeaponWeight + data.totalArmorWeight + data.totalMiscGearWeight;
+    data.totalGearWeight = data.totalWeaponWeight + data.totalMissileWeight + data.totalArmorWeight + data.totalMiscGearWeight;
   }
 
   _calcInjuryTotal(data) {
