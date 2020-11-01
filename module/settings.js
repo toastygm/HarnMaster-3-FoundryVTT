@@ -6,6 +6,6 @@ export const registerSystemSettings = function () {
         scope: "world",
         config: false,
         type: String,
-        default: game.system.data.version
+        default: 0
     });
 };
