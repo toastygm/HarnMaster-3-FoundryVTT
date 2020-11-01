@@ -426,6 +426,9 @@
   .hm3 .sheet .sheet-header-character .header-fields .header-attributes .species {
     flex: 0 0 80px;
     border-right: 2px groove #eeede0; }
+  .hm3 .sheet .sheet-header-character .header-fields .header-attributes .creature-species {
+    flex: 1 0 80px;
+    border-right: 2px groove #eeede0; }
   .hm3 .sheet .sheet-header-character .header-fields .header-attributes .gender {
     flex: 0 0 80px;
     border-right: 2px groove #eeede0; }

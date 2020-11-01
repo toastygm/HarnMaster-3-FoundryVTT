@@ -8,7 +8,6 @@ export class HarnMasterCreatureSheet extends ActorSheet {
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       classes: ["hm3", "sheet", "creature"],
-      template: "systems/hm3/templates/actor/creature-sheet.html",
       width: 660,
       height: 640,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "profile" }]
@@ -16,6 +15,20 @@ export class HarnMasterCreatureSheet extends ActorSheet {
   }
 
   /* -------------------------------------------- */
+
+
+    /**
+   * Get the correct HTML template path to use for rendering this particular sheet
+   * @type {String}
+   */
+  get template()
+  {
+    if (!game.user.isGM && this.actor.limited) {
+      return "systems/hm3/templates/actor/creature-limited.html";
+    } else {
+      return "systems/hm3/templates/actor/creature-sheet.html";
+    }
+  }
 
   /** @override */
   getData() {
@@ -57,6 +70,12 @@ export class HarnMasterCreatureSheet extends ActorSheet {
 
     // Damage Roll
     html.find('.damage-roll').click(this._onDamageRoll.bind(this));
+
+    // Missile Attack Roll
+    html.find('.missile-attack-roll').click(this._onMissileAttackRoll.bind(this));
+
+    // Missile Damage Roll
+    html.find('.missile-damage-roll').click(this._onMissileDamageRoll.bind(this));
 
     // Rollable abilities.
     html.find('.rollable').click(this._onRoll.bind(this));

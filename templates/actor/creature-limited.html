@@ -1,0 +1,51 @@
+<form class="{{cssClass}} sheet flexcol" autocomplete="off">
+
+    {{!-- Sheet Header --}}
+    <header class="sheet-header sheet-header-character">
+        <div class="flexrow">
+            <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100" />
+            <div class="flexcol header-fields">
+                <div class="flexrow name-attribute">
+                    <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
+                    <div class="header-stat-block">
+                        <div class="endurance flexrow">
+                            <span class="label">Endurance: {{data.endurance.value}} / {{data.endurance.max}}</span>
+                        </div>
+                        <div class="endbar">
+                            <span class="bar" style="width: {{data.endurance.pct}}%"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-attributes">
+                    <ol class="flexrow">
+                        <li class="attribute creature-species flexcol">
+                        </li>
+                        <li class="attribute move flexcol">
+                            <label class="label">Move</label>
+                            <div class="flexrow move-values">
+                                <span class="move-eff">{{data.move.effective}}</span>
+                                <span class="sep">/</span>
+                                <input class="move-base" type="number" name="data.move.base" value="{{data.move.base}}" data-dtype="Number"/>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+        <div class="profile">
+            <div class="flexrow">
+                <div class="profile-desc flexcol">
+                    <label class="label">Description</label>
+                    <div class="profile-description">
+                        {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+                    </div>
+                </div>        
+            </div>
+        </div>
+    </section>
+
+</form>

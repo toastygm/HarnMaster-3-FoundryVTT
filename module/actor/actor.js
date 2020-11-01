@@ -295,6 +295,13 @@ export class HarnMasterActor extends Actor {
     data.universalPenalty = data.totalInjuryLevels + data.fatigue;
     data.physicalPenalty = data.universalPenalty;
 
+    // Calc Endurance (never use condition with creatures)
+    data.endurance.max = Math.round((data.abilities.strength + data.abilities.stamina + 
+      data.abilities.will)/3);
+  
+    // Setup ephemeral effective abilities (accounting for UP and PP)
+    this._setupEffectiveAbilities(data);
+
     // Go through all skills calculating their EML
     this._calcSkillEMLWithPenalties(this.data.items, data.universalPenalty, data.physicalPenalty);
 
