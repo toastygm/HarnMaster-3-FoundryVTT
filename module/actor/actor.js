@@ -269,6 +269,8 @@ export class HarnMasterActor extends Actor {
     this._setupMissileData(data);
 
     this._setupInjuryTargets(data);
+
+    this._generateArmorLocationMap(data);
   }
   
   /**
@@ -509,6 +511,12 @@ export class HarnMasterActor extends Actor {
       }
     });
     
+    // Correct any math weirdness; keep to two decimal points
+    data.totalArmorWeight = Math.round((data.totalArmorWeight + Number.EPSILON)*100)/100;
+    data.totalWeaponWeight = Math.round((data.totalWeaponWeight + Number.EPSILON)*100)/100;
+    data.totalMissileWeight = Math.round((data.totalWeaponWeight + Number.EPSILON)*100)/100;
+    data.totalMiscGearWeight = Math.round((data.totalMiscGearWeight + Number.EPSILON)*100)/100;
+
     data.totalGearWeight = data.totalWeaponWeight + data.totalMissileWeight + data.totalArmorWeight + data.totalMiscGearWeight;
   }
 
@@ -574,6 +582,67 @@ export class HarnMasterActor extends Actor {
       if (it.type === 'invocation' && it.data.diety && it.data.diety.toLowerCase() === lcDiety) {
         it.data.effectiveMasteryLevel = rml - (it.data.circle * 5);
         if (it.data.effectiveMasteryLevel < 5) it.data.effectiveMasteryLevel = 5;
+      }
+    });
+  }
+
+  _generateArmorLocationMap(data) {
+    // Initialize
+    const armorMap = {};
+    const ilMap = HM3.injuryLocations;
+    Object.keys(ilMap).forEach(ilName => {
+      const name = ilMap[ilName].impactType;
+      if (name != 'base' && name != 'custom') {
+        armorMap[ilName] = {name: name, blunt:0, edged:0, piercing:0, fire:0, layers:''};
+      }
+    });
+
+    this.data.items.forEach(it => {
+      if (it.type === 'armorgear') {
+        // Go through all of the armor locations for this armor,
+        // applying this armor's settings to each location
+
+        // If locations doesn't exist, then just abandon and continue
+        if (typeof it.data.locations === 'undefined') {
+          return;
+        }
+
+        it.data.locations.forEach(l => {
+          // If the location is unknown, skip the rest
+          if (typeof armorMap[l] != 'undefined') {
+
+            // Add this armor's protection to the location
+            if (typeof it.data.protection != 'undefined') {
+              armorMap[l].blunt += it.data.protection.blunt;
+              armorMap[l].edged += it.data.protection.edged;
+              armorMap[l].piercing += it.data.protection.piercing;
+              armorMap[l].fire += it.data.protection.fire;
+            }
+
+            // if a material has been specified, add it to the layers
+            if (it.data.material.length > 0) {
+              if (armorMap[l].layers.length > 0) {
+                armorMap[l].layers += ',';
+              }
+              armorMap[l].layers += it.data.material;
+            }
+          }
+        });
+      }
+    });
+
+    // We now have a full map of all of the armor, let's apply it to
+    // existing armor locations
+    this.data.items.forEach(it => {
+      if (it.type === 'armorlocation') {
+        const armorProt = Object.values(armorMap).find(a => a.name === it.data.impactType);
+        if (armorProt) {
+          it.data.blunt = armorProt.blunt;
+          it.data.edged = armorProt.edged;
+          it.data.piercing = armorProt.piercing;
+          it.data.fire = armorProt.fire;
+          it.data.layers = armorProt.layers;
+        }
       }
     });
   }

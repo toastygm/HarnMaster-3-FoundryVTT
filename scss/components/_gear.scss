@@ -121,5 +121,43 @@
     .item-controls {
         flex: 0 0 45px;
         text-align: right;
-      }
     }
+}
+
+.armorgear-location {
+    height: 31px;
+    align-items: center;
+
+    label {
+        flex: 0 0 60px;
+        font-weight: bold;
+        text-transform: uppercase;
+        padding-right: 5px;
+    }
+
+    select {
+        flex: 0 0 60px;
+    }
+
+    .armorgear-location-add {
+        flex: 0 0 45px;
+        font-weight: bold;
+        padding: 2px 0 0 5px;
+    }
+}
+
+.armorgear-protection {
+    .armorgear-protection-item {
+        .label {
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+    }
+}
+.armor-locations-list {
+    margin-top: 10px;
+
+    .armor-location {
+        display: block;
+    }
+}

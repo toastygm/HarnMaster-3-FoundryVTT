@@ -11,11 +11,11 @@
         <div class="grid grid-2col">
             <div class="resource">
                 <label class="resource-label">Quantity</label>
-                <input type="text" name="data.quantity" value="{{data.quantity}}" data-dtype="Number"/>
+                <input type="number" name="data.quantity" value="{{data.quantity}}" data-dtype="Number"/>
             </div>
             <div class="resource">
                 <label class="resource-label">Weight</label>
-                <input type="text" name="data.weight" value="{{data.weight}}" data-dtype="Number"/>
+                <input type="number" name="data.weight" value="{{data.weight}}" data-dtype="Number"/>
             </div>
             <div class="resource">
                 <label class="resource-label">Material</label>
@@ -23,13 +23,58 @@
             </div>
             <div class="resource">
                 <label class="resource-label">Armor Quality</label>
-                <input type="text" name="data.armorQuality" value="{{data.armorQuality}}" data-dtype="Number"/>
+                <input type="number" name="data.armorQuality" value="{{data.armorQuality}}" data-dtype="Number"/>
             </div>
             <div class="resource">
                 <label class="resource-label">Notes</label>
                 <input type="text" name="data.notes" value="{{data.notes}}" data-dtype="String"/>
             </div>
         </div>
+        <fieldset class="armorgear-protection">
+            <legend>Protection</legend>
+            <div class="grid grid-4col">
+                <div class="armorgear-protection-item">
+                    <label class="label">Blunt</label>
+                    <input class="value" type="number" name="data.protection.blunt" value="{{data.protection.blunt}}" data-dtype="Number"/>
+                </div>
+                <div class="armorgear-protection-item">
+                    <label class="label">Edged</label>
+                    <input class="value" type="number" name="data.protection.edged" value="{{data.protection.edged}}" data-dtype="Number"/>
+                </div>
+                <div class="armorgear-protection-item">
+                    <label class="label">Piercing</label>
+                    <input class="value" type="number" name="data.protection.piercing" value="{{data.protection.piercing}}" data-dtype="Number"/>
+                </div>
+                <div class="armorgear-protection-item">
+                    <label class="label">Fire</label>
+                    <input class="value" type="number" name="data.protection.fire" value="{{data.protection.fire}}" data-dtype="Number"/>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="armor-locations-list">
+            <legend>Locations</Legend>
+            <div class="armorgear-location flexrow">
+                <label class="label">Location:</label>
+                <select class="value" name="data.targetLocation">
+                    {{#select data.targetLocation}}
+                    {{#each config.injuryLocations as |value key|}}
+                    {{#if (ne key "Custom")}}
+                        <option value="{{key}}">{{key}}</option>
+                    {{/if}}
+                    {{/each}}
+                    {{/select}}
+                </select>
+                <a class="armorgear-location-add" data-location="{{data.targetLocation}}"><i class="fas fa-plus"></i> Add</a>
+            </div>
+            <ol class="grid grid-4col">
+                {{#each data.locations}}
+                <li class="armor-location">
+                    <span class="name">{{this}}</span>
+                    <a class="armorgear-location-delete" data-location="{{this}}" title="Delete Location"><i class="fas fa-trash"></i></a>
+                </li>
+                {{/each}}
+            </ol>
+        </fieldset>
     </section>
 
 </form>

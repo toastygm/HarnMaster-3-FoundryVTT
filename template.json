@@ -137,7 +137,14 @@
     "armorgear": {
       "templates": ["base", "gear"],
       "material": "",
-      "armorQuality": 0
+      "armorQuality": 0,
+      "locations": [],
+      "protection": {
+        "blunt": 0,
+        "edged": 0,
+        "piercing": 0,
+        "fire": 0
+      }
     },
     "miscgear": {
       "templates": ["base", "gear"]

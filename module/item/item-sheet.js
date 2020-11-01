@@ -101,6 +101,52 @@ export class HarnMasterItemSheet extends ItemSheet {
     // Everything below here is only needed if the sheet is editable
     if (!this.options.editable) return;
 
-    // Roll handlers, click handlers, etc. would go here.
+    // Roll handlers, click handlers, etc. go here.
+
+    // Add Inventory Item
+    html.find('.armorgear-location-add').click(this._armorgearLocationAdd.bind(this));
+
+    // Delete Inventory Item
+    html.find('.armorgear-location-delete').click(this._armorgearLocationDelete.bind(this));
+  }
+
+  async _armorgearLocationAdd(event) {
+    const dataset = event.currentTarget.dataset;
+    const data = this.item.data.data;
+    
+    await this._onSubmit(event);  // Submit any unsaved changes
+
+    // Clone the existing locations list if it exists, otherwise set to empty array
+    let locations = [];
+    if (typeof data.locations != 'undefined') {
+      locations = [...data.locations];
+    }
+
+    // Only add location to list if it is unique
+    if (locations.indexOf(dataset.location) === -1) {
+      locations.push(dataset.location);
+    }
+
+    // Update the list on the server
+    return this.item.update({"data.locations": locations});
+  }
+
+  async _armorgearLocationDelete(event) {
+    const dataset = event.currentTarget.dataset;
+    const data = this.item.data.data;
+    
+    await this._onSubmit(event);   // Submit any unsaved changes
+
+    // Clone the location list (we don't want to touch the actual list)
+    let locations = [...data.locations];
+
+    // find the index of the item to remove, and if found remove it from list
+    let removeIndex = locations.indexOf(dataset.location);
+    if (removeIndex >= 0) {
+      locations.splice(removeIndex, 1);
+    }
+
+    // Update the list on the server
+    return this.item.update({"data.locations": locations});
   }
 }
