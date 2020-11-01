@@ -62,10 +62,22 @@
     }
 
     .item-controls {
-        flex: 0 0 45px;
+        flex: 0 0 70px;
         text-align: right;
-      }
+
+        .item-equip {
+            color: #b5b3a4;
+        }
+      
+        .item-carry {
+            color: #b5b3a4;
+        }
+      
+        .active {
+            color: #4b4a44;
+        }
     }
+}
 
 .gear-list {
     list-style: none;
@@ -119,8 +131,19 @@
     }
 
     .item-controls {
-        flex: 0 0 45px;
+        flex: 0 0 55px;
         text-align: right;
+        .item-equip {
+            color: #b5b3a4;
+        }
+      
+        .item-carry {
+            color: #b5b3a4;
+        }
+      
+        .active {
+            color: #4b4a44;
+        }
     }
 }
 

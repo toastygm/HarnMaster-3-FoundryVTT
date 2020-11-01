@@ -64,7 +64,9 @@
       },
       "gear": {
         "quantity": 1,
-        "weight": 0
+        "weight": 0,
+        "isCarried": true,
+        "isEquipped": false
       }
     },
     "physicalskill": {

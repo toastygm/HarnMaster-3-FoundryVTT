@@ -538,7 +538,7 @@
   .hm3 .items-list .item-name {
     margin: 0; }
   .hm3 .items-list .item-controls {
-    flex: 0 0 45px;
+    flex: 0 0 55px;
     text-align: right; }
 
 .hm3 .item-dice {
@@ -595,6 +595,10 @@
     .hm3 .combat .weapons-list .weapon .weapon-damage {
       flex: 0 0 35px;
       text-align: center; }
+      .hm3 .combat .weapons-list .weapon .weapon-damage .inactive {
+        color: #b5b3a4; }
+      .hm3 .combat .weapons-list .weapon .weapon-damage .active {
+        color: #4b4a44; }
     .hm3 .combat .weapons-list .weapon .weapon-name {
       flex: 0 0 120px;
       text-overflow: ellipsis;
@@ -631,14 +635,24 @@
       flex: 0 0 30px;
       text-align: center; }
     .hm3 .combat .weapons-list .weapon .weapon-notes {
-      flex: 1 0 95px;
+      flex: 1 0 75px;
       padding-left: 10px;
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden; }
     .hm3 .combat .weapons-list .weapon .item-controls {
-      flex: 0 0 45px;
+      flex: 0 0 70px;
       text-align: right; }
+      .hm3 .combat .weapons-list .weapon .item-controls .item-equip {
+        color: #b5b3a4; }
+      .hm3 .combat .weapons-list .weapon .item-controls .item-carry {
+        color: #b5b3a4; }
+      .hm3 .combat .weapons-list .weapon .item-controls .active {
+        color: #4b4a44; }
+    .hm3 .combat .weapons-list .weapon .item-dice {
+      color: #b5b3a4; }
+      .hm3 .combat .weapons-list .weapon .item-dice .active {
+        color: #4b4a44; }
 
 .hm3 .combat .missiles-list {
   list-style: none;
@@ -660,6 +674,10 @@
     .hm3 .combat .missiles-list .missile .missile-damage {
       flex: 0 0 35px;
       text-align: center; }
+      .hm3 .combat .missiles-list .missile .missile-damage .inactive {
+        color: #b5b3a4; }
+      .hm3 .combat .missiles-list .missile .missile-damage .active {
+        color: #4b4a44; }
     .hm3 .combat .missiles-list .missile .missile-name {
       flex: 0 0 90px;
       text-overflow: ellipsis;
@@ -699,8 +717,18 @@
       white-space: nowrap;
       overflow: hidden; }
     .hm3 .combat .missiles-list .missile .item-controls {
-      flex: 0 0 45px;
+      flex: 0 0 70px;
       text-align: right; }
+      .hm3 .combat .missiles-list .missile .item-controls .item-equip {
+        color: #b5b3a4; }
+      .hm3 .combat .missiles-list .missile .item-controls .item-carry {
+        color: #b5b3a4; }
+      .hm3 .combat .missiles-list .missile .item-controls .active {
+        color: #4b4a44; }
+    .hm3 .combat .missiles-list .missile .item-dice {
+      color: #b5b3a4; }
+      .hm3 .combat .missiles-list .missile .item-dice .active {
+        color: #4b4a44; }
 
 .hm3 .range-table .range-header {
   font-weight: bold; }
@@ -1064,8 +1092,14 @@
     white-space: nowrap;
     overflow: hidden; }
   .hm3 .armor-list .item-controls {
-    flex: 0 0 45px;
+    flex: 0 0 70px;
     text-align: right; }
+    .hm3 .armor-list .item-controls .item-equip {
+      color: #b5b3a4; }
+    .hm3 .armor-list .item-controls .item-carry {
+      color: #b5b3a4; }
+    .hm3 .armor-list .item-controls .active {
+      color: #4b4a44; }
 
 .hm3 .gear-list {
   list-style: none;
@@ -1102,8 +1136,14 @@
     white-space: nowrap;
     overflow: hidden; }
   .hm3 .gear-list .item-controls {
-    flex: 0 0 45px;
+    flex: 0 0 55px;
     text-align: right; }
+    .hm3 .gear-list .item-controls .item-equip {
+      color: #b5b3a4; }
+    .hm3 .gear-list .item-controls .item-carry {
+      color: #b5b3a4; }
+    .hm3 .gear-list .item-controls .active {
+      color: #4b4a44; }
 
 .hm3 .armorgear-location {
   height: 31px;
