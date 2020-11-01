@@ -74,16 +74,16 @@ Hooks.once('init', async function() {
  * Once the entire VTT framework is initialized, check to see if
  * we should perform a data migration.
  */
-/* Hooks.once("ready", function() {
+Hooks.once("ready", function() {
   // Determine whether a system migration is required
   const currentVersion = game.settings.get("hm3", "systemMigrationVersion");
-  const NEEDS_MIGRATION_VERSION = "0.3.5";
+  const NEEDS_MIGRATION_VERSION = "0.4.1";  // Anything older than this must be migrated
 
-  let needMigration = currentVersion === null || (versionCompare(currentVersion, NEEDS_MIGRATION_VERSION) < 0);
+  let needMigration = currentVersion === null || (isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion));
   if ( needMigration && game.user.isGM ) {
     migrations.migrateWorld();
   }
-}); */
+});
 
 // Since HM3 does not have the concept of rolling for initiative,
 // this hook simply prepopulates the initiative value. This ensures
@@ -101,49 +101,3 @@ Hooks.on('preCreateCombatant', (combat, combatant, options, id) => {
 Handlebars.registerHelper("multiply", function(op1, op2) {
   return op1 * op2;
 });
-
-/*-------------------------------------------------------*/
-/*            UTILITY FUNCTIONS                          */
-/*-------------------------------------------------------*/
-
-function versionCompare(v1, v2) {
-  const v1parts = v1.split('.');
-  const v2parts = v2.split('.');
-
-  // Zero-extend parts
-  while (v1parts.length < v2parts.length) v1parts.push("0");
-  while (v2parts.length < v1parts.length) v2parts.push("0");
-
-  v1parts = v1parts.map(Number);
-  v2parts = v2parts.map(Number);
-
-  function isValidPart(x) {
-      return (/^\d+$/).test(x);
-  }
-
-  if (!v1parts.every(isValidPart) || !v2parts.every(isValidPart)) {
-      return NaN;
-  }
-
-  for (var i = 0; i < v1parts.length; ++i) {
-      if (v2parts.length == i) {
-          return 1;
-      }
-
-      if (v1parts[i] == v2parts[i]) {
-          continue;
-      }
-      else if (v1parts[i] > v2parts[i]) {
-          return 1;
-      }
-      else {
-          return -1;
-      }
-  }
-
-  if (v1parts.length != v2parts.length) {
-      return -1;
-  }
-
-  return 0;
-}

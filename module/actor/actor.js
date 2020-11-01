@@ -209,6 +209,8 @@ export class HarnMasterActor extends Actor {
   _prepareCharacterData(actorData) {
     const data = actorData.data;
 
+    this._unequipUncarriedGear(data);
+
     // If description has not been initialized, then initialize it
     if (data.description === '***INIT***') {
         // Set default character biography and description
@@ -221,7 +223,7 @@ export class HarnMasterActor extends Actor {
           '<p>Frame:</p>\n<p>Height:</p>\n<p>Weight:</p>\n<p>Comliness:</p>\n' +
           '<p>Appearance:</p>\n<p>&nbsp;</p>';
     }
-    
+
     // Calculate weight and injury level totals, used to calculate
     // universal penalty below.
     this._calcInjuryTotal(data);
@@ -265,10 +267,9 @@ export class HarnMasterActor extends Actor {
     // Calculate spell effective mastery level values
     this._refreshSpellsAndInvocations();
 
-    this._setupWeaponData(data);
-    this._setupMissileData(data);
-
+    this._setupGearData(data);
     this._setupInjuryTargets(data);
+    this._generateArmorLocationMap(data);
   }
   
   /**
@@ -276,7 +277,9 @@ export class HarnMasterActor extends Actor {
    */
   _prepareCreatureData(actorData) {
     const data = actorData.data;
-    
+
+    this._unequipUncarriedGear(data);
+
     if (data.description === '***INIT***') {
       // Set default creature description
       data.description = '<p>Habitat:</p>\n<p>Height:</p>\n<p>Weight:</p>\n' +
@@ -284,13 +287,20 @@ export class HarnMasterActor extends Actor {
         '<p>Attacks:</p>\n<p>&nbsp;</p>';
     }
 
-      this._calcInjuryTotal(data);
+    this._calcInjuryTotal(data);
 
     // Universal Penalty and Physical Penalty are used to calculate many
     // things, including effectiveMasteryLevel for all skills,
     // endurance, move, etc.
     data.universalPenalty = data.totalInjuryLevels + data.fatigue;
     data.physicalPenalty = data.universalPenalty;
+
+    // Calc Endurance (never use condition with creatures)
+    data.endurance.max = Math.round((data.abilities.strength + data.abilities.stamina + 
+      data.abilities.will)/3);
+  
+    // Setup ephemeral effective abilities (accounting for UP and PP)
+    this._setupEffectiveAbilities(data);
 
     // Go through all skills calculating their EML
     this._calcSkillEMLWithPenalties(this.data.items, data.universalPenalty, data.physicalPenalty);
@@ -305,8 +315,7 @@ export class HarnMasterActor extends Actor {
     // Calculate current Move speed.  Cannot go below 0
     data.move.effective = Math.max(data.move.base - data.physicalPenalty, 0);
 
-    this._setupWeaponData(data);
-    this._setupMissileData(data);
+    this._setupGearData(data);
   }
 
   _setupEffectiveAbilities(data) {
@@ -344,90 +353,90 @@ export class HarnMasterActor extends Actor {
     });
   }
 
-
-  _setupWeaponData(data) {
-
-    // Collect all combat skills into a map for use later
-    let combatSkills = {};
+  /**
+   * This is broken out into a separate method so we can invoke it very early.
+   * Lots of stuff will be dependent on whether gear is carried or equipped.
+   */
+  _unequipUncarriedGear(data) {
     this.data.items.forEach(it => {
-      if (it.type === 'combatskill') {
-        combatSkills[it.name] = {
-          'name': it.name,
-          'eml': it.data.effectiveMasteryLevel
-        };
-      }
-    });
-
-    this.data.items.forEach(it => {
-      if (it.type === 'weapongear') {
-        // Reset mastery levels in case nothing matches
-        it.data.attackMasteryLevel = 5;
-        it.data.defenseMasteryLevel = 5;
-        let weaponName = it.name;
-
-        // If associated skill is 'None', see if there is a skill with the
-        // same name as the weapon; if so, then set it to that skill.
-        if (it.data.assocSkill === 'None') {
-          // If no combat skill with this name exists, search for next weapon
-          if (typeof combatSkills[weaponName] === 'undefined') return;
-
-          // A matching skill was found, set associated Skill to that combat skill
-          it.data.assocSkill = combatSkills[weaponName].name;
+      if (it.type.endsWith('gear')) {
+        // If you aren't carrying the gear, it can't be equipped
+        if (!it.data.isCarried) {
+          it.data.isEquipped = false;
         }
-        
-        // At this point, we know the Associated Skill is not blank. If that
-        // associated skill is in our combat skills list, get EML from there
-        // and then calculate AML and DML.
-        let assocSkill = it.data.assocSkill;
-        if (typeof combatSkills[assocSkill] != 'undefined') {
-          let skillEml = combatSkills[assocSkill].eml;
-          it.data.attackMasteryLevel = skillEml + it.data.attack;
-          it.data.defenseMasteryLevel = skillEml + it.data.defense;
-        }
-
-        // No matter what, we always have at least a 5% chance of attacking or
-        // defending.
-        it.data.defenseMasteryLevel = Math.max(it.data.defenseMasteryLevel, 5);
-        it.data.attackMasteryLevel = Math.max(it.data.attackMasteryLevel, 5);
       }
     });
   }
 
-
-  _setupMissileData(data) {
-
-    // Collect all combat skills into a map for use later
-    let combatSkills = {};
+  /**
+   * Consolidated method to setup all gear, including misc gear, weapons,
+   * and missiles.  (not armor yet)
+   */
+  _setupGearData(data) {
     this.data.items.forEach(it => {
-      if (it.type === 'combatskill' || it.name.toLowerCase() === 'throwing') {
-        combatSkills[it.name] = {
-          'name': it.name,
-          'eml': it.data.effectiveMasteryLevel
-        };
-      }
-    });
+      if (it.type.endsWith('gear')) {
 
-    this.data.items.forEach(it => {
-      if (it.type === 'missilegear') {
-        // Reset mastery levels in case nothing matches
-        it.data.attackMasteryLevel = 5;
+        // Collect all combat skills into a map for use later
+        let combatSkills = {};
+        this.data.items.forEach(it => {
+          if (it.type === 'combatskill' || it.name.toLowerCase() === 'throwing') {
+            combatSkills[it.name] = {
+              'name': it.name,
+              'eml': it.data.effectiveMasteryLevel
+            };
+          }
+        });
 
-        let missileName = it.name;
-        
-        // If the associated skill is in our combat skills list, get EML from there
-        // and then calculate AML.
-        let assocSkill = it.data.assocSkill;
-        if (typeof combatSkills[assocSkill] != 'undefined') {
-          let skillEml = combatSkills[assocSkill].eml;
-          it.data.attackMasteryLevel = skillEml;
+        if (it.type === 'missilegear') {
+          // Reset mastery levels in case nothing matches
+          it.data.attackMasteryLevel = 5;
+  
+          let missileName = it.name;
+          
+          // If the associated skill is in our combat skills list, get EML from there
+          // and then calculate AML.
+          let assocSkill = it.data.assocSkill;
+          if (typeof combatSkills[assocSkill] != 'undefined') {
+            let skillEml = combatSkills[assocSkill].eml;
+            it.data.attackMasteryLevel = skillEml;
+          }
+  
+          // No matter what, we always have at least a 5% chance of attacking
+          it.data.attackMasteryLevel = Math.max(it.data.attackMasteryLevel, 5);
+        } else if (it.type === 'weapongear') {
+          // Reset mastery levels in case nothing matches
+          it.data.attackMasteryLevel = 5;
+          it.data.defenseMasteryLevel = 5;
+          let weaponName = it.name;
+  
+          // If associated skill is 'None', see if there is a skill with the
+          // same name as the weapon; if so, then set it to that skill.
+          if (it.data.assocSkill === 'None') {
+            // If no combat skill with this name exists, search for next weapon
+            if (typeof combatSkills[weaponName] === 'undefined') return;
+  
+            // A matching skill was found, set associated Skill to that combat skill
+            it.data.assocSkill = combatSkills[weaponName].name;
+          }
+          
+          // At this point, we know the Associated Skill is not blank. If that
+          // associated skill is in our combat skills list, get EML from there
+          // and then calculate AML and DML.
+          let assocSkill = it.data.assocSkill;
+          if (typeof combatSkills[assocSkill] != 'undefined') {
+            let skillEml = combatSkills[assocSkill].eml;
+            it.data.attackMasteryLevel = skillEml + it.data.attack;
+            it.data.defenseMasteryLevel = skillEml + it.data.defense;
+          }
+  
+          // No matter what, we always have at least a 5% chance of attacking or
+          // defending.
+          it.data.defenseMasteryLevel = Math.max(it.data.defenseMasteryLevel, 5);
+          it.data.attackMasteryLevel = Math.max(it.data.attackMasteryLevel, 5);
         }
-
-        // No matter what, we always have at least a 5% chance of attacking
-        it.data.attackMasteryLevel = Math.max(it.data.attackMasteryLevel, 5);
       }
     });
   }
-
 
   _setPropertiesFromSkills(items, data) {
     data.hasCondition = false;
@@ -475,6 +484,7 @@ export class HarnMasterActor extends Actor {
 
   _calcGearWeightTotals(data) {
     data.totalWeaponWeight = 0;
+    data.totalMissileWeight = 0;
     data.totalArmorWeight = 0;
     data.totalMiscGearWeight = 0;
  
@@ -483,18 +493,28 @@ export class HarnMasterActor extends Actor {
     this.data.items.forEach(it => {
       switch (it.type) {
         case 'weapongear':
+          if (!it.data.isCarried) break;
           tempWeight = it.data.weight * it.data.quantity;
           if (tempWeight < 0) tempWeight = 0;
           data.totalWeaponWeight += tempWeight;
           break;
 
+        case 'missilegear':
+          if (!it.data.isCarried) break;
+          tempWeight = it.data.weight * it.data.quantity;
+          if (tempWeight < 0) tempWeight = 0;
+          data.totalMissileWeight += tempWeight;
+          break;
+  
         case 'armorgear':
+          if (!it.data.isCarried) break;
           tempWeight = it.data.weight * it.data.quantity;
           if (tempWeight < 0) tempWeight = 0;
           data.totalArmorWeight += tempWeight;
           break;
 
         case 'miscgear':
+          if (!it.data.isCarried) break;
           tempWeight = it.data.weight * it.data.quantity;
           if (tempWeight < 0) tempWeight = 0;
           data.totalMiscGearWeight += tempWeight;
@@ -502,7 +522,13 @@ export class HarnMasterActor extends Actor {
       }
     });
     
-    data.totalGearWeight = data.totalWeaponWeight + data.totalArmorWeight + data.totalMiscGearWeight;
+    // Correct any math weirdness; keep to two decimal points
+    data.totalArmorWeight = Math.round((data.totalArmorWeight + Number.EPSILON)*100)/100;
+    data.totalWeaponWeight = Math.round((data.totalWeaponWeight + Number.EPSILON)*100)/100;
+    data.totalMissileWeight = Math.round((data.totalWeaponWeight + Number.EPSILON)*100)/100;
+    data.totalMiscGearWeight = Math.round((data.totalMiscGearWeight + Number.EPSILON)*100)/100;
+
+    data.totalGearWeight = data.totalWeaponWeight + data.totalMissileWeight + data.totalArmorWeight + data.totalMiscGearWeight;
   }
 
   _calcInjuryTotal(data) {
@@ -567,6 +593,70 @@ export class HarnMasterActor extends Actor {
       if (it.type === 'invocation' && it.data.diety && it.data.diety.toLowerCase() === lcDiety) {
         it.data.effectiveMasteryLevel = rml - (it.data.circle * 5);
         if (it.data.effectiveMasteryLevel < 5) it.data.effectiveMasteryLevel = 5;
+      }
+    });
+  }
+
+  _generateArmorLocationMap(data) {
+    // Initialize
+    const armorMap = {};
+    const ilMap = HM3.injuryLocations;
+    Object.keys(ilMap).forEach(ilName => {
+      const name = ilMap[ilName].impactType;
+      if (name != 'base' && name != 'custom') {
+        armorMap[ilName] = {name: name, blunt:0, edged:0, piercing:0, fire:0, layers:''};
+      }
+    });
+
+    this.data.items.forEach(it => {
+      if (it.type === 'armorgear') {
+        // Go through all of the armor locations for this armor,
+        // applying this armor's settings to each location
+
+        // If locations doesn't exist, then just abandon and continue
+        if (typeof it.data.locations === 'undefined') {
+          return;
+        }
+
+        it.data.locations.forEach(l => {
+          // If the location is unknown, skip the rest
+          if (typeof armorMap[l] != 'undefined') {
+
+            // Add this armor's protection to the location
+            if (typeof it.data.protection != 'undefined') {
+              armorMap[l].blunt += it.data.protection.blunt;
+              armorMap[l].edged += it.data.protection.edged;
+              armorMap[l].piercing += it.data.protection.piercing;
+              armorMap[l].fire += it.data.protection.fire;
+            }
+
+            // if a material has been specified, add it to the layers
+            if (it.data.material.length > 0) {
+              if (armorMap[l].layers.length > 0) {
+                armorMap[l].layers += ',';
+              }
+              armorMap[l].layers += it.data.material;
+            }
+          }
+        });
+      }
+    });
+
+    // For efficiency, convert the map into an Array
+    const armorArray = Object.values(armorMap);
+
+    // We now have a full map of all of the armor, let's apply it to
+    // existing armor locations
+    this.data.items.forEach(it => {
+      if (it.type === 'armorlocation') {
+        const armorProt = armorArray.find(a => a.name === it.data.impactType);
+        if (armorProt) {
+          it.data.blunt = armorProt.blunt;
+          it.data.edged = armorProt.edged;
+          it.data.piercing = armorProt.piercing;
+          it.data.fire = armorProt.fire;
+          it.data.layers = armorProt.layers;
+        }
       }
     });
   }

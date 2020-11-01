@@ -8,8 +8,6 @@
                 <div class="flexrow name-attribute">
                     <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
                     <div class="header-stat-block">
-                        <div class="penalties flexrow">
-                        </div>
                         <div class="endurance flexrow">
                             <span class="label">Endurance: {{data.endurance.value}} / {{data.endurance.max}}</span>
                         </div>
@@ -20,17 +18,15 @@
                 </div>
                 <div class="header-attributes">
                     <ol class="flexrow">
-                        <li class="attribute species flexcol">
-                            <label class="label">Race</label>
-                            <input class="value" type="text" name="data.species" value="{{data.species}}" data-dtype="String"/>
+                        <li class="attribute creature-species flexcol">
                         </li>
-                        <li class="attribute gender flexcol">
-                            <label class="label">Gender</label>
-                            <input class="value" type="text" name="data.gender" value="{{data.gender}}" data-dtype="String"/>
-                        </li>
-                        <li class="attribute occupation flexcol">
-                            <label class="label">Occupation</label>
-                            <input class="value" type="text" name="data.occupation" value="{{data.occupation}}" data-dtype="String"/>
+                        <li class="attribute move flexcol">
+                            <label class="label">Move</label>
+                            <div class="flexrow move-values">
+                                <span class="move-eff">{{data.move.effective}}</span>
+                                <span class="sep">/</span>
+                                <input class="move-base" type="number" name="data.move.base" value="{{data.move.base}}" data-dtype="Number"/>
+                            </div>
                         </li>
                     </ol>
                 </div>
@@ -40,13 +36,16 @@
 
     {{!-- Sheet Body --}}
     <section class="sheet-body">
-        <div class="profile" data-group="primary">
-            <div class="profile-desc flexcol">
-                <label class="label">Description</label>
-                <div class="profile-description">
-                    {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
-                </div>
-            </div>        
+        <div class="profile">
+            <div class="flexrow">
+                <div class="profile-desc flexcol">
+                    <label class="label">Description</label>
+                    <div class="profile-description">
+                        {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+                    </div>
+                </div>        
+            </div>
         </div>
     </section>
+
 </form>

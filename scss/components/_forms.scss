@@ -112,6 +112,11 @@
         border-right: 2px groove #eeede0;
       }
 
+      .creature-species {
+        flex: 1 0 80px;
+        border-right: 2px groove #eeede0;
+      }
+
       .gender {
         flex: 0 0 80px;
         border-right: 2px groove #eeede0;
@@ -126,7 +131,6 @@
           font-weight: bold;
         }
       
-
         .move-values {
           font-size: 19px;
           text-align: center;

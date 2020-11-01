@@ -10,7 +10,7 @@ export class HarnMasterCharacterSheet extends ActorSheet {
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       classes: ["hm3", "sheet", "actor", "character-sheet"],
-      width: 650,
+      width: 660,
       height: 640,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "profile" }]
     });
@@ -81,6 +81,12 @@ export class HarnMasterCharacterSheet extends ActorSheet {
 
     // Injury Roll
     html.find('.injury-roll').click(this._onInjuryRoll.bind(this));
+
+    // Toggle carry state
+    html.find('.item-carry').click(this._onToggleCarry.bind(this));
+
+    // Toggle equip state
+    html.find('.item-equip').click(this._onToggleEquip.bind(this));
   }
 
   /* -------------------------------------------- */
@@ -257,5 +263,43 @@ export class HarnMasterCharacterSheet extends ActorSheet {
         flavor: label
       });
     }
+  }
+
+  /**
+   * Handle toggling the carry state of an Owned Item within the Actor
+   * @param {Event} event   The triggering click event
+   * @private
+   */
+  _onToggleCarry(event) {
+    event.preventDefault();
+    const itemId = event.currentTarget.closest(".item").dataset.itemId;
+    const item = this.actor.getOwnedItem(itemId);
+
+    // Only process inventory ("gear") items, otherwise ignore
+    if (item.data.type.endsWith('gear')) {
+      const attr = "data.isCarried";
+      return item.update({[attr]: !getProperty(item.data, attr)});
+    }
+
+    return null;
+  }
+
+  /**
+   * Handle toggling the carry state of an Owned Item within the Actor
+   * @param {Event} event   The triggering click event
+   * @private
+   */
+  _onToggleEquip(event) {
+    event.preventDefault();
+    const itemId = event.currentTarget.closest(".item").dataset.itemId;
+    const item = this.actor.getOwnedItem(itemId);
+
+    // Only process inventory ("gear") items, otherwise ignore
+    if (item.data.type.endsWith('gear')) {
+      const attr = "data.isEquipped";
+      return item.update({[attr]: !getProperty(item.data, attr)});
+    }
+
+    return null;
   }
 }

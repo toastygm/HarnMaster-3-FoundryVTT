@@ -67,7 +67,16 @@
             .weapon-damage {
                 flex: 0 0 35px;
                 text-align: center;
+
+                .inactive {
+                    color: #b5b3a4;
+                }
+
+                .active {
+                    color: #4b4a44;
+                }
             }
+
             .weapon-name {
                 flex: 0 0 120px;
                 text-overflow: ellipsis;
@@ -126,7 +135,7 @@
             }
             
             .weapon-notes {
-                flex: 1 0 95px;
+                flex: 1 0 75px;
                 padding-left: 10px;
                 text-overflow: ellipsis;
                 white-space: nowrap;
@@ -134,8 +143,29 @@
             }
             
             .item-controls {
-                flex: 0 0 45px;
+                flex: 0 0 70px;
                 text-align: right;
+
+                .item-equip {
+                    color: #b5b3a4;
+                }
+              
+                .item-carry {
+                    color: #b5b3a4;
+                }
+        
+                .active {
+                    color: #4b4a44;
+                }
+              
+            }
+
+            .item-dice {
+                color: #b5b3a4;
+
+                .active {
+                    color: #4b4a44;
+                }
             }
         }
     }
@@ -168,7 +198,16 @@
             .missile-damage {
                 flex: 0 0 35px;
                 text-align: center;
+
+                .inactive {
+                    color: #b5b3a4;
+                }
+
+                .active {
+                    color: #4b4a44;
+                }
             }
+
             .missile-name {
                 flex: 0 0 90px;
                 text-overflow: ellipsis;
@@ -228,8 +267,28 @@
             }
             
             .item-controls {
-                flex: 0 0 45px;
+                flex: 0 0 70px;
                 text-align: right;
+                .item-equip {
+                    color: #b5b3a4;
+                }
+              
+                .item-carry {
+                    color: #b5b3a4;
+                }
+              
+                .active {
+                    color: #4b4a44;
+                }
+              
+            }
+
+            .item-dice {
+                color: #b5b3a4;
+
+                .active {
+                    color: #4b4a44;
+                }
             }
         }
     }

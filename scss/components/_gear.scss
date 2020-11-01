@@ -62,10 +62,22 @@
     }
 
     .item-controls {
-        flex: 0 0 45px;
+        flex: 0 0 70px;
         text-align: right;
-      }
+
+        .item-equip {
+            color: #b5b3a4;
+        }
+      
+        .item-carry {
+            color: #b5b3a4;
+        }
+      
+        .active {
+            color: #4b4a44;
+        }
     }
+}
 
 .gear-list {
     list-style: none;
@@ -119,7 +131,56 @@
     }
 
     .item-controls {
-        flex: 0 0 45px;
+        flex: 0 0 55px;
         text-align: right;
-      }
+        .item-equip {
+            color: #b5b3a4;
+        }
+      
+        .item-carry {
+            color: #b5b3a4;
+        }
+      
+        .active {
+            color: #4b4a44;
+        }
     }
+}
+
+.armorgear-location {
+    height: 31px;
+    align-items: center;
+
+    label {
+        flex: 0 0 60px;
+        font-weight: bold;
+        text-transform: uppercase;
+        padding-right: 5px;
+    }
+
+    select {
+        flex: 0 0 60px;
+    }
+
+    .armorgear-location-add {
+        flex: 0 0 45px;
+        font-weight: bold;
+        padding: 2px 0 0 5px;
+    }
+}
+
+.armorgear-protection {
+    .armorgear-protection-item {
+        .label {
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+    }
+}
+.armor-locations-list {
+    margin-top: 10px;
+
+    .armor-location {
+        display: block;
+    }
+}
