@@ -237,7 +237,7 @@ export class HarnMasterActor extends Actor {
     data.universalPenalty = data.totalInjuryLevels + data.fatigue;
     data.physicalPenalty = data.universalPenalty + data.encumbrance;
 
-    // Setup ephemeral effective abilities (accounting for UP and PP)
+    // Setup effective abilities (accounting for UP and PP)
     this._setupEffectiveAbilities(data);
 
     // Go through all skills calculating their EML
@@ -249,8 +249,8 @@ export class HarnMasterActor extends Actor {
     // If we have a condition skill, endurance.max will have been set using that
     // Otherwise, we will need to set it using the standard formula
     if (!data.hasCondition) {
-      data.endurance.max = Math.round((data.abilities.strength + data.abilities.stamina + 
-        data.abilities.will)/3);
+      data.endurance.max = Math.round((data.abilities.strength.base + data.abilities.stamina.base + 
+        data.abilities.will.base)/3);
     }
 
     // Now calculate endurance.value; this value cannot go below 0
@@ -261,8 +261,8 @@ export class HarnMasterActor extends Actor {
     data.move.effective = Math.max(data.move.base - data.physicalPenalty, 0);
 
     // Calculate Important Roll Targets
-    data.stumbleTarget = Math.max(data.abilities.agility - data.physicalPenalty, 0);
-    data.fumbleTarget = Math.max(data.abilities.dexterity - data.physicalPenalty, 0);
+    data.stumbleTarget = Math.max(data.abilities.agility.base - data.physicalPenalty, 0);
+    data.fumbleTarget = Math.max(data.abilities.dexterity.base - data.physicalPenalty, 0);
     
     // Calculate spell effective mastery level values
     this._refreshSpellsAndInvocations();
@@ -296,10 +296,10 @@ export class HarnMasterActor extends Actor {
     data.physicalPenalty = data.universalPenalty;
 
     // Calc Endurance (never use condition with creatures)
-    data.endurance.max = Math.round((data.abilities.strength + data.abilities.stamina + 
-      data.abilities.will)/3);
+    data.endurance.max = Math.round((data.abilities.strength.base + data.abilities.stamina.base + 
+      data.abilities.will.base)/3);
   
-    // Setup ephemeral effective abilities (accounting for UP and PP)
+    // Setup effective abilities (accounting for UP and PP)
     this._setupEffectiveAbilities(data);
 
     // Go through all skills calculating their EML
@@ -319,29 +319,24 @@ export class HarnMasterActor extends Actor {
   }
 
   _setupEffectiveAbilities(data) {
-    // Creating ephemeral "effectiveAbilities" object
-    if (typeof data.effectiveAbilities === 'undefined') {
-      data.effectiveAbilities = {};
-    }
-
     // Affected by physical penalty
-    data.effectiveAbilities.strength = data.abilities.strength - data.physicalPenalty;
-    data.effectiveAbilities.stamina = data.abilities.stamina - data.physicalPenalty;
-    data.effectiveAbilities.agility = data.abilities.agility - data.physicalPenalty;
-    data.effectiveAbilities.dexterity = data.abilities.dexterity - data.physicalPenalty;
-    data.effectiveAbilities.eyesight = data.abilities.eyesight - data.physicalPenalty;
-    data.effectiveAbilities.hearing = data.abilities.hearing - data.physicalPenalty;
-    data.effectiveAbilities.smell = data.abilities.smell - data.physicalPenalty;
-    data.effectiveAbilities.voice = data.abilities.voice - data.physicalPenalty;
+    data.abilities.strength.effective = data.abilities.strength.base - data.physicalPenalty;
+    data.abilities.stamina.effective = data.abilities.stamina.base - data.physicalPenalty;
+    data.abilities.agility.effective = data.abilities.agility.base - data.physicalPenalty;
+    data.abilities.dexterity.effective = data.abilities.dexterity.base - data.physicalPenalty;
+    data.abilities.eyesight.effective = data.abilities.eyesight.base - data.physicalPenalty;
+    data.abilities.hearing.effective = data.abilities.hearing.base - data.physicalPenalty;
+    data.abilities.smell.effective = data.abilities.smell.base - data.physicalPenalty;
+    data.abilities.voice.effective = data.abilities.voice.base - data.physicalPenalty;
 
     // Affected by universal penalty
-    data.effectiveAbilities.intelligence = data.abilities.intelligence - data.universalPenalty;
-    data.effectiveAbilities.aura = data.abilities.aura - data.universalPenalty;
-    data.effectiveAbilities.will = data.abilities.will - data.universalPenalty;
+    data.abilities.intelligence.effective = data.abilities.intelligence.base - data.universalPenalty;
+    data.abilities.aura.effective = data.abilities.aura.base - data.universalPenalty;
+    data.abilities.will.effective = data.abilities.will.base - data.universalPenalty;
 
     // Not affected by any penalties
-    data.effectiveAbilities.comliness = data.abilities.comliness;
-    data.effectiveAbilities.morality = data.abilities.morality;
+    data.abilities.comliness.effective = data.abilities.comliness.base;
+    data.abilities.morality.effective = data.abilities.morality.base;
   }
 
   _setupInjuryTargets(data) {

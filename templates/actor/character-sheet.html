@@ -68,76 +68,76 @@
                     <ul class="ability-scores-column">
                         <li class="ability" data-ability="strength">
                             <h4 class="ability-name box-title rollable">Strength</h4>
-                            <h3 class="ability-value">{{data.effectiveAbilities.strength}}</h3>
+                            <h3 class="ability-value">{{data.abilities.strength.effective}}</h3>
                             <div class="ability-modifiers flexrow">
                                 <div class="item-dice">
-                                    <a class="d6-roll" data-numdice="3" data-target="{{data.effectiveAbilities.strength}}" data-label="Strength Roll" title="Strength Roll"><i class="fas fa-dice-d6"></i></a>
+                                    <a class="d6-roll" data-numdice="3" data-target="{{data.abilities.strength.effective}}" data-label="Strength Roll" title="Strength Roll"><i class="fas fa-dice-d6"></i></a>
                                 </div>
                                 <div class="ability-box">
-                                    <input class="ability-base" type="number" name="data.abilities.strength" value="{{data.abilities.strength}}" data-dtype="Number" />
+                                    <input class="ability-base" type="number" name="data.abilities.strength.base" value="{{data.abilities.strength.base}}" data-dtype="Number" />
                                 </div>
                                 <div class="item-dice">
-                                    <a class="std-roll" data-target="{{multiply data.effectiveAbilities.strength 5}}" data-label="Strength Roll" title="Strength Roll"><i class="fas fa-dice-d20"></i></a>
+                                    <a class="std-roll" data-target="{{multiply data.abilities.strength.effective 5}}" data-label="Strength Roll" title="Strength Roll"><i class="fas fa-dice-d20"></i></a>
                                 </div>
                             </div>
                         </li>
                         <li class="ability" data-ability="stamina">
                             <h4 class="ability-name box-title rollable">Stamina</h4>
-                            <h3 class="ability-value">{{data.effectiveAbilities.stamina}}</h3>
+                            <h3 class="ability-value">{{data.abilities.stamina.effective}}</h3>
                             <div class="ability-modifiers flexrow">
                                 <div class="item-dice">
-                                    <a class="d6-roll" data-numdice="3" data-target="{{data.effectiveAbilities.stamina}}" data-label="Stamina Roll" title="Stamina Roll"><i class="fas fa-dice-d6"></i></a>
+                                    <a class="d6-roll" data-numdice="3" data-target="{{data.abilities.stamina.effective}}" data-label="Stamina Roll" title="Stamina Roll"><i class="fas fa-dice-d6"></i></a>
                                 </div>
                                 <div class="ability-box">
-                                    <input class="ability-base" type="number" name="data.abilities.stamina" value="{{data.abilities.stamina}}" data-dtype="Number" />
+                                    <input class="ability-base" type="number" name="data.abilities.stamina.base" value="{{data.abilities.stamina.base}}" data-dtype="Number" />
                                 </div>
                                 <div class="item-dice">
-                                    <a class="std-roll" data-target="{{multiply data.effectiveAbilities.stamina 5}}" data-label="stamina Roll" title="Stamina Roll"><i class="fas fa-dice-d20"></i></a>
+                                    <a class="std-roll" data-target="{{multiply data.abilities.stamina.effective 5}}" data-label="stamina Roll" title="Stamina Roll"><i class="fas fa-dice-d20"></i></a>
                                 </div>
                             </div>
                         </li>
                         <li class="ability" data-ability="dexterity">
                             <h4 class="ability-name box-title rollable">Dexterity</h4>
-                            <h3 class="ability-value">{{data.effectiveAbilities.dexterity}}</h3>
+                            <h3 class="ability-value">{{data.abilities.dexterity.effective}}</h3>
                             <div class="ability-modifiers flexrow">
                                 <div class="item-dice">
-                                    <a class="d6-roll" data-numdice="3" data-target="{{data.effectiveAbilities.dexterity}}" data-label="Dexterity Roll" title="Dexterity Roll"><i class="fas fa-dice-d6"></i></a>
+                                    <a class="d6-roll" data-numdice="3" data-target="{{data.abilities.dexterity.effective}}" data-label="Dexterity Roll" title="Dexterity Roll"><i class="fas fa-dice-d6"></i></a>
                                 </div>
                                 <div class="ability-box">
-                                    <input class="ability-base" type="number" name="data.abilities.dexterity" value="{{data.abilities.dexterity}}" data-dtype="Number" />
+                                    <input class="ability-base" type="number" name="data.abilities.dexterity.base" value="{{data.abilities.dexterity.base}}" data-dtype="Number" />
                                 </div>
                                 <div class="item-dice">
-                                    <a class="std-roll" data-target="{{multiply data.effectiveAbilities.dexterity 5}}" data-label="Dexterity Roll" title="Dexterity Roll"><i class="fas fa-dice-d20"></i></a>
+                                    <a class="std-roll" data-target="{{multiply data.abilities.dexterity.effective 5}}" data-label="Dexterity Roll" title="Dexterity Roll"><i class="fas fa-dice-d20"></i></a>
                                 </div>
                             </div>
                         </li>
                         <li class="ability" data-ability="agility">
                             <h4 class="ability-name box-title rollable">Agility</h4>
-                            <h3 class="ability-value">{{data.effectiveAbilities.agility}}</h3>
+                            <h3 class="ability-value">{{data.abilities.agility.effective}}</h3>
                             <div class="ability-modifiers flexrow">
                                 <div class="item-dice">
-                                    <a class="d6-roll" data-numdice="3" data-target="{{data.effectiveAbilities.agility}}" data-label="Agility Roll" title="Agility Roll"><i class="fas fa-dice-d6"></i></a>
+                                    <a class="d6-roll" data-numdice="3" data-target="{{data.abilities.agility.effective}}" data-label="Agility Roll" title="Agility Roll"><i class="fas fa-dice-d6"></i></a>
                                 </div>
                                 <div class="ability-box">
-                                    <input class="ability-base" type="number" name="data.abilities.agility" value="{{data.abilities.agility}}" data-dtype="Number" />
+                                    <input class="ability-base" type="number" name="data.abilities.agility.base" value="{{data.abilities.agility.base}}" data-dtype="Number" />
                                 </div>
                                 <div class="item-dice">
-                                    <a class="std-roll" data-target="{{multiply data.effectiveAbilities.agility 5}}" data-label="Agility Roll" title="Agility Roll"><i class="fas fa-dice-d20"></i></a>
+                                    <a class="std-roll" data-target="{{multiply data.abilities.agility.effective 5}}" data-label="Agility Roll" title="Agility Roll"><i class="fas fa-dice-d20"></i></a>
                                 </div>
                             </div>
                         </li>
                         <li class="ability" data-ability="intelligence">
                             <h4 class="ability-name box-title rollable">Intelligence</h4>
-                            <h3 class="ability-value">{{data.effectiveAbilities.intelligence}}</h3>
+                            <h3 class="ability-value">{{data.abilities.intelligence.effective}}</h3>
                             <div class="ability-modifiers flexrow">
                                 <div class="item-dice">
-                                    <a class="d6-roll" data-numdice="3" data-target="{{data.effectiveAbilities.intelligence}}" data-label="Intelligence Roll" title="Intelligence Roll"><i class="fas fa-dice-d6"></i></a>
+                                    <a class="d6-roll" data-numdice="3" data-target="{{data.abilities.intelligence.effective}}" data-label="Intelligence Roll" title="Intelligence Roll"><i class="fas fa-dice-d6"></i></a>
                                 </div>
                                 <div class="ability-box">
-                                    <input class="ability-base" type="number" name="data.abilities.intelligence" value="{{data.abilities.intelligence}}" data-dtype="Number" />
+                                    <input class="ability-base" type="number" name="data.abilities.intelligence.base" value="{{data.abilities.intelligence.base}}" data-dtype="Number" />
                                 </div>
                                 <div class="item-dice">
-                                    <a class="std-roll" data-target="{{multiply data.effectiveAbilities.intelligence 5}}" data-label="Intelligence Roll" title="Intelligence Roll"><i class="fas fa-dice-d20"></i></a>
+                                    <a class="std-roll" data-target="{{multiply data.abilities.intelligence.effective 5}}" data-label="Intelligence Roll" title="Intelligence Roll"><i class="fas fa-dice-d20"></i></a>
                                 </div>
                             </div>
                         </li>
@@ -145,76 +145,76 @@
                     <ul class="ability-scores-column">
                         <li class="ability" data-ability="aura">
                             <h4 class="ability-name box-title rollable">Aura</h4>
-                            <h3 class="ability-value">{{data.effectiveAbilities.aura}}</h3>
+                            <h3 class="ability-value">{{data.abilities.aura.effective}}</h3>
                             <div class="ability-modifiers flexrow">
                                 <div class="item-dice">
-                                    <a class="d6-roll" data-numdice="3" data-target="{{data.effectiveAbilities.aura}}" data-label="Aura Roll" title="Aura Roll"><i class="fas fa-dice-d6"></i></a>
+                                    <a class="d6-roll" data-numdice="3" data-target="{{data.abilities.aura.effective}}" data-label="Aura Roll" title="Aura Roll"><i class="fas fa-dice-d6"></i></a>
                                 </div>
                                 <div class="ability-box">
-                                    <input class="ability-base" type="number" name="data.abilities.aura" value="{{data.abilities.aura}}" data-dtype="Number" />
+                                    <input class="ability-base" type="number" name="data.abilities.aura.base" value="{{data.abilities.aura.base}}" data-dtype="Number" />
                                 </div>
                                 <div class="item-dice">
-                                    <a class="std-roll" data-target="{{multiply data.effectiveAbilities.aura 5}}" data-label="Aura Roll" title="Aura Roll"><i class="fas fa-dice-d20"></i></a>
+                                    <a class="std-roll" data-target="{{multiply data.abilities.aura.effective 5}}" data-label="Aura Roll" title="Aura Roll"><i class="fas fa-dice-d20"></i></a>
                                 </div>
                             </div>
                         </li>
                         <li class="ability" data-ability="will">
                             <h4 class="ability-name box-title rollable">Will</h4>
-                            <h3 class="ability-value">{{data.effectiveAbilities.will}}</h3>
+                            <h3 class="ability-value">{{data.abilities.will.effective}}</h3>
                             <div class="ability-modifiers flexrow">
                                 <div class="item-dice">
-                                    <a class="d6-roll" data-numdice="3" data-target="{{data.effectiveAbilities.will}}" data-label="Will Roll" title="Will Roll"><i class="fas fa-dice-d6"></i></a>
+                                    <a class="d6-roll" data-numdice="3" data-target="{{data.abilities.will.effective}}" data-label="Will Roll" title="Will Roll"><i class="fas fa-dice-d6"></i></a>
                                 </div>
                                 <div class="ability-box">
-                                    <input class="ability-base" type="number" name="data.abilities.will" value="{{data.abilities.will}}" data-dtype="Number" />
+                                    <input class="ability-base" type="number" name="data.abilities.will.base" value="{{data.abilities.will.base}}" data-dtype="Number" />
                                 </div>
                                 <div class="item-dice">
-                                    <a class="std-roll" data-target="{{multiply data.effectiveAbilities.will 5}}" data-label="Will Roll" title="Will Roll"><i class="fas fa-dice-d20"></i></a>
+                                    <a class="std-roll" data-target="{{multiply data.abilities.will.effective 5}}" data-label="Will Roll" title="Will Roll"><i class="fas fa-dice-d20"></i></a>
                                 </div>
                             </div>
                         </li>
                         <li class="ability" data-ability="eyesight">
                             <h4 class="ability-name box-title rollable">Eyesight</h4>
-                            <h3 class="ability-value">{{data.effectiveAbilities.eyesight}}</h3>
+                            <h3 class="ability-value">{{data.abilities.eyesight.effective}}</h3>
                             <div class="ability-modifiers flexrow">
                                 <div class="item-dice">
-                                    <a class="d6-roll" data-numdice="3" data-target="{{data.effectiveAbilities.eyesight}}" data-label="Eyesight Roll" title="Eyesight Roll"><i class="fas fa-dice-d6"></i></a>
+                                    <a class="d6-roll" data-numdice="3" data-target="{{data.abilities.eyesight.effective}}" data-label="Eyesight Roll" title="Eyesight Roll"><i class="fas fa-dice-d6"></i></a>
                                 </div>
                                 <div class="ability-box">
-                                    <input class="ability-base" type="number" name="data.abilities.eyesight" value="{{data.abilities.eyesight}}" data-dtype="Number" />
+                                    <input class="ability-base" type="number" name="data.abilities.eyesight.base" value="{{data.abilities.eyesight.base}}" data-dtype="Number" />
                                 </div>
                                 <div class="item-dice">
-                                    <a class="std-roll" data-target="{{multiply data.effectiveAbilities.eyesight 5}}" data-label="Eyesight Roll" title="Eyesight Roll"><i class="fas fa-dice-d20"></i></a>
+                                    <a class="std-roll" data-target="{{multiply data.abilities.eyesight.effective 5}}" data-label="Eyesight Roll" title="Eyesight Roll"><i class="fas fa-dice-d20"></i></a>
                                 </div>
                             </div>
                         </li>
                         <li class="ability" data-ability="hearing">
                             <h4 class="ability-name box-title rollable">Hearing</h4>
-                            <h3 class="ability-value">{{data.effectiveAbilities.hearing}}</h3>
+                            <h3 class="ability-value">{{data.abilities.hearing.effective}}</h3>
                             <div class="ability-modifiers flexrow">
                                 <div class="item-dice">
-                                    <a class="d6-roll" data-numdice="3" data-target="{{data.effectiveAbilities.hearing}}" data-label="Hearing Roll" title="Hearing Roll"><i class="fas fa-dice-d6"></i></a>
+                                    <a class="d6-roll" data-numdice="3" data-target="{{data.abilities.hearing.effective}}" data-label="Hearing Roll" title="Hearing Roll"><i class="fas fa-dice-d6"></i></a>
                                 </div>
                                 <div class="ability-box">
-                                    <input class="ability-base" type="number" name="data.abilities.hearing" value="{{data.abilities.hearing}}" data-dtype="Number" />
+                                    <input class="ability-base" type="number" name="data.abilities.hearing.base" value="{{data.abilities.hearing.base}}" data-dtype="Number" />
                                 </div>
                                 <div class="item-dice">
-                                    <a class="std-roll" data-target="{{multiply data.effectiveAbilities.hearing 5}}" data-label="Hearing Roll" title="Hearing Roll"><i class="fas fa-dice-d20"></i></a>
+                                    <a class="std-roll" data-target="{{multiply data.abilities.hearing.effective 5}}" data-label="Hearing Roll" title="Hearing Roll"><i class="fas fa-dice-d20"></i></a>
                                 </div>
                             </div>
                         </li>
                         <li class="ability" data-ability="smell">
                             <h4 class="ability-name box-title rollable">Smell</h4>
-                            <h3 class="ability-value">{{data.effectiveAbilities.smell}}</h3>
+                            <h3 class="ability-value">{{data.abilities.smell.effective}}</h3>
                             <div class="ability-modifiers flexrow">
                                 <div class="item-dice">
-                                    <a class="d6-roll" data-numdice="3" data-target="{{data.effectiveAbilities.smell}}" data-label="Smell Roll" title="Smell Roll"><i class="fas fa-dice-d6"></i></a>
+                                    <a class="d6-roll" data-numdice="3" data-target="{{data.abilities.smell.effective}}" data-label="Smell Roll" title="Smell Roll"><i class="fas fa-dice-d6"></i></a>
                                 </div>
                                 <div class="ability-box">
-                                    <input class="ability-base" type="number" name="data.abilities.smell" value="{{data.abilities.smell}}" data-dtype="Number" />
+                                    <input class="ability-base" type="number" name="data.abilities.smell.base" value="{{data.abilities.smell.base}}" data-dtype="Number" />
                                 </div>
                                 <div class="item-dice">
-                                    <a class="std-roll" data-target="{{multiply data.effectiveAbilities.smell 5}}" data-label="Smell Roll" title="Smell Roll"><i class="fas fa-dice-d20"></i></a>
+                                    <a class="std-roll" data-target="{{multiply data.abilities.smell.effective 5}}" data-label="Smell Roll" title="Smell Roll"><i class="fas fa-dice-d20"></i></a>
                                 </div>
                             </div>
                         </li>
@@ -222,46 +222,46 @@
                     <ul class="ability-scores-column">
                         <li class="ability" data-ability="voice">
                             <h4 class="ability-name box-title rollable">Voice</h4>
-                            <h3 class="ability-value">{{data.effectiveAbilities.voice}}</h3>
+                            <h3 class="ability-value">{{data.abilities.voice.effective}}</h3>
                             <div class="ability-modifiers flexrow">
                                 <div class="item-dice">
-                                    <a class="d6-roll" data-numdice="3" data-target="{{data.effectiveAbilities.voice}}" data-label="Voice Roll" title="Voice Roll"><i class="fas fa-dice-d6"></i></a>
+                                    <a class="d6-roll" data-numdice="3" data-target="{{data.abilities.voice.effective}}" data-label="Voice Roll" title="Voice Roll"><i class="fas fa-dice-d6"></i></a>
                                 </div>
                                 <div class="ability-box">
-                                    <input class="ability-base" type="number" name="data.abilities.voice" value="{{data.abilities.voice}}" data-dtype="Number" />
+                                    <input class="ability-base" type="number" name="data.abilities.voice.base" value="{{data.abilities.voice.base}}" data-dtype="Number" />
                                 </div>
                                 <div class="item-dice">
-                                    <a class="std-roll" data-target="{{multiply data.effectiveAbilities.voice 5}}" data-label="Voice Roll" title="Voice Roll"><i class="fas fa-dice-d20"></i></a>
+                                    <a class="std-roll" data-target="{{multiply data.abilities.voice.effective 5}}" data-label="Voice Roll" title="Voice Roll"><i class="fas fa-dice-d20"></i></a>
                                 </div>
                             </div>
                         </li>
                         <li class="ability" data-ability="comliness">
                             <h4 class="ability-name box-title rollable">Comliness</h4>
-                            <h3 class="ability-value">{{data.effectiveAbilities.comliness}}</h3>
+                            <h3 class="ability-value">{{data.abilities.comliness.effective}}</h3>
                             <div class="ability-modifiers flexrow">
                                 <div class="item-dice">
-                                    <a class="d6-roll" data-numdice="3" data-target="{{data.effectiveAbilities.comliness}}" data-label="Comliness Roll" title="Comliness Roll"><i class="fas fa-dice-d6"></i></a>
+                                    <a class="d6-roll" data-numdice="3" data-target="{{data.abilities.comliness.effective}}" data-label="Comliness Roll" title="Comliness Roll"><i class="fas fa-dice-d6"></i></a>
                                 </div>
                                 <div class="ability-box">
-                                    <input class="ability-base" type="number" name="data.abilities.comliness" value="{{data.abilities.comliness}}" data-dtype="Number" />
+                                    <input class="ability-base" type="number" name="data.abilities.comliness.base" value="{{data.abilities.comliness.base}}" data-dtype="Number" />
                                 </div>
                                 <div class="item-dice">
-                                    <a class="std-roll" data-target="{{multiply data.effectiveAbilities.comliness 5}}" data-label="Comliness Roll" title="Comliness Roll"><i class="fas fa-dice-d20"></i></a>
+                                    <a class="std-roll" data-target="{{multiply data.abilities.comliness.effective 5}}" data-label="Comliness Roll" title="Comliness Roll"><i class="fas fa-dice-d20"></i></a>
                                 </div>
                             </div>
                         </li>
                         <li class="ability" data-ability="morality">
                             <h4 class="ability-name box-title rollable">Morality</h4>
-                            <h3 class="ability-value">{{data.effectiveAbilities.morality}}</h3>
+                            <h3 class="ability-value">{{data.abilities.morality.effective}}</h3>
                             <div class="ability-modifiers flexrow">
                                 <div class="item-dice">
-                                    <a class="d6-roll" data-numdice="3" data-target="{{data.effectiveAbilities.morality}}" data-label="Morality Roll" title="Morality Roll"><i class="fas fa-dice-d6"></i></a>
+                                    <a class="d6-roll" data-numdice="3" data-target="{{data.abilities.morality.effective}}" data-label="Morality Roll" title="Morality Roll"><i class="fas fa-dice-d6"></i></a>
                                 </div>
                                 <div class="ability-box">
-                                    <input class="ability-base" type="number" name="data.abilities.morality" value="{{data.abilities.morality}}" data-dtype="Number" />
+                                    <input class="ability-base" type="number" name="data.abilities.morality.base" value="{{data.abilities.morality.base}}" data-dtype="Number" />
                                 </div>
                                 <div class="item-dice">
-                                    <a class="std-roll" data-target="{{multiply data.effectiveAbilities.morality 5}}" data-label="Morality Roll" title="Morality Roll"><i class="fas fa-dice-d20"></i></a>
+                                    <a class="std-roll" data-target="{{multiply data.abilities.morality.effective 5}}" data-label="Morality Roll" title="Morality Roll"><i class="fas fa-dice-d20"></i></a>
                                 </div>
                             </div>
                         </li>

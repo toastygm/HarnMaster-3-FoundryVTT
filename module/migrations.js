@@ -4,14 +4,21 @@
  */
 export async function migrateWorld() {
     ui.notifications.info(`Applying HM3 System Migration for version ${game.system.data.version}. Please be patient and do not close your game or shut down your server.`, {permanent: true});
+    console.log(`HM3 | Beginning Migration to version ${game.system.data.version}`);
 
     // Migrate World Actors
     for (let a of game.actors.entities ) {
         try {
-            migrateActorData(a);
+            const updateData = await migrateActorData(a)
+            if (updateData != null) {
+                console.log(`HM3 | Migrating Actor ${a.name}`);
+                // await i.update(updateData, {enforceTypes: false});
+                await a.update(updateData);                
+            }
         } catch(err) {
             console.error(err);
         }
+
     }
 
     // Migrate World Items
@@ -19,7 +26,7 @@ export async function migrateWorld() {
         try {
             const updateData = migrateItemData(i.data);
             if (updateData != null) {
-                console.log(`Migrating Item ${i.name}`);
+                console.log(`HM3 | Migrating Item ${i.name}`);
                 // await i.update(updateData, {enforceTypes: false});
                 await i.update(updateData);                
             }
@@ -51,22 +58,57 @@ export async function migrateWorld() {
 
     // Set migration as complete
     game.settings.set("hm3", "systemMigrationVersion", game.system.data.version);
+    console.log(`HM3 | Completed migration to version ${game.system.data.version}`);
     ui.notifications.info(`HM3 System Migration to version ${game.system.data.version} completed!`, {permanent: true});  
 };
 
 export async function migrateActorData(actor) {
     const actorData = actor.data;
 
-    // For now, the only migrations are to migrate the owned items
-    
+    const updateData = {};
+
+    // In version 0.5.3 we converted from abilities being
+    // numbers to objects containing base and effective
+    // Guard against re-implementing the upgrade here
+    if (typeof actorData.data.abilities.strength != 'object') {
+        updateData["data.abilities.strength.base"] = actorData.data.abilities.strength;
+        updateData["data.abilities.stamina.base"] = actorData.data.abilities.stamina;
+        updateData["data.abilities.dexterity.base"] = actorData.data.abilities.dexterity;
+        updateData["data.abilities.agility.base"] = actorData.data.abilities.agility;
+        updateData["data.abilities.intelligence.base"] = actorData.data.abilities.intelligence;
+        updateData["data.abilities.aura.base"] = actorData.data.abilities.aura;
+        updateData["data.abilities.will.base"] = actorData.data.abilities.will;
+        updateData["data.abilities.eyesight.base"] = actorData.data.abilities.eyesight;
+        updateData["data.abilities.hearing.base"] = actorData.data.abilities.hearing;
+        updateData["data.abilities.smell.base"] = actorData.data.abilities.smell;
+        updateData["data.abilities.voice.base"] = actorData.data.abilities.voice;
+        updateData["data.abilities.comliness.base"] = actorData.data.abilities.comliness;
+        updateData["data.abilities.morality.base"] = actorData.data.abilities.morality;
+
+        updateData["data.abilities.strength.effective"] = 0;
+        updateData["data.abilities.stamina.effective"] = 0;
+        updateData["data.abilities.dexterity.effective"] = 0;
+        updateData["data.abilities.agility.effective"] = 0;
+        updateData["data.abilities.intelligence.effective"] = 0;
+        updateData["data.abilities.aura.effective"] = 0;
+        updateData["data.abilities.will.effective"] = 0;
+        updateData["data.abilities.eyesight.effective"] = 0;
+        updateData["data.abilities.hearing.effective"] = 0;
+        updateData["data.abilities.smell.effective"] = 0;
+        updateData["data.abilities.voice.effective"] = 0;
+        updateData["data.abilities.comliness.effective"] = 0;
+        updateData["data.abilities.morality.effective"] = 0;
+    }
     // process items
     for (let i of actor.items) {
         const migrateData = migrateItemData(i.data);
         if (migrateData != null) {
-            console.log(`Migrating Actor ${actorData.name}, Item ${i.data.name}`);
+            console.log(`HM3 | Migrating Actor ${actorData.name}, Item ${i.data.name}`);
             await i.update(migrateData);
         }
     }
+
+    return updateData;
 }
 
 export function migrateItemData(itemData) {

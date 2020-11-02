@@ -3,21 +3,61 @@
     "types": ["character", "creature"],
     "templates": {
       "base": {
+        "species": 0,
         "fatigue": 0,
         "abilities": {
-          "strength": 0,
-          "stamina": 0,
-          "dexterity": 0,
-          "agility": 0,
-          "intelligence": 0,
-          "aura": 0,
-          "will": 0,
-          "eyesight": 0,
-          "hearing": 0,
-          "smell": 0,
-          "voice": 0,
-          "comliness": 0,
-          "morality": 0
+          "strength": {
+            "base": 0,
+            "effective": 0
+          },
+          "stamina": {
+            "base": 0,
+            "effective": 0
+          },
+          "dexterity": {
+            "base": 0,
+            "effective": 0
+          },
+          "agility": {
+            "base": 0,
+            "effective": 0
+          },
+          "intelligence": {
+            "base": 0,
+            "effective": 0
+          },
+          "aura": {
+            "base": 0,
+            "effective": 0
+          },
+          "will": {
+            "base": 0,
+            "effective": 0
+          },
+          "eyesight": {
+            "base": 0,
+            "effective": 0
+          },
+          "hearing": {
+            "base": 0,
+            "effective": 0
+          },
+          "smell": {
+            "base": 0,
+            "effective": 0
+          },
+          "voice": {
+            "base": 0,
+            "effective": 0
+          },
+          "comliness": {
+            "base": 0,
+            "effective": 0
+          },
+          "morality": {
+            "base": 0,
+            "effective": 0
+          }
         },
         "dodge": 0,
         "initiative": 0,
@@ -32,18 +72,18 @@
         },
         "description": "***INIT***",
         "universalPenalty": 0,
-        "physicalPenalty": 0
+        "physicalPenalty": 0,
+        "biography": ""
       }
     },
     "character": {
       "templates": ["base"],
-      "species": "",
       "gender": "",
       "occupation": "",
       "hasCondition": false,
+      "sunsign": "",
       "encumbrance": 0,
-      "totalWeight": 0,
-      "biography": ""
+      "totalWeight": 0
   },
     "creature": {
       "templates": ["base"]
