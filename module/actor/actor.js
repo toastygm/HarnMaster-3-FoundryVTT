@@ -522,6 +522,8 @@ export class HarnMasterActor extends Actor {
       }
     });
     
+    // It seems whenever doing math on floating point numbers, very small
+    // amounts get introduced creating very long decimal values.
     // Correct any math weirdness; keep to two decimal points
     data.totalArmorWeight = Math.round((data.totalArmorWeight + Number.EPSILON)*100)/100;
     data.totalWeaponWeight = Math.round((data.totalWeaponWeight + Number.EPSILON)*100)/100;
@@ -529,6 +531,7 @@ export class HarnMasterActor extends Actor {
     data.totalMiscGearWeight = Math.round((data.totalMiscGearWeight + Number.EPSILON)*100)/100;
 
     data.totalGearWeight = data.totalWeaponWeight + data.totalMissileWeight + data.totalArmorWeight + data.totalMiscGearWeight;
+    data.totalGearWeight = Math.round((data.totalGearWeight + Number.EPSILON)*100)/100;
   }
 
   _calcInjuryTotal(data) {
