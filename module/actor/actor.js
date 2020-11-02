@@ -525,7 +525,7 @@ export class HarnMasterActor extends Actor {
     // Correct any math weirdness; keep to two decimal points
     data.totalArmorWeight = Math.round((data.totalArmorWeight + Number.EPSILON)*100)/100;
     data.totalWeaponWeight = Math.round((data.totalWeaponWeight + Number.EPSILON)*100)/100;
-    data.totalMissileWeight = Math.round((data.totalWeaponWeight + Number.EPSILON)*100)/100;
+    data.totalMissileWeight = Math.round((data.totalMissileWeight + Number.EPSILON)*100)/100;
     data.totalMiscGearWeight = Math.round((data.totalMiscGearWeight + Number.EPSILON)*100)/100;
 
     data.totalGearWeight = data.totalWeaponWeight + data.totalMissileWeight + data.totalArmorWeight + data.totalMiscGearWeight;
