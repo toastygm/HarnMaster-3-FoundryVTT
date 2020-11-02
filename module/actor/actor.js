@@ -609,7 +609,8 @@ export class HarnMasterActor extends Actor {
     });
 
     this.data.items.forEach(it => {
-      if (it.type === 'armorgear') {
+      if (it.type === 'armorgear' && it.data.isCarried && it.data.isEquipped) {
+
         // Go through all of the armor locations for this armor,
         // applying this armor's settings to each location
 
