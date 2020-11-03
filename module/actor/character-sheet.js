@@ -38,6 +38,28 @@ export class HarnMasterCharacterSheet extends ActorSheet {
   }
 
   /** @override */
+  async _onDropItem(event, data) {
+    const actor = this.actor;
+    if (!actor.owner) return false;
+    const item = await Item.fromDropData(data);
+    const itemName = item.data.name;
+    const itemType = item.data.type;
+
+    let found = false;
+    actor.items.forEach(it => {
+      if (it.data.type === itemType && it.data.name === itemName) {
+        found = true;
+      }
+    });
+
+    if (found) {
+      return false;
+    }
+
+    return super._onDropItem(event, data);
+  }
+
+  /** @override */
   activateListeners(html) {
     super.activateListeners(html);
 
