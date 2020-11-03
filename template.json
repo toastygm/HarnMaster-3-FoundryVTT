@@ -3,8 +3,9 @@
     "types": ["character", "creature"],
     "templates": {
       "base": {
-        "species": 0,
+        "species": "",
         "fatigue": 0,
+        "sunsign": "",
         "abilities": {
           "strength": {
             "base": 0,
@@ -81,7 +82,6 @@
       "gender": "",
       "occupation": "",
       "hasCondition": false,
-      "sunsign": "",
       "encumbrance": 0,
       "totalWeight": 0
   },
@@ -98,7 +98,11 @@
         "note": ""
       },
       "skill": {
-        "skillBase": 0,
+        "skillBase": {
+          "value": 0,
+          "formula": "",
+          "isFormulaValid": true
+        },
         "masteryLevel": 0,
         "effectiveMasteryLevel": 0
       },

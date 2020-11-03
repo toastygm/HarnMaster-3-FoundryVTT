@@ -801,11 +801,26 @@
         flex: 0 0 40px;
         font-size: 20pt; }
 
-.hm3 .sheet-body .profile-desc .label {
-  flex: 0 0 18px;
+.hm3 .sheet-body .profile-params {
   margin-top: 5px;
-  font-weight: bold;
-  text-transform: uppercase; }
+  align-items: center;
+  flex: 0 1 10px; }
+  .hm3 .sheet-body .profile-params .profile-item {
+    align-items: center; }
+    .hm3 .sheet-body .profile-params .profile-item .label {
+      flex: 0 0 70px;
+      font-weight: bold;
+      text-transform: uppercase; }
+    .hm3 .sheet-body .profile-params .profile-item .value {
+      flex: 0 0 120px;
+      border: 1px solid black; }
+
+.hm3 .sheet-body .profile-desc {
+  margin-top: 15px; }
+  .hm3 .sheet-body .profile-desc .label {
+    flex: 0 0 18px;
+    font-weight: bold;
+    text-transform: uppercase; }
 
 .hm3 .injuries-list {
   list-style: none;

@@ -267,12 +267,20 @@
                         </li>
                     </ul>
                 </div>
-                <div class="profile-desc flexcol">
-                    <label class="label">Description</label>
-                    <div class="profile-description">
-                        {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+                <div class="flexcol">
+                    <div class="profile-params">
+                        <div class="flexrow profile-item">
+                            <label class="label">Sunsign</label>
+                            <input class="value" type="text" name="data.sunsign" value="{{data.sunsign}}" data-dtype="String" />
+                        </div>
                     </div>
-                </div>        
+                    <div class="profile-desc flexcol">
+                        <label class="label">Description</label>
+                        <div class="profile-description">
+                            {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -299,7 +307,7 @@
                                 <a class="std-roll" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}" title="Skill Roll"><i class="fas fa-dice-d20"></i></a>
                             </div>
                             <h4 class="skill-name">{{item.name}}</h4>
-                            <div class="skill-ele">{{data.skillBase}}</div>
+                            <div class="skill-ele">{{data.skillBase.value}}</div>
                             <div class="skill-ele">{{data.masteryLevel}}</div>
                             <div class="skill-ele">{{data.effectiveMasteryLevel}}</div>
                             <div class="item-controls">
@@ -333,7 +341,7 @@
                                 <a class="std-roll" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}" title="Skill Roll"><i class="fas fa-dice-d20"></i></a>
                             </div>
                            <h4 class="skill-name">{{item.name}}</h4>
-                            <div class="skill-ele">{{data.skillBase}}</div>
+                            <div class="skill-ele">{{data.skillBase.value}}</div>
                             <div class="skill-ele">{{data.masteryLevel}}</div>
                             <div class="skill-ele">{{data.effectiveMasteryLevel}}</div>
                             <div class="item-controls">
@@ -367,7 +375,7 @@
                                 <a class="std-roll" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}" title="Skill Roll"><i class="fas fa-dice-d20"></i></a>
                             </div>
                             <h4 class="skill-name">{{item.name}}</h4>
-                            <div class="skill-ele">{{data.skillBase}}</div>
+                            <div class="skill-ele">{{data.skillBase.value}}</div>
                             <div class="skill-ele">{{data.masteryLevel}}</div>
                             <div class="skill-ele">{{data.effectiveMasteryLevel}}</div>
                             <div class="item-controls">
@@ -400,7 +408,7 @@
                                 <a class="std-roll" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}" title="Skill Roll"><i class="fas fa-dice-d20"></i></a>
                             </div>
                             <h4 class="skill-name">{{item.name}}</h4>
-                            <div class="skill-ele">{{data.skillBase}}</div>
+                            <div class="skill-ele">{{data.skillBase.value}}</div>
                             <div class="skill-ele">{{data.masteryLevel}}</div>
                             <div class="skill-ele">{{data.effectiveMasteryLevel}}</div>
                             <div class="item-controls">
@@ -433,7 +441,7 @@
                                 <a class="std-roll" data-label="{{item.name}} Convocation Skill Test" data-target="{{data.effectiveMasteryLevel}}" title="Skill Roll"><i class="fas fa-dice-d20"></i></a>
                             </div>
                             <h4 class="skill-name">{{item.name}}</h4>
-                            <div class="skill-ele">{{data.skillBase}}</div>
+                            <div class="skill-ele">{{data.skillBase.value}}</div>
                             <div class="skill-ele">{{data.masteryLevel}}</div>
                             <div class="skill-ele">{{data.effectiveMasteryLevel}}</div>
                             <div class="item-controls">
@@ -467,7 +475,7 @@
                                 <a class="std-roll" data-label="{{item.name}} Ritual Skill Test" data-target="{{data.effectiveMasteryLevel}}" title="Skill Roll"><i class="fas fa-dice-d20"></i></a>
                             </div>
                             <h4 class="skill-name">{{item.name}}</h4>
-                            <div class="skill-ele">{{data.skillBase}}</div>
+                            <div class="skill-ele">{{data.skillBase.value}}</div>
                             <div class="skill-ele">{{data.masteryLevel}}</div>
                             <div class="skill-ele">{{data.effectiveMasteryLevel}}</div>
                             <div class="skill-ele">{{data.piety}}</div>
