@@ -132,25 +132,66 @@ export function migrateItemData(itemData) {
     const data = itemData.data;
     let isModified = false;
 
-    // migrate if needed
+    // The next two blocks are essentially renaming the "note" object to "notes"
+    if (typeof data.notes === 'undefined') {
+        data.notes = data.note || "";
+        isModified = true;
+    }
+
+    if (typeof data.note != 'undefined') {
+        delete data.note;
+        data['-=note'] = null;  // delete the note object;
+    }
+
+    if (typeof data.description === 'undefined') {
+        data.description = "";
+        isModified = true;
+    }
+    if (typeof data.source === 'undefined') {
+        data.source = "";
+        isModified = true;
+    }
+
     if (itemData.type.endsWith('gear')) {
         if (typeof data.isEquipped === 'undefined') {
             data.isEquipped = false;
+            isModified = true;
+        }
+        if (typeof data.isCarried === 'undefined') {
             data.isCarried = true;
             isModified = true;
         }
-    
-        if (itemData.type === 'armorlocation') {
-            if (typeof data.protection === 'undefined') {
-                data.protection = {
-                    'blunt': 0,
-                    'edged': 0,
-                    'piercing': 0,
-                    'fire': 0
-                };
-                data.locations = [];
+        if (typeof data.value === 'undefined') {
+            data.value = 0;
+            isModified = true;
+        }
+        if (typeof data.arcane === 'undefined') {
+            data.arcane = {
+                "isArtifact": false,
+                "isAttuned": false,
+                "charges": -1,
+                "ego": 0
+            };
+        }
+
+        if (itemData.type === 'weapongear' || itemData.type === 'missilegear') {
+            if (typeof data.weaponQuality === 'undefined') {
+                data.weaponQuality = 0;
                 isModified = true;
             }
+        }
+    }
+    
+    if (itemData.type === 'armorlocation') {
+        if (typeof data.protection === 'undefined') {
+            data.protection = {
+                'blunt': 0,
+                'edged': 0,
+                'piercing': 0,
+                'fire': 0
+            };
+            data.locations = [];
+            isModified = true;
         }
     }
 

@@ -10,7 +10,7 @@ export class HarnMasterItemSheet extends ItemSheet {
       classes: ["hm3", "sheet", "item"],
       width: 530,
       height: 550,
-      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }]
+      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "properties" }]
     });
   }
 

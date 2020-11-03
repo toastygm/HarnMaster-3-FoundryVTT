@@ -95,7 +95,9 @@
     "armorlocation"],
     "templates": {
       "base": {
-        "note": ""
+        "notes": "",
+        "description": "",
+        "source": ""
       },
       "skill": {
         "skillBase": {
@@ -108,28 +110,40 @@
       },
       "gear": {
         "quantity": 1,
+        "value": 0,
         "weight": 0,
         "isCarried": true,
-        "isEquipped": false
+        "isEquipped": false,
+        "arcane": {
+          "isArtifact": false,
+          "isAttuned": false,
+          "charges": -1,
+          "ego": 0
+        }
+      },
+      "weapon": {
+        "assocSkill": "None",
+        "weaponQuality": 0,
+        "attackMasteryLevel": 0
       }
     },
     "physicalskill": {
-      "templates": ["skill"]
+      "templates": ["base", "skill"]
     },
     "commskill": {
-      "templates": ["skill"]
+      "templates": ["base", "skill"]
     },
     "craftskill": {
-      "templates": ["skill"]
+      "templates": ["base", "skill"]
     },
     "combatskill": {
-      "templates": ["skill"]
+      "templates": ["base", "skill"]
     },
     "magicskill": {
-      "templates": ["skill"]
+      "templates": ["base", "skill"]
     },
     "ritualskill": {
-      "templates": ["skill"],
+      "templates": ["base", "skill"],
       "piety": 0
     },
     "spell": {
@@ -150,22 +164,18 @@
       "effectiveMasteryLevel": 0
     },
     "weapongear": {
-      "templates": ["base", "gear"],
-      "weaponQuality": 0,
+      "templates": ["base", "gear", "weapon"],
       "attack": 0,
       "defense": 0,
       "handMode": 0,
       "blunt": 0,
       "edged": 0,
       "piercing": 0,
-      "attackMasteryLevel": 0,
-      "defenseMasteryLevel": 0,
-      "assocSkill": "None"
+      "defenseMasteryLevel": 0
     },
     "missilegear": {
-      "templates": ["base", "gear"],
+      "templates": ["base", "gear", "weapon"],
       "weaponAspect": "Piercing",
-      "assocSkill": "Throwing",
       "range": {
         "short": 0,
         "medium": 0,
@@ -177,8 +187,7 @@
         "medium": 0,
         "long": 0,
         "extreme": 0
-      },
-      "attackMasteryLevel": 0
+      }
     },
     "armorgear": {
       "templates": ["base", "gear"],
