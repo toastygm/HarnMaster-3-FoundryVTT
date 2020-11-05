@@ -39,45 +39,54 @@ export class HarnMasterItemSheet extends ItemSheet {
     const data = super.getData();
     data.config = CONFIG.HM3;
     data.itemType = this.item.data.type;
+    data.hasActor = this.actor && true;
 
     // Fill appropriate lists for individual item sheets
     if (this.item.data.type === 'spell') {
       // Spells need a list of convocations
       data.convocations = [];
-      this.actor.itemTypes.magicskill.forEach(it => {
-        data.convocations.push(it.data.name);
-      });
+      if (this.actor) {
+        this.actor.itemTypes.magicskill.forEach(it => {
+          data.convocations.push(it.data.name);
+        });
+      }
     } else if (this.item.data.type === 'invocation') {
       // Invocations need a list of dieties
       data.dieties = [];
-      this.actor.itemTypes.ritualskill.forEach(it => {
-        data.dieties.push(it.data.name);
-      });
+      if (this.actor) {
+        this.actor.itemTypes.ritualskill.forEach(it => {
+          data.dieties.push(it.data.name);
+        });
+      }
     } else if (this.item.data.type === 'weapongear' ||
               this.item.data.type === 'missilegear') {
       
       // Weapons need a list of combat skills
+      data.combatSkills = [];
 
-      if (this.item.data.type === 'weapongear') {
-        // For weapons, we add a "None" item to the front of the list
-        // as a default (in case no other combat skill applies)
-        data.combatSkills = ["None"];
-      } else {
-        // For missiles, we add the "Throwing" skill to the front
-        // of the list as a default (in case no other combat
-        // skill applies)
-        data.combatSkills = ["Throwing"];
-      }
-
-      this.actor.itemTypes.combatskill.forEach(it => {
-        const lcName = it.data.name.toLowerCase();
-        // Ignore the 'Dodge' and 'Initiative' skills,
-        // since you never want a weapon based on those skills.
-        if (!(lcName === 'initiative' || lcName === 'dodge')) {
-          data.combatSkills.push(it.data.name);
+      if (this.actor) {
+        if (this.item.data.type === 'weapongear') {
+          // For weapons, we add a "None" item to the front of the list
+          // as a default (in case no other combat skill applies)
+          data.combatSkills.push('None');
+        } else {
+          // For missiles, we add the "Throwing" skill to the front
+          // of the list as a default (in case no other combat
+          // skill applies)
+          data.combatSkills.push('Throwing');
         }
-      });
+
+        this.actor.itemTypes.combatskill.forEach(it => {
+          const lcName = it.data.name.toLowerCase();
+          // Ignore the 'Dodge' and 'Initiative' skills,
+          // since you never want a weapon based on those skills.
+          if (!(lcName === 'initiative' || lcName === 'dodge')) {
+            data.combatSkills.push(it.data.name);
+          }
+        });
+      }
     }
+
     return data;
   }
 
