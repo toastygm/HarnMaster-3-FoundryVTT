@@ -17,17 +17,10 @@
 
     {{!-- Properties Tab --}}
     <div class="tab properties" data-group="primary" data-tab="properties">
-      <div class="grid grid-2col">
+      <div class="grid grid-3col">
         <div class="resource">
           <label class="resource-label">Skill Base (SB)</label>
           <input type="text" name="data.skillBase.value" value="{{data.skillBase.value}}" data-dtype="Number" />
-        </div>
-        <div class="resource">
-          <label class="resource-label">Skill Base Formula</label>
-          <input type="text" name="data.skillBase.formula" value="{{data.skillBase.formula}}" data-dtype="String" />
-          {{#unless data.skillBase.isFormulaValid}}
-            <div class="error">Error: Invalid SkillBase Formula!</div>
-          {{/unless}}
         </div>
         <div class="resource">
           <label class="resource-label">Mastery Level (ML)</label>
@@ -39,14 +32,21 @@
             <input type="text" name="data.piety" value="{{data.piety}}" data-dtype="Number" />
           </div>
         {{/if}}
-        <div class="resource">
-          <label class="resource-label">Note</label>
-          <input type="text" name="data.note" value="{{data.note}}" data-dtype="String" />
-        </div>
-        <div class="resource">
-          <label class="resource-label">Source</label>
-          <input type="text" name="data.source" value="{{data.source}}" data-dtype="String" />
-        </div>
+      </div>
+      <div class="resource">
+        <label class="resource-label">Skill Base Formula</label>
+        <input type="text" name="data.skillBase.formula" value="{{data.skillBase.formula}}" data-dtype="String" />
+        {{#unless data.skillBase.isFormulaValid}}
+          <div class="error">Error: Invalid SkillBase Formula!</div>
+        {{/unless}}
+      </div>
+      <div class="resource">
+        <label class="resource-label">Source</label>
+        <input type="text" name="data.source" value="{{data.source}}" data-dtype="String" />
+      </div>
+      <div class="resource">
+        <label class="resource-label">Note</label>
+        <input type="text" name="data.note" value="{{data.note}}" data-dtype="String" />
       </div>
     </div>
 
