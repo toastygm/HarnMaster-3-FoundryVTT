@@ -40,6 +40,11 @@
           font-size: 20pt;
         }
       }
+
+      .ability:last-child {
+        border-bottom: none;
+      }
+
     }
   }
 

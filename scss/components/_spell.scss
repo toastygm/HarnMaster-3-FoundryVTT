@@ -29,6 +29,14 @@
         padding: 3px 0;
         border-bottom: 1px solid #BBB;
     
+        .item-name.std-roll:hover .item-image {
+          background-image: url("../../../icons/svg/d20-grey.svg") !important;
+        }
+  
+        .item-name.std-roll .item-image:hover {
+          background-image: url("../../../icons/svg/d20-black.svg") !important;
+        }
+
         .spell-image {
           flex: 0 0 24px;
           margin-right: 5px;
@@ -51,6 +59,7 @@
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
+        padding-left: 3px;
     }
     
       .spell-level {
@@ -93,6 +102,14 @@
       line-height: 24px;
       padding: 3px 0;
       border-bottom: 1px solid #BBB;
+
+      .item-name.std-roll:hover .item-image {
+        background-image: url("../../../icons/svg/d20-grey.svg") !important;
+      }
+
+      .item-name.std-roll .item-image:hover {
+        background-image: url("../../../icons/svg/d20-black.svg") !important;
+      }
 
       .psionic-image {
         flex: 0 0 24px;

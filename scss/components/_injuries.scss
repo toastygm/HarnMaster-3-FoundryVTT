@@ -37,8 +37,14 @@
     }
     
     .injury-healrate {
-      flex: 0 0 40px;
+      flex: 0 0 30px;
       text-align: center;
+
+      &.active:hover {
+        background-image: url("../../../icons/svg/d20-grey.svg") !important;
+        background-size: 27px;
+        color: black;
+      }
     }
 
     .injury-severity {

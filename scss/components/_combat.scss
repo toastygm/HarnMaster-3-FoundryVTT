@@ -55,6 +55,14 @@
             padding: 3px 0;
             border-bottom: 1px solid #bbb;
 
+            .item-name.damage-roll:hover .item-image {
+                background-image: url("../../../icons/svg/d20-grey.svg") !important;
+            }
+        
+            .item-name.damage-roll .item-image:hover {
+                background-image: url("../../../icons/svg/d20-black.svg") !important;
+            }
+            
             .weapon-image {
                 flex: 0 0 24px;
                 margin-right: 5px;
@@ -127,11 +135,23 @@
             .weapon-attack {
                 flex: 0 0 30px;
                 text-align: center;
+
+                &.active:hover {
+                    background-image: url("../../../icons/svg/d20-grey.svg") !important;
+                    background-size: 27px;
+                    color: black;
+                }
             }
 
             .weapon-defense {
                 flex: 0 0 30px;
                 text-align: center;
+
+                &.active:hover {
+                    background-image: url("../../../icons/svg/d20-grey.svg") !important;
+                    background-size: 27px;
+                    color: black;
+                }
             }
             
             .weapon-notes {
@@ -160,13 +180,6 @@
               
             }
 
-            .item-dice {
-                color: #b5b3a4;
-
-                .active {
-                    color: #4b4a44;
-                }
-            }
         }
     }
 
@@ -186,6 +199,14 @@
             padding: 3px 0;
             border-bottom: 1px solid #bbb;
 
+            .item-name.missile-damage-roll:hover .item-image {
+                background-image: url("../../../icons/svg/d20-grey.svg") !important;
+            }
+        
+            .item-name.missile-damage-roll .item-image:hover {
+                background-image: url("../../../icons/svg/d20-black.svg") !important;
+            }
+            
             .missile-image {
                 flex: 0 0 24px;
                 margin-right: 5px;
@@ -209,7 +230,7 @@
             }
 
             .missile-name {
-                flex: 0 0 90px;
+                flex: 0 0 105px;
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 overflow: hidden;
@@ -231,6 +252,7 @@
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 overflow: hidden;
+                padding-left: 3px;
             }
 
             .missile-short {
@@ -256,6 +278,12 @@
             .missile-attack {
                 flex: 0 0 30px;
                 text-align: center;
+
+                &.active:hover {
+                    background-image: url("../../../icons/svg/d20-grey.svg") !important;
+                    background-size: 27px;
+                    color: black;
+                }
             }
             
             .missile-notes {
@@ -283,13 +311,6 @@
               
             }
 
-            .item-dice {
-                color: #b5b3a4;
-
-                .active {
-                    color: #4b4a44;
-                }
-            }
         }
     }
 }
