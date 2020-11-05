@@ -113,7 +113,7 @@
         "value": 0,
         "weight": 0,
         "isCarried": true,
-        "isEquipped": false,
+        "isEquipped": true,
         "arcane": {
           "isArtifact": false,
           "isAttuned": false,

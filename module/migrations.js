@@ -154,7 +154,7 @@ export function migrateItemData(itemData) {
 
     if (itemData.type.endsWith('gear')) {
         if (typeof data.isEquipped === 'undefined') {
-            data.isEquipped = false;
+            data.isEquipped = true;
             isModified = true;
         }
         if (typeof data.isCarried === 'undefined') {
