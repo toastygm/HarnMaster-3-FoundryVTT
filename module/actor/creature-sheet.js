@@ -7,7 +7,7 @@ export class HarnMasterCreatureSheet extends ActorSheet {
   /** @override */
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
-      classes: ["hm3", "sheet", "creature"],
+      classes: ["hm3", "sheet", "actor", "creature"],
       width: 660,
       height: 640,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "profile" }]
@@ -203,6 +203,45 @@ export class HarnMasterCreatureSheet extends ActorSheet {
     event.preventDefault();
     this.actor.injuryRoll();
   }
+
+    /**
+   * Handle missile damage rolls.  A damage roll is a roll of multiple d6 dice
+   * plus missile impact value. This button
+   * handles both the case where a specific weapon is known and not.
+   * 
+   * data-missile = Name of missile being used
+   * data-aspect = Missile Aspect being used
+   * data-impact-short = Short range missile impact
+   * data-impact-medium = Medium range missile impact
+   * data-impact-long = Long range missile impact
+   * data-impact-extreme = Extreme range missile impact
+   * 
+   * @param {Event} event 
+   */
+  _onMissileDamageRoll(event) {
+    event.preventDefault();
+    this.actor.missileDamageRoll(event.currentTarget.dataset);
+  }
+
+  /**
+   * Handle missile attack rolls.  A missile attack roll is a 1d100 roll
+   * minus missile weapon range modifier.
+   * 
+   * data-missile = Name of missile being used
+   * data-target = Target Attack ML (before modifiers)
+   * data-aspect = Missile aspect
+   * data-range-short = Short missile range
+   * data-range-medium = Medium missile range
+   * data-range-long = Long missile range
+   * data-range-extreme = Extreme missile range
+   * 
+   * @param {Event} event 
+   */
+  _onMissileAttackRoll(event) {
+    event.preventDefault();
+    this.actor.missileAttackRoll(event.currentTarget.dataset);
+  }
+
 
   /**
    * Handle clickable rolls.
