@@ -1,28 +1,58 @@
 <form class="{{cssClass}}" autocomplete="off">
-    <header class="sheet-header">
-        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
-        <div class="header-fields">
-            <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
-        </div>
-    </header>
+  <header class="sheet-header">
+    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+    <div class="header-fields">
+      <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name" /></h1>
+    </div>
+  </header>
 
-    {{!-- Sheet Body --}}
-    <section class="sheet-body">
-        <div class="grid grid-2col">
-            <div class="resource">
-              <label class="resource-label">Skill Base (SB)</label>
-                <input type="text" name="data.skillBase" value="{{data.skillBase}}" data-dtype="Number"/>
-            </div>
-            <div class="resource">
-              <label class="resource-label">Mastery Level (ML)</label>
-                <input type="text" name="data.masteryLevel" value="{{data.masteryLevel}}" data-dtype="Number"/>
-            </div>
-            {{#if (eq itemType "ritualskill")}}
-            <div class="resource">
-                <label class="resource-label">Piety</label>
-                  <input type="text" name="data.piety" value="{{data.piety}}" data-dtype="Number"/>
-            </div>
-            {{/if}}
+  {{!-- Sheet Tab Navigation --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="properties">Properties</a>
+    <a class="item" data-tab="description">Description</a>
+  </nav>
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body">
+
+    {{!-- Properties Tab --}}
+    <div class="tab properties" data-group="primary" data-tab="properties">
+      <div class="grid grid-3col">
+        <div class="resource">
+          <label class="resource-label">Skill Base (SB)</label>
+          <input type="text" name="data.skillBase.value" value="{{data.skillBase.value}}" data-dtype="Number" />
+        </div>
+        <div class="resource">
+          <label class="resource-label">Mastery Level (ML)</label>
+          <input type="text" name="data.masteryLevel" value="{{data.masteryLevel}}" data-dtype="Number" />
+        </div>
+        {{#if (eq itemType "ritualskill")}}
+          <div class="resource">
+            <label class="resource-label">Piety</label>
+            <input type="text" name="data.piety" value="{{data.piety}}" data-dtype="Number" />
           </div>
-    </section>
+        {{/if}}
+      </div>
+      <div class="resource">
+        <label class="resource-label">Skill Base Formula</label>
+        <input type="text" name="data.skillBase.formula" value="{{data.skillBase.formula}}" data-dtype="String" />
+        {{#unless data.skillBase.isFormulaValid}}
+          <div class="error">Error: Invalid SkillBase Formula!</div>
+        {{/unless}}
+      </div>
+      <div class="resource">
+        <label class="resource-label">Source</label>
+        <input type="text" name="data.source" value="{{data.source}}" data-dtype="String" />
+      </div>
+      <div class="resource">
+        <label class="resource-label">Note</label>
+        <input type="text" name="data.note" value="{{data.note}}" data-dtype="String" />
+      </div>
+    </div>
+
+    {{!-- Description Tab --}}
+    <div class="tab description" data-group="primary" data-tab="description">
+        {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+    </div>
+  </section>
 </form>

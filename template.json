@@ -3,21 +3,62 @@
     "types": ["character", "creature"],
     "templates": {
       "base": {
+        "species": "",
         "fatigue": 0,
+        "sunsign": "",
         "abilities": {
-          "strength": 0,
-          "stamina": 0,
-          "dexterity": 0,
-          "agility": 0,
-          "intelligence": 0,
-          "aura": 0,
-          "will": 0,
-          "eyesight": 0,
-          "hearing": 0,
-          "smell": 0,
-          "voice": 0,
-          "comliness": 0,
-          "morality": 0
+          "strength": {
+            "base": 0,
+            "effective": 0
+          },
+          "stamina": {
+            "base": 0,
+            "effective": 0
+          },
+          "dexterity": {
+            "base": 0,
+            "effective": 0
+          },
+          "agility": {
+            "base": 0,
+            "effective": 0
+          },
+          "intelligence": {
+            "base": 0,
+            "effective": 0
+          },
+          "aura": {
+            "base": 0,
+            "effective": 0
+          },
+          "will": {
+            "base": 0,
+            "effective": 0
+          },
+          "eyesight": {
+            "base": 0,
+            "effective": 0
+          },
+          "hearing": {
+            "base": 0,
+            "effective": 0
+          },
+          "smell": {
+            "base": 0,
+            "effective": 0
+          },
+          "voice": {
+            "base": 0,
+            "effective": 0
+          },
+          "comliness": {
+            "base": 0,
+            "effective": 0
+          },
+          "morality": {
+            "base": 0,
+            "effective": 0
+          }
         },
         "dodge": 0,
         "initiative": 0,
@@ -32,18 +73,17 @@
         },
         "description": "***INIT***",
         "universalPenalty": 0,
-        "physicalPenalty": 0
+        "physicalPenalty": 0,
+        "biography": ""
       }
     },
     "character": {
       "templates": ["base"],
-      "species": "",
       "gender": "",
       "occupation": "",
       "hasCondition": false,
       "encumbrance": 0,
-      "totalWeight": 0,
-      "biography": ""
+      "totalWeight": 0
   },
     "creature": {
       "templates": ["base"]
@@ -55,37 +95,55 @@
     "armorlocation"],
     "templates": {
       "base": {
-        "note": ""
+        "notes": "",
+        "description": "",
+        "source": ""
       },
       "skill": {
-        "skillBase": 0,
+        "skillBase": {
+          "value": 0,
+          "formula": "",
+          "isFormulaValid": true
+        },
         "masteryLevel": 0,
         "effectiveMasteryLevel": 0
       },
       "gear": {
         "quantity": 1,
+        "value": 0,
         "weight": 0,
         "isCarried": true,
-        "isEquipped": false
+        "isEquipped": true,
+        "arcane": {
+          "isArtifact": false,
+          "isAttuned": false,
+          "charges": -1,
+          "ego": 0
+        }
+      },
+      "weapon": {
+        "assocSkill": "None",
+        "weaponQuality": 0,
+        "attackMasteryLevel": 0
       }
     },
     "physicalskill": {
-      "templates": ["skill"]
+      "templates": ["base", "skill"]
     },
     "commskill": {
-      "templates": ["skill"]
+      "templates": ["base", "skill"]
     },
     "craftskill": {
-      "templates": ["skill"]
+      "templates": ["base", "skill"]
     },
     "combatskill": {
-      "templates": ["skill"]
+      "templates": ["base", "skill"]
     },
     "magicskill": {
-      "templates": ["skill"]
+      "templates": ["base", "skill"]
     },
     "ritualskill": {
-      "templates": ["skill"],
+      "templates": ["base", "skill"],
       "piety": 0
     },
     "spell": {
@@ -106,22 +164,18 @@
       "effectiveMasteryLevel": 0
     },
     "weapongear": {
-      "templates": ["base", "gear"],
-      "weaponQuality": 0,
+      "templates": ["base", "gear", "weapon"],
       "attack": 0,
       "defense": 0,
       "handMode": 0,
       "blunt": 0,
       "edged": 0,
       "piercing": 0,
-      "attackMasteryLevel": 0,
-      "defenseMasteryLevel": 0,
-      "assocSkill": "None"
+      "defenseMasteryLevel": 0
     },
     "missilegear": {
-      "templates": ["base", "gear"],
+      "templates": ["base", "gear", "weapon"],
       "weaponAspect": "Piercing",
-      "assocSkill": "Throwing",
       "range": {
         "short": 0,
         "medium": 0,
@@ -133,8 +187,7 @@
         "medium": 0,
         "long": 0,
         "extreme": 0
-      },
-      "attackMasteryLevel": 0
+      }
     },
     "armorgear": {
       "templates": ["base", "gear"],

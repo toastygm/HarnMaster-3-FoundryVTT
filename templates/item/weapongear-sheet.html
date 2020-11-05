@@ -6,59 +6,111 @@
         </div>
     </header>
 
+    {{!-- Sheet Tab Navigation --}}
+    <nav class="sheet-tabs tabs" data-group="primary">
+        <a class="item" data-tab="properties">Properties</a>
+        <a class="item" data-tab="description">Description</a>
+    </nav>
+
     {{!-- Sheet Body --}}
     <section class="sheet-body">
-        <div class="grid grid-2col">
-            <div class="resource">
-                <label class="resource-label">Quantity</label>
-                <input type="text" name="data.quantity" value="{{data.quantity}}" data-dtype="Number"/>
+
+        {{!-- Properties Tab --}}
+        <div class="tab properties" data-group="primary" data-tab="properties">
+            <div class="grid grid-3col">
+                <div class="resource">
+                    <label class="resource-label">Quantity</label>
+                    <input type="number" name="data.quantity" value="{{data.quantity}}" data-dtype="Number"/>
+                </div>
+                <div class="resource">
+                    <label class="resource-label">Weight</label>
+                    <input type="number" name="data.weight" value="{{data.weight}}" data-dtype="Number"/>
+                </div>
+                <div class="resource">
+                    <label class="resource-label">Value</label>
+                    <input type="number" name="data.value" value="{{data.value}}" data-dtype="Number"/>
+                </div>
+                <div class="resource">
+                    <label class="resource-label">Weapon Quality</label>
+                    <input type="number" name="data.weaponQuality" value="{{data.weaponQuality}}" data-dtype="Number"/>
+                </div>
+                <div class="resource">
+                    <label class="resource-label">Attack</label>
+                    <input type="number" name="data.attack" value="{{data.attack}}" data-dtype="Number"/>
+                </div>
+                <div class="resource">
+                    <label class="resource-label">Defense</label>
+                    <input type="number" name="data.defense" value="{{data.defense}}" data-dtype="Number"/>
+                </div>
+                <div class="resource">
+                    <label class="resource-label">Hand Mode</label>
+                    <input type="number" name="data.handMode" value="{{data.handMode}}" data-dtype="Number"/>
+                </div>
+                <div class="resource"></div>
+                <div class="resource"></div>
+                <div class="resource">
+                    <label class="resource-label">Blunt</label>
+                    <input type="number" name="data.blunt" value="{{data.blunt}}" data-dtype="Number"/>
+                </div>
+                <div class="resource">
+                    <label class="resource-label">Edged</label>
+                    <input type="number" name="data.edged" value="{{data.edged}}" data-dtype="Number"/>
+                </div>
+                <div class="resource">
+                    <label class="resource-label">Piercing</label>
+                    <input type="number" name="data.piercing" value="{{data.piercing}}" data-dtype="Number"/>
+                </div>
+                <div class="resource">
+                    <label class="resource-label" for="data.assocSkill">Associated Skill</label>
+                    {{#if hasActor}}
+                    <select class="resource-value" name="data.assocSkill" data-dtype="String">
+                        {{#select data.assocSkill}}
+                        {{#each combatSkills}}
+                            <option value="{{this}}">{{this}}</option>
+                        {{/each}}
+                        {{/select}}
+                    </select>
+                    {{else}}
+                    <input type="text" name="data.assocSkill" value="{{data.assocSkill}}" data-dtype="String"/>
+                    {{/if}}
+                </div>
             </div>
             <div class="resource">
-                <label class="resource-label">Weight</label>
-                <input type="text" name="data.weight" value="{{data.weight}}" data-dtype="Number"/>
+                <label class="resource-label">Source</label>
+                <input type="text" name="data.source" value="{{data.source}}" data-dtype="String"/>
             </div>
             <div class="resource">
-                <label class="resource-label">Weapon Quality</label>
-                <input type="text" name="data.weaponQuality" value="{{data.weaponQuality}}" data-dtype="Number"/>
+                <label class="resource-label">Note</label>
+                <input type="text" name="data.note" value="{{data.note}}" data-dtype="String"/>
             </div>
-            <div class="resource">
-                <label class="resource-label">Attack</label>
-                <input type="text" name="data.attack" value="{{data.attack}}" data-dtype="Number"/>
+            <div class="resource artifact flexrow">
+                <input type="checkbox" name="data.arcane.isArtifact" value="{{data.arcane.isArtifact}}" data-dtype="Boolean" {{checked data.arcane.isArtifact}} />
+                <label class="resource-label">Artifact</label>
             </div>
-            <div class="resource">
-                <label class="resource-label">Defense</label>
-                <input type="text" name="data.defense" value="{{data.defense}}" data-dtype="Number"/>
-            </div>
-            <div class="resource">
-                <label class="resource-label">Hand Mode</label>
-                <input type="text" name="data.handMode" value="{{data.handMode}}" data-dtype="Number"/>
-            </div>
-            <div class="resource">
-                <label class="resource-label">Blunt</label>
-                <input type="text" name="data.blunt" value="{{data.blunt}}" data-dtype="Number"/>
-            </div>
-            <div class="resource">
-                <label class="resource-label">Edged</label>
-                <input type="text" name="data.edged" value="{{data.edged}}" data-dtype="Number"/>
-            </div>
-            <div class="resource">
-                <label class="resource-label">Piercing</label>
-                <input type="text" name="data.piercing" value="{{data.piercing}}" data-dtype="Number"/>
-            </div>
-            <div class="resource">
-                <label class="resource-label" for="data.assocSkill">Associated Skill</label>
-                <select class="resource-value" name="data.assocSkill" data-dtype="String">
-                    {{#select data.assocSkill}}
-                    {{#each combatSkills}}
-                        <option value="{{this}}">{{this}}</option>
-                    {{/each}}
-                    {{/select}}
-                </select>
-            </div>
-            <div class="resource">
-                <label class="resource-label">Notes</label>
-                <input type="text" name="data.notes" value="{{data.notes}}" data-dtype="String"/>
-            </div>
+            {{#if data.arcane.isArtifact}}
+            <fieldset>
+                <legend>Artifact Properties</legend>
+                <div class="grid grid-3col">
+                    <div class="resource">
+                        <input type="checkbox" name="data.arcane.isAttuned" value="{{data.arcane.isAttuned}}" data-dtype="Boolean" {{checked data.arcane.isAttuned}} />
+                        <label class="resource-label">Attuned</label>
+                    </div>
+                    <div class="resource">
+                        <label class="resource-label">Charges</label>
+                        <input type="number" name="data.arcane.charges" value="{{data.arcane.charges}}" data-dtype="Number"/>
+                    </div>
+                    <div class="resource">
+                        <label class="resource-label">Ego/Will</label>
+                        <input type="number" name="data.arcane.ego" value="{{data.arcane.ego}}" data-dtype="Number"/>
+                    </div>
+                </div>
+            </fieldset>
+            {{/if}}
+        </div>
+
+        {{!-- Description Tab --}}
+        <div class="tab description" data-group="primary" data-tab="description">
+            {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
         </div>
     </section>
 

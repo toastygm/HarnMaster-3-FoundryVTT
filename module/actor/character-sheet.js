@@ -9,7 +9,7 @@ export class HarnMasterCharacterSheet extends ActorSheet {
   /** @override */
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
-      classes: ["hm3", "sheet", "actor", "character-sheet"],
+      classes: ["hm3", "sheet", "actor", "character"],
       width: 660,
       height: 640,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "profile" }]
@@ -35,6 +35,28 @@ export class HarnMasterCharacterSheet extends ActorSheet {
     data.config = CONFIG.HM3;
     data.dtypes = ["String", "Number", "Boolean"];
     return data;
+  }
+
+  /** @override */
+  async _onDropItem(event, data) {
+    const actor = this.actor;
+    if (!actor.owner) return false;
+    const item = await Item.fromDropData(data);
+    const itemName = item.data.name;
+    const itemType = item.data.type;
+
+    let found = false;
+    actor.items.forEach(it => {
+      if (it.data.type === itemType && it.data.name === itemName) {
+        found = true;
+      }
+    });
+
+    if (found) {
+      return false;
+    }
+
+    return super._onDropItem(event, data);
   }
 
   /** @override */

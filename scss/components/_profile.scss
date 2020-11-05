@@ -40,14 +40,40 @@
           font-size: 20pt;
         }
       }
+
+      .ability:last-child {
+        border-bottom: none;
+      }
+
+    }
+  }
+
+  .profile-params {
+    margin-top: 5px;
+    align-items: center;
+    flex: 0 1 10px;
+
+    .profile-item {
+       align-items: center;
+
+      .label {
+        flex: 0 0 70px;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+
+      .value {
+        flex: 0 0 120px;
+        border: 1px solid black;
+      }
     }
   }
 
   .profile-desc {
+    margin-top: 15px;
 
     .label {
       flex: 0 0 18px;
-      margin-top: 5px;
       font-weight: bold;
       text-transform: uppercase;  
     }

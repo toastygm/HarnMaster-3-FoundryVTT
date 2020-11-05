@@ -1,4 +1,5 @@
 import { HM3 } from "../config.js";
+import * as utility from '../utility.js';
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -18,6 +19,8 @@ export class HarnMasterItem extends Item {
 
     if (itemData.type === 'armorlocation') {
       this._prepareArmorLocationData(itemData);
+    } else if (itemData.type.endsWith('skill') || itemData.type === 'psionic') {
+      utility.calcSkillBase(this);
     }
   }
 
