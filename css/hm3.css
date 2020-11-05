@@ -729,7 +729,7 @@
       .hm3 .combat .weapons-list .weapon .weapon-damage .active {
         color: #4b4a44; }
     .hm3 .combat .weapons-list .weapon .weapon-name {
-      flex: 0 0 120px;
+      flex: 0 0 150px;
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden; }
@@ -816,7 +816,7 @@
       .hm3 .combat .missiles-list .missile .missile-damage .active {
         color: #4b4a44; }
     .hm3 .combat .missiles-list .missile .missile-name {
-      flex: 0 0 105px;
+      flex: 0 0 130px;
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden; }
