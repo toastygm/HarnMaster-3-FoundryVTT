@@ -17,7 +17,7 @@
 
         {{!-- Properties Tab --}}
         <div class="tab properties" data-group="primary" data-tab="properties">
-            <div class="grid grid-2col">
+            <div class="grid grid-3col">
                 <div class="resource">
                     <label class="resource-label">Quantity</label>
                     <input type="number" name="data.quantity" value="{{data.quantity}}" data-dtype="Number"/>
@@ -27,12 +27,16 @@
                     <input type="number" name="data.weight" value="{{data.weight}}" data-dtype="Number"/>
                 </div>
                 <div class="resource">
-                    <label class="resource-label">Material</label>
-                    <input type="text" name="data.material" value="{{data.material}}" data-dtype="String"/>
+                    <label class="resource-label">Value</label>
+                    <input type="number" name="data.value" value="{{data.value}}" data-dtype="Number"/>
                 </div>
                 <div class="resource">
                     <label class="resource-label">Armor Quality</label>
                     <input type="number" name="data.armorQuality" value="{{data.armorQuality}}" data-dtype="Number"/>
+                </div>
+                <div class="resource">
+                    <label class="resource-label">Material</label>
+                    <input type="text" name="data.material" value="{{data.material}}" data-dtype="String"/>
                 </div>
             </div>
             <div class="resource">
