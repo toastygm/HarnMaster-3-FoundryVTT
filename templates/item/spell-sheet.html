@@ -20,6 +20,7 @@
             <div class="grid grid-2col">
                 <div class="resource">
                     <label class="resource-label" for="data.convocation">Convocation</label>
+                    {{#if hasActor}}
                     <select class="resource-value" name="data.convocation" data-dtype="String">
                         {{#select data.convocation}}
                         {{#each convocations}}
@@ -27,19 +28,22 @@
                         {{/each}}
                         {{/select}}
                     </select>
+                    {{else}}
+                    <input type="text" name="data.convocation" value="{{data.convocation}}" data-dtype="String"/>
+                    {{/if}}
                 </div>
                 <div class="resource">
                     <label class="resource-label">Level</label>
-                    <input type="text" name="data.level" value="{{data.level}}" data-dtype="Number"/>
+                    <input type="number" name="data.level" value="{{data.level}}" data-dtype="Number"/>
                 </div>
-                <div class="resource">
-                    <label class="resource-label">Note</label>
-                    <input type="text" name="data.note" value="{{data.note}}" data-dtype="String"/>
-                </div>
-                <div class="resource">
-                    <label class="resource-label">Source</label>
-                    <input type="text" name="data.source" value="{{data.source}}" data-dtype="String"/>
-                </div>
+            </div>
+            <div class="resource">
+                <label class="resource-label">Source</label>
+                <input type="text" name="data.source" value="{{data.source}}" data-dtype="String"/>
+            </div>
+            <div class="resource">
+                <label class="resource-label">Note</label>
+                <input type="text" name="data.note" value="{{data.note}}" data-dtype="String"/>
             </div>
         </div>
 

@@ -20,6 +20,7 @@
             <div class="grid grid-2col">
                 <div class="resource">
                     <label class="resource-label" for="data.diety">Diety</label>
+                    {{#if hasActor}}
                     <select class="resource-value" name="data.diety" data-dtype="String">
                         {{#select data.diety}}
                         {{#each dieties}}
@@ -27,19 +28,22 @@
                         {{/each}}
                         {{/select}}
                     </select>
+                    {{else}}
+                    <input type="text" name="data.diety" value="{{data.diety}}" data-dtype="String"/>
+                    {{/if}}
                 </div>
                 <div class="resource">
                     <label class="resource-label">Circle</label>
-                    <input type="text" name="data.circle" value="{{data.circle}}" data-dtype="Number"/>
+                    <input type="number" name="data.circle" value="{{data.circle}}" data-dtype="Number"/>
                 </div>
-                <div class="resource">
-                    <label class="resource-label">Note</label>
-                    <input type="text" name="data.note" value="{{data.note}}" data-dtype="String"/>
-                </div>
-                <div class="resource">
-                    <label class="resource-label">Source</label>
-                    <input type="text" name="data.source" value="{{data.source}}" data-dtype="String"/>
-                </div>
+            </div>
+            <div class="resource">
+                <label class="resource-label">Source</label>
+                <input type="text" name="data.source" value="{{data.source}}" data-dtype="String"/>
+            </div>
+            <div class="resource">
+                <label class="resource-label">Note</label>
+                <input type="text" name="data.note" value="{{data.note}}" data-dtype="String"/>
             </div>
         </div>
 
