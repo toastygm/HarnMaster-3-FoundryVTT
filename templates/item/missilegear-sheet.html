@@ -38,22 +38,26 @@
                 </div>
                 <div class="resource">
                     <label class="resource-label" for="data.assocSkill">Associated Skill</label>
+                    {{#if hasActor}}
                     <select class="resource-value" name="data.assocSkill" data-dtype="String">
                         {{#select data.assocSkill}}
                         {{#each combatSkills}}
                             <option value="{{this}}">{{this}}</option>
                         {{/each}}
-                        {{/select}}
+                       {{/select}}
                     </select>
+                    {{else}}
+                    <input type="text" name="data.assocSkill" value="{{data.assocSkill}}" data-dtype="String"/>
+                    {{/if}}
                 </div>
-            </div>
-            <div class="resource">
-                <label class="resource-label">Note</label>
-                <input type="text" name="data.note" value="{{data.note}}" data-dtype="String"/>
             </div>
             <div class="resource">
                 <label class="resource-label">Source</label>
                 <input type="text" name="data.source" value="{{data.source}}" data-dtype="String"/>
+            </div>
+            <div class="resource">
+                <label class="resource-label">Note</label>
+                <input type="text" name="data.note" value="{{data.note}}" data-dtype="String"/>
             </div>
             <ol class="range-table">
                 <li class="flexrow range-header">
@@ -78,6 +82,29 @@
                     <div class="range-value"><input type="text" name="data.impact.extreme" value="{{data.impact.extreme}}" data-dtype="Number" /></div>
                 </li>
             </ol>
+            <div class="resource artifact flexrow">
+                <input type="checkbox" name="data.arcane.isArtifact" value="{{data.arcane.isArtifact}}" data-dtype="Boolean" {{checked data.arcane.isArtifact}} />
+                <label class="resource-label">Artifact</label>
+            </div>
+            {{#if data.arcane.isArtifact}}
+            <fieldset>
+                <legend>Artifact Properties</legend>
+                <div class="grid grid-3col">
+                    <div class="resource">
+                        <input type="checkbox" name="data.arcane.isAttuned" value="{{data.arcane.isAttuned}}" data-dtype="Boolean" {{checked data.arcane.isAttuned}} />
+                        <label class="resource-label">Attuned</label>
+                    </div>
+                    <div class="resource">
+                        <label class="resource-label">Charges</label>
+                        <input type="number" name="data.arcane.charges" value="{{data.arcane.charges}}" data-dtype="Number"/>
+                    </div>
+                    <div class="resource">
+                        <label class="resource-label">Ego/Will</label>
+                        <input type="number" name="data.arcane.ego" value="{{data.arcane.ego}}" data-dtype="Number"/>
+                    </div>
+                </div>
+            </fieldset>
+            {{/if}}
         </div>
 
         {{!-- Description Tab --}}
