@@ -24,7 +24,7 @@ export async function migrateWorld() {
     // Migrate World Items
     for (let i of game.items.entities ) {
         try {
-            const updateData = migrateItemData(i.data);
+            const updateData = await migrateItemData(i.data);
             if (updateData != null) {
                 console.log(`HM3 | Migrating Item ${i.name}`);
                 // await i.update(updateData, {enforceTypes: false});
@@ -32,6 +32,33 @@ export async function migrateWorld() {
             }
         } catch(err) {
             console.error(err);
+        }
+
+        // Check if we need to convert skills from old
+        // format to new format.
+
+        switch(i.data.type) {
+            case 'physicalskill':
+                await convertToNewSkill(i, null, 'Physical');
+                break;
+            case 'commskill':
+                await convertToNewSkill(i, null, 'Communication');
+                break;
+            case 'combatskill':
+                await convertToNewSkill(i, null, 'Combat');
+                break;
+            case 'craftskill':
+                await convertToNewSkill(i, null, 'Craft');
+                break;
+            case 'magicskill':
+                await convertToNewSkill(i, null, 'Magic');
+                break;
+            case 'ritualskill':
+                await convertToNewSkill(i, null, 'Ritual');
+                break;
+            case 'psionic':
+                await convertToNewSkill(i, null, 'Psionic');
+                break;
         }
     }
 
@@ -64,6 +91,46 @@ export async function migrateWorld() {
 
 export async function migrateActorData(actor) {
     const actorData = actor.data;
+
+    // process items
+    for (let i of actor.items) {
+        let migrateData = migrateItemData(i.data);
+        if (migrateData != null) {
+            console.log(`HM3 | Migrated Actor ${actor.data.name}, Item ${i.data.name}`);
+            try {
+                await i.update(migrateData);
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        // Check if we need to convert skills from old
+        // format to new format.
+
+        switch(i.data.type) {
+            case 'physicalskill':
+                await convertToNewSkill(i, actor, 'Physical');
+                break;
+            case 'commskill':
+                await convertToNewSkill(i, actor, 'Communication');
+                break;
+            case 'combatskill':
+                await convertToNewSkill(i, actor, 'Combat');
+                break;
+            case 'craftskill':
+                await convertToNewSkill(i, actor, 'Craft');
+                break;
+            case 'magicskill':
+                await convertToNewSkill(i, actor, 'Magic');
+                break;
+            case 'ritualskill':
+                await convertToNewSkill(i, actor, 'Ritual');
+                break;
+            case 'psionic':
+                await convertToNewSkill(i, actor, 'Psionic');
+                break;
+        }
+    }
 
     const updateData = {};
 
@@ -112,20 +179,46 @@ export async function migrateActorData(actor) {
         updateData['data.biography'] = '';
     }
 
-    // process items
-    for (let i of actor.items) {
-        const migrateData = migrateItemData(i.data);
-        if (migrateData != null) {
-            console.log(`HM3 | Migrated Actor ${actor.data.name}, Item ${i.data.name}`);
-            try {
-                await i.update(migrateData);
-            } catch (err) {
-                console.error(err);
-            }
+    return updateData;
+}
+
+async function convertToNewSkill(i, actor, newType) {
+    const oldData = i.data.data;
+
+    const updateData = {
+        "notes": oldData.notes,
+        "description": oldData.description,
+        "source": oldData.source,
+        "type": newType,
+        "skillBase": {
+          "value": oldData.skillBase.value,
+          "formula": oldData.skillBase.formula,
+          "isFormulaValid": oldData.isFormulaValid
+        },
+        "masteryLevel": oldData.masteryLevel,
+        "effectiveMasteryLevel": oldData.effectiveMasteryLevel,
+        "ritual": {
+          "piety": oldData.piety || 0
+        },
+        "psionic": {
+          "fatigue": oldData.fatigue || 0,
+          "time": "" 
         }
+    };
+
+    // Create the new skill
+    if (actor) {
+        await actor.createOwnedItem({type: "skill", name: i.data.name, data: updateData});
+    } else {
+        await Item.create({type: "skill", name: i.data.name, data: updateData});
     }
 
-    return updateData;
+    // Delete the old skill
+    if (actor) {
+        await actor.deleteOwnedItem(i.data._id);
+    } else {
+        await Item.delete(i.data._id);
+    }
 }
 
 export function migrateItemData(itemData) {

@@ -54,7 +54,11 @@
     flex: 0 1 10px;
 
     .profile-item {
-       align-items: center;
+      align-items: center;
+      border-top: 2px groove #eeede0;
+      border-bottom: 2px groove #eeede0;
+      margin-top: 12px;
+      padding: 5px 0;
 
       .label {
         flex: 0 0 70px;
@@ -63,14 +67,13 @@
       }
 
       .value {
-        flex: 0 0 120px;
-        border: 1px solid black;
+        flex: 0 0 150px;
       }
     }
   }
 
   .profile-desc {
-    margin-top: 15px;
+    margin-top: 5px;
 
     .label {
       flex: 0 0 18px;

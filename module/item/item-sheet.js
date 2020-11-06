@@ -17,19 +17,7 @@ export class HarnMasterItemSheet extends ItemSheet {
   /** @override */
   get template() {
     const path = "systems/hm3/templates/item";
-    // Return a single sheet for all item types.
-    // return `${path}/item-sheet.html`;
-    // Alternatively, you could use the following return statement to do a
-    // unique item sheet by type, like `weapon-sheet.html`.
-
-    let type = `${this.item.data.type}`;
-
-    if (type.endsWith('skill')) {
-      return path + '/skill-sheet.html';
-    }
-
-    return path + '/' + type + '-sheet.html';
-    //return `${path}/${this.item.data.type}-sheet.html`;
+    return `${path}/${this.item.data.type}-sheet.html`;
   }
 
   /* -------------------------------------------- */
@@ -46,16 +34,20 @@ export class HarnMasterItemSheet extends ItemSheet {
       // Spells need a list of convocations
       data.convocations = [];
       if (this.actor) {
-        this.actor.itemTypes.magicskill.forEach(it => {
-          data.convocations.push(it.data.name);
+        this.actor.itemTypes.skill.forEach(it => {
+            if (it.data.data.type === 'Convocation') {
+                data.convocations.push(it.data.name);
+            }
         });
       }
     } else if (this.item.data.type === 'invocation') {
       // Invocations need a list of dieties
       data.dieties = [];
       if (this.actor) {
-        this.actor.itemTypes.ritualskill.forEach(it => {
-          data.dieties.push(it.data.name);
+        this.actor.itemTypes.skill.forEach(it => {
+            if (it.data.data.type === 'Ritual') {
+                data.dieties.push(it.data.name);
+            }
         });
       }
     } else if (this.item.data.type === 'weapongear' ||
@@ -76,12 +68,14 @@ export class HarnMasterItemSheet extends ItemSheet {
           data.combatSkills.push('Throwing');
         }
 
-        this.actor.itemTypes.combatskill.forEach(it => {
-          const lcName = it.data.name.toLowerCase();
-          // Ignore the 'Dodge' and 'Initiative' skills,
-          // since you never want a weapon based on those skills.
-          if (!(lcName === 'initiative' || lcName === 'dodge')) {
-            data.combatSkills.push(it.data.name);
+        this.actor.itemTypes.skill.forEach(it => {
+          if (it.data.data.type === 'Combat') {
+              const lcName = it.data.name.toLowerCase();
+              // Ignore the 'Dodge' and 'Initiative' skills,
+              // since you never want a weapon based on those skills.
+              if (!(lcName === 'initiative' || lcName === 'dodge')) {
+                  data.combatSkills.push(it.data.name);
+              }
           }
         });
       }
