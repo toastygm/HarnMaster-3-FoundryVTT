@@ -19,7 +19,7 @@ export class HarnMasterItem extends Item {
 
     if (itemData.type === 'armorlocation') {
       this._prepareArmorLocationData(itemData);
-    } else if (itemData.type.endsWith('skill') || itemData.type === 'psionic') {
+    } else if (itemData.type === 'skill') {
       utility.calcSkillBase(this);
     }
   }

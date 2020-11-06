@@ -90,23 +90,13 @@
     }
   },
   "Item": {
-    "types": ["physicalskill", "commskill", "craftskill", "combatskill", "magicskill", "ritualskill",
-    "spell", "psionic", "invocation", "weapongear", "missilegear", "armorgear", "miscgear", "injury",
-    "armorlocation"],
+    "types": ["skill", "spell", "invocation", "weapongear", 
+      "missilegear", "armorgear", "miscgear", "injury", "armorlocation"],
     "templates": {
       "base": {
         "notes": "",
         "description": "",
         "source": ""
-      },
-      "skill": {
-        "skillBase": {
-          "value": 0,
-          "formula": "",
-          "isFormulaValid": true
-        },
-        "masteryLevel": 0,
-        "effectiveMasteryLevel": 0
       },
       "gear": {
         "quantity": 1,
@@ -127,35 +117,29 @@
         "attackMasteryLevel": 0
       }
     },
-    "physicalskill": {
-      "templates": ["base", "skill"]
-    },
-    "commskill": {
-      "templates": ["base", "skill"]
-    },
-    "craftskill": {
-      "templates": ["base", "skill"]
-    },
-    "combatskill": {
-      "templates": ["base", "skill"]
-    },
-    "magicskill": {
-      "templates": ["base", "skill"]
-    },
-    "ritualskill": {
-      "templates": ["base", "skill"],
-      "piety": 0
+    "skill": {
+      "templates": ["base"],
+      "type": "Craft",
+      "skillBase": {
+        "value": 0,
+        "formula": "",
+        "isFormulaValid": true
+      },
+      "masteryLevel": 0,
+      "effectiveMasteryLevel": 0,
+      "ritual": {
+        "piety":0
+      },
+      "psionic": {
+        "fatigue": 0,
+        "time": "" 
+      }
     },
     "spell": {
       "templates": ["base"],
       "convocation": "",
       "level": 1,
       "effectiveMasteryLevel": 0
-    },
-    "psionic": {
-      "templates": ["base", "skill"],
-      "fatigue": 0,
-      "time": 0
     },
     "invocation": {
       "templates": ["base"],

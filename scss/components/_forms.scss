@@ -13,8 +13,8 @@
   border-bottom: 2px groove #eeede0;
 
   .profile-img {
-    flex: 0 0 100px;
-    height: 100px;
+    flex: 0 0 120px;
+    height: 120px;
     margin-right: 10px;
   }
 
@@ -90,6 +90,7 @@
     }
 
     .header-attributes {
+      font-size: 10px;
 
       .attribute {
         min-height: 40px;
@@ -102,23 +103,23 @@
         }
 
         .value {
-          font-size: 15px;
+          font-size: 18px;
           height: calc(100% - 6px)
         }
       }
       
       .species {
-        flex: 0 0 80px;
+        flex: 0 0 100px;
         border-right: 2px groove #eeede0;
       }
 
       .creature-species {
-        flex: 1 0 80px;
+        flex: 1 0 100px;
         border-right: 2px groove #eeede0;
       }
 
       .gender {
-        flex: 0 0 80px;
+        flex: 0 0 100px;
         border-right: 2px groove #eeede0;
       }
 

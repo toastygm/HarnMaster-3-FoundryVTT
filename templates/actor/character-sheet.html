@@ -295,13 +295,13 @@
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
                     <div class="item-controls">
-                        <a class="item-control item-create" title="Create item" data-type="physicalskill"><i
+                        <a class="item-control item-create" title="Create item" data-type="skill" data-skilltype="Physical"><i
                                 class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 <ol class="item-list skill-list">
                     {{#each actor.items as |item id|}}
-                        {{#if (eq item.type "physicalskill")}}
+                        {{#if (and (eq item.type "skill") (eq item.data.type "Physical"))}}
                             <li class="item skill flexrow" data-item-id="{{item._id}}">
                                 <div class="item-name std-roll flexrow" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
@@ -328,13 +328,13 @@
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
                     <div class="item-controls">
-                        <a class="item-control item-create" title="Create item" data-type="commskill"><i
+                        <a class="item-control item-create" title="Create item" data-type="skill" data-skilltype="Communication"><i
                                 class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 <ol class="item-list skill-list">
                     {{#each actor.items as |item id|}}
-                        {{#if (eq item.type "commskill")}}
+                        {{#if (and (eq item.type "skill") (eq item.data.type "Communication"))}}
                             <li class="item skill flexrow" data-item-id="{{item._id}}">
                                 <div class="item-name std-roll flexrow" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
@@ -361,13 +361,13 @@
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
                     <div class="item-controls">
-                        <a class="item-control item-create" title="Create item" data-type="combatskill"><i
+                        <a class="item-control item-create" title="Create item" data-type="skill" data-skilltype="Combat"><i
                                 class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 <ol class="item-list skill-list">
                     {{#each actor.items as |item id|}}
-                        {{#if (eq item.type "combatskill")}}
+                        {{#if (and (eq item.type "skill") (eq item.data.type "Combat"))}}
                             <li class="item skill flexrow" data-item-id="{{item._id}}">
                                 <div class="item-name std-roll flexrow" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
@@ -394,13 +394,13 @@
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
                     <div class="item-controls">
-                        <a class="item-control item-create" title="Create item" data-type="craftskill"><i
+                        <a class="item-control item-create" title="Create item" data-type="skill" data-skilltype="Craft"><i
                                 class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 <ol class="item-list skill-list">
                     {{#each actor.items as |item id|}}
-                        {{#if (eq item.type "craftskill")}}
+                        {{#if (and (eq item.type "skill") (eq item.data.type "Craft"))}}
                             <li class="item skill flexrow" data-item-id="{{item._id}}">
                                 <div class="item-name std-roll flexrow" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
@@ -427,13 +427,13 @@
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
                     <div class="item-controls">
-                        <a class="item-control item-create" title="Create item" data-type="magicskill"><i
+                        <a class="item-control item-create" title="Create item" data-type="skill" data-skilltype="Magic"><i
                                 class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 <ol class="item-list skill-list">
                     {{#each actor.items as |item id|}}
-                        {{#if (eq item.type "magicskill")}}
+                        {{#if (and (eq item.type "skill") (eq item.data.type "Magic"))}}
                             <li class="item skill flexrow" data-item-id="{{item._id}}">
                                 <div class="item-name std-roll flexrow" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
@@ -461,13 +461,13 @@
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
                     <div class="item-controls">
-                        <a class="item-control item-create" title="Create item" data-type="ritualskill"><i
+                        <a class="item-control item-create" title="Create item" data-type="skill" data-skilltype="Ritual"><i
                                 class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 <ol class="item-list skill-list">
                     {{#each actor.items as |item id|}}
-                        {{#if (eq item.type "ritualskill")}}
+                        {{#if (and (eq item.type "skill") (eq item.data.type "Ritual"))}}
                             <li class="item skill flexrow" data-item-id="{{item._id}}">
                                 <div class="item-name std-roll flexrow" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
@@ -813,13 +813,13 @@
                     <div class="item-detail psionic-eml">EML</div>
                     <div class="item-detail psionic-notes">Notes</div>
                     <div class="item-controls">
-                        <a class="item-control item-create" title="Create item" data-type="psionic"><i
+                        <a class="item-control item-create" title="Create item" data-type="skill" data-skilltype="Psionic"><i
                                 class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 <ol class="item-list spell-list">
                     {{#each actor.items as |item id|}}
-                        {{#if (eq item.type "psionic")}}
+                        {{#if (and (eq item.type "skill") (eq item.data.type "Psionic"))}}
                             <li class="item psionic flexrow" data-item-id="{{item._id}}">
                                 <div class="item-name psionic-name std-roll flexrow" data-label="{{item.name}} Spell Test" data-target="{{data.effectiveMasteryLevel}}">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>

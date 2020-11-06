@@ -55,24 +55,24 @@ export class HarnMasterActor extends Actor {
   }
 
   static _createDefaultCharacterSkills(data) {
-    data.items.push((new Item({name: 'Climbing', type: 'physicalskill', data: game.system.model.Item.physicalskill})).data);
-    data.items.push((new Item({name: 'Condition', type: 'physicalskill', data: game.system.model.Item.physicalskill})).data);
-    data.items.push((new Item({name: 'Jumping', type: 'physicalskill', data: game.system.model.Item.physicalskill})).data);
-    data.items.push((new Item({name: 'Stealth', type: 'physicalskill', data: game.system.model.Item.physicalskill})).data);
-    data.items.push((new Item({name: 'Throwing', type: 'physicalskill', data: game.system.model.Item.physicalskill})).data);
-    data.items.push((new Item({name: 'Awareness', type: 'commskill', data: game.system.model.Item.commskill})).data);
-    data.items.push((new Item({name: 'Intrigue', type: 'commskill', data: game.system.model.Item.commskill})).data);
-    data.items.push((new Item({name: 'Oratory', type: 'commskill', data: game.system.model.Item.commskill})).data);
-    data.items.push((new Item({name: 'Rhetoric', type: 'commskill', data: game.system.model.Item.commskill})).data);
-    data.items.push((new Item({name: 'Singing', type: 'commskill', data: game.system.model.Item.commskill})).data);
-    data.items.push((new Item({name: 'Initiative', type: 'combatskill', data: game.system.model.Item.combatskill})).data);
-    data.items.push((new Item({name: 'Unarmed', type: 'combatskill', data: game.system.model.Item.combatskill})).data);
-    data.items.push((new Item({name: 'Dodge', type: 'combatskill', data: game.system.model.Item.combatskill})).data);
+    data.items.push((new Item({name: 'Climbing', type: 'skill', data: game.system.model.Item.physicalskill})).data);
+    data.items.push((new Item({name: 'Condition', type: 'skill', data: game.system.model.Item.physicalskill})).data);
+    data.items.push((new Item({name: 'Jumping', type: 'skill', data: game.system.model.Item.physicalskill})).data);
+    data.items.push((new Item({name: 'Stealth', type: 'skill', data: game.system.model.Item.physicalskill})).data);
+    data.items.push((new Item({name: 'Throwing', type: 'skill', data: game.system.model.Item.physicalskill})).data);
+    data.items.push((new Item({name: 'Awareness', type: 'skill', data: game.system.model.Item.commskill})).data);
+    data.items.push((new Item({name: 'Intrigue', type: 'skill', data: game.system.model.Item.commskill})).data);
+    data.items.push((new Item({name: 'Oratory', type: 'skill', data: game.system.model.Item.commskill})).data);
+    data.items.push((new Item({name: 'Rhetoric', type: 'skill', data: game.system.model.Item.commskill})).data);
+    data.items.push((new Item({name: 'Singing', type: 'skill', data: game.system.model.Item.commskill})).data);
+    data.items.push((new Item({name: 'Initiative', type: 'skill', data: game.system.model.Item.combatskill})).data);
+    data.items.push((new Item({name: 'Unarmed', type: 'skill', data: game.system.model.Item.combatskill})).data);
+    data.items.push((new Item({name: 'Dodge', type: 'skill', data: game.system.model.Item.combatskill})).data);
   }
 
   static _createDefaultCreatureSkills(data) {
-    data.items.push((new Item({name: 'Initiative', type: 'combatskill', data: game.system.model.Item.combatskill})).data);
-    data.items.push((new Item({name: 'Dodge', type: 'combatskill', data: game.system.model.Item.combatskill})).data);
+    data.items.push((new Item({name: 'Initiative', type: 'skill', data: game.system.model.Item.combatskill})).data);
+    data.items.push((new Item({name: 'Dodge', type: 'skill', data: game.system.model.Item.combatskill})).data);
   }
 
   static _createDefaultHumanoidLocations(data) {
@@ -374,7 +374,7 @@ export class HarnMasterActor extends Actor {
         // Collect all combat skills into a map for use later
         let combatSkills = {};
         this.data.items.forEach(it => {
-          if (it.type === 'combatskill' || it.name.toLowerCase() === 'throwing') {
+          if (it.type === 'skill' || it.name.toLowerCase() === 'throwing') {
             combatSkills[it.name] = {
               'name': it.name,
               'eml': it.data.effectiveMasteryLevel
@@ -437,7 +437,7 @@ export class HarnMasterActor extends Actor {
     data.hasCondition = false;
 
     items.forEach(it => {
-      if (it.type.endsWith('skill')) {
+      if (it.type === 'skill') {
         switch(it.name.toLowerCase()) {
           case 'initiative':
             data.initiative = it.data.effectiveMasteryLevel;
@@ -461,10 +461,10 @@ export class HarnMasterActor extends Actor {
     const pctPhysPen = physicalPenalty * 5;
 
     items.forEach(it => {
-      if (it.type.endsWith('skill') || it.type === 'psionic') {
-        switch (it.type) {
-          case 'combatskill':
-          case 'physicalskill':
+      if (it.type === 'skill') {
+        switch (it.data.type) {
+          case 'Combat':
+          case 'Physical':
             it.data.effectiveMasteryLevel = it.data.masteryLevel - pctPhysPen;
             break;
 
@@ -555,9 +555,9 @@ export class HarnMasterActor extends Actor {
   _refreshSpellsAndInvocations() {
     this._resetAllSpellsAndInvocations();
     this.data.items.forEach(it => {
-      if (it.type === 'magicskill') {
+      if (it.type === 'skill' && it.data.type === 'Convocation') {
         this._setConvocationSpells(it.name, it.data.effectiveMasteryLevel);
-      } else if (it.type === 'ritualskill') {
+      } else if (it.type === 'skill' && it.data.type === 'Ritual') {
         this._setRitualInvocations(it.name, it.data.effectiveMasteryLevel);
       }
     });
@@ -737,4 +737,17 @@ export class HarnMasterActor extends Actor {
 
     return DiceHM3.injuryRoll(rollData);
   }
+
+  /** @override */
+  _onDeleteEmbeddedEntity(embeddedName, child, options, userId) {
+    if ( embeddedName === "OwnedItem" ) {
+      const item = this.getOwnedItem(child._id);
+      if (["physicalskill", "commskill", "combatskill", "craftskill", "magicskill", "ritualskill", "psionic"].includes(item.type)) {
+        this.items.delete(item.id);
+      } else {
+        super._onDeleteEmbeddedEntity(embeddedName, child, options, userId)
+      }
+    }
+  }
+
 }

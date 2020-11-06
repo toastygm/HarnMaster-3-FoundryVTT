@@ -370,8 +370,8 @@
   margin-bottom: 10px;
   border-bottom: 2px groove #eeede0; }
   .hm3 .sheet .sheet-header-character .profile-img {
-    flex: 0 0 100px;
-    height: 100px;
+    flex: 0 0 120px;
+    height: 120px;
     margin-right: 10px; }
   .hm3 .sheet .sheet-header-character .header-fields .name-attribute {
     border-bottom: 2px groove #eeede0; }
@@ -420,44 +420,46 @@
         background: #afebff;
         border: 1px solid #000;
         border-radius: 2px; }
-  .hm3 .sheet .sheet-header-character .header-fields .header-attributes .attribute {
-    min-height: 40px;
-    margin: 2px; }
-    .hm3 .sheet .sheet-header-character .header-fields .header-attributes .attribute .label {
-      font-size: 10px;
-      text-transform: uppercase;
-      font-weight: bold; }
-    .hm3 .sheet .sheet-header-character .header-fields .header-attributes .attribute .value {
-      font-size: 15px;
-      height: calc(100% - 6px); }
-  .hm3 .sheet .sheet-header-character .header-fields .header-attributes .species {
-    flex: 0 0 80px;
-    border-right: 2px groove #eeede0; }
-  .hm3 .sheet .sheet-header-character .header-fields .header-attributes .creature-species {
-    flex: 1 0 80px;
-    border-right: 2px groove #eeede0; }
-  .hm3 .sheet .sheet-header-character .header-fields .header-attributes .gender {
-    flex: 0 0 80px;
-    border-right: 2px groove #eeede0; }
-  .hm3 .sheet .sheet-header-character .header-fields .header-attributes .move {
-    flex: 0 0 80px; }
-    .hm3 .sheet .sheet-header-character .header-fields .header-attributes .move .label {
-      font-size: 10px;
-      text-transform: uppercase;
-      font-weight: bold; }
-    .hm3 .sheet .sheet-header-character .header-fields .header-attributes .move .move-values {
-      font-size: 19px;
-      text-align: center;
-      align-items: center; }
-      .hm3 .sheet .sheet-header-character .header-fields .header-attributes .move .move-values .move-eff {
-        text-align: right; }
-      .hm3 .sheet .sheet-header-character .header-fields .header-attributes .move .move-values .sep {
-        padding: 0 0 0 6px; }
-      .hm3 .sheet .sheet-header-character .header-fields .header-attributes .move .move-values .move-base {
-        flex: 1 0 30px; }
-  .hm3 .sheet .sheet-header-character .header-fields .header-attributes .occupation {
-    flex: 1;
-    border-right: 2px groove #eeede0; }
+  .hm3 .sheet .sheet-header-character .header-fields .header-attributes {
+    font-size: 10px; }
+    .hm3 .sheet .sheet-header-character .header-fields .header-attributes .attribute {
+      min-height: 40px;
+      margin: 2px; }
+      .hm3 .sheet .sheet-header-character .header-fields .header-attributes .attribute .label {
+        font-size: 10px;
+        text-transform: uppercase;
+        font-weight: bold; }
+      .hm3 .sheet .sheet-header-character .header-fields .header-attributes .attribute .value {
+        font-size: 18px;
+        height: calc(100% - 6px); }
+    .hm3 .sheet .sheet-header-character .header-fields .header-attributes .species {
+      flex: 0 0 100px;
+      border-right: 2px groove #eeede0; }
+    .hm3 .sheet .sheet-header-character .header-fields .header-attributes .creature-species {
+      flex: 1 0 100px;
+      border-right: 2px groove #eeede0; }
+    .hm3 .sheet .sheet-header-character .header-fields .header-attributes .gender {
+      flex: 0 0 100px;
+      border-right: 2px groove #eeede0; }
+    .hm3 .sheet .sheet-header-character .header-fields .header-attributes .move {
+      flex: 0 0 80px; }
+      .hm3 .sheet .sheet-header-character .header-fields .header-attributes .move .label {
+        font-size: 10px;
+        text-transform: uppercase;
+        font-weight: bold; }
+      .hm3 .sheet .sheet-header-character .header-fields .header-attributes .move .move-values {
+        font-size: 19px;
+        text-align: center;
+        align-items: center; }
+        .hm3 .sheet .sheet-header-character .header-fields .header-attributes .move .move-values .move-eff {
+          text-align: right; }
+        .hm3 .sheet .sheet-header-character .header-fields .header-attributes .move .move-values .sep {
+          padding: 0 0 0 6px; }
+        .hm3 .sheet .sheet-header-character .header-fields .header-attributes .move .move-values .move-base {
+          flex: 1 0 30px; }
+    .hm3 .sheet .sheet-header-character .header-fields .header-attributes .occupation {
+      flex: 1;
+      border-right: 2px groove #eeede0; }
 
 .hm3 .sheet-header-creature {
   flex: 0 0 200px;
@@ -943,17 +945,20 @@
   align-items: center;
   flex: 0 1 10px; }
   .hm3 .sheet-body .profile-params .profile-item {
-    align-items: center; }
+    align-items: center;
+    border-top: 2px groove #eeede0;
+    border-bottom: 2px groove #eeede0;
+    margin-top: 12px;
+    padding: 5px 0; }
     .hm3 .sheet-body .profile-params .profile-item .label {
       flex: 0 0 70px;
       font-weight: bold;
       text-transform: uppercase; }
     .hm3 .sheet-body .profile-params .profile-item .value {
-      flex: 0 0 120px;
-      border: 1px solid black; }
+      flex: 0 0 150px; }
 
 .hm3 .sheet-body .profile-desc {
-  margin-top: 15px; }
+  margin-top: 5px; }
   .hm3 .sheet-body .profile-desc .label {
     flex: 0 0 18px;
     font-weight: bold;
@@ -1007,7 +1012,7 @@
     flex: 0 0 45px;
     text-align: right; }
 
-.hm3 .skills h2 {
+.hm3.actor .skills h2 {
   flex: 1;
   margin: 0;
   line-height: 36px;
@@ -1020,18 +1025,18 @@
   border-bottom: 2px groove #fff;
   padding: 5px; }
 
-.hm3 .skills .skill-ele {
+.hm3.actor .skills .skill-ele {
   flex: 0 0 40px;
   text-align: center;
   border-left: 1px solid #c9c7b8;
   border-right: 1px solid #c9c7b8; }
 
-.hm3 .skills .skills-list {
+.hm3.actor .skills .skills-list {
   list-style: none;
   margin: 7px 0;
   padding: 0;
   overflow-y: auto; }
-  .hm3 .skills .skills-list .skills-header {
+  .hm3.actor .skills .skills-list .skills-header {
     margin: 2px 0;
     padding: 0;
     align-items: center;
@@ -1039,45 +1044,45 @@
     border: 2px groove #eeede0;
     font-weight: bold;
     line-height: 24px; }
-    .hm3 .skills .skills-list .skills-header h3 {
+    .hm3.actor .skills .skills-list .skills-header h3 {
       margin: 0 -5px 0 0;
       padding-left: 5px;
       font-family: "Modesto Condensed", "Palatino Linotype", serif;
       font-size: 20px;
       font-weight: 700;
       font-size: 16px; }
-    .hm3 .skills .skills-list .skills-header .skill-name {
+    .hm3.actor .skills .skills-list .skills-header .skill-name {
       color: #191813; }
-  .hm3 .skills .skills-list .skill-list {
+  .hm3.actor .skills .skills-list .skill-list {
     list-style: none;
     margin: 0;
     padding: 0; }
-  .hm3 .skills .skills-list .skill {
+  .hm3.actor .skills .skills-list .skill {
     line-height: 30px;
     padding: 0 2px;
     border-bottom: 1px solid #c9c7b8; }
-    .hm3 .skills .skills-list .skill .item-name.std-roll:hover .item-image {
+    .hm3.actor .skills .skills-list .skill .item-name.std-roll:hover .item-image {
       background-image: url("../../../icons/svg/d20-grey.svg") !important; }
-    .hm3 .skills .skills-list .skill .item-name.std-roll .item-image:hover {
+    .hm3.actor .skills .skills-list .skill .item-name.std-roll .item-image:hover {
       background-image: url("../../../icons/svg/d20-black.svg") !important; }
-    .hm3 .skills .skills-list .skill .skill-image {
+    .hm3.actor .skills .skills-list .skill .skill-image {
       flex: 0 0 30px;
       background-size: 30px;
       margin-right: 5px; }
-    .hm3 .skills .skills-list .skill img {
+    .hm3.actor .skills .skills-list .skill img {
       display: block; }
-    .hm3 .skills .skills-list .skill .skill-name {
+    .hm3.actor .skills .skills-list .skill .skill-name {
       cursor: pointer;
       max-height: 30px;
       overflow: hidden;
       flex: 1 0 100px; }
-      .hm3 .skills .skills-list .skill .skill-name h4 {
+      .hm3.actor .skills .skills-list .skill .skill-name h4 {
         margin: 0;
         white-space: nowrap;
         overflow-x: hidden; }
-  .hm3 .skills .skills-list .skill:last-child {
+  .hm3.actor .skills .skills-list .skill:last-child {
     border-bottom: none; }
-  .hm3 .skills .skills-list .skill-detail {
+  .hm3.actor .skills .skills-list .skill-detail {
     flex: 0 0 70px;
     font-size: 12px;
     color: #7a7971;
@@ -1086,19 +1091,36 @@
     word-break: break-word;
     white-space: nowrap;
     overflow: hidden; }
-  .hm3 .skills .skills-list .skill-ele {
+  .hm3.actor .skills .skills-list .skill-ele {
     flex: 0 0 40px;
     text-align: center;
     border-left: 1px solid #c9c7b8;
     border-right: 1px solid #c9c7b8; }
-  .hm3 .skills .skills-list .item-controls {
+  .hm3.actor .skills .skills-list .item-controls {
     flex: 0 0 45px;
     text-align: right; }
-    .hm3 .skills .skills-list .item-controls .item-control {
+    .hm3.actor .skills .skills-list .item-controls .item-control {
       flex: 0 0 22px;
       font-size: 12px;
       text-align: center;
       color: #7a7971; }
+
+.hm3.item .skill-header img.profile-img {
+  flex: 0 0 85px;
+  height: 85px;
+  margin-right: 6px; }
+
+.hm3.item .skill-header .header-fields .skill-type {
+  align-items: center; }
+  .hm3.item .skill-header .header-fields .skill-type .label {
+    flex: 0 0 45px;
+    padding-left: 8px;
+    font-family: "Modesto Condensed", "Palatino Linotype", serif;
+    font-weight: bold;
+    font-size: 19px; }
+  .hm3.item .skill-header .header-fields .skill-type .value {
+    flex: 0 0 110px;
+    font-size: 14px; }
 
 .hm3 .esoteric h2 {
   flex: 1;
