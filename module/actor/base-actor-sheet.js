@@ -41,7 +41,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             // Reject the drop request by returning false if a match was found
             if (found) {
                 if (itemType === 'skill') {
-                    console.warn(`HM3 | DragDrop of ${itemName}, a ${item.data.data.type} skill, was rejected because a similar named skill already exists`);
+                    console.warn(`HM3 | DragDrop of ${itemName}, a ${item.data.data.type} skill, onto ${actor.data.name} was rejected because an identically named skill already exists`);
                 } else {
                     console.warn(`HM3 | DragDrop of ${itemName} of type ${itemType}} onto ${actor.data.name} rejected; ${itemName} already exists`);
                 }
