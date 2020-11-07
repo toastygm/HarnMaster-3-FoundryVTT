@@ -48,14 +48,19 @@ export class HarnMasterCharacterSheet extends ActorSheet {
         // Only gear is allowed to be duplicated; all
         // other items must be unique (and drop will
         // be rejected for them).
-        if (!it.data.type.endsWith("gear")) {
+        if (!itemType.endsWith("gear")) {
             let found = false;
             actor.items.forEach(it => {
+                // Generally, if the items have the same type and name, mark it as found
                 if (it.data.type === itemType && it.data.name === itemName) {
-                    found = true;
+                    // If the type is a skill, and if the skill types are different, then
+                    // the items are considered different and we don't consider a match found.
+                    // In all other cases, we consider a match found.
+                    found = it.data.type != 'skill' || it.data.data.type != item.data.data.type;
                 }
             });
 
+            // Reject the drop request by returning false if a match was found
             if (found) {
                 return false;
             }
@@ -130,8 +135,42 @@ export class HarnMasterCharacterSheet extends ActorSheet {
         const type = header.dataset.type;
         // Grab any data associated with this control.
         const data = duplicate(header.dataset);
+        
         // Initialize a default name.
-        const name = `New ${type.capitalize()}`;
+        let name = 'New Item';
+        if (type === 'skill' && header.dataset.skilltype) {
+            if (header.dataset.skilltype === 'Psionic') {
+                name = 'New Psionic Talent';
+            } else {
+                name = `New ${header.dataset.skilltype} Skill`;
+            }
+        } else {
+            switch (type) {
+                case "weapongear":
+                    name = 'New Weapon';
+                    break;
+
+                case "missilegear":
+                    name = 'New Missile';
+                    break;
+
+                case "armorgear":
+                    name = 'New Armor Item';
+                    break;
+
+                case "miscgear":
+                    name = 'New Inventory Item';
+                    break;
+
+                case "armorlocation":
+                    name = 'New Body Location';
+                    break;
+
+                default:
+                    name = `New ${type.capitalize()}`;
+            }
+            
+        }
         // Prepare the item object.
         const itemData = {
             name: name,
@@ -144,11 +183,18 @@ export class HarnMasterCharacterSheet extends ActorSheet {
         // Finally, create the item!
         const result = await this.actor.createOwnedItem(itemData);
 
+        if (!result) {
+            log.error(`HM3 | Error creating item '${name}' of type '${type}' on character '${this.actor.data.name}'`)
+            return null;
+        }
+
         // If the result is a skill, and if 'skillType' has been defined,
         // set the skill type appropriately.
-        if (type === 'skill' && header.dataset.skillType) {
-            if (HM3.skillTypes.includes(header.dataset.skillType)) {
-                result.data.data.type = header.dataset.skillType;
+        if (type === 'skill' && header.dataset.skilltype) {
+            if (HM3.skillTypes.includes(header.dataset.skilltype)) {
+                const ownedItem = this.actor.getOwnedItem(result._id);
+                const updateData = {'data.type': header.dataset.skilltype};
+                await ownedItem.update(updateData);
             }
         }
 

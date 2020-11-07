@@ -10,8 +10,9 @@ export async function migrateWorld() {
     for (let a of game.actors.entities ) {
         try {
             const updateData = await migrateActorData(a)
-            if (updateData != null) {
+            if (updateData) {
                 console.log(`HM3 | Migrating Actor ${a.name}`);
+                console.log('HM3 | Changes: ' + JSON.stringify(updateData));
                 // await i.update(updateData, {enforceTypes: false});
                 await a.update(updateData);                
             }
@@ -25,8 +26,9 @@ export async function migrateWorld() {
     for (let i of game.items.entities ) {
         try {
             const updateData = await migrateItemData(i.data);
-            if (updateData != null) {
+            if (updateData) {
                 console.log(`HM3 | Migrating Item ${i.name}`);
+                console.log('HM3 | Changes: ' + JSON.stringify(updateData));
                 // await i.update(updateData, {enforceTypes: false});
                 await i.update(updateData);                
             }
@@ -95,7 +97,7 @@ export async function migrateActorData(actor) {
     // process items
     for (let i of actor.items) {
         let migrateData = migrateItemData(i.data);
-        if (migrateData != null) {
+        if (migrateData) {
             console.log(`HM3 | Migrated Actor ${actor.data.name}, Item ${i.data.name}`);
             try {
                 await i.update(migrateData);
@@ -186,24 +188,18 @@ async function convertToNewSkill(i, actor, newType) {
     const oldData = i.data.data;
 
     const updateData = {
-        "notes": oldData.notes,
-        "description": oldData.description,
-        "source": oldData.source,
-        "type": newType,
-        "skillBase": {
-          "value": oldData.skillBase.value,
-          "formula": oldData.skillBase.formula,
-          "isFormulaValid": oldData.isFormulaValid
-        },
-        "masteryLevel": oldData.masteryLevel,
-        "effectiveMasteryLevel": oldData.effectiveMasteryLevel,
-        "ritual": {
-          "piety": oldData.piety || 0
-        },
-        "psionic": {
-          "fatigue": oldData.fatigue || 0,
-          "time": "" 
-        }
+        "data.notes": oldData.notes,
+        "data.description": oldData.description,
+        "data.source": oldData.source,
+        "data.type": newType,
+        "data.skillBase.value": oldData.skillBase.value,
+        "data.skillBase.formula": oldData.skillBase.formula,
+        "data.skillBase.isFormulaValid": oldData.isFormulaValid,
+        "data.masteryLevel": oldData.masteryLevel,
+        "data.effectiveMasteryLevel": oldData.effectiveMasteryLevel,
+        "data.ritual.piety": oldData.piety || 0,
+        "data.psionic.fatigue": oldData.fatigue || 0,
+        "data.psionic.time": ""
     };
 
     // Create the new skill
@@ -223,83 +219,65 @@ async function convertToNewSkill(i, actor, newType) {
 
 export function migrateItemData(itemData) {
     const data = itemData.data;
-    let isModified = false;
+    const updateData = {};
 
     // The next two blocks are essentially renaming the "note" object to "notes"
-    if (typeof data.notes === 'undefined') {
-        data.notes = data.note || "";
-        isModified = true;
-    }
-
     if (typeof data.note != 'undefined') {
-        delete data.note;
-        data['-=note'] = null;  // delete the note object;
+        updateData['data.notes'] = data.note || "";
+        updateData['data.-=note'] = null;  // delete the note object;
     }
 
     if (typeof data.description === 'undefined') {
-        data.description = "";
-        isModified = true;
+        updateData['data.description'] = "";
     }
     if (typeof data.source === 'undefined') {
-        data.source = "";
-        isModified = true;
+        updateData['data.source'] = "";
     }
 
     if (itemData.type.endsWith('gear')) {
         if (typeof data.isEquipped === 'undefined') {
-            data.isEquipped = true;
-            isModified = true;
+            updateData['data.isEquipped'] = true;
         }
         if (typeof data.isCarried === 'undefined') {
-            data.isCarried = true;
-            isModified = true;
+            updateData['data.isCarried'] = true;
         }
         if (typeof data.value === 'undefined') {
-            data.value = 0;
-            isModified = true;
+            updateData['data.value'] = 0;
         }
         if (typeof data.arcane === 'undefined') {
-            data.arcane = {
-                "isArtifact": false,
-                "isAttuned": false,
-                "charges": -1,
-                "ego": 0
-            };
+            updateData['data.arcane.isArtifact'] = false;
+            updateData['data.arcane.isAttuned'] = false;
+            updateData['data.arcane.charges'] = -1;
+            updateData['data.arcane.ego'] = 0;
         }
 
         if (itemData.type === 'weapongear' || itemData.type === 'missilegear') {
             if (typeof data.weaponQuality === 'undefined') {
-                data.weaponQuality = 0;
-                isModified = true;
+                updateData['data.weaponQuality'] = 0;
             }
         }
     }
     
     if (itemData.type === 'armorlocation') {
         if (typeof data.protection === 'undefined') {
-            data.protection = {
-                'blunt': 0,
-                'edged': 0,
-                'piercing': 0,
-                'fire': 0
-            };
-            data.locations = [];
-            isModified = true;
+            updateData['data.protection.blunt'] = 0;
+            updateData['data.protection.edged'] = 0;
+            updateData['data.protection.piercing'] = 0;
+            updateData['data.protection.fire'] = 0;
+            updateData['data.locations'] = [];
         }
     }
 
     if (itemData.type.endsWith('skill') || itemData.type === 'psionic') {
         if (typeof data.skillBase != 'object') {
             const value = data.skillBase;
-            data.skillBase = {};
-            data.skillBase.value = value;
-            data.skillBase.formula = '';
-            data.skillBase.isFormulaValid = true;
-            isModified = true;
+            updateData['data.skillBase.value'] = value;
+            updateData['data.skillBase.formula'] = '';
+            updateData['data.skillBase.isFormulaValid'] = true;
         }
     }
 
-    return isModified ? itemData : null;
+    return updateData;
 }
 
 export function migrateSceneData(scene) {
