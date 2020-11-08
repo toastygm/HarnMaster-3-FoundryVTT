@@ -20,6 +20,13 @@
  * @param {Object} item
  */
 export function calcSkillBase(item) {
+    sb.isFormulaValid = true;
+    if (sb.formula === '') {
+        // If the formula is blank, its valid,
+        // don't touch the existing value.
+        return;
+    }
+
     const sb = item.data.data.skillBase;
 
     let actorData = null;
@@ -27,12 +34,6 @@ export function calcSkillBase(item) {
         actorData = item.actor.data.data;
     }
 
-    sb.isFormulaValid = true;
-    if (sb.formula === '') {
-        // If the formula is blank, its valid,
-        // don't touch the existing value.
-        return;
-    }
 
     let numAbilities = 0;
     let sumAbilities = 0;
@@ -118,7 +119,7 @@ export function calcSkillBase(item) {
                             sumAbilities += actorData.abilities.voice.base;
                             break;
 
-                        case 'com':
+                        case 'cml':
                             sumAbilities += actorData.abilities.comliness.base;
                             break;
 
