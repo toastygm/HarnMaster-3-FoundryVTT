@@ -30,11 +30,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             let found = false;
             actor.items.forEach(it => {
                 // Generally, if the items have the same type and name, mark it as found
-                if (it.data.type === itemType && it.data.name === itemName) {
-                    // If the type is a skill, and if the skill types are different, then
-                    // the items are considered different and we don't consider a match found.
-                    // In all other cases, we consider a match found.
-                    found = it.data.type != 'skill' || it.data.data.type != item.data.type;
+                if (!found) {
+                    found = it.data.type === itemType && it.data.name === itemName;
                 }
             });
 
