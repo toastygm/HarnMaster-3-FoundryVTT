@@ -81,4 +81,16 @@
       text-transform: uppercase;  
     }
   }
+
+  .profile {
+    img.bio-image {
+      flex: 0 0 200px;
+      object-fit: contain;
+      background: white;
+    }
+
+    .profile-desc {
+      margin-left: 5px;
+    }
+  }
 }

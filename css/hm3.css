@@ -357,6 +357,14 @@
 .hm3 .sheet .sheet-navigation .item.active {
   border-bottom: 3px solid #44191A; }
 
+.hm3 .biography img.bio-image {
+  flex: 0 0 200px;
+  object-fit: contain;
+  background: white; }
+
+.hm3 .biography .bio-text {
+  margin-left: 5px; }
+
 .hm3 .item-form {
   font-family: "Signika", sans-serif; }
 
@@ -963,6 +971,14 @@
     flex: 0 0 18px;
     font-weight: bold;
     text-transform: uppercase; }
+
+.hm3 .sheet-body .profile img.bio-image {
+  flex: 0 0 200px;
+  object-fit: contain;
+  background: white; }
+
+.hm3 .sheet-body .profile .profile-desc {
+  margin-left: 5px; }
 
 .hm3 .injuries-list {
   list-style: none;

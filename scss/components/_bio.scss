@@ -1,0 +1,11 @@
+.biography {
+    img.bio-image {
+        flex: 0 0 200px;
+        object-fit: contain;
+        background: white;
+    }
+    
+    .bio-text {
+        margin-left: 5px;
+    }
+}
