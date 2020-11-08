@@ -55,130 +55,88 @@ export class HarnMasterActor extends Actor {
   }
 
   static _createDefaultCharacterSkills(data) {
-    data.items.push((new Item({name: 'Climbing', type: 'skill', data: game.system.model.Item.physicalskill})).data);
-    data.items.push((new Item({name: 'Condition', type: 'skill', data: game.system.model.Item.physicalskill})).data);
-    data.items.push((new Item({name: 'Jumping', type: 'skill', data: game.system.model.Item.physicalskill})).data);
-    data.items.push((new Item({name: 'Stealth', type: 'skill', data: game.system.model.Item.physicalskill})).data);
-    data.items.push((new Item({name: 'Throwing', type: 'skill', data: game.system.model.Item.physicalskill})).data);
-    data.items.push((new Item({name: 'Awareness', type: 'skill', data: game.system.model.Item.commskill})).data);
-    data.items.push((new Item({name: 'Intrigue', type: 'skill', data: game.system.model.Item.commskill})).data);
-    data.items.push((new Item({name: 'Oratory', type: 'skill', data: game.system.model.Item.commskill})).data);
-    data.items.push((new Item({name: 'Rhetoric', type: 'skill', data: game.system.model.Item.commskill})).data);
-    data.items.push((new Item({name: 'Singing', type: 'skill', data: game.system.model.Item.commskill})).data);
-    data.items.push((new Item({name: 'Initiative', type: 'skill', data: game.system.model.Item.combatskill})).data);
-    data.items.push((new Item({name: 'Unarmed', type: 'skill', data: game.system.model.Item.combatskill})).data);
-    data.items.push((new Item({name: 'Dodge', type: 'skill', data: game.system.model.Item.combatskill})).data);
+    const physicalSkill = mergeObject({type: "Physical"}, game.system.model.Item.skill, {overwrite:false});
+    const commSkill = mergeObject({type: "Communication"}, game.system.model.Item.skill, {overwrite:false});
+    const combatSkill = mergeObject({type: "Combat"}, game.system.model.Item.skill, {overwrite:false});
+    const craftSkill = mergeObject({type: "Craft"}, game.system.model.Item.skill, {overwrite:false});
+    data.items.push((new Item({name: 'Climbing', type: 'skill', data: physicalSkill})).data);
+    data.items.push((new Item({name: 'Condition', type: 'skill', data: physicalSkill})).data);
+    data.items.push((new Item({name: 'Jumping', type: 'skill', data: physicalSkill})).data);
+    data.items.push((new Item({name: 'Stealth', type: 'skill', data: physicalSkill})).data);
+    data.items.push((new Item({name: 'Throwing', type: 'skill', data: physicalSkill})).data);
+    data.items.push((new Item({name: 'Awareness', type: 'skill', data: commSkill})).data);
+    data.items.push((new Item({name: 'Intrigue', type: 'skill', data: commSkill})).data);
+    data.items.push((new Item({name: 'Oratory', type: 'skill', data: commSkill})).data);
+    data.items.push((new Item({name: 'Rhetoric', type: 'skill', data: commSkill})).data);
+    data.items.push((new Item({name: 'Singing', type: 'skill', data: commSkill})).data);
+    data.items.push((new Item({name: 'Initiative', type: 'skill', data: combatSkill})).data);
+    data.items.push((new Item({name: 'Unarmed', type: 'skill', data: combatSkill})).data);
+    data.items.push((new Item({name: 'Dodge', type: 'skill', data: combatSkill})).data);
   }
 
   static _createDefaultCreatureSkills(data) {
-    data.items.push((new Item({name: 'Initiative', type: 'skill', data: game.system.model.Item.combatskill})).data);
-    data.items.push((new Item({name: 'Dodge', type: 'skill', data: game.system.model.Item.combatskill})).data);
+    const combatSkill = mergeObject({type: "Combat"}, game.system.model.Item.skill, {overwrite:false});
+    data.items.push((new Item({name: 'Initiative', type: 'skill', data: combatSkill})).data);
+    data.items.push((new Item({name: 'Dodge', type: 'skill', data: combatSkill})).data);
   }
 
   static _createDefaultHumanoidLocations(data) {
-    let armorLocationData = {};
-    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-    mergeObject(armorLocationData, HM3.injuryLocations['Skull'])
+    const armorLocationData = mergeObject(duplicate(game.system.model.Item.armorlocation), HM3.injuryLocations['Skull'])
     data.items.push((new Item({name: 'Skull', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData = {};
-    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+
     mergeObject(armorLocationData, HM3.injuryLocations['Face'])
     data.items.push((new Item({name: 'Face', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData = {};
-    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+
     mergeObject(armorLocationData, HM3.injuryLocations['Neck'])
     data.items.push((new Item({name: 'Neck', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData = {};
-    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-    mergeObject(armorLocationData, HM3.injuryLocations['Shoulder'])
+
+    mergeObject(duparmorLocationData, HM3.injuryLocations['Shoulder'])
     data.items.push((new Item({name: 'Left Shoulder', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData = {};
-    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-    mergeObject(armorLocationData, HM3.injuryLocations['Shoulder'])
     data.items.push((new Item({name: 'Right Shoulder', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData = {};
-    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+
     mergeObject(armorLocationData, HM3.injuryLocations['Upper Arm'])
     data.items.push((new Item({name: 'Left Upper Arm', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData = {};
-    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-    mergeObject(armorLocationData, HM3.injuryLocations['Upper Arm'])
     data.items.push((new Item({name: 'Right Upper Arm', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData = {};
-    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+
     mergeObject(armorLocationData, HM3.injuryLocations['Elbow'])
     data.items.push((new Item({name: 'Left Elbow', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData = {};
-    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-    mergeObject(armorLocationData, HM3.injuryLocations['Elbow'])
     data.items.push((new Item({name: 'Right Elbow', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData = {};
-    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+
     mergeObject(armorLocationData, HM3.injuryLocations['Forearm'])
     data.items.push((new Item({name: 'Left Forearm', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData = {};
-    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-    mergeObject(armorLocationData, HM3.injuryLocations['Forearm'])
     data.items.push((new Item({name: 'Right Forearm', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData = {};
-    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+
     mergeObject(armorLocationData, HM3.injuryLocations['Hand'])
     data.items.push((new Item({name: 'Left Hand', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData = {};
-    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-    mergeObject(armorLocationData, HM3.injuryLocations['Hand'])
     data.items.push((new Item({name: 'Right Hand', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData = {};
-    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+
     mergeObject(armorLocationData, HM3.injuryLocations['Thorax'])
     data.items.push((new Item({name: 'Thorax', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData = {};
-    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+
     mergeObject(armorLocationData, HM3.injuryLocations['Abdomen'])
     data.items.push((new Item({name: 'Abdomen', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData = {};
-    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+
     mergeObject(armorLocationData, HM3.injuryLocations['Groin'])
     data.items.push((new Item({name: 'Groin', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData = {};
-    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+
     mergeObject(armorLocationData, HM3.injuryLocations['Hip'])
     data.items.push((new Item({name: 'Left Hip', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData = {};
-    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-    mergeObject(armorLocationData, HM3.injuryLocations['Hip'])
     data.items.push((new Item({name: 'Right Hip', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData = {};
-    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+
     mergeObject(armorLocationData, HM3.injuryLocations['Thigh'])
     data.items.push((new Item({name: 'Left Thigh', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData = {};
-    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-    mergeObject(armorLocationData, HM3.injuryLocations['Thigh'])
     data.items.push((new Item({name: 'Right Thigh', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData = {};
-    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+
     mergeObject(armorLocationData, HM3.injuryLocations['Knee'])
     data.items.push((new Item({name: 'Left Knee', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData = {};
-    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-    mergeObject(armorLocationData, HM3.injuryLocations['Knee'])
     data.items.push((new Item({name: 'Right Knee', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData = {};
-    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+
     mergeObject(armorLocationData, HM3.injuryLocations['Calf'])
     data.items.push((new Item({name: 'Left Calf', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData = {};
-    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-    mergeObject(armorLocationData, HM3.injuryLocations['Calf'])
     data.items.push((new Item({name: 'Right Calf', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData = {};
-    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+
     mergeObject(armorLocationData, HM3.injuryLocations['Foot'])
     data.items.push((new Item({name: 'Left Foot', type: 'armorlocation', data: armorLocationData})).data);
-    armorLocationData = {};
-    mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-    mergeObject(armorLocationData, HM3.injuryLocations['Foot'])
     data.items.push((new Item({name: 'Right Foot', type: 'armorlocation', data: armorLocationData})).data);
   }
 
