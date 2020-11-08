@@ -947,7 +947,12 @@
 
         {{!-- Biography Tab --}}
         <div class="tab biography" data-group="primary" data-tab="biography">
-            {{editor content=data.biography target="data.biography" button=true owner=owner editable=editable}}
+            <div class="flexrow">
+                <img class="bio-image" src="{{data.bioImage}}" data-edit="data.bioImage" title="{{actor.name}}" height="300" width="200" />
+                <div class="bio-text">
+                    {{editor content=data.biography target="data.biography" button=true owner=owner editable=editable}}
+                </div>
+            </div>
         </div>
 
     </section>

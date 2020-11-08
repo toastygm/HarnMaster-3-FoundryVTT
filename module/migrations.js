@@ -169,6 +169,10 @@ export async function migrateActorData(actor) {
         updateData['data.abilities.morality.effective'] = 0;
     }
 
+    if (typeof actorData.data.bioImage === 'undefined') {
+        updateData['data.bioImage'] = 'systems/hm3/images/svg/knight-silhouette.svg';
+    }
+
     if (typeof actorData.data.sunsign === 'undefined') {
         updateData['data.sunsign'] = '';
     }

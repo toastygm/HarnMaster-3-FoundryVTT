@@ -3,6 +3,7 @@
     "types": ["character", "creature"],
     "templates": {
       "base": {
+        "bioImage": "systems/hm3/images/svg/knight-silhouette.svg",
         "species": "",
         "fatigue": 0,
         "sunsign": "",
