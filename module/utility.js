@@ -20,14 +20,14 @@
  * @param {Object} item
  */
 export function calcSkillBase(item) {
+    const sb = item.data.data.skillBase;
+
     sb.isFormulaValid = true;
     if (sb.formula === '') {
         // If the formula is blank, its valid,
         // don't touch the existing value.
         return;
     }
-
-    const sb = item.data.data.skillBase;
 
     let actorData = null;
     if (item.actor) {
@@ -37,6 +37,7 @@ export function calcSkillBase(item) {
 
     let numAbilities = 0;
     let sumAbilities = 0;
+    let ssBonus = 0;
     let modifier = 0;
     let resultSB = 0;
 
@@ -166,8 +167,8 @@ export function calcSkillBase(item) {
                     // Now, check whether our sunsign matches any of the actor's sunsigns
                     if (actorSS.includes(ssParts[0])) {
                         // We matched a character's sunsign, apply modifier
-
-                        modifier += ssParts.length === 2 ? Number(ssParts[1].trim()) : 1;
+                        // Character only gets the largest sunsign bonus
+                        ssBonus = Math.max(ssParts.length === 2 ? Number(ssParts[1].trim()) : 1, ssBonus);
                     }
                 }
 
@@ -189,7 +190,7 @@ export function calcSkillBase(item) {
         sb.isFormulaValid = false;
     } else {
         if (actorData) {
-            sb.value = Math.round((sumAbilities / 3) + Number.EPSILON) + modifier;
+            sb.value = Math.round((sumAbilities / 3) + Number.EPSILON) + ssBonus + modifier;
         }
     }
 }
