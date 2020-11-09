@@ -278,23 +278,23 @@ export class HarnMasterActor extends Actor {
 
   _setupEffectiveAbilities(data) {
     // Affected by physical penalty
-    data.abilities.strength.effective = data.abilities.strength.base - data.physicalPenalty;
-    data.abilities.stamina.effective = data.abilities.stamina.base - data.physicalPenalty;
-    data.abilities.agility.effective = data.abilities.agility.base - data.physicalPenalty;
-    data.abilities.dexterity.effective = data.abilities.dexterity.base - data.physicalPenalty;
-    data.abilities.eyesight.effective = data.abilities.eyesight.base - data.physicalPenalty;
-    data.abilities.hearing.effective = data.abilities.hearing.base - data.physicalPenalty;
-    data.abilities.smell.effective = data.abilities.smell.base - data.physicalPenalty;
-    data.abilities.voice.effective = data.abilities.voice.base - data.physicalPenalty;
+    data.abilities.strength.effective = Math.max(data.abilities.strength.base - data.physicalPenalty, 0);
+    data.abilities.stamina.effective = Math.max(data.abilities.stamina.base - data.physicalPenalty, 0);
+    data.abilities.agility.effective = Math.max(data.abilities.agility.base - data.physicalPenalty, 0);
+    data.abilities.dexterity.effective = Math.max(data.abilities.dexterity.base - data.physicalPenalty, 0);
+    data.abilities.eyesight.effective = Math.max(data.abilities.eyesight.base - data.physicalPenalty, 0);
+    data.abilities.hearing.effective = Math.max(data.abilities.hearing.base - data.physicalPenalty, 0);
+    data.abilities.smell.effective = Math.max(data.abilities.smell.base - data.physicalPenalty, 0);
+    data.abilities.voice.effective = Math.max(data.abilities.voice.base - data.physicalPenalty, 0);
 
     // Affected by universal penalty
-    data.abilities.intelligence.effective = data.abilities.intelligence.base - data.universalPenalty;
-    data.abilities.aura.effective = data.abilities.aura.base - data.universalPenalty;
-    data.abilities.will.effective = data.abilities.will.base - data.universalPenalty;
+    data.abilities.intelligence.effective = Math.max(data.abilities.intelligence.base - data.universalPenalty, 0);
+    data.abilities.aura.effective = Math.max(data.abilities.aura.base - data.universalPenalty, 0);
+    data.abilities.will.effective = Math.max(data.abilities.will.base - data.universalPenalty, 0);
 
     // Not affected by any penalties
-    data.abilities.comliness.effective = data.abilities.comliness.base;
-    data.abilities.morality.effective = data.abilities.morality.base;
+    data.abilities.comliness.effective = Math.max(data.abilities.comliness.base, 0);
+    data.abilities.morality.effective = Math.max(data.abilities.morality.base, 0);
   }
 
   _setupInjuryTargets(data) {
