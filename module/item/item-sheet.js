@@ -35,7 +35,7 @@ export class HarnMasterItemSheet extends ItemSheet {
       data.convocations = [];
       if (this.actor) {
         this.actor.itemTypes.skill.forEach(it => {
-            if (it.data.data.type === 'Convocation') {
+            if (it.data.data.type === 'Magic') {
                 data.convocations.push(it.data.name);
             }
         });
