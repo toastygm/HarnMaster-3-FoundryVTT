@@ -195,3 +195,23 @@ export function calcSkillBase(item) {
     }
 }
 
+export function createUniqueName(prefix, itemTypes) {
+    let incr = 0;
+    itemTypes.forEach(it => {
+        if (prefix === it.data.name) {
+            // Name was found, so minimum next increment will be 1
+            incr = Math.max(1, incr);
+        } else {
+            const match = it.data.name.match(`${prefix}-(\\d+)`);
+            if (match) {
+                // Found an existing increment, so increase it by 1
+                // as the new candidate; keep it only if it is greater than
+                // the max increment we have found so far.
+                const newIncr = Number(match[1]) + 1;
+                incr = Math.max(newIncr, incr);
+            }
+        }
+    });
+
+    return incr ? `${prefix}-${incr}` : prefix;
+}

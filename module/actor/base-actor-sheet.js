@@ -1,5 +1,6 @@
 import { DiceHM3 } from "../dice-hm3.js";
 import { HM3 } from "../config.js";
+import * as utility from '../utility.js';
 
 /**
  * Extend the basic ActorSheet with some common capabilities
@@ -120,37 +121,51 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         let name = 'New Item';
         if (type === 'skill' && header.dataset.skilltype) {
             if (header.dataset.skilltype === 'Psionic') {
-                name = 'New Psionic Talent';
+                name = utility.createUniqueName('New Psionic Talent', this.actor.itemTypes.skill);
             } else {
-                name = `New ${header.dataset.skilltype} Skill`;
+                name = utility.createUniqueName(`New ${header.dataset.skilltype} Skill`, this.actor.itemTypes.skill);
             }
         } else {
             switch (type) {
                 case "weapongear":
-                    name = 'New Weapon';
+                    name = utility.createUniqueName('New Weapon', this.actor.itemTypes.weapongear);
                     break;
 
                 case "missilegear":
-                    name = 'New Missile';
+                    name = utility.createUniqueName('New Missile', this.actor.itemTypes.missilegear);
                     break;
 
                 case "armorgear":
-                    name = 'New Armor Item';
+                    name = utility.createUniqueName('New Armor Item', this.actor.itemTypes.armorgear);
                     break;
 
                 case "miscgear":
-                    name = 'New Inventory Item';
+                    name = utility.createUniqueName('New Item', this.actor.itemTypes.miscgear);
                     break;
 
                 case "armorlocation":
-                    name = 'New Body Location';
+                    name = utility.createUniqueName('New Location', this.actor.itemTypes.armorlocation);
+                    break;
+
+                case "injury":
+                    name = utility.createUniqueName('New Injury', this.actor.itemTypes.injury);
+                    break;
+
+                case "spell":
+                    name = utility.createUniqueName('New Spell', this.actor.itemTypes.spell);
+                    break;
+
+                case "invocation":
+                    name = utility.createUniqueName('New Invocation', this.actor.itemTypes.invocation);
                     break;
 
                 default:
-                    name = `New ${type.capitalize()}`;
+                    console.error(`HM3 | Can't create item: unknown item type '${type}'`);
+                    return null;
             }
 
         }
+
         // Prepare the item object.
         const itemData = {
             name: name,
