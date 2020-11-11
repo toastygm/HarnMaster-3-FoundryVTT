@@ -13,6 +13,61 @@
         padding: 5px;
     }
 
+
+    .weight {
+        flex: 0 0 440px;
+
+        .weight-header {
+            background-color: rgba(0, 0, 0, 0.05);
+            color: #4b4a44;
+            border: 2px groove #eeede0;
+            padding: 5px;
+            font-weight: bold;
+        }
+
+        .weight-line {
+            padding: 5px;
+            border: 2px groove #eeede0;
+        }
+
+        .weight-detail {
+            text-align: center;
+            border-right: 2px groove #eeede0;
+        }
+
+        .title {
+            color: #4b4a44;
+            font-weight: bold;
+            flex: 0 0 65px;
+        }
+
+        .weapon {
+            flex: 0 0 65px;
+        }
+
+        .missile {
+            flex: 0 0 65px;
+        }
+        
+        .armor {
+            flex: 0 0 65px;
+        }
+        
+        .misc-gear {
+            flex: 0 0 75px;
+        }
+        
+        .total {
+            flex: 0 0 65px;
+            text-align: center;
+        }
+
+        .buf {
+            flex: 1;
+        }
+    }
+        
+
     .inv-stats {
         .inv-stat {
             align-items: center;
