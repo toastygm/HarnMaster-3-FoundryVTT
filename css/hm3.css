@@ -904,6 +904,34 @@
   border-bottom: 2px groove #FFF;
   padding: 5px; }
 
+.hm3 .inventory .weight {
+  flex: 0 0 375px; }
+  .hm3 .inventory .weight .weight-header {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #4b4a44;
+    border: 2px groove #eeede0;
+    padding: 5px;
+    font-weight: bold; }
+  .hm3 .inventory .weight .weight-line {
+    padding: 5px;
+    border: 2px groove #eeede0; }
+  .hm3 .inventory .weight .weight-detail {
+    text-align: center;
+    border-right: 2px groove #eeede0; }
+  .hm3 .inventory .weight .weapon {
+    flex: 0 0 65px; }
+  .hm3 .inventory .weight .missile {
+    flex: 0 0 65px; }
+  .hm3 .inventory .weight .armor {
+    flex: 0 0 65px; }
+  .hm3 .inventory .weight .misc-gear {
+    flex: 0 0 75px; }
+  .hm3 .inventory .weight .total {
+    flex: 0 0 65px;
+    text-align: center; }
+  .hm3 .inventory .weight .buf {
+    flex: 1; }
+
 .hm3 .inventory .inv-stats .inv-stat {
   align-items: center; }
   .hm3 .inventory .inv-stats .inv-stat .inv-stat-label {
