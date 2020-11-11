@@ -58,7 +58,10 @@
                 {{/if}}
             </div>
             <div class="resource">
-                <label class="resource-label">Skill Base Formula</label>
+                <label class="resource-label tooltip">Skill Base Formula<span class="tooltiptext">Enter a formula to automatically calculate skill base.  For example:
+                    "@str, @sta, @wil, Ulandus, Aralius:2". This will average strength, stamina, and will; if Ulandus sunsign, add 1; if Aralius sunsign, add 2.
+                    There must always be exactly three attributes.
+                    Valid attributes are: @str, @sta, @dex, @agl, @int, @aur, @wil, @eye, @hrg, @sml, @voi, @cml, @mor</span></label>
                 <input type="text" name="data.skillBase.formula" value="{{data.skillBase.formula}}"
                     data-dtype="String" />
                 {{#unless data.skillBase.isFormulaValid}}
