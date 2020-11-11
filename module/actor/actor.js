@@ -90,7 +90,7 @@ export class HarnMasterActor extends Actor {
     mergeObject(armorLocationData, HM3.injuryLocations['Neck'])
     data.items.push((new Item({name: 'Neck', type: 'armorlocation', data: armorLocationData})).data);
 
-    mergeObject(duparmorLocationData, HM3.injuryLocations['Shoulder'])
+    mergeObject(armorLocationData, HM3.injuryLocations['Shoulder'])
     data.items.push((new Item({name: 'Left Shoulder', type: 'armorlocation', data: armorLocationData})).data);
     data.items.push((new Item({name: 'Right Shoulder', type: 'armorlocation', data: armorLocationData})).data);
 
@@ -513,7 +513,7 @@ export class HarnMasterActor extends Actor {
   _refreshSpellsAndInvocations() {
     this._resetAllSpellsAndInvocations();
     this.data.items.forEach(it => {
-      if (it.type === 'skill' && it.data.type === 'Convocation') {
+      if (it.type === 'skill' && it.data.type === 'Magic') {
         this._setConvocationSpells(it.name, it.data.effectiveMasteryLevel);
       } else if (it.type === 'skill' && it.data.type === 'Ritual') {
         this._setRitualInvocations(it.name, it.data.effectiveMasteryLevel);
