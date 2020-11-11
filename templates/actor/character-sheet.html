@@ -842,14 +842,10 @@
 
         {{!-- Inventory Tab --}}
         <div class="tab inventory items" data-group="primary" data-tab="inventory">
-            <div class="items-list">
-                <div class="items-header flexrow">
-                    <h3 class="item-name">Gear Weight</h3>
-                </div>
-            </div>
             <div class="flexrow">
                 <ol class="weight flexcol">
                     <li class="weight-header flexrow">
+                        <div class="weight-detail title"></div>
                         <div class="weight-detail weapon">Weapon</div>
                         <div class="weight-detail missile">Missile</div>
                         <div class="weight-detail armor">Armor</div>
@@ -857,6 +853,7 @@
                         <div class="total">Total</div>
                     </li>
                     <li class="weight-line flexrow">
+                        <div class="weight-detail title">Weight</div>
                         <div class="weight-detail weapon">{{data.totalWeaponWeight}}</div>
                         <div class="weight-detail missile">{{data.totalMissileWeight}}</div>
                         <div class="weight-detail armor">{{data.totalArmorWeight}}</div>

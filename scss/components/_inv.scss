@@ -15,7 +15,7 @@
 
 
     .weight {
-        flex: 0 0 375px;
+        flex: 0 0 440px;
 
         .weight-header {
             background-color: rgba(0, 0, 0, 0.05);
@@ -33,6 +33,12 @@
         .weight-detail {
             text-align: center;
             border-right: 2px groove #eeede0;
+        }
+
+        .title {
+            color: #4b4a44;
+            font-weight: bold;
+            flex: 0 0 65px;
         }
 
         .weapon {

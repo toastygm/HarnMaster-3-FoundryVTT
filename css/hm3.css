@@ -905,7 +905,7 @@
   padding: 5px; }
 
 .hm3 .inventory .weight {
-  flex: 0 0 375px; }
+  flex: 0 0 440px; }
   .hm3 .inventory .weight .weight-header {
     background-color: rgba(0, 0, 0, 0.05);
     color: #4b4a44;
@@ -918,6 +918,10 @@
   .hm3 .inventory .weight .weight-detail {
     text-align: center;
     border-right: 2px groove #eeede0; }
+  .hm3 .inventory .weight .title {
+    color: #4b4a44;
+    font-weight: bold;
+    flex: 0 0 65px; }
   .hm3 .inventory .weight .weapon {
     flex: 0 0 65px; }
   .hm3 .inventory .weight .missile {
