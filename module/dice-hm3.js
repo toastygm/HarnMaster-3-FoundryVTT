@@ -728,6 +728,7 @@ export class DiceHM3 {
         // Render modal dialog
         let dlgTemplate = dialogOptions.template || "systems/hm3/templates/chat/damage-dialog.html";
         let dialogData = {
+            weapon: dialogOptions.weapon,
             damageDice: 1,
             weaponAspect: dialogOptions.weaponAspect,
             weaponAspects: dialogOptions.weaponAspects,
