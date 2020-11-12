@@ -24,7 +24,7 @@ The following features are included in this system.
 
 # Character Sheet Walkthrough
 
-See the [Walkthrough](WALKTHROUGH.md) page for a detailed review of the system (with screenshots).
+See the [Walkthrough](https://github.com/toastygm/HarnMaster-3-FoundryVTT/wiki/FoundryVTT-HarnMaster-Walkthrough) page for a detailed review of the system (with screenshots).
 
 # Usage
 
