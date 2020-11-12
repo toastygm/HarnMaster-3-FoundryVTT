@@ -22,6 +22,10 @@ The following features are included in this system.
 * Automatic dice rolls (skills, spells, ritual invocations, healing, shock, fumble, stumble, attack/defend, weapon damage, and injury)
 * Compatible with "Dice So Nice" module.
 
+# Character Sheet Walkthrough
+
+See the [Walkthrough](https://github.com/toastygm/HarnMaster-3-FoundryVTT/wiki/FoundryVTT-HarnMaster-Walkthrough) page for a detailed review of the system (with screenshots).
+
 # Usage
 
 Although most parts of this system should be self-explanatory to those familiar with H&acirc;rnMaster 3, there are some peculiarities that will be described here.
@@ -32,7 +36,7 @@ This system requires the user to have a copy of the H&acirc;rnMaster rules. Most
 
 ### Skills Missing
 
-Although basic laborious computations have been included in this system, only "default" skills and humanoid armor locations are loaded (on request); specifically those already on the publicly-available [character sheet and combat tables](https://secure.columbiagames.com/product/4001-PDF).  However, the Skill Base (SB) and Mastery Level (ML) values, although present, are not precalculated even for "default" skills.
+Although basic laborious computations have been included in this system, only "default" skills and humanoid armor locations are loaded (on request); specifically those already on the publicly-available [character sheet and combat tables](https://secure.columbiagames.com/product/4001-PDF).
 
 No other skills beyond the standard skills are provided; they must be manually entered along with all SB and ML characteristics.
 
@@ -81,6 +85,7 @@ The following capabilities are supported in both characters and creatures:
   * Injury roll (calculates location and Injury Level)
 
 * Automatic Calculations
+  * Automatic Skill Base calculation based on Formula
   * Total Injury Levels
   * Total Gear Weight
   * Encumbrance (characters only)
@@ -89,7 +94,7 @@ The following capabilities are supported in both characters and creatures:
   * All skill EMLs (based on ML minus UP or PP)
   * Endurance (based on Condition skill if present, otherwise calculated from abilities)
   * Move rate (characters only)
-  * Spell CML and Ritual Invocation RML (accounting for spell level or invocation circle)
+  * Spell EML and Ritual Invocation EML (accounting for spell level or invocation circle)
   * Weapon Attack ML (AML) and Defense ML (DML)
 
 ## Special Considerations
@@ -119,3 +124,4 @@ Only combat skills may be chosen as an "Associated Skill" for a weapon.
 Hit locations play a big part in the H&acirc;rnMaster combat system.  In order to correctly calculate hit location, each armor location is designated with a Probability Weight.  You can think of this as the percentage chance of that location getting hit.  In that case, the total of all armor location probability weights must add up to 100.
 
 There are separate probability weights for High, Mid, and Low aiming points.  For humanoid characters, if you chose to have the armor locations pre-loaded, these will already be setup to default values.  For creatures, no armor locations are available so you will need to enter your own armor locations and the probability weights for those.
+
