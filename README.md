@@ -35,7 +35,7 @@ All rolls appear in the chat window.  See the "Dice Rolls" section below for mor
 The header of the character sheet is always displayed.  This contains overall information, including name, current physical and universal penalties, Endurance (with a bar indicating how current endurance relates to maximum endurance), and move (base and effective).
 
 ## Profile Tab
-![Profile Tab] (images/screenshots/FVTT_HM3_Profile.jpg)
+![Profile Tab] (https://github.com/toastygm/HarnMaster-3-FoundryVTT/raw/blob/images/screenshots/FVTT_HM3_Profile.jpg?raw=true)
 
 The Profile tab contains general information about your character.  This includes the character stats as well as the public information that others can observe from your demeanor.
 
