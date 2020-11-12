@@ -23,14 +23,14 @@ Each ability stat contains the base ability (in small numbers) and the effective
 The skills tab displays all of the skills for the character, separated by skill type, including skill base, mastery level, and effective mastery level (after physical penalty and universal penalty have been applied).  Skill rolls can be performed by clicking the icon to the left of the skill name.
 
 ### Magic Skills Section
-![Magic Skills Section] (images/screenshots/FVTT_HM3_Magic_Skills.jpg)
+![Magic Skills Section](images/screenshots/FVTT_HM3_Magic_Skills.jpg)
 
 At the bottom of the skills tab is the section for Magic and Ritual skills. Magic skills are based on convocation, and here you provide your Convocational ML.
 
 Ritual skills are available per diety worshipped.  Note that this is where piety scores are recorded, since each diety has a separate piety score.
 
 ### Skills Detail Dialog
-![Skills Tab] (images/screenshots/FVTT_HM3_Skill_Detail.jpg)
+![Skills Tab](images/screenshots/FVTT_HM3_Skill_Detail.jpg)
 
 The skills detail page provides a mechanism for specifying the skill base and mastery level for a skill.
 
@@ -57,7 +57,7 @@ This formula indicates:
 Valid ability identifiers are: `@str`, `@sta`, `@dex`, `@agl`, `@int`, `@aur`, `@wil`, `@eye`, `@hrg`, `@sml`, `@voi`, `@cml`, and `@mor`.
 
 ## Combat Tab
-![Skills Tab] (images/screenshots/FVTT_HM3_Combat.jpg)
+![Skills Tab](images/screenshots/FVTT_HM3_Combat.jpg)
 
 At the top of the combat tab are a set of combat statistics, as well as clickable items that allow for common die rolls. _Note: Damage roll here is a generic roll, not specific to any weapon; use the weapon-specific damage in preference to this._
 
@@ -95,7 +95,7 @@ If a piece of armor is entered into the Gear tab, and marked as "equipped", area
 For any locations where no "automatic" armor is covering, those areas may be modified manually.  Therefore, to specify the Skull area manually, you must ensure that there is no equipped armor in the Gear section that is set to cover the Skull area.
 
 ## Esoterics Tab
-![Skills Tab] (images/screenshots/FVTT_HM3_Esoterics.jpg)
+![Skills Tab](images/screenshots/FVTT_HM3_Esoterics.jpg)
 
 While the skills tab records the convocational and ritual skills for the character, this tab records the spells and/or ritual invocations usable by the character.  The icon to the right of the spell and/or invocation name is clickable to perform a casting roll.
 
@@ -104,7 +104,7 @@ The EML here takes into account spell level or invocation circle, as well as the
 Psionics are also tracked on this page.
 
 ## Gear Tab
-![Skills Tab] (images/screenshots/FVTT_HM3_Gear.jpg)
+![Skills Tab](images/screenshots/FVTT_HM3_Gear.jpg)
 
 This tab records all of the carried items on the character with the exception of weapons (which are recorded on the combat tab).  Most importatly here is the armor section.  The armor section lists all of the armor and other clothing worn by the character.  For details, see the next section.
 
@@ -113,7 +113,7 @@ Each piece of armor (and misc. items) have two extra toggles: equipped and carri
 Obviously, if an item is not carried it cannot be equipped, so items are automatically unequipped if they are not carried.
 
 ### Armor Gear Dialog
-![Skills Tab] (images/screenshots/FVTT_HM3_Skills.jpg)
+![Skills Tab](images/screenshots/FVTT_HM3_Skills.jpg)
 
 The Armor Gear dialog provides details of a specific piece of armor.  You may specify the protective value of the armor, and the locations where that armor is protecting/covering.
 
@@ -124,7 +124,7 @@ Any equipped armor will provide its protective values automatically to all locat
 There are a number of rolls performed by this system.  Most rolls are self-explanatory, usually a d100 roll which can end in Critical Success, Moderate Success, Moderate Failure, or Critical Failure.  d6 rolls are normally only Success or Failure (no criticals).
 
 ### Attack/Defense Rolls
-![Attack-Defense Chat] (images/screenshots/FVTT_HM3_AtkDef_Rolls.jpg)
+![Attack-Defense Chat](images/screenshots/FVTT_HM3_AtkDef_Rolls.jpg)
 
 When an attack roll is made, a entry is posted to the chat window specifying the weapon, any modifiers, and the result.
 
@@ -133,7 +133,7 @@ The defender then performs a defense roll, specifying the type of defense and an
 The players will have to consult the H&acirc;rnMaster combat tables for the results of success or failure.
 
 ### Damage/Injury Rolls
-![Damage-Injury Chat] (images/screenshots/FVTT_HM3_DmgInjury_Rolls.jpg)
+![Damage-Injury Chat](images/screenshots/FVTT_HM3_DmgInjury_Rolls.jpg)
 
 Once the HarnMaster combat tables indicate that an attack succeeds, the attacker performs a damage roll.  This will request the number of dice, the damage aspect (blunt, edged, piercing, or fire), and any additional modifiers.  The result will then be displayed.
 
