@@ -585,10 +585,26 @@
                                 <div class="item-detail weapon-weight">{{data.weight}}</div>
                                 <div class="item-detail weapon-quality">{{data.weaponQuality}}</div>
                                 <div class="item-detail weapon-atkdef">{{data.attack}}/{{data.defense}}</div>
+                                {{#if (lt data.handMode 0)}}
+                                <div class="item-detail weapon-handmode"><i class="fas fa-times"></i></div>
+                                {{else}}
                                 <div class="item-detail weapon-handmode">{{data.handMode}}</div>
+                                {{/if}}
+                                {{#if (lt data.blunt 0)}}
+                                <div class="item-detail weapon-blunt"><i class="fas fa-times"></i></div>
+                                {{else}}
                                 <div class="item-detail weapon-blunt">{{data.blunt}}</div>
+                                {{/if}}
+                                {{#if (lt data.edged 0)}}
+                                <div class="item-detail weapon-edged"><i class="fas fa-times"></i></div>
+                                {{else}}
                                 <div class="item-detail weapon-edged">{{data.edged}}</div>
+                                {{/if}}
+                                {{#if (lt data.piercing 0)}}
+                                <div class="item-detail weapon-piercing"><i class="fas fa-times"></i></div>
+                                {{else}}
                                 <div class="item-detail weapon-piercing">{{data.piercing}}</div>
+                                {{/if}}
                                 <div class="item-detail weapon-attack {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="std-roll"  data-label="{{item.name}} Attack" data-target="{{data.attackMasteryLevel}}" title="{{item.name}} Attack Roll">{{data.attackMasteryLevel}}</a>{{else}}{{data.attackMasteryLevel}}{{/if}}</div>
                                 <div class="item-detail weapon-defense {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="std-roll" data-label="{{item.name}} Defense" data-target="{{data.defenseMasteryLevel}}" title="{{item.name}} Defense Roll">{{data.defenseMasteryLevel}}</a>{{else}}{{data.defenseMasteryLevel}}{{/if}}</div>
                                 <div class="item-detail weapon-notes">{{data.notes}}</div>
@@ -636,10 +652,26 @@
                                 <div class="item-detail missile-qty">{{data.quantity}}</div>
                                 <div class="item-detail missile-weight">{{data.weight}}</div>
                                 <div class="item-detail missile-skill">{{data.assocSkill}}</div>
+                                {{#if (lt data.range.short 0)}}
+                                <div class="item-detail missile-short"><i class="fas fa-times"></i></div>
+                                {{else}}
                                 <div class="item-detail missile-short">{{data.range.short}}/{{data.impact.short}}</div>
+                                {{/if}}
+                                {{#if (lt data.range.medium 0)}}
+                                <div class="item-detail missile-medium"><i class="fas fa-times"></i></div>
+                                {{else}}
                                 <div class="item-detail missile-medium">{{data.range.medium}}/{{data.impact.medium}}</div>
+                                {{/if}}
+                                {{#if (lt data.range.long 0)}}
+                                <div class="item-detail missile-long"><i class="fas fa-times"></i></div>
+                                {{else}}
                                 <div class="item-detail missile-long">{{data.range.long}}/{{data.impact.long}}</div>
+                                {{/if}}
+                                {{#if (lt data.range.extreme 0)}}
+                                <div class="item-detail missile-extreme"><i class="fas fa-times"></i></div>
+                                {{else}}
                                 <div class="item-detail missile-extreme">{{data.range.extreme}}/{{data.impact.extreme}}</div>
+                                {{/if}}
                                 <div class="item-detail missile-attack {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="missile-attack-roll"
                                     data-range-short="{{data.range.short}}" data-range-medium="{{data.range.medium}}"
                                     data-range-long="{{data.range.long}}" data-range-extreme="{{data.range.extreme}}" data-missile="{{item.name}}"

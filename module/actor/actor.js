@@ -21,8 +21,12 @@ export class HarnMasterActor extends Actor {
     data.items = [];
 
     // If character, automatically add basic skills and armor locations
-    if (data.type == 'character') {
+    if (data.type === 'character') {
       // Request whether to initialize skills and armor locations
+      if (options.skipDefaultItems) {
+        return super.create(data, options);
+      }
+
       new Dialog({
         title: 'Initialize Skills and Locations',
         content: `<p>Add Default Skills and Locations?</p>`,
@@ -30,15 +34,15 @@ export class HarnMasterActor extends Actor {
           yes: {
             label: 'Yes',
             callback: async dlg => {
-              HarnMasterActor._createDefaultCharacterSkills(data);
-              HarnMasterActor._createDefaultHumanoidLocations(data);          
-              super.create(data, options); // Follow through the the rest of the Actor creation process upstream
+                HarnMasterActor._createDefaultCharacterSkills(data);
+                HarnMasterActor._createDefaultHumanoidLocations(data);
+              return super.create(data, options); // Follow through the the rest of the Actor creation process upstream
             }
           },
           no: {
             label: 'No',
             callback: async dlg => {
-              super.create(data, options); // Do not add new items, continue with the rest of the Actor creation process upstream          
+              return super.create(data, options); // Do not add new items, continue with the rest of the Actor creation process upstream          
             }
           },
         },
@@ -214,6 +218,8 @@ export class HarnMasterActor extends Actor {
   _prepareCharacterData(actorData) {
     const data = actorData.data;
 
+    this._calcEndurance(this.data.items, data);
+
     this._unequipUncarriedGear(data);
 
     // If description has not been initialized, then initialize it
@@ -234,7 +240,7 @@ export class HarnMasterActor extends Actor {
     this._calcInjuryTotal(data);
     this._calcGearWeightTotals(data);
 
-    data.encumbrance = Math.floor(data.totalGearWeight / 10);
+    data.encumbrance = Math.floor(data.totalGearWeight / data.endurance.max );
 
     // Universal Penalty and Physical Penalty are used to calculate many
     // things, including effectiveMasteryLevel for all skills,
@@ -251,14 +257,7 @@ export class HarnMasterActor extends Actor {
     // Some properties are calculated from skills.  Do that here.
     this._setPropertiesFromSkills(this.data.items, data);
 
-    // If we have a condition skill, endurance.max will have been set using that
-    // Otherwise, we will need to set it using the standard formula
-    if (!data.hasCondition) {
-      data.endurance.max = Math.round((data.abilities.strength.base + data.abilities.stamina.base + 
-        data.abilities.will.base)/3);
-    }
-
-    // Now calculate endurance.value; this value cannot go below 0
+    // Calculate endurance.value; this value cannot go below 0
     data.endurance.value = Math.max(data.endurance.max - data.physicalPenalty, 0);
     data.endurance.pct = Math.round((data.endurance.value / data.endurance.max)*100);
 
@@ -438,6 +437,34 @@ export class HarnMasterActor extends Actor {
     });
   }
 
+  _calcEndurance(items, data) {
+    let hasCondition = false;
+    let conditionLevel = 0;
+    items.forEach(it => {
+      if (it.type === 'skill' && it.name.toLowerCase() === 'condition') {
+        hasCondition = true;
+        conditionLevel = it.data.masteryLevel;
+      }
+    });
+
+    // If we found the condition skill, then use that value for endurance.
+    // Otherwise, calculate it.
+    if (hasCondition) {
+      data.hasCondition = true;
+      data.endurance.max = Math.floor(conditionLevel / 5);
+    } else {
+      data.hasCondition = false;
+      data.endurance.max = Math.round((data.abilities.strength.base + data.abilities.stamina.base + 
+        data.abilities.will.base)/3);
+    }
+
+    // Safety net: if endurance is ever <= 0, then set it to 1
+    // so a bunch of other stuff doesn't go to infinity
+    if (data.endurance.max <= 0) {
+      data.endurance.max = 1;
+    }
+  }
+
   _setPropertiesFromSkills(items, data) {
     data.hasCondition = false;
 
@@ -446,11 +473,6 @@ export class HarnMasterActor extends Actor {
         switch(it.name.toLowerCase()) {
           case 'initiative':
             data.initiative = it.data.effectiveMasteryLevel;
-            break;
-
-          case 'condition':
-            data.hasCondition = true;
-            data.endurance.max = Math.floor(it.data.masteryLevel / 5);
             break;
 
           case 'dodge':
@@ -601,6 +623,11 @@ export class HarnMasterActor extends Actor {
   }
 
   _generateArmorLocationMap(data) {
+    // If there is no armor gear, don't make any changes to the armorlocations;
+    // leave all custom values alone.  But if there is even one piece
+    // of armor, then these calculations take over.
+    if (!this.itemTypes.armorgear.length) return;
+
     // Initialize
     const armorMap = {};
     const ilMap = HM3.injuryLocations;
@@ -647,6 +674,8 @@ export class HarnMasterActor extends Actor {
       }
     });
 
+    // Remove empty items from armormap
+
     // For efficiency, convert the map into an Array
     const armorArray = Object.values(armorMap);
 
@@ -654,7 +683,9 @@ export class HarnMasterActor extends Actor {
     // existing armor locations
     this.data.items.forEach(it => {
       if (it.type === 'armorlocation') {
-        const armorProt = armorArray.find(a => a.name === it.data.impactType);
+        let armorProt = armorArray.find(a => a.name === it.data.impactType);
+
+        // We will ignore any armorProt if there is no armor values specified
         if (armorProt) {
           it.data.blunt = armorProt.blunt;
           it.data.edged = armorProt.edged;

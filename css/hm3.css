@@ -546,6 +546,9 @@
     text-decoration: underline;
     text-shadow: none; }
 
+.hm3 .sheet-body .tab {
+  margin-right: 5px; }
+
 .hm3 .items h2 {
   flex: 1;
   margin: 0;

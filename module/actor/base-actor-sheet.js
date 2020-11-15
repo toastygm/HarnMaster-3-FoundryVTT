@@ -1,5 +1,6 @@
 import { DiceHM3 } from "../dice-hm3.js";
 import { HM3 } from "../config.js";
+//import { ImportFFF } from "../import-char.js";
 import * as utility from '../utility.js';
 
 /**
@@ -17,37 +18,26 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     }
 
     /** @override */
-    async _onDropItem(event, data) {
+    async _onDropItemCreate(data) {
         const actor = this.actor;
         if (!actor.owner) return false;
-        const item = await Item.fromDropData(data);
-        const itemName = item.name;
-        const itemType = item.type;
+        //const item = await Item.fromDropData(data);
 
-        // Only gear is allowed to be duplicated; all
-        // other items must be unique (and drop will
-        // be rejected for them).
-        if (!itemType.endsWith("gear")) {
-            let found = false;
-            actor.items.forEach(it => {
-                // Generally, if the items have the same type and name, mark it as found
-                if (!found) {
-                    found = it.data.type === itemType && it.data.name === itemName;
-                }
-            });
+        if (!data.type.endsWith("gear")) {
+            for (let it of actor.items.values()) {
+                // Generally, if the items have the same type and name,
+                // then merge the dropped item onto the existing item.
+                if (it.data.type === data.type && it.data.name === data.name) {
+                    this.mergeItem(it, data);
 
-            // Reject the drop request by returning false if a match was found
-            if (found) {
-                if (itemType === 'skill') {
-                    console.warn(`HM3 | DragDrop of ${itemName}, a ${item.data.data.type} skill, onto ${actor.data.name} was rejected because an identically named skill already exists`);
-                } else {
-                    console.warn(`HM3 | DragDrop of ${itemName} of type ${itemType}} onto ${actor.data.name} rejected; ${itemName} already exists`);
+                    // Don't actually allow the new item
+                    // to be created.
+                    return false;
                 }
-                return false;
             }
         }
 
-        return super._onDropItem(event, data);
+        return super._onDropItemCreate(data);
     }
 
     /** @override */
@@ -104,6 +94,61 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
     /* -------------------------------------------- */
 
+    async mergeItem(item, other) {
+        if (item.data.type != other.type) {
+            return;
+        }
+
+        const data = item.data.data;
+        const otherData = other.data;
+        const updateData = {};
+
+        if (!data.notes) data.notes = otherData.notes;
+        if (!data.source) data.source = otherData.source;
+        if (!data.description) data.description = otherData.description;
+
+        switch(item.data.type) {
+            case 'skill':
+                // If the skill types don't match, return without change
+                if (data.type != otherData.type) {
+                    return;
+                }
+
+                // NOTE: We never copy over the skillbase value or
+                // the Piety value, those must always be set in the
+                // actor's sheet.
+
+                // If the skillbase is blank, copy it over from dropped item
+                if (!data.skillBase.formula) {
+                    updateData['data.skillBase.formula'] = otherData.skillBase.formula;
+                    updateData['data.skillBase.isFormulaValid'] = otherData.skillBase.isFormulaValid;
+                }
+                
+                // If our type is Psionic, and the current item's psionic time is blank,
+                // copy over all psionic data from the dropped item.
+                if (data.type = 'Psionic' && !data.psionic.time) {
+                    updateData['data.psionic.time'] = otherData.psionic.time;
+                    updateData['data.psionic.fatigue'] = otherData.psionic.fatigue;
+                }
+                break;
+
+            case 'spell':
+                updateData['data.convocation'] = otherData.convocation;
+                updateData['data.level'] = otherData.level;
+                break;
+
+            case 'invocation':
+                updateData['data.diety'] = otherData.diety;
+                updateData['data.circle'] = otherData.circle;
+                break;
+        }
+
+        if (updateData) {
+            await item.update(updateData);
+        }
+        
+        return;
+    }
     /**
      * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
      * @param {Event} event   The originating click event
@@ -320,6 +365,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
      */
     _onInjuryRoll(event) {
         event.preventDefault();
+        //const ifff = new ImportFFF();
+        //ifff.importFromJSON("fffv1.json");
         this.actor.injuryRoll();
     }
 
