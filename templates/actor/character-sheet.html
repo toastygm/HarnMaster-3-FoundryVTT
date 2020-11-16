@@ -289,11 +289,12 @@
         <div class="tab skills items" data-group="primary" data-tab="skills">
             <!-- Physical Skills -->
             <ol class="items-list skills-list">
-                <li class="items-header flexrow">
-                    <h3 class="item-name">Physical Skills</h3>
+                <li class="items-header skill flexrow">
+                    <h3 class="item-name skill-name">Physical Skills</h3>
                     <div class="skill-ele item-detail">SB</div>
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
+                    <div class="skill-notes item-detail">Notes</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create Physical Skill" data-type="skill" data-skilltype="Physical"><i
                                 class="fas fa-plus"></i> Add</a>
@@ -303,13 +304,14 @@
                     {{#each actor.items as |item id|}}
                         {{#if (and (eq item.type "skill") (eq item.data.type "Physical"))}}
                             <li class="item skill flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
-                                <div class="item-name std-roll flexrow" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}">
+                                <div class="item-name std-roll skill-name flexrow" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                                     <h4>{{item.name}}</h4>
                                 </div>
                                 <div class="skill-ele item-detail">{{data.skillBase.value}}</div>
                                 <div class="skill-ele item-detail">{{data.masteryLevel}}</div>
                                 <div class="skill-ele item-detail">{{data.effectiveMasteryLevel}}</div>
+                                <div class="skill-notes">{{data.notes}}</div>
                                 <div class="item-controls">
                                     <a class="item-control item-edit" title="Edit Skill"><i class="fas fa-edit"></i></a>
                                     <a class="item-control item-delete" title="Delete Skill" data-label="Physical Skill"><i class="fas fa-trash"></i></a>
@@ -322,11 +324,12 @@
 
             <!-- Communication Skills -->
             <ol class="items-list skills-list">
-                <li class="items-header flexrow">
-                    <h3 class="item-name">Communication Skills</h3>
+                <li class="items-header skill flexrow">
+                    <h3 class="item-name skill-name">Communication Skills</h3>
                     <div class="skill-ele item-detail">SB</div>
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
+                    <div class="skill-notes item-detail">Notes</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create Communication Skill" data-type="skill" data-skilltype="Communication"><i
                                 class="fas fa-plus"></i> Add</a>
@@ -336,13 +339,14 @@
                     {{#each actor.items as |item id|}}
                         {{#if (and (eq item.type "skill") (eq item.data.type "Communication"))}}
                             <li class="item skill flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
-                                <div class="item-name std-roll flexrow" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}">
+                                <div class="item-name std-roll skill-name flexrow" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                                     <h4>{{item.name}}</h4>
                                 </div>
                                 <div class="skill-ele item-detail">{{data.skillBase.value}}</div>
                                 <div class="skill-ele item-detail">{{data.masteryLevel}}</div>
                                 <div class="skill-ele item-detail">{{data.effectiveMasteryLevel}}</div>
+                                <div class="skill-notes">{{data.notes}}</div>
                                 <div class="item-controls">
                                     <a class="item-control item-edit" title="Edit Skill"><i class="fas fa-edit"></i></a>
                                     <a class="item-control item-delete" title="Delete Skill" data-label="Communication Skill"><i class="fas fa-trash"></i></a>
@@ -355,11 +359,12 @@
 
             <!-- Combat Skills -->
             <ol class="items-list skills-list">
-                <li class="items-header flexrow">
-                    <h3 class="item-name">Combat Skills</h3>
+                <li class="items-header skill flexrow">
+                    <h3 class="item-name skill-name">Combat Skills</h3>
                     <div class="skill-ele item-detail">SB</div>
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
+                    <div class="skill-notes item-detail">Notes</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create Combat Skill" data-type="skill" data-skilltype="Combat"><i
                                 class="fas fa-plus"></i> Add</a>
@@ -369,13 +374,14 @@
                     {{#each actor.items as |item id|}}
                         {{#if (and (eq item.type "skill") (eq item.data.type "Combat"))}}
                             <li class="item skill flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
-                                <div class="item-name std-roll flexrow" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}">
+                                <div class="item-name std-roll skill-name flexrow" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                                     <h4>{{item.name}}</h4>
                                 </div>
                                 <div class="skill-ele item-detail">{{data.skillBase.value}}</div>
                                 <div class="skill-ele item-detail">{{data.masteryLevel}}</div>
                                 <div class="skill-ele item-detail">{{data.effectiveMasteryLevel}}</div>
+                                <div class="skill-notes">{{data.notes}}</div>
                                 <div class="item-controls">
                                     <a class="item-control item-edit" title="Edit Skill"><i class="fas fa-edit"></i></a>
                                     <a class="item-control item-delete" title="Delete Skill" data-label="Combat Skill"><i class="fas fa-trash"></i></a>
@@ -388,11 +394,12 @@
 
             <!-- Craft Skills -->
             <ol class="items-list skills-list">
-                <li class="items-header flexrow">
-                    <h3 class="item-name">Craft Skills</h3>
+                <li class="items-header skill flexrow">
+                    <h3 class="item-name skill-name">Craft Skills</h3>
                     <div class="skill-ele item-detail">SB</div>
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
+                    <div class="skill-notes item-detail">Notes</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create Craft Skill" data-type="skill" data-skilltype="Craft"><i
                                 class="fas fa-plus"></i> Add</a>
@@ -402,13 +409,14 @@
                     {{#each actor.items as |item id|}}
                         {{#if (and (eq item.type "skill") (eq item.data.type "Craft"))}}
                             <li class="item skill flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
-                                <div class="item-name std-roll flexrow" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}">
+                                <div class="item-name std-roll skill-name flexrow" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                                     <h4>{{item.name}}</h4>
                                 </div>
                                 <div class="skill-ele item-detail">{{data.skillBase.value}}</div>
                                 <div class="skill-ele item-detail">{{data.masteryLevel}}</div>
                                 <div class="skill-ele item-detail">{{data.effectiveMasteryLevel}}</div>
+                                <div class="skill-notes">{{data.notes}}</div>
                                 <div class="item-controls">
                                     <a class="item-control item-edit" title="Edit Skill"><i class="fas fa-edit"></i></a>
                                     <a class="item-control item-delete" title="Delete Skill" data-label="Craft Skill"><i class="fas fa-trash"></i></a>
@@ -421,11 +429,12 @@
 
             <!-- Magic Skills -->
             <ol class="items-list skills-list">
-                <li class="items-header flexrow">
-                    <h3 class="item-name">Magic Skills</h3>
+                <li class="items-header skill flexrow">
+                    <h3 class="item-name skill-name">Magic Skills</h3>
                     <div class="skill-ele item-detail">SB</div>
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
+                    <div class="skill-notes item-detail">Notes</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create Magic Skill" data-type="skill" data-skilltype="Magic"><i
                                 class="fas fa-plus"></i> Add</a>
@@ -435,13 +444,14 @@
                     {{#each actor.items as |item id|}}
                         {{#if (and (eq item.type "skill") (eq item.data.type "Magic"))}}
                             <li class="item skill flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
-                                <div class="item-name std-roll flexrow" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}">
+                                <div class="item-name std-roll skill-name flexrow" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                                     <h4>{{item.name}}</h4>
                                 </div>
                                 <div class="skill-ele item-detail">{{data.skillBase.value}}</div>
                                 <div class="skill-ele item-detail">{{data.masteryLevel}}</div>
                                 <div class="skill-ele item-detail">{{data.effectiveMasteryLevel}}</div>
+                                <div class="skill-notes">{{data.notes}}</div>
                                 <div class="item-controls">
                                     <a class="item-control item-edit" title="Edit Skill"><i class="fas fa-edit"></i></a>
                                     <a class="item-control item-delete" title="Delete Skill" data-label="Magic Skill"><i class="fas fa-trash"></i></a>
@@ -454,12 +464,13 @@
 
             <!-- Ritual Skills -->
             <ol class="items-list skills-list">
-                <li class="items-header flexrow">
-                    <h3 class="item-name">Ritual Skills</h3>
-                    <div class="skill-ele item-detail">Piety</div>
+                <li class="items-header skill flexrow">
+                    <h3 class="item-name skill-name">Ritual Skills</h3>
                     <div class="skill-ele item-detail">SB</div>
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
+                    <div class="skill-ele item-detail">Piety</div>
+                    <div class="skill-notes item-detail">Notes</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create Ritual Skill" data-type="skill" data-skilltype="Ritual"><i
                                 class="fas fa-plus"></i> Add</a>
@@ -469,14 +480,15 @@
                     {{#each actor.items as |item id|}}
                         {{#if (and (eq item.type "skill") (eq item.data.type "Ritual"))}}
                             <li class="item skill flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
-                                <div class="item-name std-roll flexrow" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}">
+                                <div class="item-name std-roll skill-name flexrow" data-label="{{item.name}} Skill Test" data-target="{{data.effectiveMasteryLevel}}">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                                     <h4>{{item.name}}</h4>
                                 </div>
-                                <div class="skill-ele item-detail">{{data.ritual.piety}}</div>
                                 <div class="skill-ele item-detail">{{data.skillBase.value}}</div>
                                 <div class="skill-ele item-detail">{{data.masteryLevel}}</div>
                                 <div class="skill-ele item-detail">{{data.effectiveMasteryLevel}}</div>
+                                <div class="skill-ele item-detail">{{data.ritual.piety}}</div>
+                                <div class="skill-notes">{{data.notes}}</div>
                                 <div class="item-controls">
                                     <a class="item-control item-edit" title="Edit Skill"><i class="fas fa-edit"></i></a>
                                     <a class="item-control item-delete" title="Delete Skill" data-label="Ritual Skill"><i class="fas fa-trash"></i></a>
@@ -578,7 +590,7 @@
                         {{#if (eq item.type "weapongear")}}
                             <li class="item weapon flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
                                 <div class="item-name weapon-name {{#if (and data.isEquipped data.isCarried)}}damage-roll{{/if}} flexrow" data-weapon="{{item.name}}">
-                                <div class="item-image" style="background-image: url('{{item.img}}')"></div>
+                                    <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                                     <h4>{{item.name}}</h4>
                                 </div>
                                 <div class="item-detail weapon-qty">{{data.quantity}}</div>
