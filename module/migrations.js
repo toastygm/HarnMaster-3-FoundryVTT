@@ -260,6 +260,13 @@ export function migrateItemData(itemData) {
                 updateData['data.weaponQuality'] = 0;
             }
         }
+
+        // starting in 0.7.0, armor now has a size attribute that defaults to '6'
+        if (itemData.type === 'armorgear') {
+            if (typeof data.size === 'undefined') {
+                updateData['data.size'] = 6;
+            }
+        }
     }
     
     if (itemData.type === 'armorlocation') {
