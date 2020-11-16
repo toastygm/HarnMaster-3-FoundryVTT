@@ -58,11 +58,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         });
 
         // Delete Inventory Item
-        html.find('.item-delete').click(ev => {
-            const li = $(ev.currentTarget).parents(".item");
-            this.actor.deleteOwnedItem(li.data("itemId"));
-            li.slideUp(200, () => this.render(false));
-        });
+        html.find('.item-delete').click(this._onItemDelete.bind(this));
 
         // Rollable abilities.
         html.find('.rollable').click(this._onRoll.bind(this));
@@ -93,6 +89,29 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     }
 
     /* -------------------------------------------- */
+
+    async _onItemDelete(event) {
+        event.preventDefault();
+        const header = event.currentTarget;
+        const type = header.dataset.type;
+        const data = duplicate(header.dataset);
+        const li = $(header).parents(".item");
+
+        const title = `Delete ${data.label}`;
+
+        // Create the dialog window
+        let agree=false;
+        await Dialog.confirm({
+            title: title,
+            content: '<p>Are you sure?</p>',
+            yes: () => agree = true
+        });
+
+        if (agree) {
+            this.actor.deleteOwnedItem(li.data("itemId"));
+            li.slideUp(200, () => this.render(false));
+        }
+    }
 
     async mergeItem(item, other) {
         if (item.data.type != other.type) {
@@ -365,8 +384,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
      */
     _onInjuryRoll(event) {
         event.preventDefault();
-        //const ifff = new ImportFFF();
-        //ifff.importFromJSON("fffv1.json");
+        //const ifff = new ImportMiscGear();
+        //ifff.importFromJSON("expanded-price-list.json");
         this.actor.injuryRoll();
     }
 
