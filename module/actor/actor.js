@@ -222,19 +222,6 @@ export class HarnMasterActor extends Actor {
 
     this._unequipUncarriedGear(data);
 
-    // If description has not been initialized, then initialize it
-    if (data.description === '***INIT***') {
-        // Set default character biography and description
-        data.biography = '<p>Birthdate:</p>\n<p>Sunsign:</p>\n<p>Birthplace:</p>\n' +
-          '<p>Culture:</p>\n<p>Sibling Rank: x of y</p>\n<p>Parent(s):</p>\n' +
-          '<p>Parent Occupation:</p>\n<p>Estrangement:</p>\n<p>Clanhead:</p>\n' +
-          '<p>Medical Traits:</p>\n<p>Psyche Traits:</p>\n<p>&nbsp;</p>';
-
-        data.description = '<p>Apparent Age:</p>\n<p>Social Class:</p>\n' +
-          '<p>Frame:</p>\n<p>Height:</p>\n<p>Weight:</p>\n<p>Comliness:</p>\n' +
-          '<p>Appearance:</p>\n<p>&nbsp;</p>';
-    }
-
     // Calculate weight and injury level totals, used to calculate
     // universal penalty below.
     this._calcInjuryTotal(data);
