@@ -39,7 +39,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             // Ask how many to move
             return await this._moveQtyDialog(event, data);
         } else {
-            return await this._moveOneItem(data);
+            return await this._moveItems(data, 1);
         }
     }
 
