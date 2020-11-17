@@ -1,5 +1,6 @@
 import { DiceHM3 } from "../dice-hm3.js";
 import { HM3 } from "../config.js";
+//import { ImportArmorGear } from "../import-armor.js";
 //import { ImportFFF } from "../import-char.js";
 import * as utility from '../utility.js';
 
@@ -15,6 +16,141 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         data.config = CONFIG.HM3;
         data.dtypes = ["String", "Number", "Boolean"];
         return data;
+    }
+
+    async _onDropItem(event, data) {
+        if (data.actorId === this.actor._id || !data.data.type.endsWith("gear")) {
+            return super._onDropItem(event, data);
+        }
+
+        // At this point we know this dropped item comes from another actor,
+        // and it is some sort of "gear". Go ahead and process the drop, but
+        // track the result.
+
+        const quantity = data.data.data.quantity;
+
+        console.log(`Original Item Qty: ${quantity}`);
+
+        // Source quantity really should never be 0 or negative; if so, just decline
+        // the drop request.
+        if (quantity <= 0) return false;
+
+        if (quantity > 1) {
+            // Ask how many to move
+            return await this._moveQtyDialog(event, data);
+        } else {
+            return await this._moveOneItem(data);
+        }
+    }
+
+    async _moveQtyDialog(event, data) {
+        const sourceActor = await game.actors.get(data.actorId);
+
+        // Render modal dialog
+        let dlgTemplate = "systems/hm3/templates/dialog/item-qty.html";
+        let dialogData = {
+            itemName: data.data.name,
+            sourceName: sourceActor.data.name,
+            targetName: this.actor.data.name,
+            maxItems: data.data.data.quantity,
+        };
+
+        const html = await renderTemplate(dlgTemplate, dialogData);
+
+        // Create the dialog window
+        return Dialog.prompt({
+            title: "Move Items",
+            content: html,
+            label: "OK",
+            callback: async (html) => {
+                const form = html.querySelector('#items-to-move');
+                const fd = new FormDataExtended(form);
+                const formdata = fd.toObject();
+                let formQtyToMove = parseInt(formdata.itemstomove);
+                
+                if (formQtyToMove <= 0) {
+                    return false;
+                } else {
+                    return await this._moveItems(data, formQtyToMove);
+                }
+                
+                // if (formQtyToMove >= dialogData.maxItems) {
+                //     return await this._moveOneItem(data);
+                // } else {
+                //     const item = await Item.fromDropData(data);
+
+                //     // Get item data, replace qty with new qty
+                //     // then create the new item in this actor
+                //     const itemData = duplicate(item.data);
+                //     itemData.data.quantity = formQtyToMove;
+                //     const result = await this.actor.createOwnedItem(itemData);
+        
+                //     if (result) {
+                //         // creation succeeded, so now update the existing
+                //         // item.
+                //         const newQuantity = dialogData.maxItems - formQtyToMove;
+                //         const sourceActor = await game.actors.get(data.actorId);
+                //         const sourceItem = await sourceActor.getOwnedItem(data.data._id);
+                //         await sourceItem.update({'data.quantity': newQuantity});
+                //     }
+
+                //     return result;
+                // }
+            },
+            options: { jQuery: false }
+        });
+    }
+
+    async _moveItems(data, moveQuantity) {
+        const sourceName = data.data.name;
+        const sourceType = data.data.type;
+        const sourceQuantity = data.data.data.quantity;
+
+        // Look for a similar item locally
+        let result = null;
+        for (let it of this.actor.items.values()) {
+            if (it.data.type === sourceType && it.data.name === sourceName) {
+                result = it;
+                break;
+            }
+        }
+
+        if (result) {
+            // update quantity
+            const newTargetQuantity = result.data.data.quantity + moveQuantity;
+            await result.update({'data.quantity': newTargetQuantity});
+        } else {
+            // Create an item
+            const item = await Item.fromDropData(data);
+            const itemData = duplicate(item.data);
+            itemData.data.quantity = moveQuantity;
+            result = await this.actor.createOwnedItem(itemData);
+        }
+
+        if (result) {
+            const sourceActor = await game.actors.get(data.actorId);
+            if (moveQuantity >= data.data.data.quantity) {
+                await sourceActor.deleteOwnedItem(data.data._id);    
+            } else {
+                const newSourceQuantity = sourceQuantity - moveQuantity;
+                const sourceItem = await sourceActor.getOwnedItem(data.data._id);
+                await sourceItem.update({'data.quantity': newSourceQuantity});
+            }
+        }
+        return result;        
+    }
+
+    async _moveOneItem(data) {
+        console.log('Immediately move one item')
+        // Immediately move the one item
+        const item = await Item.fromDropData(data);
+        const itemData = duplicate(item.data);
+        const result = await this.actor.createOwnedItem(data.data);
+        if (result) {
+            const sourceActor = await game.actors.get(data.actorId);
+            await sourceActor.deleteOwnedItem(data.data._id);
+        }
+        return result;    
     }
 
     /** @override */
@@ -384,8 +520,10 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
      */
     _onInjuryRoll(event) {
         event.preventDefault();
-        //const ifff = new ImportMiscGear();
-        //ifff.importFromJSON("expanded-price-list.json");
+        //const ifff = new ImportFFF();
+        //ifff.importFromJSON("fffv1.json");
+        //const ifff = new ImportArmorGear();
+        //ifff.importFromJSON("armor.json");
         this.actor.injuryRoll();
     }
 
