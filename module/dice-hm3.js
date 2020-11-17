@@ -307,6 +307,13 @@ export class DiceHM3 {
      * @param {*} result 
      */
     static createInjury(actor, result) {
+        const injuryDesc = {
+            'Blunt':    { 'M': 'Bruise', 'S': 'Fracture', 'G': 'Crush' },
+            'Edged':    { 'M': 'Cut', 'S': 'Slash', 'G': 'Gash' },
+            'Piercing': { 'M': 'Poke', 'S': 'Stab', 'G': 'Impale' },
+            'Fire':     { 'M': 'Singe', 'S': 'Burn', 'G': 'Scorch' }
+        };
+
         if (result.injuryLevel === 0) return;
 
         let injuryData = {};
@@ -320,8 +327,16 @@ export class DiceHM3 {
         } else {
             injuryData.severity = 'G';
         }
+        
+        injuryData.notes = `Aspect: ${result.aspect}`;
+
+        let locationName = result.location;
+        if (injuryDesc[result.aspect]) {
+            locationName = `${result.location} ${injuryDesc[result.aspect][injuryData.severity]}`;
+        }
+
         injuryData.healRate = 0;  // until it is tended, we can't determine HR
-        let item = actor.createOwnedItem({name: result.location, type: 'injury', data: injuryData});
+        let item = actor.createOwnedItem({name: locationName, type: 'injury', data: injuryData});
 
         return item;
     }
