@@ -19,7 +19,10 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     }
 
     async _onDropItem(event, data) {
-        if (data.actorId === this.actor._id || !data.data.type.endsWith("gear")) {
+        // NOTE: when an item comes from the item list or a compendium, its type is
+        // "Item" but it does not have a "data" element.  So we have to check for that in
+        // the following conditional; "data.data.type" may not exist!
+        if (data.actorId === this.actor._id || !data.data || !data.data.type.endsWith("gear")) {
             return super._onDropItem(event, data);
         }
 
@@ -28,8 +31,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // track the result.
 
         const quantity = data.data.data.quantity;
-
-        console.log(`Original Item Qty: ${quantity}`);
 
         // Source quantity really should never be 0 or negative; if so, just decline
         // the drop request.
@@ -73,29 +74,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 } else {
                     return await this._moveItems(data, formQtyToMove);
                 }
-                
-                // if (formQtyToMove >= dialogData.maxItems) {
-                //     return await this._moveOneItem(data);
-                // } else {
-                //     const item = await Item.fromDropData(data);
-
-                //     // Get item data, replace qty with new qty
-                //     // then create the new item in this actor
-                //     const itemData = duplicate(item.data);
-                //     itemData.data.quantity = formQtyToMove;
-                //     const result = await this.actor.createOwnedItem(itemData);
-        
-                //     if (result) {
-                //         // creation succeeded, so now update the existing
-                //         // item.
-                //         const newQuantity = dialogData.maxItems - formQtyToMove;
-                //         const sourceActor = await game.actors.get(data.actorId);
-                //         const sourceItem = await sourceActor.getOwnedItem(data.data._id);
-                //         await sourceItem.update({'data.quantity': newQuantity});
-                //     }
-
-                //     return result;
-                // }
             },
             options: { jQuery: false }
         });
@@ -138,19 +116,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             }
         }
         return result;        
-    }
-
-    async _moveOneItem(data) {
-        console.log('Immediately move one item')
-        // Immediately move the one item
-        const item = await Item.fromDropData(data);
-        const itemData = duplicate(item.data);
-        const result = await this.actor.createOwnedItem(data.data);
-        if (result) {
-            const sourceActor = await game.actors.get(data.actorId);
-            await sourceActor.deleteOwnedItem(data.data._id);
-        }
-        return result;    
     }
 
     /** @override */
