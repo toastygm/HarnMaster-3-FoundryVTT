@@ -721,9 +721,6 @@
   .hm3 .combat .weapons-list .weapon-header {
     font-weight: bold; }
   .hm3 .combat .weapons-list .weapon {
-    height: 30px;
-    line-height: 24px;
-    padding: 3px 0;
     border-bottom: 1px solid #bbb; }
     .hm3 .combat .weapons-list .weapon .item-name.damage-roll:hover .item-image {
       background-image: url("../../../icons/svg/d20-grey.svg") !important; }
@@ -1023,9 +1020,6 @@
   .hm3 .injuries-list .injury-header {
     font-weight: bold; }
   .hm3 .injuries-list .injury {
-    height: 30px;
-    line-height: 24px;
-    padding: 3px 0;
     border-bottom: 1px solid #BBB; }
     .hm3 .injuries-list .injury .injury-image {
       flex: 0 0 24px;
@@ -1186,9 +1180,6 @@
   .hm3 .esoteric .psionics-list .psionic-header {
     font-weight: bold; }
   .hm3 .esoteric .psionics-list .psionic {
-    height: 30px;
-    line-height: 30px;
-    padding: 3px 0;
     border-bottom: 1px solid #BBB; }
     .hm3 .esoteric .psionics-list .psionic .item-name.std-roll:hover .item-image {
       background-image: url("../../../icons/svg/d20-grey.svg") !important; }
@@ -1238,9 +1229,6 @@
   .hm3 .armorlocations-list .armorlocation-header {
     font-weight: bold; }
   .hm3 .armorlocations-list .armorlocation {
-    height: 30px;
-    line-height: 24px;
-    padding: 3px 0;
     border-bottom: 1px solid #BBB; }
     .hm3 .armorlocations-list .armorlocation .armorlocation-image {
       flex: 0 0 24px;
@@ -1292,9 +1280,6 @@
   .hm3 .armor-list .armor-header {
     font-weight: bold; }
   .hm3 .armor-list .armor {
-    height: 30px;
-    line-height: 24px;
-    padding: 3px 0;
     border-bottom: 1px solid #bbb; }
     .hm3 .armor-list .armor .armor-image {
       flex: 0 0 24px;
