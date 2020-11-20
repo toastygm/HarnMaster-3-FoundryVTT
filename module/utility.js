@@ -1,3 +1,5 @@
+import { HM3 } from './config.js';
+
 /**
  * Determines whether the Skill Base Formula is valid. We perform that
  * validation here so even a skill not associated with a particular
@@ -214,4 +216,66 @@ export function createUniqueName(prefix, itemTypes) {
     });
 
     return incr ? `${prefix}-${incr}` : prefix;
+}
+/**
+ * Returns the path to the appropriate image name for the specified
+ * item name
+ * 
+ * @param {String} name 
+ */
+export function getImagePath(name) {
+    const mysteryMan = 'icons/svg/mystery-man.svg';
+
+    if (!name) return mysteryMan;
+
+    const lcName = name.toLowerCase();
+    const re = /\(([^\)]+)\)/;
+
+    for (let key of HM3.defaultItemIcons.keys()) {
+        // if there is a direct match, this is best and return match
+        if (lcName === key) {
+            return HM3.defaultItemIcons.get(key);
+        }
+
+        // If there is a value in parenthesis, and there is a match,
+        // then use that (this is for detailed-skills); e.g.
+        //           Broadsword (Sword)     <== will match sword
+        //           Keltan (Dagger)        <== will match dagger
+        const match = re.exec(lcName);
+        if (match) {
+            if (key === match[1]) {
+                return HM3.defaultItemIcons.get(key);
+            }
+        }
+
+        // If all else fails, if the name starts with an existing key,
+        // use that.  For example:
+        //       Language: Harnic     <== will match "language"
+        if (lcName.startsWith(key)) {
+            return HM3.defaultItemIcons.get(key);
+        }
+    }
+
+    return mysteryMan;
+}
+
+export function assocSkill(name, skills, defaultSkill) {
+    if (!name || !skills || !skills.length) return defaultSkill;
+
+    const lcName = name.toLowerCase();
+    const re = /\[([^\)]+)\]/i;
+
+    // Exact Match
+    let skillMatch = skills.find(s => s.toLowerCase() === lcName);
+    if (skillMatch) return skillMatch;
+
+    // Sub-skill match (sub-skill is in square brackets)
+    let subSkillMatch = re.exec(name);
+    if (subSkillMatch) {
+        lcSubSkill = subSkillMatch[1].toLowerCase();
+        skillMatch = skills.find(s => s.toLowerCase() === lcSubSkill)
+        if (skillMatch) return skillMatch;
+    }
+
+    return defaultSkill;
 }
