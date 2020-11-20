@@ -1141,9 +1141,6 @@
   .hm3 .esoteric .spells-list .spell-header {
     font-weight: bold; }
   .hm3 .esoteric .spells-list .spell {
-    height: 30px;
-    line-height: 24px;
-    padding: 3px 0;
     border-bottom: 1px solid #BBB; }
     .hm3 .esoteric .spells-list .spell .item-name.std-roll:hover .item-image {
       background-image: url("../../../icons/svg/d20-grey.svg") !important; }
@@ -1190,7 +1187,7 @@
     font-weight: bold; }
   .hm3 .esoteric .psionics-list .psionic {
     height: 30px;
-    line-height: 24px;
+    line-height: 30px;
     padding: 3px 0;
     border-bottom: 1px solid #BBB; }
     .hm3 .esoteric .psionics-list .psionic .item-name.std-roll:hover .item-image {
