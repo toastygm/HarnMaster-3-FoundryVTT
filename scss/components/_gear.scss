@@ -28,6 +28,13 @@
         overflow: hidden;
     }
 
+    .armor-name-inv {
+        flex: 0 0 200px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
     .armor-qty {
         flex: 0 0 40px;
         text-align: center;
@@ -47,6 +54,11 @@
     }
 
     .armor-weight {
+        flex: 0 0 40px;
+        text-align: center;
+    }
+
+    .armor-value {
         flex: 0 0 40px;
         text-align: center;
     }
@@ -110,12 +122,24 @@
         overflow: hidden;
     }
 
+    .gear-name-inv {
+        flex: 0 0 200px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
     .gear-qty {
         flex: 0 0 40px;
         text-align: center;
     }
 
     .gear-weight {
+        flex: 0 0 40px;
+        text-align: center;
+    }
+
+    .gear-value {
         flex: 0 0 40px;
         text-align: center;
     }

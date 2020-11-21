@@ -562,6 +562,9 @@
   border-bottom: 2px groove #FFF;
   padding: 5px; }
 
+.hm3 .items .nocarry {
+  color: #7a7971; }
+
 .hm3 .items .items-list {
   list-style: none;
   margin: 7px 0;
@@ -612,7 +615,6 @@
     border-bottom: none; }
   .hm3 .items .items-list .item-detail {
     font-size: 12px;
-    color: #7a7971;
     border-right: 1px solid #c9c7b8;
     word-break: break-word;
     white-space: nowrap;
@@ -634,8 +636,7 @@
     .hm3 .items .items-list .item-controls .item-control {
       flex: 0 0 22px;
       font-size: 12px;
-      text-align: center;
-      color: #7a7971; }
+      text-align: center; }
     .hm3 .items .items-list .item-controls .item-controls {
       flex: 0 0 70px;
       text-align: right; }
@@ -651,8 +652,7 @@
     .hm3 .items .items-list .item-controls-wide .item-control {
       flex: 0 0 22px;
       font-size: 12px;
-      text-align: center;
-      color: #7a7971; }
+      text-align: center; }
       .hm3 .items .items-list .item-controls-wide .item-control .item-equip {
         color: #b5b3a4; }
       .hm3 .items .items-list .item-controls-wide .item-control .item-carry {
@@ -743,11 +743,22 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden; }
+    .hm3 .combat .weapons-list .weapon .weapon-name-inv {
+      flex: 0 0 200px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden; }
     .hm3 .combat .weapons-list .weapon .weapon-qty {
       flex: 0 0 25px;
       text-align: center; }
     .hm3 .combat .weapons-list .weapon .weapon-weight {
       flex: 0 0 25px;
+      text-align: center; }
+    .hm3 .combat .weapons-list .weapon .weapon-qty-inv {
+      flex: 0 0 40px;
+      text-align: center; }
+    .hm3 .combat .weapons-list .weapon .weapon-weight-inv {
+      flex: 0 0 40px;
       text-align: center; }
     .hm3 .combat .weapons-list .weapon .weapon-quality {
       flex: 0 0 25px;
@@ -766,6 +777,9 @@
       text-align: center; }
     .hm3 .combat .weapons-list .weapon .weapon-piercing {
       flex: 0 0 25px;
+      text-align: center; }
+    .hm3 .combat .weapons-list .weapon .weapon-value {
+      flex: 0 0 40px;
       text-align: center; }
     .hm3 .combat .weapons-list .weapon .weapon-attack {
       flex: 0 0 30px;
@@ -787,6 +801,9 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden; }
+    .hm3 .combat .weapons-list .weapon .item-controls-inv {
+      flex: 0 0 55px;
+      text-align: right; }
     .hm3 .combat .weapons-list .weapon .item-controls {
       flex: 0 0 70px;
       text-align: right; }
@@ -830,11 +847,22 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden; }
+    .hm3 .combat .missiles-list .missile .missile-name-inv {
+      flex: 0 0 200px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden; }
     .hm3 .combat .missiles-list .missile .missile-qty {
       flex: 0 0 25px;
       text-align: center; }
     .hm3 .combat .missiles-list .missile .missile-weight {
       flex: 0 0 30px;
+      text-align: center; }
+    .hm3 .combat .missiles-list .missile .missile-qty-inv {
+      flex: 0 0 40px;
+      text-align: center; }
+    .hm3 .combat .missiles-list .missile .missile-weight-inv {
+      flex: 0 0 40px;
       text-align: center; }
     .hm3 .combat .missiles-list .missile .missile-skill {
       flex: 0 0 75px;
@@ -855,6 +883,9 @@
     .hm3 .combat .missiles-list .missile .missile-extreme {
       flex: 0 0 45px;
       text-align: center; }
+    .hm3 .combat .missiles-list .missile .missile-value {
+      flex: 0 0 40px;
+      text-align: center; }
     .hm3 .combat .missiles-list .missile .missile-attack {
       flex: 0 0 30px;
       text-align: center; }
@@ -868,6 +899,9 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden; }
+    .hm3 .combat .missiles-list .missile .item-controls-inv {
+      flex: 0 0 55px;
+      text-align: right; }
     .hm3 .combat .missiles-list .missile .item-controls {
       flex: 0 0 70px;
       text-align: right; }
@@ -1095,7 +1129,7 @@
       flex: 0 0 22px;
       font-size: 12px;
       text-align: center;
-      color: #7a7971; }
+      color: #4b4a44; }
 
 .hm3.item .skill-header img.profile-img {
   flex: 0 0 85px;
@@ -1171,6 +1205,8 @@
   .hm3 .esoteric .spells-list .item-controls {
     flex: 0 0 45px;
     text-align: right; }
+    .hm3 .esoteric .spells-list .item-controls .active {
+      color: #4b4a44; }
 
 .hm3 .esoteric .psionics-list {
   list-style: none;
@@ -1213,6 +1249,8 @@
   .hm3 .esoteric .psionics-list .item-controls {
     flex: 0 0 45px;
     text-align: right; }
+    .hm3 .esoteric .psionics-list .item-controls .active {
+      color: #4b4a44; }
 
 .hm3 .armorlocation .adv-setting {
   align-items: center;
@@ -1291,6 +1329,11 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden; }
+  .hm3 .armor-list .armor-name-inv {
+    flex: 0 0 200px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden; }
   .hm3 .armor-list .armor-qty {
     flex: 0 0 40px;
     text-align: center; }
@@ -1304,6 +1347,9 @@
     flex: 0 0 40px;
     text-align: center; }
   .hm3 .armor-list .armor-weight {
+    flex: 0 0 40px;
+    text-align: center; }
+  .hm3 .armor-list .armor-value {
     flex: 0 0 40px;
     text-align: center; }
   .hm3 .armor-list .armor-notes {
@@ -1344,10 +1390,18 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden; }
+  .hm3 .gear-list .gear-name-inv {
+    flex: 0 0 200px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden; }
   .hm3 .gear-list .gear-qty {
     flex: 0 0 40px;
     text-align: center; }
   .hm3 .gear-list .gear-weight {
+    flex: 0 0 40px;
+    text-align: center; }
+  .hm3 .gear-list .gear-value {
     flex: 0 0 40px;
     text-align: center; }
   .hm3 .gear-list .gear-notes {
