@@ -13,6 +13,10 @@
     padding: 5px;
   }
 
+  .nocarry {
+    color: #7a7971;
+  }
+
   .items-list {
     list-style: none;
     margin: 7px 0;
@@ -84,7 +88,7 @@
 
     .item-detail {
       font-size: 12px;
-      color: #7a7971;
+//      color: #7a7971;
       border-right: 1px solid #c9c7b8;
       word-break: break-word;
       white-space: nowrap;
@@ -116,7 +120,6 @@
         flex: 0 0 22px;
         font-size: 12px;
         text-align: center;
-        color: #7a7971;
       }
 
       .item-controls {
@@ -145,7 +148,6 @@
         flex: 0 0 22px;
         font-size: 12px;
         text-align: center;
-        color: #7a7971;
 
         
         .item-equip {
