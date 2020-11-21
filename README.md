@@ -217,3 +217,8 @@ The following images were taken from [The Noun Project](https://thenounproject.c
 * weather by Creative Mania
 * whip by lastspark
 * woodworker by Pham Duy Phuong Hung
+* Coins by Vectors Market
+* sack by Andrejs Kirma
+* Torch by Pixelicatom
+* Candle by Martin
+* boxes by Sarah

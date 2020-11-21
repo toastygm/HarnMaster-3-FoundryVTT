@@ -37,6 +37,12 @@ HM3.injuryLocations = {
 HM3.injuryLevels = ["NA", "M1", "S2", "S3", "G4", "G5", "K4", "K5"];
 
 HM3.defaultItemIcons = new Map([
+    // Defaults
+    ['miscgear', 'systems/hm3/images/icons/svg/miscgear.svg'],
+    ['psionics', 'systems/hm3/images/icons/svg/psionics.svg'],
+    ['circle', 'systems/hm3/images/icons/svg/circle.svg'],
+    ['pentacle', 'systems/hm3/images/icons/svg/pentacle.svg'],
+
     // Physical Skills
     ['acrobatics', 'systems/hm3/images/icons/svg/acrobatics.svg'],
     ['climbing', 'systems/hm3/images/icons/svg/climbing.svg'],
@@ -190,7 +196,33 @@ HM3.defaultItemIcons = new Map([
     ['woodcraft', 'systems/hm3/images/icons/svg/woodcraft.svg'],
 
     // Psionics
-    ['psionics', 'systems/hm3/images/icons/svg/psionics.svg'],
+
+    // Gear
+    ['coin', 'systems/hm3/images/icons/svg/coins.svg'],
+    ['farthing', 'systems/hm3/images/icons/svg/coins.svg'],
+    ['pence', 'systems/hm3/images/icons/svg/coins.svg'],
+    ['pennies', 'systems/hm3/images/icons/svg/coins.svg'],
+    ['penny', 'systems/hm3/images/icons/svg/coins.svg'],
+    ['silver coins', 'systems/hm3/images/icons/svg/coins.svg'],
+    ['silver pieces', 'systems/hm3/images/icons/svg/coins.svg'],
+    ['silver pennies', 'systems/hm3/images/icons/svg/coins.svg'],
+    ['silver penny', 'systems/hm3/images/icons/svg/coins.svg'],
+    ['shilling', 'systems/hm3/images/icons/svg/coins.svg'],
+    ['gold crown', 'systems/hm3/images/icons/svg/coins.svg'],
+    ['gold piece', 'systems/hm3/images/icons/svg/coins.svg'],
+    ['khuzan gold crown', 'systems/hm3/images/icons/svg/coins.svg'],
+    ['khuzan crown', 'systems/hm3/images/icons/svg/coins.svg'],
+    ['sack', 'systems/hm3/images/icons/svg/sack.svg'],
+    ['backpack', 'systems/hm3/images/icons/svg/sack.svg'],
+    ['pouch', 'systems/hm3/images/icons/svg/sack.svg'],
+    ['belt pouch', 'systems/hm3/images/icons/svg/sack.svg'],
+    ['torch', 'systems/hm3/images/icons/svg/torch.svg'],
+    ['candle', 'systems/hm3/images/icons/svg/candle.svg'],
+    ['pence', 'systems/hm3/images/icons/svg/coins.svg'],
+    ['pence', 'systems/hm3/images/icons/svg/coins.svg'],
+    ['pence', 'systems/hm3/images/icons/svg/coins.svg'],
+    ['helm', 'systems/hm3/images/icons/svg/helm.svg'],
+    ['steel helm', 'systems/hm3/images/icons/svg/helm.svg'],
 
     // Shek P'var Convocations
     ['lyahvi', 'systems/hm3/images/icons/svg/wind.svg'],
