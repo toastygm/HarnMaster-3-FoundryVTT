@@ -545,8 +545,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             return null;
         }
 
-        console.log(result);
-
         // Bring up edit dialog to complete creating item
         const item = this.actor.getOwnedItem(result._id);
         item.sheet.render(true);
