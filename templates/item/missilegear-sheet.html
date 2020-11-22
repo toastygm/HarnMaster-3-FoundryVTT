@@ -46,7 +46,7 @@
                 </div>
                 <div class="resource">
                     <label class="resource-label" for="data.assocSkill">Associated Skill</label>
-                    {{#if hasActor}}
+                    {{#if hasCombatSkills}}
                     <select class="resource-value" name="data.assocSkill" data-dtype="String">
                         {{#select data.assocSkill}}
                         {{#each combatSkills}}

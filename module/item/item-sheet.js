@@ -28,6 +28,9 @@ export class HarnMasterItemSheet extends ItemSheet {
     data.config = CONFIG.HM3;
     data.itemType = this.item.data.type;
     data.hasActor = this.actor && true;
+    data.hasCombatSkills = false;
+    data.hasRitualSkills = false;
+    data.hasMagicSkills = false;
 
     // Fill appropriate lists for individual item sheets
     if (this.item.data.type === 'spell') {
@@ -37,6 +40,7 @@ export class HarnMasterItemSheet extends ItemSheet {
         this.actor.itemTypes.skill.forEach(it => {
             if (it.data.data.type === 'Magic') {
                 data.convocations.push(it.data.name);
+                data.hasMagicSkills = true;
             }
         });
       }
@@ -47,6 +51,7 @@ export class HarnMasterItemSheet extends ItemSheet {
         this.actor.itemTypes.skill.forEach(it => {
             if (it.data.data.type === 'Ritual') {
                 data.dieties.push(it.data.name);
+                data.hasRitualSkills = true;
             }
         });
       }
@@ -75,6 +80,7 @@ export class HarnMasterItemSheet extends ItemSheet {
               // since you never want a weapon based on those skills.
               if (!(lcName === 'initiative' || lcName === 'dodge')) {
                   data.combatSkills.push(it.data.name);
+                  data.hasCombatSkills = true;
               }
           }
         });
