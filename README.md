@@ -222,3 +222,5 @@ The following images were taken from [The Noun Project](https://thenounproject.c
 * Torch by Pixelicatom
 * Candle by Martin
 * boxes by Sarah
+* lance by parkjisun
+* Trident by Yohann
