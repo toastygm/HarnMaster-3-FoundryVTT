@@ -89,6 +89,7 @@ Hooks.once("ready", function() {
   if ( needMigration && game.user.isGM ) {
     migrations.migrateWorld();
   }
+  HM3.ready = true;
 });
 
 // Since HM3 does not have the concept of rolling for initiative,
@@ -100,6 +101,7 @@ Hooks.on('preCreateCombatant', (combat, combatant, options, id) => {
     combatant.initiative = token.actor.data.data.initiative;
   }
 });
+
 
 /*-------------------------------------------------------*/
 /*            Handlebars FUNCTIONS                       */
