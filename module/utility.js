@@ -224,9 +224,7 @@ export function createUniqueName(prefix, itemTypes) {
  * @param {String} name 
  */
 export function getImagePath(name) {
-    const mysteryMan = 'icons/svg/mystery-man.svg';
-
-    if (!name) return mysteryMan;
+    if (!name) return CONFIG.DEFAULT_TOKEN;
 
     const lcName = name.toLowerCase();
     const re = /\(([^\)]+)\)/;
@@ -256,12 +254,14 @@ export function getImagePath(name) {
         }
     }
 
-    return mysteryMan;
+    return CONFIG.DEFAULT_TOKEN;
 }
 
-export function assocSkill(name, skills, defaultSkill) {
-    if (!name || !skills || !skills.length) return defaultSkill;
+export function getAssocSkill(name, skillsItemArray, defaultSkill) {
+    if (!name || !skillsItemArray || !skillsItemArray.length) return defaultSkill;
 
+    const skills = skillsItemArray.map(s => s.data.name);
+    
     const lcName = name.toLowerCase();
     const re = /\[([^\)]+)\]/i;
 
@@ -272,10 +272,29 @@ export function assocSkill(name, skills, defaultSkill) {
     // Sub-skill match (sub-skill is in square brackets)
     let subSkillMatch = re.exec(name);
     if (subSkillMatch) {
-        lcSubSkill = subSkillMatch[1].toLowerCase();
+        const lcSubSkill = subSkillMatch[1].toLowerCase();
         skillMatch = skills.find(s => s.toLowerCase() === lcSubSkill)
         if (skillMatch) return skillMatch;
     }
 
     return defaultSkill;
+}
+
+/**
+ * Returns whether or not a icon path is one of the standard icons.
+ * 
+ * @param {String} iconPath Icon path to test
+ * @param {Array} iconArray Array of standard icons
+ */
+export function isStdIcon(iconPath, iconArray) {
+    if (!iconPath || !iconArray) return false;
+
+    if (iconPath === CONFIG.DEFAULT_TOKEN) return true;
+
+    let result = false;
+    iconArray.forEach(i => {
+        if (!result && i[1] === iconPath) result = true;
+    });
+
+    return result;
 }
