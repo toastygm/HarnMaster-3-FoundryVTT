@@ -253,7 +253,8 @@ export class HarnMasterActor extends Actor {
     // Some properties are calculated from skills.  Do that here.
     this._setPropertiesFromSkills(this.data.items, data);
 
-    this._calcEnduranceValue();    
+    this._calcEnduranceValue(data);
+
     // Calculate current Move speed.  Cannot go below 0
     data.move.effective = Math.max(data.move.base - data.physicalPenalty, 0);
 
@@ -305,7 +306,7 @@ export class HarnMasterActor extends Actor {
     // Some properties are calculated from skills.  Do that here.
     this._setPropertiesFromSkills(this.data.items, data);
 
-    this._calcEnduranceValue();
+    this._calcEnduranceValue(data);
 
     // Calculate current Move speed.  Cannot go below 0
     data.move.effective = Math.max(data.move.base - data.physicalPenalty, 0);
@@ -389,19 +390,16 @@ export class HarnMasterActor extends Actor {
    *       any calculations here until after the system is fully
    *       ready.
    */
-  _calcEnduranceValue () {
+  _calcEnduranceValue (data) {
     if (HM3.ready && !this.isToken) {
       // Calculate endurance.value; this value cannot go below 0
-      const newEndValue = Math.max(data.endurance.max - data.physicalPenalty, 0);
-      if (newEndValue !== data.endurance.value) {
-        data.endurance.value = newEndValue
-        data.endurance.pct = Math.round((data.endurance.value / data.endurance.max)*100);
-        
-        // Send event to all tokens
-        if (canvas) this.getActiveTokens().forEach(token => {
-          if (token.bars) token._onUpdateBarAttributes(this.data, {"endurance.value": data.endurance.value});
-        });
-      }
+      data.endurance.value = Math.max(data.endurance.max - data.physicalPenalty, 0);
+      data.endurance.pct = Math.round((data.endurance.value / data.endurance.max)*100);
+      
+      // Send event to all tokens
+      if (canvas) this.getActiveTokens().forEach(token => {
+        if (token.bars) token._onUpdateBarAttributes(this.data, {"endurance.value": data.endurance.value});
+      });
     }
   }
 
