@@ -10,7 +10,64 @@
   "esmodules": ["module/hm3.js"],
   "styles": ["css/hm3.css"],
   "scripts": [],
-  "packs": [],
+  "packs": [
+    {
+      "label": "Std Skills - Physical",
+      "name": "std-skills-physical",
+      "path": "packs/std-skills-physical.db",
+      "system": "hm3",
+      "entity": "Item"
+    },
+    {
+      "label": "Std Skills - Communication",
+      "name": "std-skills-communication",
+      "path": "packs/std-skills-communication.db",
+      "system": "hm3",
+      "entity": "Item"
+    },
+    {
+      "label": "Std Skills - Combat",
+      "name": "std-skills-combat",
+      "path": "packs/std-skills-combat.db",
+      "system": "hm3",
+      "entity": "Item"
+    },
+    {
+      "label": "Std Skills - Crafts & Lore",
+      "name": "std-skills-crafts-and-lore",
+      "path": "packs/std-skills-crafts-and-lore.db",
+      "system": "hm3",
+      "entity": "Item"
+    },
+    {
+      "label": "Std Skills - Religion",
+      "name": "std-skills-religion",
+      "path": "packs/std-skills-religion.db",
+      "system": "hm3",
+      "entity": "Item"
+    },
+    {
+      "label": "Std Skills - Magic",
+      "name": "std-skills-magic",
+      "path": "packs/std-skills-magic.db",
+      "system": "hm3",
+      "entity": "Item"
+    },
+    {
+      "label": "Std Weapons",
+      "name": "std-weapons",
+      "path": "packs/std-weapons.db",
+      "system": "hm3",
+      "entity": "Item"
+    },
+    {
+      "label": "Std Armor",
+      "name": "std-armor",
+      "path": "packs/std-armor.db",
+      "system": "hm3",
+      "entity": "Item"
+    }
+  ],
   "languages": [
     {
       "lang": "en",
@@ -18,9 +75,10 @@
       "path": "lang/en.json"
     }
   ],
+  "socket": true,
   "gridDistance": 5,
   "gridUnits": "ft",
-  "primaryTokenAttribute": "endurance.value",
+  "primaryTokenAttribute": "endurance",
   "secondaryTokenAttribute": null,
   "url": "https://github.com/toastygm/HarnMaster-3-FoundryVTT/",
   "manifest": "https://raw.githubusercontent.com/toastygm/HarnMaster-3-FoundryVTT/master/system.json",
