@@ -581,14 +581,14 @@
                     <div class="item-detail weapon-defense">DML</div>
                     <div class="item-detail weapon-notes">Notes</div>
                     <div class="item-controls-wide">
-                        <a class="item-control item-create" title="Add Weapon" data-type="weapongear"><i
+                        <a class="item-control item-create active" title="Add Weapon" data-type="weapongear"><i
                                 class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 <ol class="item-list weapon-list">
                     {{#each actor.items as |item id|}}
                         {{#if (eq item.type "weapongear")}}
-                            <li class="item weapon flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
+                            <li class="item weapon {{#unless data.isCarried}}nocarry{{/unless}} flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
                                 <div class="item-name weapon-name {{#if (and data.isEquipped data.isCarried)}}damage-roll{{/if}} flexrow" data-weapon="{{item.name}}">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                                     <h4>{{item.name}}</h4>
@@ -623,8 +623,8 @@
                                 <div class="item-controls-wide">
                                     <a class="item-control item-equip" title="Equip Weapon"><i class="{{#if data.isEquipped}}active{{/if}} fas fa-shield-alt"></i></a>
                                     <a class="item-control item-carry" title="Carry Weapon"><i class="{{#if data.isCarried}}active{{/if}} fas fa-suitcase"></i></a>
-                                    <a class="item-control item-edit" title="Edit Weapon"><i class="fas fa-edit"></i></a>
-                                    <a class="item-control item-delete" title="Delete Weapon" data-label="Weapon"><i class="fas fa-trash"></i></a>
+                                    <a class="item-control item-edit" title="Edit Weapon"><i class="active fas fa-edit"></i></a>
+                                    <a class="item-control item-delete" title="Delete Weapon" data-label="Weapon"><i class="active fas fa-trash"></i></a>
                                 </div>
                             </li>
                         {{/if}}
@@ -646,14 +646,14 @@
                     <div class="item-detail missile-attack">AML</div>
                     <div class="item-detail missile-notes">Notes</div>
                     <div class="item-controls-wide">
-                        <a class="item-control item-create" title="Create Missile" data-type="missilegear"><i
+                        <a class="item-control item-create active" title="Create Missile" data-type="missilegear"><i
                                 class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 <ol class="item-list missile-list">
                     {{#each actor.items as |item id|}}
                         {{#if (eq item.type "missilegear")}}
-                            <li class="item missile flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
+                            <li class="item missile {{#unless data.isCarried}}nocarry{{/unless}} flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
                                 <div class="item-name missile-name {{#if (and data.isEquipped data.isCarried)}}missile-damage-roll{{/if}} flexrow"
                                     data-missile="{{item.name}}" data-aspect="{{data.weaponAspect}}" 
                                     data-impact-short="{{data.impact.short}}" data-impact-medium="{{data.impact.medium}}"
@@ -693,8 +693,8 @@
                                 <div class="item-controls-wide">
                                     <a class="item-control item-equip" title="Equip Missile"><i class="{{#if data.isEquipped}}active{{/if}} fas fa-shield-alt"></i></a>
                                     <a class="item-control item-carry" title="Carry Missile"><i class="{{#if data.isCarried}}active{{/if}} fas fa-suitcase"></i></a>
-                                    <a class="item-control item-edit" title="Edit Missile"><i class="fas fa-edit"></i></a>
-                                    <a class="item-control item-delete" title="Delete Missile" data-label="Missile"><i class="fas fa-trash"></i></a>
+                                    <a class="item-control item-edit" title="Edit Missile"><i class="active fas fa-edit"></i></a>
+                                    <a class="item-control item-delete" title="Delete Missile" data-label="Missile"><i class="active fas fa-trash"></i></a>
                                 </div>
                             </li>
                         {{/if}}
@@ -711,7 +711,7 @@
                     <div class="item-detail injury-notes">Notes</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create Injury" data-type="injury"><i
-                                class="fas fa-plus"></i> Add</a>
+                                class="active fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 <ol class="item-list injury-list">
@@ -726,8 +726,8 @@
                                 <div class="item-detail injury-severity">{{data.severity}}</div>
                                 <div class="item-detail injury-notes">{{data.notes}}</div>
                                 <div class="item-controls">
-                                    <a class="item-control item-edit" title="Edit Injury"><i class="fas fa-edit"></i></a>
-                                    <a class="item-control item-delete" title="Delete Injury" data-label="Injury"><i class="fas fa-trash"></i></a>
+                                    <a class="item-control item-edit" title="Edit Injury"><i class="active fas fa-edit"></i></a>
+                                    <a class="item-control item-delete" title="Delete Injury" data-label="Injury"><i class="active fas fa-trash"></i></a>
                                 </div>
                             </li>
                         {{/if}}
@@ -748,7 +748,7 @@
                     <div class="item-detail armorlocation-notes">Notes</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create Location" data-type="armorlocation"><i
-                                class="fas fa-plus"></i> Add</a>
+                                class="active fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 <ol class="item-list armorlocation-list">
@@ -766,8 +766,8 @@
                                 <div class="item-detail armorlocation-fire">{{data.fire}}</div>
                                 <div class="item-detail armorlocation-notes">{{data.notes}}</div>
                                 <div class="item-controls">
-                                    <a class="item-control item-edit" title="Edit Location"><i class="fas fa-edit"></i></a>
-                                    <a class="item-control item-delete" title="Delete Location" data-label="Location"><i class="fas fa-trash"></i></a>
+                                    <a class="item-control item-edit" title="Edit Location"><i class="active fas fa-edit"></i></a>
+                                    <a class="item-control item-delete" title="Delete Location" data-label="Location"><i class="active fas fa-trash"></i></a>
                                 </div>
                             </li>
                         {{/if}}
@@ -788,7 +788,7 @@
                     <div class="item-detail spell-notes">Notes</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create Spell" data-type="spell"><i
-                                class="fas fa-plus"></i> Add</a>
+                                class="active fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 <ol class="item-list spell-list">
@@ -804,8 +804,8 @@
                                 <div class="item-detail spell-eml">{{data.effectiveMasteryLevel}}</div>
                                 <div class="item-detail spell-notes">{{data.notes}}</div>
                                 <div class="item-controls">
-                                    <a class="item-control item-edit" title="Edit Spell"><i class="fas fa-edit"></i></a>
-                                    <a class="item-control item-delete" title="Delete Spell" data-label="Spell"><i class="fas fa-trash"></i></a>
+                                    <a class="item-control item-edit" title="Edit Spell"><i class="active fas fa-edit"></i></a>
+                                    <a class="item-control item-delete" title="Delete Spell" data-label="Spell"><i class="active fas fa-trash"></i></a>
                                 </div>
                             </li>
                         {{/if}}
@@ -823,7 +823,7 @@
                     <div class="item-detail spell-notes">Notes</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create Invocation" data-type="invocation"><i
-                                class="fas fa-plus"></i> Add</a>
+                                class="active fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 <ol class="item-list spell-list">
@@ -839,8 +839,8 @@
                                 <div class="item-detail spell-eml">{{data.effectiveMasteryLevel}}</div>
                                 <div class="item-detail spell-notes">{{data.notes}}</div>
                                 <div class="item-controls">
-                                    <a class="item-control item-edit" title="Edit Invocation"><i class="fas fa-edit"></i></a>
-                                    <a class="item-control item-delete" title="Delete Invocation" data-label="Invocation"><i class="fas fa-trash"></i></a>
+                                    <a class="item-control item-edit" title="Edit Invocation"><i class="active fas fa-edit"></i></a>
+                                    <a class="item-control item-delete" title="Delete Invocation" data-label="Invocation"><i class="active fas fa-trash"></i></a>
                                 </div>
                             </li>
                         {{/if}}
@@ -858,7 +858,7 @@
                     <div class="item-detail psionic-notes">Notes</div>
                     <div class="item-controls">
                         <a class="item-control item-create" title="Create Psionic Talent" data-type="skill" data-skilltype="Psionic"><i
-                                class="fas fa-plus"></i> Add</a>
+                                class="active fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 <ol class="item-list spell-list">
@@ -874,8 +874,8 @@
                                 <div class="item-detail psionic-eml">{{data.effectiveMasteryLevel}}</div>
                                 <div class="item-detail psionic-notes">{{data.notes}}</div>
                                 <div class="item-controls">
-                                    <a class="item-control item-edit" title="Edit Psionic Talent"><i class="fas fa-edit"></i></a>
-                                    <a class="item-control item-delete" title="Delete Psionic Talent" data-label="Psionic Talent"><i class="fas fa-trash"></i></a>
+                                    <a class="item-control item-edit" title="Edit Psionic Talent"><i class="active fas fa-edit"></i></a>
+                                    <a class="item-control item-delete" title="Delete Psionic Talent" data-label="Psionic Talent"><i class="active fas fa-trash"></i></a>
                                 </div>
                             </li>
                         {{/if}}
@@ -919,13 +919,13 @@
                     <div class="item-detail armor-notes">Notes</div>
                     <div class="item-controls-wide">
                         <a class="item-control item-create" title="Add Armor/Clothing" data-type="armorgear"><i
-                                class="fas fa-plus"></i> Add</a>
+                                class="active fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 <ol class="item-list armor-list">
                     {{#each actor.items as |item id|}}
                         {{#if (eq item.type "armorgear")}}
-                            <li class="item armor flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
+                            <li class="item armor {{#unless data.isCarried}}nocarry{{/unless}} flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
                                 <div class="item-name armor-name flexrow">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                                     <h4>{{item.name}}</h4>
@@ -938,8 +938,8 @@
                                     <div class="item-controls-wide">
                                     <a class="item-control item-equip" title="Equip Armor/Clothing"><i class="{{#if data.isEquipped}}active{{/if}} fas fa-shield-alt"></i></a>
                                     <a class="item-control item-carry" title="Carry Armor/Clothing"><i class="{{#if data.isCarried}}active{{/if}} fas fa-suitcase"></i></a>
-                                    <a class="item-control item-edit" title="Edit Armor/Clothing"><i class="fas fa-edit"></i></a>
-                                    <a class="item-control item-delete" title="Delete Armor/Clothing" data-label="Armor/Clothing"><i class="fas fa-trash"></i></a>
+                                    <a class="item-control item-edit" title="Edit Armor/Clothing"><i class="active fas fa-edit"></i></a>
+                                    <a class="item-control item-delete" title="Delete Armor/Clothing" data-label="Armor/Clothing"><i class="active fas fa-trash"></i></a>
                                 </div>
                             </li>
                         {{/if}}
@@ -956,13 +956,13 @@
                     <div class="item-detail gear-notes">Notes</div>
                     <div class="item-controls-wide">
                         <a class="item-control item-create" title="Add Misc. Gear" data-type="miscgear"><i
-                                class="fas fa-plus"></i> Add</a>
+                                class="active fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 <ol class="item-list gear-list">
                     {{#each actor.items as |item id|}}
                         {{#if (eq item.type "miscgear")}}
-                            <li class="item gear flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
+                            <li class="item gear {{#unless data.isCarried}}nocarry{{/unless}} flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
                                 <div class="item-name gear-name flexrow">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                                     <h4>{{item.name}}</h4>
@@ -973,8 +973,8 @@
                                 <div class="item-controls-wide">
                                     <a class="item-control item-equip" title="Equip Misc. Gear"><i class="{{#if data.isEquipped}}active{{/if}} fas fa-shield-alt"></i></a>
                                     <a class="item-control item-carry" title="Carry Misc. Gear"><i class="{{#if data.isCarried}}active{{/if}} fas fa-suitcase"></i></a>
-                                    <a class="item-control item-edit" title="Edit Misc. Gear"><i class="fas fa-edit"></i></a>
-                                    <a class="item-control item-delete" title="Delete Misc. Gear" data-label="Miscellaneous Gear"><i class="fas fa-trash"></i></a>
+                                    <a class="item-control item-edit" title="Edit Misc. Gear"><i class="active fas fa-edit"></i></a>
+                                    <a class="item-control item-delete" title="Delete Misc. Gear" data-label="Miscellaneous Gear"><i class="active fas fa-trash"></i></a>
                                 </div>
                             </li>
                         {{/if}}

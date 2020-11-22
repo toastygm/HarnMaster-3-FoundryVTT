@@ -2,6 +2,7 @@
 import { HarnMasterActor } from "./actor/actor.js";
 import { HarnMasterCharacterSheet } from "./actor/character-sheet.js";
 import { HarnMasterCreatureSheet } from "./actor/creature-sheet.js"
+import { HarnMasterContainerSheet } from "./actor/container-sheet.js"
 import { HarnMasterItem } from "./item/item.js";
 import { HarnMasterItemSheet } from "./item/item-sheet.js";
 import { HM3 } from "./config.js";
@@ -50,7 +51,12 @@ Hooks.once('init', async function() {
     makeDefault: true, 
     label: "Default HarnMaster Creature Sheet"
   });
-  
+  Actors.registerSheet("hm3", HarnMasterContainerSheet, {
+    types: ["container"], 
+    makeDefault: true, 
+    label: "Default HarnMaster Container Sheet"
+  });
+ 
   Items.unregisterSheet("core", ItemSheet);
   Items.registerSheet("hm3", HarnMasterItemSheet, { makeDefault: true });
 
@@ -83,6 +89,7 @@ Hooks.once("ready", function() {
   if ( needMigration && game.user.isGM ) {
     migrations.migrateWorld();
   }
+  HM3.ready = true;
 });
 
 // Since HM3 does not have the concept of rolling for initiative,
@@ -94,6 +101,7 @@ Hooks.on('preCreateCombatant', (combat, combatant, options, id) => {
     combatant.initiative = token.actor.data.data.initiative;
   }
 });
+
 
 /*-------------------------------------------------------*/
 /*            Handlebars FUNCTIONS                       */

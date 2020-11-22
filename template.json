@@ -1,6 +1,6 @@
 {
   "Actor": {
-    "types": ["character", "creature"],
+    "types": ["character", "creature", "container"],
     "templates": {
       "base": {
         "bioImage": "systems/hm3/images/svg/knight-silhouette.svg",
@@ -85,9 +85,12 @@
       "hasCondition": false,
       "encumbrance": 0,
       "totalWeight": 0
-  },
+    },
     "creature": {
       "templates": ["base"]
+    },
+    "container": {
+      "templates": []
     }
   },
   "Item": {

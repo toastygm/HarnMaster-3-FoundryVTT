@@ -63,25 +63,25 @@ export class HarnMasterActor extends Actor {
     const commSkill = mergeObject({type: "Communication"}, game.system.model.Item.skill, {overwrite:false});
     const combatSkill = mergeObject({type: "Combat"}, game.system.model.Item.skill, {overwrite:false});
     const craftSkill = mergeObject({type: "Craft"}, game.system.model.Item.skill, {overwrite:false});
-    data.items.push((new Item({name: 'Climbing', type: 'skill', data: physicalSkill})).data);
-    data.items.push((new Item({name: 'Condition', type: 'skill', data: physicalSkill})).data);
-    data.items.push((new Item({name: 'Jumping', type: 'skill', data: physicalSkill})).data);
-    data.items.push((new Item({name: 'Stealth', type: 'skill', data: physicalSkill})).data);
-    data.items.push((new Item({name: 'Throwing', type: 'skill', data: physicalSkill})).data);
-    data.items.push((new Item({name: 'Awareness', type: 'skill', data: commSkill})).data);
-    data.items.push((new Item({name: 'Intrigue', type: 'skill', data: commSkill})).data);
-    data.items.push((new Item({name: 'Oratory', type: 'skill', data: commSkill})).data);
-    data.items.push((new Item({name: 'Rhetoric', type: 'skill', data: commSkill})).data);
-    data.items.push((new Item({name: 'Singing', type: 'skill', data: commSkill})).data);
-    data.items.push((new Item({name: 'Initiative', type: 'skill', data: combatSkill})).data);
-    data.items.push((new Item({name: 'Unarmed', type: 'skill', data: combatSkill})).data);
-    data.items.push((new Item({name: 'Dodge', type: 'skill', data: combatSkill})).data);
+    data.items.push((new Item({name: 'Climbing', type: 'skill', data: physicalSkill, img: 'systems/hm3/images/icons/svg/climbing.svg'})).data);
+    data.items.push((new Item({name: 'Condition', type: 'skill', data: physicalSkill, img: 'systems/hm3/images/icons/svg/muscle.svg'})).data);
+    data.items.push((new Item({name: 'Jumping', type: 'skill', data: physicalSkill, img: 'systems/hm3/images/icons/svg/jump.svg'})).data);
+    data.items.push((new Item({name: 'Stealth', type: 'skill', data: physicalSkill, img: 'systems/hm3/images/icons/svg/stealth.svg'})).data);
+    data.items.push((new Item({name: 'Throwing', type: 'skill', data: physicalSkill, img: 'systems/hm3/images/icons/svg/throw.svg'})).data);
+    data.items.push((new Item({name: 'Awareness', type: 'skill', data: commSkill, img: 'systems/hm3/images/icons/svg/awareness.svg'})).data);
+    data.items.push((new Item({name: 'Intrigue', type: 'skill', data: commSkill, img: 'systems/hm3/images/icons/svg/cloak-dagger.svg'})).data);
+    data.items.push((new Item({name: 'Oratory', type: 'skill', data: commSkill, img: 'systems/hm3/images/icons/svg/speaking.svg'})).data);
+    data.items.push((new Item({name: 'Rhetoric', type: 'skill', data: commSkill, img: 'systems/hm3/images/icons/svg/rhetoric.svg'})).data);
+    data.items.push((new Item({name: 'Singing', type: 'skill', data: commSkill, img: 'systems/hm3/images/icons/svg/musician-singing.svg'})).data);
+    data.items.push((new Item({name: 'Initiative', type: 'skill', data: combatSkill, img: 'systems/hm3/images/icons/svg/initiative.svg'})).data);
+    data.items.push((new Item({name: 'Unarmed', type: 'skill', data: combatSkill, img: 'systems/hm3/images/icons/svg/punch.svg'})).data);
+    data.items.push((new Item({name: 'Dodge', type: 'skill', data: combatSkill, img: 'systems/hm3/images/icons/svg/dodge.svg'})).data);
   }
 
   static _createDefaultCreatureSkills(data) {
     const combatSkill = mergeObject({type: "Combat"}, game.system.model.Item.skill, {overwrite:false});
-    data.items.push((new Item({name: 'Initiative', type: 'skill', data: combatSkill})).data);
-    data.items.push((new Item({name: 'Dodge', type: 'skill', data: combatSkill})).data);
+    data.items.push((new Item({name: 'Initiative', type: 'skill', data: combatSkill, img: 'systems/hm3/images/icons/svg/initiative.svg'})).data);
+    data.items.push((new Item({name: 'Dodge', type: 'skill', data: combatSkill, img: 'systems/hm3/images/icons/svg/dodge.svg'})).data);
   }
 
   static _createDefaultHumanoidLocations(data) {
@@ -208,8 +208,17 @@ export class HarnMasterActor extends Actor {
       this._prepareCharacterData(actorData);
     } else if (actorData.type === 'creature') {
       this._prepareCreatureData(actorData);
+    } else if (actorData.type === 'container') {
+      this._prepareContainerData(actorData);
     }
 
+  }
+
+  /**
+   * Prepare Container type specific data
+   */
+  _prepareContainerData(actorData) {
+    const data = actorData.data;
   }
 
   /**
@@ -218,7 +227,7 @@ export class HarnMasterActor extends Actor {
   _prepareCharacterData(actorData) {
     const data = actorData.data;
 
-    this._calcEndurance(this.data.items, data);
+    this._calcEnduranceMax(this.data.items, data);
 
     this._unequipUncarriedGear(data);
 
@@ -244,9 +253,7 @@ export class HarnMasterActor extends Actor {
     // Some properties are calculated from skills.  Do that here.
     this._setPropertiesFromSkills(this.data.items, data);
 
-    // Calculate endurance.value; this value cannot go below 0
-    data.endurance.value = Math.max(data.endurance.max - data.physicalPenalty, 0);
-    data.endurance.pct = Math.round((data.endurance.value / data.endurance.max)*100);
+    this._calcEnduranceValue(data);
 
     // Calculate current Move speed.  Cannot go below 0
     data.move.effective = Math.max(data.move.base - data.physicalPenalty, 0);
@@ -271,8 +278,8 @@ export class HarnMasterActor extends Actor {
 
     this._unequipUncarriedGear(data);
 
-    if (data.description === '***INIT***') {
-      // Set default creature description
+    if (data.description.startsWith('<p>Birthdate:</p>')) {
+      // Set default creature description instead
       data.description = '<p>Habitat:</p>\n<p>Height:</p>\n<p>Weight:</p>\n' +
         '<p>Diet:</p>\n<p>Lifespan:</p>\n<p>Group:</p>\n<p>Special Abilities:</p>\n' +
         '<p>Attacks:</p>\n<p>&nbsp;</p>';
@@ -299,9 +306,7 @@ export class HarnMasterActor extends Actor {
     // Some properties are calculated from skills.  Do that here.
     this._setPropertiesFromSkills(this.data.items, data);
 
-    // Now calculate endurance.value; this value cannot go below 0
-    data.endurance.value = data.endurance.max - data.physicalPenalty;
-    Math.max(data.endurance.value, 0);
+    this._calcEnduranceValue(data);
 
     // Calculate current Move speed.  Cannot go below 0
     data.move.effective = Math.max(data.move.base - data.physicalPenalty, 0);
@@ -337,6 +342,65 @@ export class HarnMasterActor extends Actor {
         it.data.targetHealRoll = it.data.healRate * data.endurance.max;
       }
     });
+  }
+
+  /**
+   * Endurance is composed of two parts: the maximum and the current value.
+   * This method calculates the max.  It tries to find if the "condition"
+   * skill is present, and if so uses that to calculate the max.  Otherwise
+   * it calculates it based on ability scores.
+   * 
+   * @param {Object} items 
+   * @param {Object} data 
+   */
+  _calcEnduranceMax(items, data) {
+    let hasCondition = false;
+    let conditionLevel = 0;
+    items.forEach(it => {
+      if (it.type === 'skill' && it.name.toLowerCase() === 'condition') {
+        hasCondition = true;
+        conditionLevel = it.data.masteryLevel;
+      }
+    });
+
+    // If we found the condition skill, then use that value for endurance.
+    // Otherwise, calculate it.
+    if (hasCondition) {
+      data.hasCondition = true;
+      data.endurance.max = Math.floor(conditionLevel / 5);
+    } else {
+      data.hasCondition = false;
+      data.endurance.max = Math.round((data.abilities.strength.base + data.abilities.stamina.base + 
+        data.abilities.will.base)/3);
+    }
+
+    // Safety net: if endurance is ever <= 0, then set it to 1
+    // so a bunch of other stuff doesn't go to infinity
+    if (data.endurance.max <= 0) {
+      data.endurance.max = 1;
+    }
+  }
+
+  /**
+   * Calculating Endurance.  This should only be calculated
+   * if we are a real actor, not a synthetic token actor.
+   * NOTE: The prepareData() method is called often before
+   *       the system is fully ready, and the tokens and such
+   *       are setup.  This was causing problems.  So, we defer
+   *       any calculations here until after the system is fully
+   *       ready.
+   */
+  _calcEnduranceValue (data) {
+    if (HM3.ready && !this.isToken) {
+      // Calculate endurance.value; this value cannot go below 0
+      data.endurance.value = Math.max(data.endurance.max - data.physicalPenalty, 0);
+      data.endurance.pct = Math.round((data.endurance.value / data.endurance.max)*100);
+      
+      // Send event to all tokens
+      if (canvas) this.getActiveTokens().forEach(token => {
+        if (token.bars) token._onUpdateBarAttributes(this.data, {"endurance.value": data.endurance.value});
+      });
+    }
   }
 
   /**
@@ -422,34 +486,6 @@ export class HarnMasterActor extends Actor {
         }
       }
     });
-  }
-
-  _calcEndurance(items, data) {
-    let hasCondition = false;
-    let conditionLevel = 0;
-    items.forEach(it => {
-      if (it.type === 'skill' && it.name.toLowerCase() === 'condition') {
-        hasCondition = true;
-        conditionLevel = it.data.masteryLevel;
-      }
-    });
-
-    // If we found the condition skill, then use that value for endurance.
-    // Otherwise, calculate it.
-    if (hasCondition) {
-      data.hasCondition = true;
-      data.endurance.max = Math.floor(conditionLevel / 5);
-    } else {
-      data.hasCondition = false;
-      data.endurance.max = Math.round((data.abilities.strength.base + data.abilities.stamina.base + 
-        data.abilities.will.base)/3);
-    }
-
-    // Safety net: if endurance is ever <= 0, then set it to 1
-    // so a bunch of other stuff doesn't go to infinity
-    if (data.endurance.max <= 0) {
-      data.endurance.max = 1;
-    }
   }
 
   _setPropertiesFromSkills(items, data) {
@@ -773,5 +809,4 @@ export class HarnMasterActor extends Actor {
       }
     }
   }
-
 }

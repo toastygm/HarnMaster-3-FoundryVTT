@@ -50,9 +50,6 @@
         }
 
         .weapon {
-            height: 30px;
-            line-height: 24px;
-            padding: 3px 0;
             border-bottom: 1px solid #bbb;
 
             .item-name.damage-roll:hover .item-image {
@@ -92,6 +89,13 @@
                 overflow: hidden;
             }
 
+            .weapon-name-inv {
+                flex: 0 0 200px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+
             .weapon-qty {
                 flex: 0 0 25px;
                 text-align: center;
@@ -99,6 +103,16 @@
 
             .weapon-weight {
                 flex: 0 0 25px;
+                text-align: center;
+            }
+
+            .weapon-qty-inv {
+                flex: 0 0 40px;
+                text-align: center;
+            }
+
+            .weapon-weight-inv {
+                flex: 0 0 40px;
                 text-align: center;
             }
 
@@ -132,6 +146,11 @@
                 text-align: center;
             }
 
+            .weapon-value {
+                flex: 0 0 40px;
+                text-align: center;
+            }
+
             .weapon-attack {
                 flex: 0 0 30px;
                 text-align: center;
@@ -160,6 +179,11 @@
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 overflow: hidden;
+            }
+            
+            .item-controls-inv {
+                flex: 0 0 55px;
+                text-align: right;
             }
             
             .item-controls {
@@ -236,6 +260,13 @@
                 overflow: hidden;
             }
 
+            .missile-name-inv {
+                flex: 0 0 200px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+
             .missile-qty {
                 flex: 0 0 25px;
                 text-align: center;
@@ -243,6 +274,16 @@
 
             .missile-weight {
                 flex: 0 0 30px;
+                text-align: center;
+            }
+
+            .missile-qty-inv {
+                flex: 0 0 40px;
+                text-align: center;
+            }
+
+            .missile-weight-inv {
+                flex: 0 0 40px;
                 text-align: center;
             }
 
@@ -275,6 +316,11 @@
                 text-align: center;
             }
 
+            .missile-value {
+                flex: 0 0 40px;
+                text-align: center;
+            }
+
             .missile-attack {
                 flex: 0 0 30px;
                 text-align: center;
@@ -292,6 +338,11 @@
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 overflow: hidden;
+            }
+            
+            .item-controls-inv {
+                flex: 0 0 55px;
+                text-align: right;
             }
             
             .item-controls {

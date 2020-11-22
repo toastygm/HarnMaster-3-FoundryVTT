@@ -269,29 +269,116 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         
         return;
     }
-    /**
-     * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
-     * @param {Event} event   The originating click event
-     * @private
-     */
+
+    // /**
+    //  * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
+    //  * @param {Event} event   The originating click event
+    //  * @private
+    //  */
+    // async _onItemCreate(event) {
+    //     event.preventDefault();
+    //     const header = event.currentTarget;
+    //     // Get the type of item to create.
+    //     const type = header.dataset.type;
+    //     // Grab any data associated with this control.
+    //     const data = duplicate(header.dataset);
+
+    //     // Initialize a default name.
+    //     let name = 'New Item';
+    //     if (type === 'skill' && header.dataset.skilltype) {
+    //         if (header.dataset.skilltype === 'Psionic') {
+    //             name = utility.createUniqueName('New Psionic Talent', this.actor.itemTypes.skill);
+    //         } else {
+    //             name = utility.createUniqueName(`New ${header.dataset.skilltype} Skill`, this.actor.itemTypes.skill);
+    //         }
+    //     } else {
+    //         switch (type) {
+    //             case "weapongear":
+    //                 name = utility.createUniqueName('New Weapon', this.actor.itemTypes.weapongear);
+    //                 break;
+
+    //             case "missilegear":
+    //                 name = utility.createUniqueName('New Missile', this.actor.itemTypes.missilegear);
+    //                 break;
+
+    //             case "armorgear":
+    //                 name = utility.createUniqueName('New Armor Item', this.actor.itemTypes.armorgear);
+    //                 break;
+
+    //             case "miscgear":
+    //                 name = utility.createUniqueName('New Item', this.actor.itemTypes.miscgear);
+    //                 break;
+
+    //             case "armorlocation":
+    //                 name = utility.createUniqueName('New Location', this.actor.itemTypes.armorlocation);
+    //                 break;
+
+    //             case "injury":
+    //                 name = utility.createUniqueName('New Injury', this.actor.itemTypes.injury);
+    //                 break;
+
+    //             case "spell":
+    //                 name = utility.createUniqueName('New Spell', this.actor.itemTypes.spell);
+    //                 break;
+
+    //             case "invocation":
+    //                 name = utility.createUniqueName('New Invocation', this.actor.itemTypes.invocation);
+    //                 break;
+
+    //             default:
+    //                 console.error(`HM3 | Can't create item: unknown item type '${type}'`);
+    //                 return null;
+    //         }
+
+    //     }
+
+    //     // Prepare the item object.
+    //     const itemData = {
+    //         name: name,
+    //         type: type,
+    //         data: data
+    //     };
+    //     // Remove the type from the dataset since it's in the itemData.type prop.
+    //     delete itemData.data["type"];
+
+    //     // Finally, create the item!
+    //     const result = await this.actor.createOwnedItem(itemData);
+
+    //     if (!result) {
+    //         log.error(`HM3 | Error creating item '${name}' of type '${type}' on character '${this.actor.data.name}'`)
+    //         return null;
+    //     }
+
+    //     // If the result is a skill, and if 'skillType' has been defined,
+    //     // set the skill type appropriately.
+    //     if (type === 'skill' && header.dataset.skilltype) {
+    //         if (HM3.skillTypes.includes(header.dataset.skilltype)) {
+    //             const ownedItem = this.actor.getOwnedItem(result._id);
+    //             const updateData = { 'data.type': header.dataset.skilltype };
+    //             await ownedItem.update(updateData);
+    //         }
+    //     }
+
+    //     return result;
+    // }
+
     async _onItemCreate(event) {
         event.preventDefault();
         const header = event.currentTarget;
-        // Get the type of item to create.
-        const type = header.dataset.type;
         // Grab any data associated with this control.
-        const data = duplicate(header.dataset);
+        const dataset = duplicate(header.dataset);
+
 
         // Initialize a default name.
         let name = 'New Item';
-        if (type === 'skill' && header.dataset.skilltype) {
+        if (dataset.type === 'skill' && dataset.skilltype) {
             if (header.dataset.skilltype === 'Psionic') {
                 name = utility.createUniqueName('New Psionic Talent', this.actor.itemTypes.skill);
             } else {
-                name = utility.createUniqueName(`New ${header.dataset.skilltype} Skill`, this.actor.itemTypes.skill);
+                name = utility.createUniqueName(`New ${dataset.skilltype} Skill`, this.actor.itemTypes.skill);
             }
         } else {
-            switch (type) {
+            switch (dataset.type) {
                 case "weapongear":
                     name = utility.createUniqueName('New Weapon', this.actor.itemTypes.weapongear);
                     break;
@@ -330,15 +417,125 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             }
 
         }
+        
+        // Item Data
+        const itemData = duplicate(game.system.model.Item[dataset.type]);
+        if (dataset.type === 'skill') itemData.type = dataset.skilltype;
 
+        // Render modal dialog
+        let dlgTemplate = "systems/hm3/templates/dialog/create-item.html";
+        let dialogData = {
+            type: dataset.type,
+            title: name,
+            placeholder: name,
+            extraList: [],
+            extraLabel: null,
+            data: itemData
+        };
+
+        const html = await renderTemplate(dlgTemplate, dialogData);
+
+        // Create the dialog window
+        return Dialog.prompt({
+            title: dialogData.title,
+            content: html,
+            label: "Create",
+            callback: async (html) => {
+                const form = html.querySelector('#create-item');
+                const fd = new FormDataExtended(form);
+                const formdata = fd.toObject();
+                let itemName = formdata.name;
+                let extraValue = formdata.extra_value;
+                
+                if (dialogData.type === 'spell') {
+                    dialogData.data.convocation = extraValue;
+                } else if (dialogData.type === 'invocation') {
+                    dialogData.data.diety = extraValue;
+                }
+
+                return this._createItem(itemName, dialogData.type, dialogData.data);
+            },
+            options: { jQuery: false }
+        });
+    }
+
+    async _createItem(name, type, data) {
+        // If a weapon or a missile, get the associated skill
+        if (type === 'weapongear' || type === 'missilegear') {
+            data.assocSkill = utility.getAssocSkill(name, this.actor.itemTypes.skill, 'None');
+        }
+
+        // If it is a spell, initialize the convocation to the
+        // first magic skill found; it is really unimportant what the
+        // value is, so long as it is a valid skill for this character
+        if (type === 'spell') {
+            for (let skill of this.actor.itemTypes.skill.values()) {
+                if (skill.data.data.type === 'Magic') {
+                    data.convocation = skill.data.name;
+                    break;
+                }
+            }
+        }
+
+        // If it is a invocation, initialize the diety to the
+        // first ritual skill found; it is really unimportant what the
+        // value is, so long as it is a valid skill for this character
+        if (type === 'invocation') {
+            for (let skill of this.actor.itemTypes.skill.values()) {
+                if (skill.data.data.type === 'Ritual') {
+                    data.diety = skill.data.name;
+                    break;
+                }
+            }
+        }
+
+        // Guess the icon from the name
+        let img = utility.getImagePath(name);
+        if (img === CONFIG.DEFAULT_TOKEN) {
+            switch (type) {
+                case 'skill':
+                    if (data.type === 'Psionic') {
+                        img = utility.getImagePath("psionics");
+                    } else if (data.type === 'Ritual') {
+                        img = utility.getImagePath('circle');
+                    } else if (data.type === 'Magic') {
+                        img = utility.getImagePath('pentacle');
+                    }
+                    break;
+
+                case 'spell':
+                    img = utility.getImagePath(data.convocation);
+                    if (img === CONFIG.DEFAULT_TOKEN) {
+                        
+                        img = utility.getImagePath("pentacle");
+                    }
+                    break;
+
+                case 'invocation':
+                    img = utility.getImagePath(data.diety);
+                    if (img === CONFIG.DEFAULT_TOKEN) {
+                        img = utility.getImagePath("circle");
+                    }
+                    break;
+
+                case 'miscgear':
+                    img = utility.getImagePath("miscgear")
+                    break;
+
+                case 'weapongear':
+                case 'missilegear':
+                    img = utility.getImagePath(data.assocSkill)
+                    break;
+            }
+        }
+        
         // Prepare the item object.
         const itemData = {
             name: name,
             type: type,
-            data: data
+            data: data,
+            img: img
         };
-        // Remove the type from the dataset since it's in the itemData.type prop.
-        delete itemData.data["type"];
 
         // Finally, create the item!
         const result = await this.actor.createOwnedItem(itemData);
@@ -348,15 +545,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             return null;
         }
 
-        // If the result is a skill, and if 'skillType' has been defined,
-        // set the skill type appropriately.
-        if (type === 'skill' && header.dataset.skilltype) {
-            if (HM3.skillTypes.includes(header.dataset.skilltype)) {
-                const ownedItem = this.actor.getOwnedItem(result._id);
-                const updateData = { 'data.type': header.dataset.skilltype };
-                await ownedItem.update(updateData);
-            }
-        }
+        // Bring up edit dialog to complete creating item
+        const item = this.actor.getOwnedItem(result._id);
+        item.sheet.render(true);
 
         return result;
     }
@@ -486,9 +677,10 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     _onInjuryRoll(event) {
         event.preventDefault();
         //const ifff = new ImportFFF();
-        //ifff.importFromJSON("fffv1.json");
+        //ifff.importFromJSON("file.json");
+        //ifff.checkNames("file.json");
         //const ifff = new ImportArmorGear();
-        //ifff.importFromJSON("armor.json");
+        //ifff.importFromJSON("file.json");
         this.actor.injuryRoll();
     }
 
