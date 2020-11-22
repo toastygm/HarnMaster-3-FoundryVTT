@@ -39,8 +39,6 @@ HM3.injuryLocations = {
 
 HM3.injuryLevels = ["NA", "M1", "S2", "S3", "G4", "G5", "K4", "K5"];
 
-HM3.mysteryMan = 'icons/svg/mystery-man.svg';
-
 HM3.defaultMagicIconName = 'pentacle';
 HM3.defaultRitualIconName = 'circle';
 HM3.defaultMiscItemIconName = 'miscgear';
