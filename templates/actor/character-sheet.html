@@ -710,8 +710,8 @@
                     <div class="item-detail injury-severity">IL</div>
                     <div class="item-detail injury-notes">Notes</div>
                     <div class="item-controls">
-                        <a class="item-control item-create" title="Create Injury" data-type="injury"><i
-                                class="active fas fa-plus"></i> Add</a>
+                        <a class="item-control item-create active" title="Create Injury" data-type="injury"><i
+                                class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 <ol class="item-list injury-list">
@@ -747,8 +747,8 @@
                     <div class="item-detail armorlocation-fire">F</div>
                     <div class="item-detail armorlocation-notes">Notes</div>
                     <div class="item-controls">
-                        <a class="item-control item-create" title="Create Location" data-type="armorlocation"><i
-                                class="active fas fa-plus"></i> Add</a>
+                        <a class="item-control item-create active" title="Create Location" data-type="armorlocation"><i
+                                class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 <ol class="item-list armorlocation-list">
@@ -787,15 +787,15 @@
                     <div class="item-detail spell-eml">EML</div>
                     <div class="item-detail spell-notes">Notes</div>
                     <div class="item-controls">
-                        <a class="item-control item-create" title="Create Spell" data-type="spell"><i
-                                class="active fas fa-plus"></i> Add</a>
+                        <a class="item-control item-create active" title="Create Spell" data-type="spell"><i
+                                class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 <ol class="item-list spell-list">
                     {{#each actor.items as |item id|}}
                         {{#if (eq item.type "spell")}}
                             <li class="item spell flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
-                                <div class="item-name spell-name std-roll flexrow" data-label="{{item.name}} Spell Test" data-target="{{data.effectiveMasteryLevel}}">
+                                <div class="item-name spell-name std-roll flexrow" data-label="Casting {{item.name}}" data-target="{{data.effectiveMasteryLevel}}">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                                     <h4>{{item.name}}</h4>
                                 </div>
@@ -822,15 +822,15 @@
                     <div class="item-detail spell-eml">EML</div>
                     <div class="item-detail spell-notes">Notes</div>
                     <div class="item-controls">
-                        <a class="item-control item-create" title="Create Invocation" data-type="invocation"><i
-                                class="active fas fa-plus"></i> Add</a>
+                        <a class="item-control item-create active" title="Create Invocation" data-type="invocation"><i
+                                class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 <ol class="item-list spell-list">
                     {{#each actor.items as |item id|}}
                         {{#if (eq item.type "invocation")}}
                             <li class="item spell flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
-                                <div class="item-name spell-name std-roll flexrow" data-label="{{item.name}} Spell Test" data-target="{{data.effectiveMasteryLevel}}">
+                                <div class="item-name spell-name std-roll flexrow" data-label="Invoking {{item.name}}" data-target="{{data.effectiveMasteryLevel}}">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                                     <h4>{{item.name}}</h4>
                                 </div>
@@ -857,15 +857,15 @@
                     <div class="item-detail psionic-eml">EML</div>
                     <div class="item-detail psionic-notes">Notes</div>
                     <div class="item-controls">
-                        <a class="item-control item-create" title="Create Psionic Talent" data-type="skill" data-skilltype="Psionic"><i
-                                class="active fas fa-plus"></i> Add</a>
+                        <a class="item-control item-create active" title="Create Psionic Talent" data-type="skill" data-skilltype="Psionic"><i
+                                class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 <ol class="item-list spell-list">
                     {{#each actor.items as |item id|}}
                         {{#if (and (eq item.type "skill") (eq item.data.type "Psionic"))}}
                             <li class="item psionic flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
-                                <div class="item-name psionic-name std-roll flexrow" data-label="{{item.name}} Spell Test" data-target="{{data.effectiveMasteryLevel}}">
+                                <div class="item-name psionic-name std-roll flexrow" data-label="Using {{item.name}}" data-target="{{data.effectiveMasteryLevel}}">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                                     <h4>{{item.name}}</h4>
                                 </div>
@@ -918,8 +918,8 @@
                     <div class="item-detail armor-quality">AQ</div>
                     <div class="item-detail armor-notes">Notes</div>
                     <div class="item-controls-wide">
-                        <a class="item-control item-create" title="Add Armor/Clothing" data-type="armorgear"><i
-                                class="active fas fa-plus"></i> Add</a>
+                        <a class="item-control item-create active" title="Add Armor/Clothing" data-type="armorgear"><i
+                                class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 <ol class="item-list armor-list">
@@ -955,8 +955,8 @@
                     <div class="item-detail gear-weight">Weight</div>
                     <div class="item-detail gear-notes">Notes</div>
                     <div class="item-controls-wide">
-                        <a class="item-control item-create" title="Add Misc. Gear" data-type="miscgear"><i
-                                class="active fas fa-plus"></i> Add</a>
+                        <a class="item-control item-create active" title="Add Misc. Gear" data-type="miscgear"><i
+                                class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 <ol class="item-list gear-list">
