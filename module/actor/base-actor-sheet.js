@@ -18,6 +18,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         return data;
     }
 
+    /** @override */
     async _onDropItem(event, data) {
         // NOTE: when an item comes from the item list or a compendium, its type is
         // "Item" but it does not have a "data" element.  So we have to check for that in
@@ -136,6 +137,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     return false;
                 }
             }
+            return this._createItem(data.name, data.type, data.data);
         }
 
         return super._onDropItemCreate(data);
@@ -269,98 +271,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         
         return;
     }
-
-    // /**
-    //  * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
-    //  * @param {Event} event   The originating click event
-    //  * @private
-    //  */
-    // async _onItemCreate(event) {
-    //     event.preventDefault();
-    //     const header = event.currentTarget;
-    //     // Get the type of item to create.
-    //     const type = header.dataset.type;
-    //     // Grab any data associated with this control.
-    //     const data = duplicate(header.dataset);
-
-    //     // Initialize a default name.
-    //     let name = 'New Item';
-    //     if (type === 'skill' && header.dataset.skilltype) {
-    //         if (header.dataset.skilltype === 'Psionic') {
-    //             name = utility.createUniqueName('New Psionic Talent', this.actor.itemTypes.skill);
-    //         } else {
-    //             name = utility.createUniqueName(`New ${header.dataset.skilltype} Skill`, this.actor.itemTypes.skill);
-    //         }
-    //     } else {
-    //         switch (type) {
-    //             case "weapongear":
-    //                 name = utility.createUniqueName('New Weapon', this.actor.itemTypes.weapongear);
-    //                 break;
-
-    //             case "missilegear":
-    //                 name = utility.createUniqueName('New Missile', this.actor.itemTypes.missilegear);
-    //                 break;
-
-    //             case "armorgear":
-    //                 name = utility.createUniqueName('New Armor Item', this.actor.itemTypes.armorgear);
-    //                 break;
-
-    //             case "miscgear":
-    //                 name = utility.createUniqueName('New Item', this.actor.itemTypes.miscgear);
-    //                 break;
-
-    //             case "armorlocation":
-    //                 name = utility.createUniqueName('New Location', this.actor.itemTypes.armorlocation);
-    //                 break;
-
-    //             case "injury":
-    //                 name = utility.createUniqueName('New Injury', this.actor.itemTypes.injury);
-    //                 break;
-
-    //             case "spell":
-    //                 name = utility.createUniqueName('New Spell', this.actor.itemTypes.spell);
-    //                 break;
-
-    //             case "invocation":
-    //                 name = utility.createUniqueName('New Invocation', this.actor.itemTypes.invocation);
-    //                 break;
-
-    //             default:
-    //                 console.error(`HM3 | Can't create item: unknown item type '${type}'`);
-    //                 return null;
-    //         }
-
-    //     }
-
-    //     // Prepare the item object.
-    //     const itemData = {
-    //         name: name,
-    //         type: type,
-    //         data: data
-    //     };
-    //     // Remove the type from the dataset since it's in the itemData.type prop.
-    //     delete itemData.data["type"];
-
-    //     // Finally, create the item!
-    //     const result = await this.actor.createOwnedItem(itemData);
-
-    //     if (!result) {
-    //         log.error(`HM3 | Error creating item '${name}' of type '${type}' on character '${this.actor.data.name}'`)
-    //         return null;
-    //     }
-
-    //     // If the result is a skill, and if 'skillType' has been defined,
-    //     // set the skill type appropriately.
-    //     if (type === 'skill' && header.dataset.skilltype) {
-    //         if (HM3.skillTypes.includes(header.dataset.skilltype)) {
-    //             const ownedItem = this.actor.getOwnedItem(result._id);
-    //             const updateData = { 'data.type': header.dataset.skilltype };
-    //             await ownedItem.update(updateData);
-    //         }
-    //     }
-
-    //     return result;
-    // }
 
     async _onItemCreate(event) {
         event.preventDefault();

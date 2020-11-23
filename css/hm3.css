@@ -563,7 +563,7 @@
   padding: 5px; }
 
 .hm3 .items .nocarry {
-  color: #7a7971; }
+  color: #9a998f; }
 
 .hm3 .items .items-list {
   list-style: none;
@@ -636,29 +636,28 @@
     .hm3 .items .items-list .item-controls .item-control {
       flex: 0 0 22px;
       font-size: 12px;
-      text-align: center; }
-    .hm3 .items .items-list .item-controls .item-controls {
-      flex: 0 0 70px;
-      text-align: right; }
-      .hm3 .items .items-list .item-controls .item-controls .item-equip {
-        color: #b5b3a4; }
-      .hm3 .items .items-list .item-controls .item-controls .item-carry {
-        color: #b5b3a4; }
-      .hm3 .items .items-list .item-controls .item-controls .active {
-        color: #4b4a44; }
+      text-align: right;
+      color: #9a998f; }
+    .hm3 .items .items-list .item-controls .item-equip {
+      color: #9a998f; }
+    .hm3 .items .items-list .item-controls .item-carry {
+      color: #9a998f; }
+    .hm3 .items .items-list .item-controls .active {
+      color: #4b4a44; }
   .hm3 .items .items-list .item-controls-wide {
     flex: 0 0 65px;
     text-align: right; }
     .hm3 .items .items-list .item-controls-wide .item-control {
       flex: 0 0 22px;
       font-size: 12px;
-      text-align: center; }
-      .hm3 .items .items-list .item-controls-wide .item-control .item-equip {
-        color: #b5b3a4; }
-      .hm3 .items .items-list .item-controls-wide .item-control .item-carry {
-        color: #b5b3a4; }
-      .hm3 .items .items-list .item-controls-wide .item-control .active {
-        color: #4b4a44; }
+      text-align: right;
+      color: #9a998f; }
+    .hm3 .items .items-list .item-controls-wide .item-equip {
+      color: #9a998f; }
+    .hm3 .items .items-list .item-controls-wide .item-carry {
+      color: #9a998f; }
+    .hm3 .items .items-list .item-controls-wide .active {
+      color: #4b4a44; }
 
 .hm3 .items-list {
   list-style: none;

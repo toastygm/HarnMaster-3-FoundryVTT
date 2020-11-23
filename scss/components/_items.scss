@@ -14,7 +14,7 @@
   }
 
   .nocarry {
-    color: #7a7971;
+    color: #9a998f;
   }
 
   .items-list {
@@ -119,25 +119,21 @@
       .item-control {
         flex: 0 0 22px;
         font-size: 12px;
-        text-align: center;
+        text-align: right;
+        color: #9a998f;
       }
 
-      .item-controls {
-        flex: 0 0 70px;
-        text-align: right;
-
-        .item-equip {
-            color: #b5b3a4;
-        }
-      
-        .item-carry {
-            color: #b5b3a4;
-        }
-      
-        .active {
-            color: #4b4a44;
-        }      
-      } 
+      .item-equip {
+        color: #9a998f;
+      }
+  
+      .item-carry {
+        color: #9a998f;
+      }
+  
+      .active {
+        color: #4b4a44;
+      }      
     } 
 
     .item-controls-wide {
@@ -147,21 +143,21 @@
       .item-control {
         flex: 0 0 22px;
         font-size: 12px;
-        text-align: center;
-
-        
-        .item-equip {
-          color: #b5b3a4;
-        }
-    
-        .item-carry {
-          color: #b5b3a4;
-        }
-    
-        .active {
-          color: #4b4a44;
-        }  
+        text-align: right;
+        color: #9a998f;
       }
+        
+      .item-equip {
+        color: #9a998f;
+      }
+  
+      .item-carry {
+        color: #9a998f;
+      }
+  
+      .active {
+        color: #4b4a44;
+      }  
     }
   }
 }
