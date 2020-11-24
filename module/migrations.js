@@ -185,6 +185,9 @@ export async function migrateActorData(actor) {
         updateData['data.biography'] = '';
     }
 
+    if (typeof actorData.data.shockIndex === 'undefined') {
+        updateData['data.shockIndex'] = {'value': 100, 'max': 100};
+    }
     return updateData;
 }
 
