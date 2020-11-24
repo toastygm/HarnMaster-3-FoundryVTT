@@ -28,9 +28,9 @@
     <div class="card-content">
         <span class="label">Roll:</span>
         {{#if isSuccess}}
-            <span class="value success-text">{{rollValue}}</span>
+            <span class="value success-text">{{#if showResult}}{{rollResult}} = {{/if}}{{rollValue}}</span>
         {{else}}
-            <span class="value failure-text">{{rollValue}}</span>
+            <span class="value failure-text">{{#if showResult}}{{rollResult}} = {{/if}}{{rollValue}}</span>
         {{/if}}
     </div>
 
