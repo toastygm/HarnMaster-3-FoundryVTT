@@ -12,7 +12,7 @@ HM3.ASCII = `_   _ ___  ___ _____
 // When the system is fully ready, set this to true
 HM3.ready = false;
 
-HM3.skillTypes = ["Craft", "Physical", "Communication", "Combat", "Magic", "Ritual", "Psionic"];
+HM3.skillTypes = ["Craft", "Physical", "Communication", "Combat", "Magic", "Ritual"];
 
 HM3.injuryLocations = {
     "Custom": {impactType: "custom", probWeight: {"high": 1, "mid": 1, "low": 1}, isStumble: false, isFumble: false, isAmputate: false, effectiveImpact: { ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "G5"}},

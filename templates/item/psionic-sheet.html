@@ -17,22 +17,19 @@
 
         {{!-- Properties Tab --}}
         <div class="tab properties" data-group="primary" data-tab="properties">
-            <div class="grid grid-2col">
+            <div class="grid grid-3col">
                 <div class="resource">
                     <label class="resource-label">Skill Base (SB)</label>
-                    <input type="number" name="data.skillBase.value" value="{{data.skillBase.value}}" data-dtype="Number"/>
+                    <input type="text" name="data.skillBase.value" value="{{data.skillBase.value}}"
+                        data-dtype="Number" {{#if data.skillBase.formula}}readonly{{/if}} />
                 </div>
                 <div class="resource">
                     <label class="resource-label">Mastery Level (ML)</label>
-                    <input type="number" name="data.masteryLevel" value="{{data.masteryLevel}}" data-dtype="Number"/>
+                    <input type="number" name="data.masteryLevel" value="{{data.masteryLevel}}" data-dtype="Number" />
                 </div>
                 <div class="resource">
                     <label class="resource-label">Fatigue</label>
                     <input type="number" name="data.fatigue" value="{{data.fatigue}}" data-dtype="Number"/>
-                </div>
-                <div class="resource">
-                    <label class="resource-label">Time</label>
-                    <input type="number" name="data.time" value="{{data.time}}" data-dtype="Number"/>
                 </div>
             </div>
             <div class="resource">
@@ -52,6 +49,10 @@
             <div class="resource">
                 <label class="resource-label">Note</label>
                 <input type="text" name="data.notes" value="{{data.notes}}" data-dtype="String"/>
+            </div>
+            <div class="resource">
+                <label class="resource-label">Macro</label>
+                <textarea name="data.macro">{{data.macro}}</textarea>
             </div>
         </div>
 

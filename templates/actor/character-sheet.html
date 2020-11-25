@@ -530,7 +530,11 @@
                     <label class="combat-stat-label">Encumb.</label>
                     <div class="combat-stat-value">{{data.encumbrance}}</div>
                 </div>
-                <div class="combat-stat flexrow"></div>
+                <div class="combat-stat flexrow">
+                    <div class="item-dice"></div>
+                    <label class="combat-stat-label">Endur.</label>
+                    <div class="combat-stat-value">{{data.endurance}}</div>                    
+                </div>
             </div>
             <div class="items-list combat-stats grid grid-5col">
                 <div class="combat-stat flexrow">
@@ -846,24 +850,26 @@
                 <li class="items-header psionic flexrow">
                     <h3 class="item-name psionic-name">Psionic Talents</h3>
                     <div class="item-detail psionic-fatigue">Fatigue</div>
-                    <div class="item-detail psionic-time">Time</div>
+                    <div class="item-detail psionic-sb">SB</div>
+                    <div class="item-detail psionic-ml">ML</div>
                     <div class="item-detail psionic-eml">EML</div>
                     <div class="item-detail psionic-notes">Notes</div>
                     <div class="item-controls">
-                        <a class="item-control item-create active" title="Create Psionic Talent" data-type="skill" data-skilltype="Psionic"><i
+                        <a class="item-control item-create active" title="Create Psionic Talent" data-type="psionic"><i
                                 class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
                 <ol class="item-list spell-list">
                     {{#each actor.items as |item id|}}
-                        {{#if (and (eq item.type "skill") (eq item.data.type "Psionic"))}}
+                    {{#if (eq item.type "psionic")}}
                             <li class="item psionic flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
                                 <div class="item-name psionic-name psionic-roll flexrow">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                                     <h4>{{item.name}}</h4>
                                 </div>
                                 <div class="item-detail psionic-fatigue">{{data.psionic.fatigue}}</div>
-                                <div class="item-detail psionic-time">{{data.psionic.time}}</div>
+                                <div class="item-detail psionic-sb">{{data.skillBase.value}}</div>
+                                <div class="item-detail psionic-ml">{{data.masteryLevel}}</div>
                                 <div class="item-detail psionic-eml">{{data.effectiveMasteryLevel}}</div>
                                 <div class="item-detail psionic-notes">{{data.notes}}</div>
                                 <div class="item-controls">

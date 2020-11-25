@@ -63,11 +63,7 @@
         },
         "dodge": 0,
         "initiative": 0,
-        "endurance": {
-          "value": 0,
-          "min": 0,
-          "max": 0
-        },
+        "endurance": 0,
         "shockIndex": {
           "value": 0,
           "max": 100
@@ -98,13 +94,14 @@
     }
   },
   "Item": {
-    "types": ["skill", "spell", "invocation", "weapongear", 
+    "types": ["skill", "spell", "invocation", "psionic", "weapongear", 
       "missilegear", "armorgear", "miscgear", "injury", "armorlocation"],
     "templates": {
       "base": {
         "notes": "",
         "description": "",
-        "source": ""
+        "source": "",
+        "macro": ""
       },
       "gear": {
         "quantity": 1,
@@ -154,6 +151,10 @@
       "diety": "",
       "circle": 1,
       "effectiveMasteryLevel": 0
+    },
+    "psionic": {
+      "templates": ["base", "skill"],
+      "fatigue": 0
     },
     "weapongear": {
       "templates": ["base", "gear", "weapon"],

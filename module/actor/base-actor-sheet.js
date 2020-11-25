@@ -70,7 +70,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 const fd = new FormDataExtended(form);
                 const formdata = fd.toObject();
                 let formQtyToMove = parseInt(formdata.itemstomove);
-                
+
                 if (formQtyToMove <= 0) {
                     return false;
                 } else {
@@ -98,7 +98,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         if (result) {
             // update quantity
             const newTargetQuantity = result.data.data.quantity + moveQuantity;
-            await result.update({'data.quantity': newTargetQuantity});
+            await result.update({ 'data.quantity': newTargetQuantity });
         } else {
             // Create an item
             const item = await Item.fromDropData(data);
@@ -110,14 +110,14 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         if (result) {
             const sourceActor = await game.actors.get(data.actorId);
             if (moveQuantity >= data.data.data.quantity) {
-                await sourceActor.deleteOwnedItem(data.data._id);    
+                await sourceActor.deleteOwnedItem(data.data._id);
             } else {
                 const newSourceQuantity = sourceQuantity - moveQuantity;
                 const sourceItem = await sourceActor.getOwnedItem(data.data._id);
-                await sourceItem.update({'data.quantity': newSourceQuantity});
+                await sourceItem.update({ 'data.quantity': newSourceQuantity });
             }
         }
-        return result;        
+        return result;
     }
 
     /** @override */
@@ -295,7 +295,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         const title = `Delete ${data.label}`;
 
         // Create the dialog window
-        let agree=false;
+        let agree = false;
         await Dialog.confirm({
             title: title,
             content: '<p>Are you sure?</p>',
@@ -320,8 +320,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         if (!data.notes) data.notes = otherData.notes;
         if (!data.source) data.source = otherData.source;
         if (!data.description) data.description = otherData.description;
+        if (!data.macro) data.macro = otherData.macro;
 
-        switch(item.data.type) {
+        switch (item.data.type) {
             case 'skill':
                 // If the skill types don't match, return without change
                 if (data.type != otherData.type) {
@@ -337,13 +338,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     updateData['data.skillBase.formula'] = otherData.skillBase.formula;
                     updateData['data.skillBase.isFormulaValid'] = otherData.skillBase.isFormulaValid;
                 }
-                
-                // If our type is Psionic, and the current item's psionic time is blank,
-                // copy over all psionic data from the dropped item.
-                if (data.type = 'Psionic' && !data.psionic.time) {
-                    updateData['data.psionic.time'] = otherData.psionic.time;
-                    updateData['data.psionic.fatigue'] = otherData.psionic.fatigue;
-                }
                 break;
 
             case 'spell':
@@ -355,12 +349,16 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 updateData['data.diety'] = otherData.diety;
                 updateData['data.circle'] = otherData.circle;
                 break;
+
+            case 'psionic':
+                updateData['data.circle.skillBase.formula'] = otherData.skillBase.formula;
+                updateData['data.circle.skillBase.isFormulaValid'] = otherData.skillBase.isFormulaValid;
         }
 
         if (updateData) {
             await item.update(updateData);
         }
-        
+
         return;
     }
 
@@ -374,11 +372,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Initialize a default name.
         let name = 'New Item';
         if (dataset.type === 'skill' && dataset.skilltype) {
-            if (header.dataset.skilltype === 'Psionic') {
-                name = utility.createUniqueName('New Psionic Talent', this.actor.itemTypes.skill);
-            } else {
-                name = utility.createUniqueName(`New ${dataset.skilltype} Skill`, this.actor.itemTypes.skill);
-            }
+            name = utility.createUniqueName(`New ${dataset.skilltype} Skill`, this.actor.itemTypes.skill);
         } else {
             switch (dataset.type) {
                 case "weapongear":
@@ -413,13 +407,17 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     name = utility.createUniqueName('New Invocation', this.actor.itemTypes.invocation);
                     break;
 
+                case "psionic":
+                    name = utility.createUniqueName('New Psionic', this.actor.itemTypes.psionic);
+                    break;
+
                 default:
                     console.error(`HM3 | Can't create item: unknown item type '${type}'`);
                     return null;
             }
 
         }
-        
+
         // Item Data
         const itemData = duplicate(game.system.model.Item[dataset.type]);
         if (dataset.type === 'skill') itemData.type = dataset.skilltype;
@@ -448,7 +446,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 const formdata = fd.toObject();
                 let itemName = formdata.name;
                 let extraValue = formdata.extra_value;
-                
+
                 if (dialogData.type === 'spell') {
                     dialogData.data.convocation = extraValue;
                 } else if (dialogData.type === 'invocation') {
@@ -496,19 +494,21 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         if (img === CONFIG.DEFAULT_TOKEN) {
             switch (type) {
                 case 'skill':
-                    if (data.type === 'Psionic') {
-                        img = utility.getImagePath("psionics");
-                    } else if (data.type === 'Ritual') {
+                    if (data.type === 'Ritual') {
                         img = utility.getImagePath('circle');
                     } else if (data.type === 'Magic') {
                         img = utility.getImagePath('pentacle');
                     }
                     break;
 
+                case 'psionic':
+                    img = utility.getImagePath("psionics");
+                    break;
+                    
                 case 'spell':
                     img = utility.getImagePath(data.convocation);
                     if (img === CONFIG.DEFAULT_TOKEN) {
-                        
+
                         img = utility.getImagePath("pentacle");
                     }
                     break;
@@ -530,7 +530,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     break;
             }
         }
-        
+
         // Prepare the item object.
         const itemData = {
             name: name,

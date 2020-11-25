@@ -15,11 +15,11 @@ export async function createHM3Macro(data, slot) {
     let command;
     switch (item.type) {
         case 'skill':
-            if (item.data.type !== 'Psionic') {
-                command = `game.hm3.macros.skillRoll("${item.name}");`;
-            } else {
-                command = `game.hm3.macros.usePsionicRoll("${item.name}");`;
-            }
+            command = `game.hm3.macros.skillRoll("${item.name}");`;
+            break;
+
+        case 'psionic':
+            command = `game.hm3.macros.usePsionicRoll("${item.name}");`;
             break;
 
         case 'spell':
@@ -134,22 +134,8 @@ export function skillRoll(itemName, noDialog = false, myActor=null) {
         return;
     }
 
-    let item = actor.getOwnedItem(itemName);
-    if (!item) {
-        const lcItemName = itemName.toLowerCase();
-        const items = actor ? actor.items.filter(i => i.type === 'skill' && i.data.type !== 'Psionic' && i.name.toLowerCase() === lcItemName) : [];
-        if (items.length > 1) {
-            ui.notifications.warn(`Your controlled Actor ${actor.name} has more than one skill with name ${itemName}. The first matched skill will be chosen.`);
-        } else if (items.length === 0) {
-            ui.notifications.warn(`Your controlled Actor does not have a skill named ${itemName}`);
-            return null;
-        }
-        item = items[0];
-    }
-    if (!item) {
-        ui.notifications.warn(`Item ${itemName} not found, roll ignored.`);
-        return;
-    }
+    const item = getItem(itemName, 'skill', actor);
+    if (!item) return;
 
     const label = `${item.data.name} Skill Test`;
     return actor._d100StdRoll(label, item.data.data.effectiveMasteryLevel, speaker, noDialog, item.data.data.notes);
@@ -199,22 +185,8 @@ export function usePsionicRoll(itemName, noDialog = false, myActor=null) {
         return;
     }
 
-    let item = actor.getOwnedItem(itemName);
-    if (!item) {
-        const lcItemName = itemName.toLowerCase();
-        const items = actor ? actor.items.filter(i => i.type === 'skill' && i.data.type !== 'Psionic' && i.name.toLowerCase() === lcItemName) : [];
-        if (items.length > 1) {
-            ui.notifications.warn(`Your controlled Actor ${actor.name} has more than one skill with name ${itemName}. The first matched skill will be chosen.`);
-        } else if (items.length === 0) {
-            ui.notifications.warn(`Your controlled Actor does not have a skill named ${itemName}`);
-            return null;
-        }
-        item = items[0];
-    }
-    if (!item) {
-        ui.notifications.warn(`Item ${itemName} not found, roll ignored.`);
-        return;
-    }
+    const item = getItem(itemName, 'psionic', actor);
+    if (!item) return;
 
     const label = `Using ${item.data.name} Talent`;
     return actor._d100StdRoll(label, item.data.data.effectiveMasteryLevel, speaker, noDialog, item.data.data.notes);

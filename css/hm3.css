@@ -1233,8 +1233,11 @@
   .hm3 .esoteric .psionics-list .psionic-fatigue {
     flex: 0 0 50px;
     text-align: center; }
-  .hm3 .esoteric .psionics-list .psionic-time {
-    flex: 0 0 70px;
+  .hm3 .esoteric .psionics-list .psionic-sb {
+    flex: 0 0 35px;
+    text-align: center; }
+  .hm3 .esoteric .psionics-list .psionic-ml {
+    flex: 0 0 35px;
     text-align: center; }
   .hm3 .esoteric .psionics-list .psionic-eml {
     flex: 0 0 40px;

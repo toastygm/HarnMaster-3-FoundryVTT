@@ -45,7 +45,12 @@ export class HarnMasterItem extends Item {
             img = utility.getImagePath(HM3.defaultRitualIconName);
           }
         }
-        else if (data.type === 'Psionic' && utility.isStdIcon(itemData.img, HM3.psionicTalentIcons)) {
+        break;
+
+      case 'psionic':
+        utility.calcSkillBase(this);
+        
+        if (utility.isStdIcon(itemData.img, HM3.psionicTalentIcons)) {
           img = utility.getImagePath(itemData.name);
           if (img === CONFIG.DEFAULT_TOKEN) {
             img = utility.getImagePath(HM3.defaultPsionicsIconName);
