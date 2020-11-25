@@ -227,8 +227,7 @@ export class HarnMasterActor extends Actor {
     _prepareCharacterData(actorData) {
         const data = actorData.data;
 
-        this._calcEnduranceMax(this.data.items, data);
-        data.endurance.value = data.endurance.max;
+        this._calcEndurance(this.data.items, data);
 
         this._unequipUncarriedGear(data);
 
@@ -238,7 +237,7 @@ export class HarnMasterActor extends Actor {
 
         this._calcGearWeightTotals(data);
 
-        data.encumbrance = Math.floor(data.totalGearWeight / data.endurance.max);
+        data.encumbrance = Math.floor(data.totalGearWeight / data.endurance);
 
         // Universal Penalty and Physical Penalty are used to calculate many
         // things, including effectiveMasteryLevel for all skills,
@@ -246,7 +245,7 @@ export class HarnMasterActor extends Actor {
         data.universalPenalty = data.totalInjuryLevels + data.fatigue;
         data.physicalPenalty = data.universalPenalty + data.encumbrance;
 
-        data.shockIndex.value = HarnMasterActor._normProb(data.endurance.value, data.universalPenalty * 3.5, data.universalPenalty);
+        data.shockIndex.value = HarnMasterActor._normProb(data.endurance, data.universalPenalty * 3.5, data.universalPenalty);
         if (canvas) this.getActiveTokens().forEach(token => {
             if (token.bars) token._onUpdateBarAttributes(this.data, { "shockIndex.value": data.shockIndex.value });
         });
@@ -282,9 +281,8 @@ export class HarnMasterActor extends Actor {
         const data = actorData.data;
 
         // Calc Endurance (never use condition with creatures)
-        data.endurance.max = Math.round((data.abilities.strength.base + data.abilities.stamina.base +
+        data.endurance = Math.round((data.abilities.strength.base + data.abilities.stamina.base +
             data.abilities.will.base) / 3);
-        data.endurance.value = data.endurance.max;
 
         this._unequipUncarriedGear(data);
 
@@ -303,7 +301,10 @@ export class HarnMasterActor extends Actor {
         data.universalPenalty = data.totalInjuryLevels + data.fatigue;
         data.physicalPenalty = data.universalPenalty;
 
-        data.shockIndex.value = HarnMasterActor._normProb(data.endurance.value, data.universalPenalty * 3.5, data.universalPenalty);
+        data.shockIndex.value = HarnMasterActor._normProb(data.endurance, data.universalPenalty * 3.5, data.universalPenalty);
+        if (canvas) this.getActiveTokens().forEach(token => {
+            if (token.bars) token._onUpdateBarAttributes(this.data, { "shockIndex.value": data.shockIndex.value });
+        });
 
         // Setup effective abilities (accounting for UP and PP)
         this._setupEffectiveAbilities(data);
@@ -345,7 +346,7 @@ export class HarnMasterActor extends Actor {
         this.data.items.forEach(it => {
             if (it.type === 'injury') {
                 // Injury Roll = HR*End (unaffected by UP or PP)
-                it.data.targetHealRoll = it.data.healRate * data.endurance.max;
+                it.data.targetHealRoll = it.data.healRate * data.endurance;
             }
         });
     }
@@ -359,7 +360,7 @@ export class HarnMasterActor extends Actor {
      * @param {Object} items 
      * @param {Object} data 
      */
-    _calcEnduranceMax(items, data) {
+    _calcEndurance(items, data) {
         let hasCondition = false;
         let conditionLevel = 0;
         items.forEach(it => {
@@ -373,38 +374,18 @@ export class HarnMasterActor extends Actor {
         // Otherwise, calculate it.
         if (hasCondition) {
             data.hasCondition = true;
-            data.endurance.max = Math.floor(conditionLevel / 5);
+            data.endurance = Math.floor(conditionLevel / 5);
         } else {
             data.hasCondition = false;
-            data.endurance.max = Math.round((data.abilities.strength.base + data.abilities.stamina.base +
+            data.endurance = Math.round((data.abilities.strength.base + data.abilities.stamina.base +
                 data.abilities.will.base) / 3);
         }
 
         // Safety net: if endurance is ever <= 0, then set it to 1
         // so a bunch of other stuff doesn't go to infinity
-        if (data.endurance.max <= 0) {
-            data.endurance.max = 1;
+        if (data.endurance <= 0) {
+            data.endurance = 1;
         }
-    }
-
-    /**
-     * Calculating Endurance.  This should only be calculated
-     * if we are a real actor, not a synthetic token actor.
-     * NOTE: The prepareData() method is called often before
-     *       the system is fully ready, and the tokens and such
-     *       are setup.  This was causing problems.  So, we defer
-     *       any calculations here until after the system is fully
-     *       ready.
-     */
-    _calcEnduranceValue(data) {
-        // Calculate endurance.value; this value cannot go below 0
-        data.endurance.value = Math.max(data.endurance.max - data.physicalPenalty, 0);
-        data.endurance.pct = Math.round((data.endurance.value / data.endurance.max) * 100);
-
-        // Send event to all tokens
-        if (canvas) this.getActiveTokens().forEach(token => {
-            if (token.bars) token._onUpdateBarAttributes(this.data, { "endurance.value": data.endurance.value });
-        });
     }
 
     /**
@@ -831,7 +812,7 @@ export class HarnMasterActor extends Actor {
     _onDeleteEmbeddedEntity(embeddedName, child, options, userId) {
         if (embeddedName === "OwnedItem") {
             const item = this.getOwnedItem(child._id);
-            if (["physicalskill", "commskill", "combatskill", "craftskill", "magicskill", "ritualskill", "psionic"].includes(item.type)) {
+            if (["physicalskill", "commskill", "combatskill", "craftskill", "magicskill", "ritualskill"].includes(item.type)) {
                 this.items.delete(item.id);
             } else {
                 super._onDeleteEmbeddedEntity(embeddedName, child, options, userId)
