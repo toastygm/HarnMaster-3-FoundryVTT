@@ -126,13 +126,8 @@ function askMissileMacro(name, slot, img) {
 
 export function skillRoll(itemName, noDialog = false, myActor=null) {
     const speaker = ChatMessage.getSpeaker();
-    let actor = myActor;
-    if (!actor && speaker.token) actor = game.actors.tokens[speaker.token];
-    if (!actor) actor = game.actors.get(speaker.actor);
-    if (!actor) {
-        ui.notifications.warn(`No actor selected, roll ignored.`);
-        return;
-    }
+    const actor = getActor(myActor, speaker);
+    if (!actor) return;
 
     const item = getItem(itemName, 'skill', actor);
     if (!item) return;
@@ -143,13 +138,8 @@ export function skillRoll(itemName, noDialog = false, myActor=null) {
 
 export function castSpellRoll(itemName, noDialog = false, myActor=null) {
     const speaker = ChatMessage.getSpeaker();
-    let actor = myActor;
-    if (!actor && speaker.token) actor = game.actors.tokens[speaker.token];
-    if (!actor) actor = game.actors.get(speaker.actor);
-    if (!actor) {
-        ui.notifications.warn(`No actor selected, roll ignored.`);
-        return;
-    }
+    const actor = getActor(myActor, speaker);
+    if (!actor) return;
 
     const item = getItem(itemName, 'spell', actor);
     if (!item) return;
@@ -160,13 +150,8 @@ export function castSpellRoll(itemName, noDialog = false, myActor=null) {
 
 export function invokeRitualRoll(itemName, noDialog = false, myActor = null) {
     const speaker = ChatMessage.getSpeaker();
-    let actor = myActor;
-    if (!actor && speaker.token) actor = game.actors.tokens[speaker.token];
-    if (!actor) actor = game.actors.get(speaker.actor);
-    if (!actor) {
-        ui.notifications.warn(`No actor selected, roll ignored.`);
-        return;
-    }
+    const actor = getActor(myActor, speaker);
+    if (!actor) return;
 
     const item = getItem(itemName, 'invocation', actor);
     if (!item) return;
@@ -177,13 +162,8 @@ export function invokeRitualRoll(itemName, noDialog = false, myActor = null) {
 
 export function usePsionicRoll(itemName, noDialog = false, myActor=null) {
     const speaker = ChatMessage.getSpeaker();
-    let actor = myActor;
-    if (!actor && speaker.token) actor = game.actors.tokens[speaker.token];
-    if (!actor) actor = game.actors.get(speaker.actor);
-    if (!actor) {
-        ui.notifications.warn(`No actor selected, roll ignored.`);
-        return;
-    }
+    const actor = getActor(myActor, speaker);
+    if (!actor) return;
 
     const item = getItem(itemName, 'psionic', actor);
     if (!item) return;
@@ -194,13 +174,8 @@ export function usePsionicRoll(itemName, noDialog = false, myActor=null) {
 
 export function testAbilityD6Roll(ability, noDialog = false, myActor=null) {
     const speaker = ChatMessage.getSpeaker();
-    let actor = myActor;
-    if (!actor && speaker.token) actor = game.actors.tokens[speaker.token];
-    if (!actor) actor = game.actors.get(speaker.actor);
-    if (!actor) {
-        ui.notifications.warn(`No actor selected, roll ignored.`);
-        return;
-    }
+    const actor = getActor(myActor, speaker);
+    if (!actor) return;
 
     let abilities;
     if (actor.data.type === 'character') {
@@ -213,18 +188,13 @@ export function testAbilityD6Roll(ability, noDialog = false, myActor=null) {
     if (!ability || !abilities.includes(ability)) return;
 
     const label = `d6 ${ability[0].toUpperCase()}${ability.slice(1)} Roll`;
-    return actor._d6StdRoll(label, actor.data.data.abilities[ability].effective, 3, speaker, noDialog, item.data.data.notes);
+    return actor._d6StdRoll(label, actor.data.data.abilities[ability].effective, 3, speaker, noDialog);
 }
 
 export function testAbilityD100Roll(ability, noDialog = false, myActor = null) {
     const speaker = ChatMessage.getSpeaker();
-    let actor = myActor;
-    if (!actor && speaker.token) actor = game.actors.tokens[speaker.token];
-    if (!actor) actor = game.actors.get(speaker.actor);
-    if (!actor) {
-        ui.notifications.warn(`No actor selected, roll ignored.`);
-        return;
-    }
+    const actor = getActor(myActor, speaker);
+    if (!actor) return;
 
     let abilities;
     if (actor.data.type === 'character') {
@@ -237,18 +207,13 @@ export function testAbilityD100Roll(ability, noDialog = false, myActor = null) {
     if (!ability || !abilities.includes(ability)) return;
 
     const label = `d100 ${ability[0].toUpperCase()}${ability.slice(1)} Roll`;
-    return actor._d100StdRoll(label, Math.max(95, Math.min(5, actor.data.data.abilities[ability].effective * 5)), speaker, noDialog, item.data.data.notes);
+    return actor._d100StdRoll(label, Math.max(95, Math.min(5, actor.data.data.abilities[ability].effective * 5)), speaker, noDialog);
 }
 
 export function weaponDamageRoll(itemName, myActor = null) {
     const speaker = ChatMessage.getSpeaker();
-    let actor = myActor;
-    if (!actor && speaker.token) actor = game.actors.tokens[speaker.token];
-    if (!actor) actor = game.actors.get(speaker.actor);
-    if (!actor) {
-        ui.notifications.warn(`No actor selected, roll ignored.`);
-        return;
-    }
+    const actor = getActor(myActor, speaker);
+    if (!actor) return;
 
     const item = getItem(itemName, 'weapongear', actor);
     if (!item) return;
@@ -263,13 +228,8 @@ export function weaponDamageRoll(itemName, myActor = null) {
 
 export function missileDamageRoll(itemName, myActor = null) {
     const speaker = ChatMessage.getSpeaker();
-    let actor = myActor;
-    if (!actor && speaker.token) actor = game.actors.tokens[speaker.token];
-    if (!actor) actor = game.actors.get(speaker.actor);
-    if (!actor) {
-        ui.notifications.warn(`No actor selected, roll ignored.`);
-        return;
-    }
+    const actor = getActor(myActor, speaker);
+   if (!actor) return;
 
     const item = getItem(itemName, 'missilegear', actor);
     if (!item) return;
@@ -289,13 +249,8 @@ export function missileDamageRoll(itemName, myActor = null) {
 
 export function weaponAttackRoll(itemName, noDialog = false, myActor = null) {
     const speaker = ChatMessage.getSpeaker();
-    let actor = myActor;
-    if (!actor && speaker.token) actor = game.actors.tokens[speaker.token];
-    if (!actor) actor = game.actors.get(speaker.actor);
-    if (!actor) {
-        ui.notifications.warn(`No actor selected, roll ignored.`);
-        return;
-    }
+    const actor = getActor(myActor, speaker);
+    if (!actor) return;
 
     const item = getItem(itemName, 'weapongear', actor);
     if (!item) return;
@@ -309,20 +264,13 @@ export function weaponAttackRoll(itemName, noDialog = false, myActor = null) {
         speaker: speaker,
         notes: item.data.data.notes
     };
-    console.log(item);
-    console.log(rollData);
     return DiceHM3.d100StdRoll(rollData);
 }
 
 export function weaponDefendRoll(itemName, noDialog = false, myActor = null) {
     const speaker = ChatMessage.getSpeaker();
-    let actor = myActor;
-    if (!actor && speaker.token) actor = game.actors.tokens[speaker.token];
-    if (!actor) actor = game.actors.get(speaker.actor);
-    if (!actor) {
-        ui.notifications.warn(`No actor selected, roll ignored.`);
-        return;
-    }
+    const actor = getActor(myActor, speaker);
+    if (!actor) return;
 
     const item = getItem(itemName, 'weapongear', actor);
     if (!item) return;
@@ -340,13 +288,8 @@ export function weaponDefendRoll(itemName, noDialog = false, myActor = null) {
 
 export function missileAttackRoll(itemName, myActor = null) {
     const speaker = ChatMessage.getSpeaker();
-    let actor = myActor;
-    if (!actor && speaker.token) actor = game.actors.tokens[speaker.token];
-    if (!actor) actor = game.actors.get(speaker.actor);
-    if (!actor) {
-        ui.notifications.warn(`No actor selected, roll ignored.`);
-        return;
-    }
+    const actor = getActor(myActor, speaker);
+    if (!actor) return;
 
     const item = getItem(itemName, 'missilegear', actor);
     if (!item) return;
@@ -367,14 +310,8 @@ export function missileAttackRoll(itemName, myActor = null) {
 
 export function injuryRoll(myActor = null) {
     const speaker = ChatMessage.getSpeaker();
-    let actor = myActor;
-    if (!actor && speaker.token) actor = game.actors.tokens[speaker.token];
-    if (!actor) actor = game.actors.get(speaker.actor);
-    if (!actor) {
-        ui.notifications.warn(`No actor selected, roll ignored.`);
-        return;
-    }
-
+    const actor = getActor(myActor, speaker);
+    if (!actor) return;
     const rollData = {
         actor: actor,
         speaker: speaker
@@ -384,13 +321,8 @@ export function injuryRoll(myActor = null) {
 
 export function healingRoll(itemName, noDialog = false, myActor = null) {
     const speaker = ChatMessage.getSpeaker();
-    let actor = myActor;
-    if (!actor && speaker.token) actor = game.actors.tokens[speaker.token];
-    if (!actor) actor = game.actors.get(speaker.actor);
-    if (!actor) {
-        ui.notifications.warn(`No actor selected, roll ignored.`);
-        return;
-    }
+    const actor = getActor(myActor, speaker);
+    if (!actor) return;
 
     const item = getItem(itemName, 'injury', actor);
     if (!item) return;
@@ -401,70 +333,40 @@ export function healingRoll(itemName, noDialog = false, myActor = null) {
 
 export function dodgeRoll(noDialog = false, myActor = null) {
     const speaker = ChatMessage.getSpeaker();
-    let actor = myActor;
-    if (!actor && speaker.token) actor = game.actors.tokens[speaker.token];
-    if (!actor) actor = game.actors.get(speaker.actor);
-    if (!actor) {
-        ui.notifications.warn(`No actor selected, roll ignored.`);
-        return;
-    }
-
+    const actor = getActor(myActor, speaker);
+    if (!actor) return;
     const label = `Dodge Roll`;
     return actor._d100StdRoll(label, actor.data.data.dodge, speaker, noDialog);
 }
 
 export function shockRoll(noDialog = false, myActor = null) {
     const speaker = ChatMessage.getSpeaker();
-    let actor = myActor;
-    if (!actor && speaker.token) actor = game.actors.tokens[speaker.token];
-    if (!actor) actor = game.actors.get(speaker.actor);
-    if (!actor) {
-        ui.notifications.warn(`No actor selected, roll ignored.`);
-        return;
-    }
-
+    const actor = getActor(myActor, speaker);
+    if (!actor) return;
     const label = `Shock Roll`;
     return actor._d6StdRoll(label, actor.data.data.endurance, actor.data.data.universalPenalty, speaker, noDialog);
 }
 
 export function stumbleRoll(noDialog = false, myActor = null) {
     const speaker = ChatMessage.getSpeaker();
-    let actor = myActor;
-    if (!actor && speaker.token) actor = game.actors.tokens[speaker.token];
-    if (!actor) actor = game.actors.get(speaker.actor);
-    if (!actor) {
-        ui.notifications.warn(`No actor selected, roll ignored.`);
-        return;
-    }
-
+    const actor = getActor(myActor, speaker);
+    if (!actor) return;
     const label = `Stumble Roll`;
     return actor._d6StdRoll(label, actor.data.data.stumbleTarget, 3, speaker, noDialog);
 }
 
 export function fumbleRoll(noDialog = false, myActor = null) {
     const speaker = ChatMessage.getSpeaker();
-    let actor = myActor;
-    if (!actor && speaker.token) actor = game.actors.tokens[speaker.token];
-    if (!actor) actor = game.actors.get(speaker.actor);
-    if (!actor) {
-        ui.notifications.warn(`No actor selected, roll ignored.`);
-        return;
-    }
-
+    const actor = getActor(myActor, speaker);
+    if (!actor) return;
     const label = `Fumble Roll`;
     return actor._d6StdRoll(label, actor.data.data.fumbleTarget, 3, speaker, noDialog);
 }
 
 export function genericDamageRoll(myActor = null) {
     const speaker = ChatMessage.getSpeaker();
-    let actor = myActor;
-    if (!actor && speaker.token) actor = game.actors.tokens[speaker.token];
-    if (!actor) actor = game.actors.get(speaker.actor);
-    if (!actor) {
-        ui.notifications.warn(`No actor selected, roll ignored.`);
-        return;
-    }
-
+    const actor = getActor(myActor, speaker);
+    if (!actor) return;
     const rollData = {
         weapon: '',
         data: actor.data,
@@ -474,17 +376,66 @@ export function genericDamageRoll(myActor = null) {
 }
 
 function getItem(itemName, type, actor) {
-    let item = actor.getOwnedItem(itemName);
+    if (!actor || typeof actor !== 'object') {
+        ui.notifications.warn('No actor was selected. You must select an actor.');
+        return null;
+    }
+
+    if (!itemName) {
+        ui.notifications.warn('No item name was specified. You must specify an item name.');
+    }
+
+    let item = null;
+    if (itemName.startsWith("Item$")) {
+        return actor.getOwnedItem(itemName.slice(5));
+    }
     if (!item) {
         const lcItemName = itemName.toLowerCase();
         const items = actor ? actor.items.filter(i => i.type === type && i.name.toLowerCase() === lcItemName) : [];
         if (items.length > 1) {
-            ui.notifications.warn(`Your controlled Actor ${actor.name} has more than one skill with name ${itemName}. The first matched skill will be chosen.`);
+            ui.notifications.warn(`Your controlled Actor ${actor.name} has more than one ${type} with name ${itemName}. The first matched ${type} will be chosen.`);
         } else if (items.length === 0) {
-            ui.notifications.warn(`Your controlled Actor does not have a skill named ${itemName}`);
+            ui.notifications.warn(`Your controlled Actor does not have a ${type} named ${itemName}`);
             return null;
         }
         item = items[0];
     }
+
+    if (!item) {
+        ui.notifications.warn(`The item ${itemName} was not found`);
+    }
+
     return item;
+}
+
+function getActor(actor, speaker) {
+    if (actor && typeof actor === 'object') return actor;
+    let resultActor = null;
+    if (actor === null) {
+        if (!speaker) speaker = ChatMessage.getSpeaker();
+        if (speaker.token) resultActor = game.actors.tokens[speaker.token];
+        if (!resultActor) resultActor = game.actors.get(speaker.actor);
+        if (!resultActor) {
+            ui.notifications.warn(`No actor selected, roll ignored.`);
+            return null;
+        }    
+    } else {
+        let resultActor = null;
+        if (actor.startsWith('Actor$')) {
+            resultActor = game.actors.get(actor.slice(6));
+        } else if (actor.startsWith('Token$')) {
+            for (let tokActor in Object.values(game.actors.tokens)) {
+                if (tokActor.token.data.name === actor.slice(6)) return tokActor;
+            }
+        } else {
+            resultActor = game.actors.getName(actor);
+        }
+
+        if (!resultActor) {
+            ui.notifications.warn(`Actor ${actor} not found, roll ignored.`);
+            return null;
+        }    
+    }
+
+    return resultActor;
 }
