@@ -85,7 +85,7 @@ Hooks.once('init', async function() {
 Hooks.once("ready", function() {
   // Determine whether a system migration is required
   const currentVersion = game.settings.get("hm3", "systemMigrationVersion");
-  const NEEDS_MIGRATION_VERSION = "0.7.4";  // Anything older than this must be migrated
+  const NEEDS_MIGRATION_VERSION = "0.7.5";  // Anything older than this must be migrated
 
   let needMigration = currentVersion === null || (isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion));
   if ( needMigration && game.user.isGM ) {
