@@ -508,6 +508,9 @@ export class HarnMasterActor extends Actor {
 
                 }
                 if (it.data.effectiveMasteryLevel < 5) it.data.effectiveMasteryLevel = 5;
+            } else if (it.type === 'psionic') {
+                it.data.effectiveMasteryLevel = it.data.masteryLevel - pctUnivPen;
+                if (it.data.effectiveMasteryLevel < 5) it.data.effectiveMasteryLevel = 5;
             }
         });
     }
