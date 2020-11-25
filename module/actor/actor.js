@@ -802,25 +802,27 @@ export class HarnMasterActor extends Actor {
         return DiceHM3.injuryRoll(rollData);
     }
 
-    _d100StdRoll(label, target, speaker=null, fastforward=false) {
+    _d100StdRoll(label, target, speaker=null, fastforward=false, notes=null) {
         const rollData = {
             label: label,
             target: target,
             fastforward: fastforward,
             data: this.data,
-            speaker: speaker ? speaker : ChatMessage.getSpeaker({ actor: this })
+            speaker: speaker ? speaker : ChatMessage.getSpeaker({ actor: this }),
+            notes: notes
         };
         return DiceHM3.d100StdRoll(rollData);
     }
 
-    _d6StdRoll(label, target, numdice, speaker=null, fastforward=false) {
+    _d6StdRoll(label, target, numdice, speaker=null, fastforward=false, notes=null) {
         const rollData = {
             label: label,
             target: target,
             numdice: numdice,
             fastforward: fastforward,
             data: this.data,
-            speaker: speaker ? speaker : ChatMessage.getSpeaker({ actor: this })
+            speaker: speaker ? speaker : ChatMessage.getSpeaker({ actor: this }),
+            notes: notes
         };
         return DiceHM3.d6Roll(rollData);
     }

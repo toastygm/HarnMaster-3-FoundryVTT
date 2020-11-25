@@ -57,8 +57,10 @@ export class DiceHM3 {
             rollValue: roll.rollObj.total,
             rollResult: roll.rollObj.total,
             showResult: false,
-            description: roll.description
+            description: roll.description,
+            notes: rollData.notes
         };
+
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
@@ -182,8 +184,10 @@ export class DiceHM3 {
             rollValue: roll.rollObj.total,
             rollResult: roll.rollObj.dice[0].values.join(" + "),
             showResult: roll.rollObj.dice[0].values.length > 1,
-            description: roll.description
+            description: roll.description,
+            notes: rollData.notes
         };
+
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {

@@ -152,7 +152,7 @@ export function skillRoll(itemName, noDialog = false, myActor=null) {
     }
 
     const label = `${item.data.name} Skill Test`;
-    return actor._d100StdRoll(label, item.data.data.effectiveMasteryLevel, speaker, noDialog);
+    return actor._d100StdRoll(label, item.data.data.effectiveMasteryLevel, speaker, noDialog, item.data.data.notes);
 }
 
 export function castSpellRoll(itemName, noDialog = false, myActor=null) {
@@ -169,7 +169,7 @@ export function castSpellRoll(itemName, noDialog = false, myActor=null) {
     if (!item) return;
 
     const label = `Casting ${item.data.name}`;
-    return actor._d100StdRoll(label, item.data.data.effectiveMasteryLevel, speaker, noDialog);
+    return actor._d100StdRoll(label, item.data.data.effectiveMasteryLevel, speaker, noDialog, item.data.data.notes);
 }
 
 export function invokeRitualRoll(itemName, noDialog = false, myActor = null) {
@@ -186,7 +186,7 @@ export function invokeRitualRoll(itemName, noDialog = false, myActor = null) {
     if (!item) return;
 
     const label = `Invoking ${item.data.name} Ritual`;
-    return actor._d100StdRoll(label, item.data.data.effectiveMasteryLevel, speaker, noDialog);
+    return actor._d100StdRoll(label, item.data.data.effectiveMasteryLevel, speaker, noDialog, item.data.data.notes);
 }
 
 export function usePsionicRoll(itemName, noDialog = false, myActor=null) {
@@ -217,7 +217,7 @@ export function usePsionicRoll(itemName, noDialog = false, myActor=null) {
     }
 
     const label = `Using ${item.data.name} Talent`;
-    return actor._d100StdRoll(label, item.data.data.effectiveMasteryLevel, speaker, noDialog);
+    return actor._d100StdRoll(label, item.data.data.effectiveMasteryLevel, speaker, noDialog, item.data.data.notes);
 }
 
 export function testAbilityD6Roll(ability, noDialog = false, myActor=null) {
@@ -241,7 +241,7 @@ export function testAbilityD6Roll(ability, noDialog = false, myActor=null) {
     if (!ability || !abilities.includes(ability)) return;
 
     const label = `d6 ${ability[0].toUpperCase()}${ability.slice(1)} Roll`;
-    return actor._d6StdRoll(label, actor.data.data.abilities[ability].effective, 3, speaker, noDialog);
+    return actor._d6StdRoll(label, actor.data.data.abilities[ability].effective, 3, speaker, noDialog, item.data.data.notes);
 }
 
 export function testAbilityD100Roll(ability, noDialog = false, myActor = null) {
@@ -265,7 +265,7 @@ export function testAbilityD100Roll(ability, noDialog = false, myActor = null) {
     if (!ability || !abilities.includes(ability)) return;
 
     const label = `d100 ${ability[0].toUpperCase()}${ability.slice(1)} Roll`;
-    return actor._d100StdRoll(label, Math.max(95, Math.min(5, actor.data.data.abilities[ability].effective * 5)), speaker, noDialog);
+    return actor._d100StdRoll(label, Math.max(95, Math.min(5, actor.data.data.abilities[ability].effective * 5)), speaker, noDialog, item.data.data.notes);
 }
 
 export function weaponDamageRoll(itemName, myActor = null) {
@@ -334,8 +334,11 @@ export function weaponAttackRoll(itemName, noDialog = false, myActor = null) {
         target: item.data.data.attackMasteryLevel,
         fastforward: noDialog,
         data: this.data,
-        speaker: speaker
+        speaker: speaker,
+        notes: item.data.data.notes
     };
+    console.log(item);
+    console.log(rollData);
     return DiceHM3.d100StdRoll(rollData);
 }
 
@@ -421,7 +424,7 @@ export function healingRoll(itemName, noDialog = false, myActor = null) {
     if (!item) return;
 
     const label = `${item.data.name} Healing Roll`;
-    return actor._d100StdRoll(label, item.data.data.healRate, speaker, noDialog);
+    return actor._d100StdRoll(label, item.data.data.healRate, speaker, noDialog, item.data.data.notes);
 }
 
 export function dodgeRoll(noDialog = false, myActor = null) {
@@ -502,7 +505,7 @@ function getItem(itemName, type, actor) {
     let item = actor.getOwnedItem(itemName);
     if (!item) {
         const lcItemName = itemName.toLowerCase();
-        const items = actor ? actor.items.filter(i => i.type === 'skill' && i.data.type !== 'Psionic' && i.name.toLowerCase() === lcItemName) : [];
+        const items = actor ? actor.items.filter(i => i.type === type && i.name.toLowerCase() === lcItemName) : [];
         if (items.length > 1) {
             ui.notifications.warn(`Your controlled Actor ${actor.name} has more than one skill with name ${itemName}. The first matched skill will be chosen.`);
         } else if (items.length === 0) {
