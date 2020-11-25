@@ -286,9 +286,22 @@ export function migrateItemData(itemData) {
             updateData['data.arcane.ego'] = 0;
         }
 
-        if (itemData.type === 'weapongear' || itemData.type === 'missilegear') {
+        if (itemData.type === 'weapongear') {
             if (typeof data.weaponQuality === 'undefined') {
                 updateData['data.weaponQuality'] = 0;
+            }
+
+            if (typeof data.attackModifier === 'undefined') {
+                updateData['data.attackModifier'] = data.handMode;
+                updateData['data.-=handMode'] = null;  // delete the handMode object;
+            }
+        } else if (itemData.type === 'missilegear') {
+            if (typeof data.weaponQuality === 'undefined') {
+                updateData['data.weaponQuality'] = 0;
+            }
+
+            if (typeof data.attackModifier === 'undefined') {
+                updateData['data.attackModifier'] = 0;
             }
         }
 

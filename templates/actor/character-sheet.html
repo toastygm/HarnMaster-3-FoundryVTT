@@ -577,7 +577,7 @@
                     <div class="item-detail weapon-weight">Wt</div>
                     <div class="item-detail weapon-quality">WQ</div>
                     <div class="item-detail weapon-atkdef">A/D</div>
-                    <div class="item-detail weapon-handmode">HM</div>
+                    <div class="item-detail weapon-atkmod">Mod</div>
                     <div class="item-detail weapon-blunt">B</div>
                     <div class="item-detail weapon-edged">E</div>
                     <div class="item-detail weapon-piercing">P</div>
@@ -601,10 +601,10 @@
                                 <div class="item-detail weapon-weight">{{data.weight}}</div>
                                 <div class="item-detail weapon-quality">{{data.weaponQuality}}</div>
                                 <div class="item-detail weapon-atkdef">{{data.attack}}/{{data.defense}}</div>
-                                {{#if (lt data.handMode 0)}}
-                                <div class="item-detail weapon-handmode"><i class="fas fa-times"></i></div>
+                                {{#if (lt data.attackModifier 0)}}
+                                <div class="item-detail weapon-atkmod"><i class="fas fa-times"></i></div>
                                 {{else}}
-                                <div class="item-detail weapon-handmode">{{data.handMode}}</div>
+                                <div class="item-detail weapon-atkmod">{{data.attackModifier}}</div>
                                 {{/if}}
                                 {{#if (lt data.blunt 0)}}
                                 <div class="item-detail weapon-blunt"><i class="fas fa-times"></i></div>

@@ -765,7 +765,7 @@
     .hm3 .combat .weapons-list .weapon .weapon-atkdef {
       flex: 0 0 40px;
       text-align: center; }
-    .hm3 .combat .weapons-list .weapon .weapon-handmode {
+    .hm3 .combat .weapons-list .weapon .weapon-atkmod {
       flex: 0 0 25px;
       text-align: center; }
     .hm3 .combat .weapons-list .weapon .weapon-blunt {

@@ -160,7 +160,7 @@
       "templates": ["base", "gear", "weapon"],
       "attack": 0,
       "defense": 0,
-      "handMode": 0,
+      "attackModifier": 0,
       "blunt": 0,
       "edged": 0,
       "piercing": 0,
@@ -169,6 +169,7 @@
     "missilegear": {
       "templates": ["base", "gear", "weapon"],
       "weaponAspect": "Piercing",
+      "attackModifier": 0,
       "range": {
         "short": 0,
         "medium": 0,
