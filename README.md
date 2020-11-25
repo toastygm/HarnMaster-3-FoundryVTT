@@ -224,3 +224,6 @@ The following images were taken from [The Noun Project](https://thenounproject.c
 * boxes by Sarah
 * lance by parkjisun
 * Trident by Yohann
+* Injury by HAMEL KHALED
+* break by ibrandify
+* hit by Guilherme Furtado
