@@ -23,21 +23,21 @@ export async function createHM3Macro(data, slot) {
             break;
 
         case 'spell':
-            command = `game.hm3.macros.castSpellRoll("${itemName}");`;
+            command = `game.hm3.macros.castSpellRoll("${item.name}");`;
             break;
 
         case 'invocation':
-            command = `game.hm3.macros.invokeRitualRoll("${itemName}");`;
+            command = `game.hm3.macros.invokeRitualRoll("${item.name}");`;
             break;
 
         case 'weapongear':
             return await askWeaponMacro(item.name, slot, item.img);
 
-        case 'misslegear':
+        case 'missilegear':
             return await askMissileMacro(item.name, slot, item.img);
 
         case 'injury':
-            command = `game.hm3.macros.healingRoll("${itemName}");`;
+            command = `game.hm3.macros.healingRoll("${item.name}");`;
             break;
 
         default:
@@ -96,7 +96,7 @@ function askWeaponMacro(name, slot, img) {
     });
 }
 
-function askMissileMacro(name, img) {
+function askMissileMacro(name, slot, img) {
     const html = '<p>Select the type of missile macro to create:</p>'
     
     // Create the dialog window
@@ -392,11 +392,11 @@ export function healingRoll(itemName, noDialog = false, myActor = null) {
         return;
     }
 
-    const item = getItem(itemName, 'missilegear', actor);
+    const item = getItem(itemName, 'injury', actor);
     if (!item) return;
 
     const label = `${item.data.name} Healing Roll`;
-    return actor._d100StdRoll(label, item.data.data.healRate, speaker, noDialog, item.data.data.notes);
+    return actor._d100StdRoll(label, item.data.data.healRate*actor.data.data.endurance, speaker, noDialog, item.data.data.notes);
 }
 
 export function dodgeRoll(noDialog = false, myActor = null) {
@@ -424,7 +424,7 @@ export function shockRoll(noDialog = false, myActor = null) {
     }
 
     const label = `Shock Roll`;
-    return actor._d6StdRoll(label, actor.data.data.endurance.value, actor.data.data.universalPenalty, speaker, noDialog);
+    return actor._d6StdRoll(label, actor.data.data.endurance, actor.data.data.universalPenalty, speaker, noDialog);
 }
 
 export function stumbleRoll(noDialog = false, myActor = null) {
