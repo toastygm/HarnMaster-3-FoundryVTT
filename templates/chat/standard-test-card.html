@@ -3,6 +3,12 @@
         <h3 class="title">{{title}}</h3>
     </header>
 
+    {{#if notes}}
+    <div class="card-note">
+        <span>{{notes}}</span>
+    </div>
+    {{/if}}
+
     {{#if (gt modifier 0)}}
     <div class="card-content">
         <span class="label">Original Target:</span>
