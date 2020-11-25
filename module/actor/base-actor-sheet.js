@@ -2,7 +2,7 @@ import { DiceHM3 } from "../dice-hm3.js";
 import { HM3 } from "../config.js";
 //import { ImportArmorGear } from "../import-armor.js";
 //import { ImportFFF } from "../import-char.js";
-//import * as utility from '../utility.js';
+import * as utility from '../utility.js';
 import * as macros from '../macros.js';
 
 /**
