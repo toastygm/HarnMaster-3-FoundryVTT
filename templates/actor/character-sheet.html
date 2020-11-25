@@ -295,8 +295,8 @@
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
                     <div class="skill-notes item-detail">Notes</div>
-                    <div class="item-controls">
-                        <a class="item-control item-create" title="Create Physical Skill" data-type="skill" data-skilltype="Physical"><i
+                    <div class="item-controls-wide">
+                        <a class="item-control item-create active" title="Create Physical Skill" data-type="skill" data-skilltype="Physical"><i
                                 class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
@@ -312,9 +312,10 @@
                                 <div class="skill-ele item-detail">{{data.masteryLevel}}</div>
                                 <div class="skill-ele item-detail">{{data.effectiveMasteryLevel}}</div>
                                 <div class="skill-notes">{{data.notes}}</div>
-                                <div class="item-controls">
-                                    <a class="item-control item-edit" title="Edit Skill"><i class="fas fa-edit"></i></a>
-                                    <a class="item-control item-delete" title="Delete Skill" data-label="Physical Skill"><i class="fas fa-trash"></i></a>
+                                <div class="item-controls-wide">
+                                    <a class="item-control item-improve" title="Improve Skill">{{#if data.improveFlag}}<i class="active fas fa-star"></i>{{else}}<i class="far fa-star"></i>{{/if}}</a>
+                                    <a class="item-control item-edit" title="Edit Skill"><i class="active fas fa-edit"></i></a>
+                                    <a class="item-control item-delete" title="Delete Skill" data-label="Physical Skill"><i class="active fas fa-trash"></i></a>
                                 </div>
                             </li>
                         {{/if}}
@@ -330,8 +331,8 @@
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
                     <div class="skill-notes item-detail">Notes</div>
-                    <div class="item-controls">
-                        <a class="item-control item-create" title="Create Communication Skill" data-type="skill" data-skilltype="Communication"><i
+                    <div class="item-controls-wide">
+                        <a class="item-control item-create active" title="Create Communication Skill" data-type="skill" data-skilltype="Communication"><i
                                 class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
@@ -347,9 +348,10 @@
                                 <div class="skill-ele item-detail">{{data.masteryLevel}}</div>
                                 <div class="skill-ele item-detail">{{data.effectiveMasteryLevel}}</div>
                                 <div class="skill-notes">{{data.notes}}</div>
-                                <div class="item-controls">
-                                    <a class="item-control item-edit" title="Edit Skill"><i class="fas fa-edit"></i></a>
-                                    <a class="item-control item-delete" title="Delete Skill" data-label="Communication Skill"><i class="fas fa-trash"></i></a>
+                                <div class="item-controls-wide">
+                                    <a class="item-control item-improve" title="Improve Skill">{{#if data.improveFlag}}<i class="active fas fa-star"></i>{{else}}<i class="far fa-star"></i>{{/if}}</a>
+                                    <a class="item-control item-edit" title="Edit Skill"><i class="active fas fa-edit"></i></a>
+                                    <a class="item-control item-delete" title="Delete Skill" data-label="Communication Skill"><i class="active fas fa-trash"></i></a>
                                 </div>
                             </li>
                         {{/if}}
@@ -365,8 +367,8 @@
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
                     <div class="skill-notes item-detail">Notes</div>
-                    <div class="item-controls">
-                        <a class="item-control item-create" title="Create Combat Skill" data-type="skill" data-skilltype="Combat"><i
+                    <div class="item-controls-wide">
+                        <a class="item-control item-create active" title="Create Combat Skill" data-type="skill" data-skilltype="Combat"><i
                                 class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
@@ -382,9 +384,10 @@
                                 <div class="skill-ele item-detail">{{data.masteryLevel}}</div>
                                 <div class="skill-ele item-detail">{{data.effectiveMasteryLevel}}</div>
                                 <div class="skill-notes">{{data.notes}}</div>
-                                <div class="item-controls">
-                                    <a class="item-control item-edit" title="Edit Skill"><i class="fas fa-edit"></i></a>
-                                    <a class="item-control item-delete" title="Delete Skill" data-label="Combat Skill"><i class="fas fa-trash"></i></a>
+                                <div class="item-controls-wide">
+                                    <a class="item-control item-improve" title="Improve Skill">{{#if data.improveFlag}}<i class="active fas fa-star"></i>{{else}}<i class="far fa-star"></i>{{/if}}</a>
+                                    <a class="item-control item-edit" title="Edit Skill"><i class="active fas fa-edit"></i></a>
+                                    <a class="item-control item-delete" title="Delete Skill" data-label="Combat Skill"><i class="active fas fa-trash"></i></a>
                                 </div>
                             </li>
                         {{/if}}
@@ -400,8 +403,8 @@
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
                     <div class="skill-notes item-detail">Notes</div>
-                    <div class="item-controls">
-                        <a class="item-control item-create" title="Create Craft Skill" data-type="skill" data-skilltype="Craft"><i
+                    <div class="item-controls-wide">
+                        <a class="item-control item-create active" title="Create Craft Skill" data-type="skill" data-skilltype="Craft"><i
                                 class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
@@ -417,9 +420,10 @@
                                 <div class="skill-ele item-detail">{{data.masteryLevel}}</div>
                                 <div class="skill-ele item-detail">{{data.effectiveMasteryLevel}}</div>
                                 <div class="skill-notes">{{data.notes}}</div>
-                                <div class="item-controls">
-                                    <a class="item-control item-edit" title="Edit Skill"><i class="fas fa-edit"></i></a>
-                                    <a class="item-control item-delete" title="Delete Skill" data-label="Craft Skill"><i class="fas fa-trash"></i></a>
+                                <div class="item-controls-wide">
+                                    <a class="item-control item-improve" title="Improve Skill">{{#if data.improveFlag}}<i class="active fas fa-star"></i>{{else}}<i class="far fa-star"></i>{{/if}}</a>
+                                    <a class="item-control item-edit" title="Edit Skill"><i class="active fas fa-edit"></i></a>
+                                    <a class="item-control item-delete" title="Delete Skill" data-label="Craft Skill"><i class="active fas fa-trash"></i></a>
                                 </div>
                             </li>
                         {{/if}}
@@ -435,8 +439,8 @@
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
                     <div class="skill-notes item-detail">Notes</div>
-                    <div class="item-controls">
-                        <a class="item-control item-create" title="Create Magic Skill" data-type="skill" data-skilltype="Magic"><i
+                    <div class="item-controls-wide">
+                        <a class="item-control item-create active" title="Create Magic Skill" data-type="skill" data-skilltype="Magic"><i
                                 class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
@@ -452,9 +456,10 @@
                                 <div class="skill-ele item-detail">{{data.masteryLevel}}</div>
                                 <div class="skill-ele item-detail">{{data.effectiveMasteryLevel}}</div>
                                 <div class="skill-notes">{{data.notes}}</div>
-                                <div class="item-controls">
-                                    <a class="item-control item-edit" title="Edit Skill"><i class="fas fa-edit"></i></a>
-                                    <a class="item-control item-delete" title="Delete Skill" data-label="Magic Skill"><i class="fas fa-trash"></i></a>
+                                <div class="item-controls-wide">
+                                    <a class="item-control item-improve" title="Improve Skill">{{#if data.improveFlag}}<i class="active fas fa-star"></i>{{else}}<i class="far fa-star"></i>{{/if}}</a>
+                                    <a class="item-control item-edit" title="Edit Skill"><i class="active fas fa-edit"></i></a>
+                                    <a class="item-control item-delete" title="Delete Skill" data-label="Magic Skill"><i class="active fas fa-trash"></i></a>
                                 </div>
                             </li>
                         {{/if}}
@@ -471,8 +476,8 @@
                     <div class="skill-ele item-detail">EML</div>
                     <div class="skill-ele item-detail">Piety</div>
                     <div class="skill-notes item-detail">Notes</div>
-                    <div class="item-controls">
-                        <a class="item-control item-create" title="Create Ritual Skill" data-type="skill" data-skilltype="Ritual"><i
+                    <div class="item-controls-wide">
+                        <a class="item-control item-create active" title="Create Ritual Skill" data-type="skill" data-skilltype="Ritual"><i
                                 class="fas fa-plus"></i> Add</a>
                     </div>
                 </li>
@@ -489,9 +494,10 @@
                                 <div class="skill-ele item-detail">{{data.effectiveMasteryLevel}}</div>
                                 <div class="skill-ele item-detail">{{data.ritual.piety}}</div>
                                 <div class="skill-notes">{{data.notes}}</div>
-                                <div class="item-controls">
-                                    <a class="item-control item-edit" title="Edit Skill"><i class="fas fa-edit"></i></a>
-                                    <a class="item-control item-delete" title="Delete Skill" data-label="Ritual Skill"><i class="fas fa-trash"></i></a>
+                                <div class="item-controls-wide">
+                                    <a class="item-control item-improve" title="Improve Skill">{{#if data.improveFlag}}<i class="active fas fa-star"></i>{{else}}<i class="far fa-star"></i>{{/if}}</a>
+                                    <a class="item-control item-edit" title="Edit Skill"><i class="active fas fa-edit"></i></a>
+                                    <a class="item-control item-delete" title="Delete Skill" data-label="Ritual Skill"><i class="active fas fa-trash"></i></a>
                                 </div>
                             </li>
                         {{/if}}
@@ -850,7 +856,7 @@
                     <div class="item-detail psionic-ml">ML</div>
                     <div class="item-detail psionic-eml">EML</div>
                     <div class="item-detail psionic-notes">Notes</div>
-                    <div class="item-controls">
+                    <div class="item-controls-wide">
                         <a class="item-control item-create active" title="Create Psionic Talent" data-type="psionic"><i
                                 class="fas fa-plus"></i> Add</a>
                     </div>
@@ -868,7 +874,8 @@
                                 <div class="item-detail psionic-ml">{{data.masteryLevel}}</div>
                                 <div class="item-detail psionic-eml">{{data.effectiveMasteryLevel}}</div>
                                 <div class="item-detail psionic-notes">{{data.notes}}</div>
-                                <div class="item-controls">
+                                <div class="item-controls-wide">
+                                    <a class="item-control item-improve" title="Improve Skill">{{#if data.improveFlag}}<i class="active fas fa-star"></i>{{else}}<i class="far fa-star"></i>{{/if}}</a>
                                     <a class="item-control item-edit" title="Edit Psionic Talent"><i class="active fas fa-edit"></i></a>
                                     <a class="item-control item-delete" title="Delete Psionic Talent" data-label="Psionic Talent"><i class="active fas fa-trash"></i></a>
                                 </div>

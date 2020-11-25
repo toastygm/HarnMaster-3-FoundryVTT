@@ -135,10 +135,7 @@
       "ritual": {
         "piety":0
       },
-      "psionic": {
-        "fatigue": 0,
-        "time": "" 
-      }
+      "improveFlag": false
     },
     "spell": {
       "templates": ["base"],
@@ -153,7 +150,15 @@
       "effectiveMasteryLevel": 0
     },
     "psionic": {
-      "templates": ["base", "skill"],
+      "templates": ["base"],
+      "skillBase": {
+        "value": 0,
+        "formula": "",
+        "isFormulaValid": true
+      },
+      "masteryLevel": 0,
+      "effectiveMasteryLevel": 0,
+      "improveFlag": false,
       "fatigue": 0
     },
     "weapongear": {
