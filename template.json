@@ -63,10 +63,10 @@
         },
         "dodge": 0,
         "initiative": 0,
-        "endurance": {
+        "endurance": 0,
+        "shockIndex": {
           "value": 0,
-          "min": 0,
-          "max": 0
+          "max": 100
         },
         "move": {
           "base": 0,
@@ -94,13 +94,14 @@
     }
   },
   "Item": {
-    "types": ["skill", "spell", "invocation", "weapongear", 
+    "types": ["skill", "spell", "invocation", "psionic", "weapongear", 
       "missilegear", "armorgear", "miscgear", "injury", "armorlocation"],
     "templates": {
       "base": {
         "notes": "",
         "description": "",
-        "source": ""
+        "source": "",
+        "macro": ""
       },
       "gear": {
         "quantity": 1,
@@ -151,11 +152,15 @@
       "circle": 1,
       "effectiveMasteryLevel": 0
     },
+    "psionic": {
+      "templates": ["base", "skill"],
+      "fatigue": 0
+    },
     "weapongear": {
       "templates": ["base", "gear", "weapon"],
       "attack": 0,
       "defense": 0,
-      "handMode": 0,
+      "attackModifier": 0,
       "blunt": 0,
       "edged": 0,
       "piercing": 0,
@@ -164,6 +169,7 @@
     "missilegear": {
       "templates": ["base", "gear", "weapon"],
       "weaponAspect": "Piercing",
+      "attackModifier": 0,
       "range": {
         "short": 0,
         "medium": 0,

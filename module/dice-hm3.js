@@ -55,8 +55,12 @@ export class DiceHM3 {
             isSuccess: roll.isSuccess,
             isCritical: roll.isCritical,
             rollValue: roll.rollObj.total,
-            description: roll.description
+            rollResult: roll.rollObj.total,
+            showResult: false,
+            description: roll.description,
+            notes: rollData.notes
         };
+
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
@@ -178,8 +182,12 @@ export class DiceHM3 {
             modifiedTarget: roll.target,
             isSuccess: roll.isSuccess,
             rollValue: roll.rollObj.total,
-            description: roll.description
+            rollResult: roll.rollObj.dice[0].values.join(" + "),
+            showResult: roll.rollObj.dice[0].values.length > 1,
+            description: roll.description,
+            notes: rollData.notes
         };
+
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
@@ -659,6 +667,7 @@ export class DiceHM3 {
             weaponImpact: weapon.aspects[roll.chosenAspect],
             addlWeaponImpact: roll.addlWeaponImpact,
             totalImpact: totalImpact,
+            rollResult: roll.rollObj.dice[0].values.join(" + "),
             rollValue: roll.rollObj.total,
         };
         const html = await renderTemplate(chatTemplate, chatTemplateData);
@@ -831,7 +840,6 @@ export class DiceHM3 {
         };
 
         // Create a chat message
-        console.log(messageData);
         await ChatMessage.create(messageData, messageOptions);
     
         return roll;

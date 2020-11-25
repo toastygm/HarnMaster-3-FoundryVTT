@@ -21,12 +21,12 @@
 
     <div class="card-content">
         <span class="label">Impact (Base + Addl + Roll):</span>
-        <span class="value">{{weaponImpact}} + {{addlWeaponImpact}} + {{rollValue}} = <strong>{{totalImpact}}</strong></span>
+        <span class="value">{{weaponImpact}} + {{addlWeaponImpact}} + ({{rollResult}}) = <strong>{{totalImpact}}</strong></span>
     </div>
     {{else}}
     <div class="card-content">
         <span class="label">Impact (Base + Roll):</span>
-        <span class="value">{{weaponImpact}} + {{rollValue}} = <strong>{{totalImpact}}</strong></span>
+        <span class="value">{{weaponImpact}} + ({{rollResult}}) = <strong>{{totalImpact}}</strong></span>
     </div>
     {{/if}}
 </div>

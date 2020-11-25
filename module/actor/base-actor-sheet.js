@@ -3,6 +3,7 @@ import { HM3 } from "../config.js";
 //import { ImportArmorGear } from "../import-armor.js";
 //import { ImportFFF } from "../import-char.js";
 import * as utility from '../utility.js';
+import * as macros from '../macros.js';
 
 /**
  * Extend the basic ActorSheet with some common capabilities
@@ -69,7 +70,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 const fd = new FormDataExtended(form);
                 const formdata = fd.toObject();
                 let formQtyToMove = parseInt(formdata.itemstomove);
-                
+
                 if (formQtyToMove <= 0) {
                     return false;
                 } else {
@@ -97,7 +98,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         if (result) {
             // update quantity
             const newTargetQuantity = result.data.data.quantity + moveQuantity;
-            await result.update({'data.quantity': newTargetQuantity});
+            await result.update({ 'data.quantity': newTargetQuantity });
         } else {
             // Create an item
             const item = await Item.fromDropData(data);
@@ -109,14 +110,14 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         if (result) {
             const sourceActor = await game.actors.get(data.actorId);
             if (moveQuantity >= data.data.data.quantity) {
-                await sourceActor.deleteOwnedItem(data.data._id);    
+                await sourceActor.deleteOwnedItem(data.data._id);
             } else {
                 const newSourceQuantity = sourceQuantity - moveQuantity;
                 const sourceItem = await sourceActor.getOwnedItem(data.data._id);
-                await sourceItem.update({'data.quantity': newSourceQuantity});
+                await sourceItem.update({ 'data.quantity': newSourceQuantity });
             }
         }
-        return result;        
+        return result;
     }
 
     /** @override */
@@ -164,25 +165,116 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         html.find('.item-delete').click(this._onItemDelete.bind(this));
 
         // Rollable abilities.
-        html.find('.rollable').click(this._onRoll.bind(this));
+        html.find('.rollable').click(ev => {
+            const li = $(ev.currentTarget).parents(".item");
+            const item = this.actor.getOwnedItem(li.data("itemId"));
+            const dataset = ev.currentTarget && ev.currentTarget.dataset ? ev.currentTarget.dataset : {};
+            dataset.fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
 
-        // Standard 1d100 vs. target number (asks for optional modifier)
-        html.find('.std-roll').click(this._onStdRoll.bind(this));
+            this.onRoll(item, dataset);
+        });
 
-        // Standard 1d100 vs. target number (asks for optional modifier)
-        html.find('.d6-roll').click(this._onD6Roll.bind(this));
+        // Standard 1d100 Skill Roll
+        html.find('.skill-roll').click(ev => {
+            const li = $(ev.currentTarget).parents(".item");
+            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
+            macros.skillRoll(li.data('itemId'), fastforward, this.actor);
+        });
 
-        // Damage Roll
-        html.find('.damage-roll').click(this._onDamageRoll.bind(this));
+        // Standard 1d100 Spell Casting Roll
+        html.find('.spell-roll').click(ev => {
+            const li = $(ev.currentTarget).parents(".item");
+            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
+            macros.castSpellRoll(li.data('itemId'), fastforward, this.actor);
+        });
 
-        // Missile Attack Roll
-        html.find('.missile-attack-roll').click(this._onMissileAttackRoll.bind(this));
+        // Standard 1d100 Ritual Invocation Roll
+        html.find('.invocation-roll').click(ev => {
+            const li = $(ev.currentTarget).parents(".item");
+            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
+            macros.invokeRitualRoll(li.data('itemId'), fastforward, this.actor);
+        });
+
+        // Standard 1d100 Psionic Talent Roll
+        html.find('.psionic-roll').click(ev => {
+            const li = $(ev.currentTarget).parents(".item");
+            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
+            macros.usePsionicRoll(li.data('itemId'), fastforward, this.actor);
+        });
+
+        // d6 Ability Score Roll
+        html.find('.ability-d6-roll').click(ev => {
+            const ability = ev.currentTarget.dataset.ability;
+            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
+            macros.testAbilityD6Roll(ability, fastforward, this.actor)
+        });
+
+        // d100 Ability Score Roll
+        html.find('.ability-d100-roll').click(ev => {
+            const ability = ev.currentTarget.dataset.ability;
+            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
+            macros.testAbilityD100Roll(ability, fastforward, this.actor)
+        });
+
+        // Weapon Damage Roll
+        html.find('.weapon-damage-roll').click(ev => {
+            const li = $(ev.currentTarget).parents(".item");
+            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
+            macros.weaponDamageRoll(li.data('itemId'), fastforward, this.actor);
+        });
 
         // Missile Damage Roll
-        html.find('.missile-damage-roll').click(this._onMissileDamageRoll.bind(this));
+        html.find('.missile-damage-roll').click(ev => {
+            const li = $(ev.currentTarget).parents(".item");
+            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
+            macros.missileDamageRoll(li.data('itemId'), fastforward, this.actor);
+        });
+
+        // Weapon Attack Roll
+        html.find('.weapon-attack-roll').click(ev => {
+            const li = $(ev.currentTarget).parents(".item");
+            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
+            macros.weaponAttackRoll(li.data('itemId'), fastforward, this.actor);
+        });
+
+        // Weapon Defend Roll
+        html.find('.weapon-defend-roll').click(ev => {
+            const li = $(ev.currentTarget).parents(".item");
+            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
+            macros.weaponDefendRoll(li.data('itemId'), fastforward, this.actor);
+        });
+
+        // Missile Attack Roll
+        html.find('.missile-attack-roll').click(ev => {
+            const li = $(ev.currentTarget).parents(".item");
+            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
+            macros.missileAttackRoll(li.data('itemId'), fastforward, this.actor);
+        });
 
         // Injury Roll
-        html.find('.injury-roll').click(this._onInjuryRoll.bind(this));
+        html.find('.injury-roll').click(ev => macros.injuryRoll(this.actor));
+
+        // Healing Roll
+        html.find('.healing-roll').click(ev => {
+            const li = $(ev.currentTarget).parents(".item");
+            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
+            macros.healingRoll(li.data('itemId'), fastforward, this.actor);
+        });
+
+        // Dodge Roll
+        html.find('.dodge-roll').click(ev => macros.dodgeRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
+
+        // Shock Roll
+        html.find('.shock-roll').click(ev => macros.shockRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
+
+        // Stumble Roll
+        html.find('.stumble-roll').click(ev => macros.stumbleRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
+
+        // Fumble Roll
+        html.find('.fumble-roll').click(ev => macros.fumbleRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
+
+        // Generic Damage Roll
+        html.find('.damage-roll').click(ev => macros.genericDamageRoll(this.actor));
 
         // Toggle carry state
         html.find('.item-carry').click(this._onToggleCarry.bind(this));
@@ -203,7 +295,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         const title = `Delete ${data.label}`;
 
         // Create the dialog window
-        let agree=false;
+        let agree = false;
         await Dialog.confirm({
             title: title,
             content: '<p>Are you sure?</p>',
@@ -228,8 +320,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         if (!data.notes) data.notes = otherData.notes;
         if (!data.source) data.source = otherData.source;
         if (!data.description) data.description = otherData.description;
+        if (!data.macro) data.macro = otherData.macro;
 
-        switch(item.data.type) {
+        switch (item.data.type) {
             case 'skill':
                 // If the skill types don't match, return without change
                 if (data.type != otherData.type) {
@@ -245,13 +338,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     updateData['data.skillBase.formula'] = otherData.skillBase.formula;
                     updateData['data.skillBase.isFormulaValid'] = otherData.skillBase.isFormulaValid;
                 }
-                
-                // If our type is Psionic, and the current item's psionic time is blank,
-                // copy over all psionic data from the dropped item.
-                if (data.type = 'Psionic' && !data.psionic.time) {
-                    updateData['data.psionic.time'] = otherData.psionic.time;
-                    updateData['data.psionic.fatigue'] = otherData.psionic.fatigue;
-                }
                 break;
 
             case 'spell':
@@ -263,12 +349,16 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 updateData['data.diety'] = otherData.diety;
                 updateData['data.circle'] = otherData.circle;
                 break;
+
+            case 'psionic':
+                updateData['data.circle.skillBase.formula'] = otherData.skillBase.formula;
+                updateData['data.circle.skillBase.isFormulaValid'] = otherData.skillBase.isFormulaValid;
         }
 
         if (updateData) {
             await item.update(updateData);
         }
-        
+
         return;
     }
 
@@ -282,11 +372,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Initialize a default name.
         let name = 'New Item';
         if (dataset.type === 'skill' && dataset.skilltype) {
-            if (header.dataset.skilltype === 'Psionic') {
-                name = utility.createUniqueName('New Psionic Talent', this.actor.itemTypes.skill);
-            } else {
-                name = utility.createUniqueName(`New ${dataset.skilltype} Skill`, this.actor.itemTypes.skill);
-            }
+            name = utility.createUniqueName(`New ${dataset.skilltype} Skill`, this.actor.itemTypes.skill);
         } else {
             switch (dataset.type) {
                 case "weapongear":
@@ -321,13 +407,17 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     name = utility.createUniqueName('New Invocation', this.actor.itemTypes.invocation);
                     break;
 
+                case "psionic":
+                    name = utility.createUniqueName('New Psionic', this.actor.itemTypes.psionic);
+                    break;
+
                 default:
                     console.error(`HM3 | Can't create item: unknown item type '${type}'`);
                     return null;
             }
 
         }
-        
+
         // Item Data
         const itemData = duplicate(game.system.model.Item[dataset.type]);
         if (dataset.type === 'skill') itemData.type = dataset.skilltype;
@@ -356,7 +446,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 const formdata = fd.toObject();
                 let itemName = formdata.name;
                 let extraValue = formdata.extra_value;
-                
+
                 if (dialogData.type === 'spell') {
                     dialogData.data.convocation = extraValue;
                 } else if (dialogData.type === 'invocation') {
@@ -404,19 +494,21 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         if (img === CONFIG.DEFAULT_TOKEN) {
             switch (type) {
                 case 'skill':
-                    if (data.type === 'Psionic') {
-                        img = utility.getImagePath("psionics");
-                    } else if (data.type === 'Ritual') {
+                    if (data.type === 'Ritual') {
                         img = utility.getImagePath('circle');
                     } else if (data.type === 'Magic') {
                         img = utility.getImagePath('pentacle');
                     }
                     break;
 
+                case 'psionic':
+                    img = utility.getImagePath("psionics");
+                    break;
+                    
                 case 'spell':
                     img = utility.getImagePath(data.convocation);
                     if (img === CONFIG.DEFAULT_TOKEN) {
-                        
+
                         img = utility.getImagePath("pentacle");
                     }
                     break;
@@ -438,7 +530,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     break;
             }
         }
-        
+
         // Prepare the item object.
         const itemData = {
             name: name,
@@ -460,158 +552,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         item.sheet.render(true);
 
         return result;
-    }
-
-    /**
-     * Handle standard clickable rolls.  A "standard" roll is a 1d100
-     * roll vs. some target value, with success being less than or equal
-     * to the target value.
-     * 
-     * data-target = target value
-     * data-label = Label Text
-     * 
-     * @param {Event} event 
-     */
-    _onStdRoll(event) {
-        event.preventDefault();
-        let fastforward = event.shiftKey || event.altKey || event.ctrlKey;
-
-        this.actor.stdRoll(event.currentTarget.dataset.label, {
-            target: Number(event.currentTarget.dataset.target),
-            fastforward: fastforward
-        });
-    }
-
-    /**
-     * Handle d6 rolls.  A "d6" roll is a roll of multiple d6 dice vs.
-     * some target value, with success being less than or equal
-     * to the target value.
-     * 
-     * data-numdice = number of d6 to roll
-     * data-target = target value
-     * data-label = Label Text
-     * 
-     * @param {Event} event 
-     */
-    _onD6Roll(event) {
-        event.preventDefault();
-        let fastforward = event.shiftKey || event.altKey || event.ctrlKey;
-
-        this.actor.d6Roll(event.currentTarget.dataset.label, {
-            target: Number(event.currentTarget.dataset.target),
-            numdice: Number(event.currentTarget.dataset.numdice),
-            fastforward: fastforward
-        });
-    }
-
-    /**
-     * Handle damage rolls.  A damage roll is a roll of multiple d6 dice
-     * plus weapon impact value (based on weapon aspect). This button
-     * handles both the case where a specific weapon is known and not.
-     * 
-     * data-weapon = Name of weapon being used (or blank for unknown)
-     * 
-     * @param {Event} event 
-     */
-    _onDamageRoll(event) {
-        event.preventDefault();
-        this.actor.damageRoll(event.currentTarget.dataset.weapon);
-    }
-
-    /**
-     * Handle missile damage rolls.  A damage roll is a roll of multiple d6 dice
-     * plus missile impact value. This button
-     * handles both the case where a specific weapon is known and not.
-     * 
-     * data-missile = Name of missile being used
-     * data-aspect = Missile Aspect being used
-     * data-impact-short = Short range missile impact
-     * data-impact-medium = Medium range missile impact
-     * data-impact-long = Long range missile impact
-     * data-impact-extreme = Extreme range missile impact
-     * 
-     * @param {Event} event 
-     */
-    _onMissileDamageRoll(event) {
-        event.preventDefault();
-        this.actor.missileDamageRoll(event.currentTarget.dataset);
-    }
-
-    /**
-     * Handle missile attack rolls.  A missile attack roll is a 1d100 roll
-     * minus missile weapon range modifier.
-     * 
-     * data-missile = Name of missile being used
-     * data-target = Target Attack ML (before modifiers)
-     * data-aspect = Missile aspect
-     * data-range-short = Short missile range
-     * data-range-medium = Medium missile range
-     * data-range-long = Long missile range
-     * data-range-extreme = Extreme missile range
-     * 
-     * @param {Event} event 
-     */
-    _onMissileAttackRoll(event) {
-        event.preventDefault();
-        this.actor.missileAttackRoll(event.currentTarget.dataset);
-    }
-
-    /**
-     * Handle clickable rolls.
-     * @param {Event} event   The originating click event
-     * @private
-     */
-    _onRoll(event) {
-        event.preventDefault();
-        const element = event.currentTarget;
-        const dataset = element.dataset;
-
-        if (dataset.roll) {
-            let roll = new Roll(dataset.roll, this.actor.data.data);
-            let label = dataset.label ? `Rolling ${dataset.label}` : '';
-            roll.roll().toMessage({
-                speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-                flavor: label
-            });
-        }
-    }
-
-    /**
-     * Handle injury rolls.  An injury roll is a randomly determined
-     * location, taking the impact and checking against the armor at
-     * that location to arrive at effective impact, and then determining
-     * injury level and other effects based on the result.
-     * 
-     * @param {Event} event 
-     */
-    _onInjuryRoll(event) {
-        event.preventDefault();
-        //const ifff = new ImportFFF();
-        //ifff.importFromJSON("file.json");
-        //ifff.checkNames("file.json");
-        //const ifff = new ImportArmorGear();
-        //ifff.importFromJSON("file.json");
-        this.actor.injuryRoll();
-    }
-
-    /**
-     * Handle clickable rolls.
-     * @param {Event} event   The originating click event
-     * @private
-     */
-    _onRoll(event) {
-        event.preventDefault();
-        const element = event.currentTarget;
-        const dataset = element.dataset;
-
-        if (dataset.roll) {
-            let roll = new Roll(dataset.roll, this.actor.data.data);
-            let label = dataset.label ? `Rolling ${dataset.label}` : '';
-            roll.roll().toMessage({
-                speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-                flavor: label
-            });
-        }
     }
 
     /**

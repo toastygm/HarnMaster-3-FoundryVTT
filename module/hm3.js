@@ -9,6 +9,7 @@ import { HM3 } from "./config.js";
 import { DiceHM3 } from "./dice-hm3.js";
 import { registerSystemSettings } from "./settings.js";
 import * as migrations from "./migrations.js"
+import * as macros from "./macros.js"
 
 Hooks.once('init', async function() {
 
@@ -18,6 +19,7 @@ Hooks.once('init', async function() {
     HarnMasterActor,
     HarnMasterItem,
     config: HM3,
+    macros: macros,
     migrations: migrations
   };
 
@@ -83,12 +85,14 @@ Hooks.once('init', async function() {
 Hooks.once("ready", function() {
   // Determine whether a system migration is required
   const currentVersion = game.settings.get("hm3", "systemMigrationVersion");
-  const NEEDS_MIGRATION_VERSION = "0.7.2";  // Anything older than this must be migrated
+  const NEEDS_MIGRATION_VERSION = "0.7.4";  // Anything older than this must be migrated
 
   let needMigration = currentVersion === null || (isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion));
   if ( needMigration && game.user.isGM ) {
     migrations.migrateWorld();
   }
+
+  Hooks.on("hotbarDrop", (bar, data, slot) => macros.createHM3Macro(data, slot));
   HM3.ready = true;
 });
 

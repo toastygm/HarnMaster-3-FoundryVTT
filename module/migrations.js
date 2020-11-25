@@ -128,8 +128,29 @@ export async function migrateActorData(actor) {
             case 'ritualskill':
                 await convertToNewSkill(i, actor, 'Ritual');
                 break;
-            case 'psionic':
-                await convertToNewSkill(i, actor, 'Psionic');
+            // case 'psionic':
+            //     await convertToNewSkill(i, actor, 'Psionic');
+            //     break;
+            case 'skill':
+                if (i.data.data.type === 'Psionic') {
+                    const updateData = {
+                        "notes": i.data.data.notes,
+                        "description": i.data.data.description,
+                        "source": i.data.data.source,
+                        "macro": "",
+                        "skillBase": {
+                            "value": i.data.data.skillBase.value,
+                            "formula": i.data.data.skillbase.formula,
+                            "isFormulaValid": i.data.data.skillbase.isFormulaValid
+                        },
+                        "masteryLevel": i.data.data.masteryLevel,
+                        "effectiveMasteryLevel": i.data.data.effectiveMasteryLevel,
+                        "fatigue": i.data.data.psionic.fatigue            
+                    };
+
+                    await actor.createOwnedItem({type: "psionic", name: i.data.name, data: updateData});
+                    await actor.deleteOwnedItem(i.data._id);
+                }
                 break;
         }
     }
@@ -139,52 +160,62 @@ export async function migrateActorData(actor) {
     // In version 0.5.3 we converted from abilities being
     // numbers to objects containing base and effective
     // Guard against re-implementing the upgrade here
-    if (typeof actorData.data.abilities.strength != 'object') {
-        updateData['data.abilities.strength.base'] = actorData.data.abilities.strength;
-        updateData['data.abilities.stamina.base'] = actorData.data.abilities.stamina;
-        updateData['data.abilities.dexterity.base'] = actorData.data.abilities.dexterity;
-        updateData['data.abilities.agility.base'] = actorData.data.abilities.agility;
-        updateData['data.abilities.intelligence.base'] = actorData.data.abilities.intelligence;
-        updateData['data.abilities.aura.base'] = actorData.data.abilities.aura;
-        updateData['data.abilities.will.base'] = actorData.data.abilities.will;
-        updateData['data.abilities.eyesight.base'] = actorData.data.abilities.eyesight;
-        updateData['data.abilities.hearing.base'] = actorData.data.abilities.hearing;
-        updateData['data.abilities.smell.base'] = actorData.data.abilities.smell;
-        updateData['data.abilities.voice.base'] = actorData.data.abilities.voice;
-        updateData['data.abilities.comliness.base'] = actorData.data.abilities.comliness;
-        updateData['data.abilities.morality.base'] = actorData.data.abilities.morality;
+    if ((actorData.type === 'character' || actorData.type === 'creature')) {
+        if (typeof actorData.data.abilities.strength != 'object') {
+            updateData['data.abilities.strength.base'] = actorData.data.abilities.strength;
+            updateData['data.abilities.stamina.base'] = actorData.data.abilities.stamina;
+            updateData['data.abilities.dexterity.base'] = actorData.data.abilities.dexterity;
+            updateData['data.abilities.agility.base'] = actorData.data.abilities.agility;
+            updateData['data.abilities.intelligence.base'] = actorData.data.abilities.intelligence;
+            updateData['data.abilities.aura.base'] = actorData.data.abilities.aura;
+            updateData['data.abilities.will.base'] = actorData.data.abilities.will;
+            updateData['data.abilities.eyesight.base'] = actorData.data.abilities.eyesight;
+            updateData['data.abilities.hearing.base'] = actorData.data.abilities.hearing;
+            updateData['data.abilities.smell.base'] = actorData.data.abilities.smell;
+            updateData['data.abilities.voice.base'] = actorData.data.abilities.voice;
+            updateData['data.abilities.comliness.base'] = actorData.data.abilities.comliness;
+            updateData['data.abilities.morality.base'] = actorData.data.abilities.morality;
 
-        updateData['data.abilities.strength.effective'] = 0;
-        updateData['data.abilities.stamina.effective'] = 0;
-        updateData['data.abilities.dexterity.effective'] = 0;
-        updateData['data.abilities.agility.effective'] = 0;
-        updateData['data.abilities.intelligence.effective'] = 0;
-        updateData['data.abilities.aura.effective'] = 0;
-        updateData['data.abilities.will.effective'] = 0;
-        updateData['data.abilities.eyesight.effective'] = 0;
-        updateData['data.abilities.hearing.effective'] = 0;
-        updateData['data.abilities.smell.effective'] = 0;
-        updateData['data.abilities.voice.effective'] = 0;
-        updateData['data.abilities.comliness.effective'] = 0;
-        updateData['data.abilities.morality.effective'] = 0;
+            updateData['data.abilities.strength.effective'] = 0;
+            updateData['data.abilities.stamina.effective'] = 0;
+            updateData['data.abilities.dexterity.effective'] = 0;
+            updateData['data.abilities.agility.effective'] = 0;
+            updateData['data.abilities.intelligence.effective'] = 0;
+            updateData['data.abilities.aura.effective'] = 0;
+            updateData['data.abilities.will.effective'] = 0;
+            updateData['data.abilities.eyesight.effective'] = 0;
+            updateData['data.abilities.hearing.effective'] = 0;
+            updateData['data.abilities.smell.effective'] = 0;
+            updateData['data.abilities.voice.effective'] = 0;
+            updateData['data.abilities.comliness.effective'] = 0;
+            updateData['data.abilities.morality.effective'] = 0;
+        }
+
+        if (typeof actorData.data.bioImage === 'undefined') {
+            updateData['data.bioImage'] = 'systems/hm3/images/svg/knight-silhouette.svg';
+        }
+
+        if (typeof actorData.data.sunsign === 'undefined') {
+            updateData['data.sunsign'] = '';
+        }
+
+        if (typeof actorData.data.species === 'undefined') {
+            updateData['data.species'] = '';
+        }
+
+        if (typeof actorData.data.biography === 'undefined') {
+            updateData['data.biography'] = '';
+        }
+
+        if (typeof actorData.data.shockIndex === 'undefined') {
+            updateData['data.shockIndex'] = {'value': 100, 'max': 100};
+        }
+
+        if (actorData.data.endurance.max) {
+            updateData['data.endurance'] = actorData.data.endurance.max;
+        }
     }
-
-    if (typeof actorData.data.bioImage === 'undefined') {
-        updateData['data.bioImage'] = 'systems/hm3/images/svg/knight-silhouette.svg';
-    }
-
-    if (typeof actorData.data.sunsign === 'undefined') {
-        updateData['data.sunsign'] = '';
-    }
-
-    if (typeof actorData.data.species === 'undefined') {
-        updateData['data.species'] = '';
-    }
-
-    if (typeof actorData.data.biography === 'undefined') {
-        updateData['data.biography'] = '';
-    }
-
+    
     return updateData;
 }
 
@@ -255,9 +286,22 @@ export function migrateItemData(itemData) {
             updateData['data.arcane.ego'] = 0;
         }
 
-        if (itemData.type === 'weapongear' || itemData.type === 'missilegear') {
+        if (itemData.type === 'weapongear') {
             if (typeof data.weaponQuality === 'undefined') {
                 updateData['data.weaponQuality'] = 0;
+            }
+
+            if (typeof data.attackModifier === 'undefined') {
+                updateData['data.attackModifier'] = data.handMode;
+                updateData['data.-=handMode'] = null;  // delete the handMode object;
+            }
+        } else if (itemData.type === 'missilegear') {
+            if (typeof data.weaponQuality === 'undefined') {
+                updateData['data.weaponQuality'] = 0;
+            }
+
+            if (typeof data.attackModifier === 'undefined') {
+                updateData['data.attackModifier'] = 0;
             }
         }
 

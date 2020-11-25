@@ -43,8 +43,8 @@
                     <input type="number" name="data.defense" value="{{data.defense}}" data-dtype="Number"/>
                 </div>
                 <div class="resource">
-                    <label class="resource-label">Hand Mode</label>
-                    <input type="number" name="data.handMode" value="{{data.handMode}}" data-dtype="Number"/>
+                    <label class="resource-label">Attack Modifier</label>
+                    <input type="number" name="data.attackModifier" value="{{data.attackModifier}}" data-dtype="Number"/>
                 </div>
                 <div class="resource"></div>
                 <div class="resource"></div>
@@ -82,6 +82,10 @@
             <div class="resource">
                 <label class="resource-label">Note</label>
                 <input type="text" name="data.notes" value="{{data.notes}}" data-dtype="String"/>
+            </div>
+            <div class="resource">
+                <label class="resource-label">Macro</label>
+                <textarea name="data.macro">{{data.macro}}</textarea>
             </div>
             <div class="resource artifact flexrow">
                 <input type="checkbox" name="data.arcane.isArtifact" value="{{data.arcane.isArtifact}}" data-dtype="Boolean" {{checked data.arcane.isArtifact}} />
