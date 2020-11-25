@@ -185,6 +185,9 @@
   line-height: 32px;
   border: none; }
 
+#hotbar li.macro {
+  background: url("../ui/parchment.jpg"); }
+
 /* Styles limited to hm3 sheets */
 .hm3 .window-content {
   background: url("../ui/parchment.jpg") repeat;
