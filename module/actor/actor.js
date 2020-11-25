@@ -433,7 +433,7 @@ export class HarnMasterActor extends Actor {
                     let assocSkill = it.data.assocSkill;
                     if (typeof combatSkills[assocSkill] != 'undefined') {
                         let skillEml = combatSkills[assocSkill].eml;
-                        it.data.attackMasteryLevel = skillEml;
+                        it.data.attackMasteryLevel = skillEml + it.data.attackModifier;
                     }
 
                     // No matter what, we always have at least a 5% chance of attacking
@@ -460,7 +460,7 @@ export class HarnMasterActor extends Actor {
                     let assocSkill = it.data.assocSkill;
                     if (typeof combatSkills[assocSkill] != 'undefined') {
                         let skillEml = combatSkills[assocSkill].eml;
-                        it.data.attackMasteryLevel = skillEml + it.data.attack;
+                        it.data.attackMasteryLevel = skillEml + it.data.attack + it.data.attackModifier;
                         it.data.defenseMasteryLevel = skillEml + it.data.defense;
                     }
 

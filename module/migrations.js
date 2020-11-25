@@ -134,18 +134,17 @@ export async function migrateActorData(actor) {
             case 'skill':
                 if (i.data.data.type === 'Psionic') {
                     const updateData = {
-                        "notes": i.data.data.notes,
-                        "description": i.data.data.description,
-                        "source": i.data.data.source,
-                        "macro": "",
-                        "skillBase": {
-                            "value": i.data.data.skillBase.value,
-                            "formula": i.data.data.skillbase.formula,
-                            "isFormulaValid": i.data.data.skillbase.isFormulaValid
-                        },
-                        "masteryLevel": i.data.data.masteryLevel,
-                        "effectiveMasteryLevel": i.data.data.effectiveMasteryLevel,
-                        "fatigue": i.data.data.psionic.fatigue            
+                        "data.notes": i.data.data.notes,
+                        "data.description": i.data.data.description,
+                        "data.source": i.data.data.source,
+                        "data.macro": "",
+                        "data.skillBase.value": i.data.data.skillBase.value,
+                        "data.skillBase.formula": i.data.data.skillbase.formula,
+                        "data.skillBase.isFormulaValid": i.data.data.skillbase.isFormulaValid,
+                        "data.masteryLevel": i.data.data.masteryLevel,
+                        "data.effectiveMasteryLevel": i.data.data.effectiveMasteryLevel,
+                        "data.improveFlag": false,
+                        "data.fatigue": i.data.data.psionic.fatigue            
                     };
 
                     await actor.createOwnedItem({type: "psionic", name: i.data.name, data: updateData});
@@ -323,12 +322,20 @@ export function migrateItemData(itemData) {
         }
     }
 
-    if (itemData.type.endsWith('skill') || itemData.type === 'psionic') {
+    if (itemData.type === 'skill' || itemData.type === 'psionic') {
         if (typeof data.skillBase != 'object') {
             const value = data.skillBase;
             updateData['data.skillBase.value'] = value;
             updateData['data.skillBase.formula'] = '';
             updateData['data.skillBase.isFormulaValid'] = true;
+        }
+
+        if (typeof data.psionic != 'undefined') {
+            updateData['data.-=psionic'] = null;
+        }
+
+        if (typeof data.improveFlag === 'undefined') {
+            updateData['data.improveFlag'] = false;
         }
     }
 

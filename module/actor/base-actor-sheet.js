@@ -281,6 +281,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         // Toggle equip state
         html.find('.item-equip').click(this._onToggleEquip.bind(this));
+
+        // Toggle improve state
+        html.find('.item-improve').click(this._onToggleImprove.bind(this));
     }
 
     /* -------------------------------------------- */
@@ -592,4 +595,22 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         return null;
     }
 
+    /**
+     * Handle toggling the improve state of an Owned Item within the Actor
+     * @param {Event} event   The triggering click event
+     * @private
+     */
+    _onToggleImprove(event) {
+        event.preventDefault();
+        const itemId = event.currentTarget.closest(".item").dataset.itemId;
+        const item = this.actor.getOwnedItem(itemId);
+
+        // Only process inventory ("gear") items, otherwise ignore
+        if (item.data.type === 'skill' || item.data.type === 'psionic') {
+            const attr = "data.improveFlag";
+            return item.update({ [attr]: !getProperty(item.data, attr) });
+        }
+
+        return null;
+    }
 }
