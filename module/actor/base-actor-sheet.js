@@ -256,6 +256,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
             const itemId = li.data('itemId');
             macros.healingRoll(`Item$${itemId}`, fastforward, this.actor);
+            //const ifff = new ImportFFF();
+            //ifff.importFromJSON('test.json');
         });
 
         // Dodge Roll
@@ -602,12 +604,44 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
         const item = this.actor.getOwnedItem(itemId);
 
-        // Only process inventory ("gear") items, otherwise ignore
+        // Only process skills and psionics, otherwise ignore
         if (item.data.type === 'skill' || item.data.type === 'psionic') {
-            const attr = "data.improveFlag";
-            return item.update({ [attr]: !getProperty(item.data, attr) });
+            if (!item.data.data.improveFlag) {
+                return item.update({ "data.improveFlag": true });
+            } else {
+                return this._improveToggleDialog(item);
+            }
         }
 
         return null;
+    }
+
+    _improveToggleDialog(item) {
+        const html = '<p>Do you want to perform a Skill Development Roll (SDR), or just disable the flag?</p>'
+    
+        // Create the dialog window
+        return new Promise(resolve => {
+            new Dialog({
+                title: 'Skill Development Toggle',
+                content: html.trim(),
+                buttons: {
+                    performSDR: {
+                        label: "Perform SDR",
+                        callback: async (html) => {
+                            return await this.actor.skillDevRoll(item);
+                        }
+                    },
+                    disableFlag: {
+                        label: "Disable Flag",
+                        callback: async (html) => {
+                            return item.update({ "data.improveFlag": false });
+                        }
+                    }
+                },
+                default: "performSDR",
+                close: () => resolve(false)
+            }).render(true)
+        });
+    
     }
 }

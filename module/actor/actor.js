@@ -867,5 +867,17 @@ export class HarnMasterActor extends Actor {
         return prob;
     }
     
+    async skillDevRoll(item) {
+        const result = await DiceHM3.sdrRoll(item.data);
+
+        if (result) {
+            return item.update({
+                "data.improveFlag": false,
+                "data.masteryLevel": item.data.data.masteryLevel + 1
+            });
+        } else {
+            return item.update({ "data.improveFlag": false });
+        }
+    }
 }
 
