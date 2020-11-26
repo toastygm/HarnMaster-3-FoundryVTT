@@ -99,9 +99,9 @@ The following capabilities are supported in both characters and creatures:
 
 ## Macros
 
-A number of system capabilities are available as macros so you can automate your use of this system.  The following macros are defined:
+A number of system capabilities are available as macros functions so you can automate your use of this system with script macros.  All of these macro functions are avaialbe via `game.hm3.macros.<function>`. The following macros are defined:
 
-Macro                                          | Description
+Function                                       | Description
 -----------------------------------------------|--------------------------
 **skillRoll**(itemName, _noDialog_)            | roll against skill EML
 **castSpellRoll**(itemName, _noDialog_)        | spell casting roll against spell EML
