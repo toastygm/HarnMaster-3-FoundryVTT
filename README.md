@@ -257,3 +257,6 @@ The following images were taken from [The Noun Project](https://thenounproject.c
 * break by ibrandify
 * hit by Guilherme Furtado
 * armor by Postcat Studio
+* Man Fainted by Gan Khoon Lay
+* bullseye by Creative Stall
+
