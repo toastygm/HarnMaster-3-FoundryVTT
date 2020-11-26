@@ -101,24 +101,26 @@ The following capabilities are supported in both characters and creatures:
 
 A number of system capabilities are available as macros so you can automate your use of this system.  The following macros are defined:
 
-  skillRoll(itemName, noDialog)            -  roll against skill EML
-  castSpellRoll(itemName, noDialog)        -  spell casting roll against spell EML
-  invokeRitualRoll(itemName, noDialog)     -  ritual invocation roll against invocation EML
-  usePsionicRoll(itemName, noDialog)       -  psionic talent roll against talent EML
-  testAbilityD6Roll(abilityName, noDialog) -  3d6 roll against a specific ability
-  testAbilityD100Roll(ability, noDialog)   -  1d100 roll against a specific ability
-  weaponDamageRoll(itemName)               -  damage roll, using attributes from a particular melee weapon
-  missileDamageRoll(itemName)              -  damage roll, using attributes from a particular missile weapon
-  weaponAttackRoll(itemName, noDialog)     -  weapon attack roll, using attributes from a particular melee weapon
-  weaponDefendRoll(itemName, noDialog)     -  weapon defend roll, using attributes from a particular melee weapon
-  missileAttackRoll(itemName)              -  missile attack roll, using attributes froma particular missile weapon
-  injuryRoll()                             -  injury roll
-  healingRoll(itemName, noDialog)          -  healing roll for the specific injury specified
-  dodgeRoll(noDialog)                      -  dodge roll
-  shockRoll(noDialog)                      -  shock roll
-  stumbleRoll(noDialog)                    -  stumble roll
-  fumbleRoll(noDialog)                     -  fumble roll
-  genericDamageRoll()                      -  damage roll not specific to any weapon (you must enter details of the attack)
+Macro                                          | Description
+-----------------------------------------------|--------------------------
+**skillRoll**(itemName, _noDialog_)            | roll against skill EML
+**castSpellRoll**(itemName, _noDialog_)        | spell casting roll against spell EML
+**invokeRitualRoll**(itemName, _noDialog_)     | ritual invocation roll against invocation EML
+**usePsionicRoll**(itemName, _noDialog_)       | psionic talent roll against talent EML
+**testAbilityD6Roll**(abilityName, _noDialog_) | 3d6 roll against a specific ability
+**testAbilityD100Roll**(ability, _noDialog_)   | 1d100 roll against a specific ability
+**weaponDamageRoll**(itemName)                 | damage roll, using attributes from a particular melee weapon
+**missileDamageRoll**(itemName)                | damage roll, using attributes from a particular missile weapon
+**weaponAttackRoll**(itemName, _noDialog_)     | weapon attack roll, using attributes from a particular melee weapon
+**weaponDefendRoll**(itemName, _noDialog_)     | weapon defend roll, using attributes from a particular melee weapon
+**missileAttackRoll**(itemName)                | missile attack roll, using attributes froma particular missile weapon
+**injuryRoll**()                               | injury roll
+**healingRoll**(itemName, _noDialog_)          | healing roll for the specific injury specified
+**dodgeRoll**(noDialog)                        | dodge roll
+**shockRoll**(noDialog)                        | shock roll
+**stumbleRoll**(noDialog)                      | stumble roll
+**fumbleRoll**(noDialog)                       | fumble roll
+**genericDamageRoll**()                        | damage roll not specific to any weapon (you must enter details of the attack)
 
 _itemName_ = name (or id) of the item to affect
 _noDialog_ = \[**optional**\] flag whether or not to display dialog; if noDialog is true, all defaults will be used. Note that not all rolls support this, because some require input to operate.
@@ -253,3 +255,4 @@ The following images were taken from [The Noun Project](https://thenounproject.c
 * Injury by HAMEL KHALED
 * break by ibrandify
 * hit by Guilherme Furtado
+* armor by Postcat Studio
