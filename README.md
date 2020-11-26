@@ -123,6 +123,7 @@ Macro                                          | Description
 **genericDamageRoll**()                        | damage roll not specific to any weapon (you must enter details of the attack)
 
 _itemName_ = name (or id) of the item to affect
+
 _noDialog_ = \[**optional**\] flag whether or not to display dialog; if noDialog is true, all defaults will be used. Note that not all rolls support this, because some require input to operate.
 
 ## Special Considerations
