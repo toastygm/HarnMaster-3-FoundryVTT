@@ -138,7 +138,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     return false;
                 }
             }
-            return this._createItem(data.name, data.type, data.data);
+            return this._createItem(data.name, data.type, data.data, data.img);
         }
 
         return super._onDropItemCreate(data);
@@ -319,10 +319,11 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         const otherData = other.data;
         const updateData = {};
 
-        if (!data.notes) data.notes = otherData.notes;
-        if (!data.source) data.source = otherData.source;
-        if (!data.description) data.description = otherData.description;
-        if (!data.macro) data.macro = otherData.macro;
+        if (!data.notes || data.notes === '') updateData['data.notes'] = otherData.notes;
+        if (!data.source || data.source === '') updateData['data.source'] = otherData.source;
+        if (!data.description || data.description === '') updateData['data.description'] = otherData.description;
+        if (!data.macro || data.macro === '') updateData['data.macro'] = otherData.macro;
+        if (item.data.img === DEFAULT_TOKEN) updateData['img'] = other.img;
 
         switch (item.data.type) {
             case 'skill':
@@ -353,11 +354,18 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 break;
 
             case 'psionic':
-                updateData['data.circle.skillBase.formula'] = otherData.skillBase.formula;
-                updateData['data.circle.skillBase.isFormulaValid'] = otherData.skillBase.isFormulaValid;
+                // If the skillbase is blank, copy it over from dropped item
+                if (!data.skillBase.formula) {
+                    updateData['data.skillBase.formula'] = otherData.skillBase.formula;
+                    updateData['data.skillBase.isFormulaValid'] = otherData.skillBase.isFormulaValid;
+                }
+                updateData['data.fatigue'] = otherData.fatigue;
+                break;
         }
 
         if (updateData) {
+            console.log('Changes:');
+            console.log(updateData);
             await item.update(updateData);
         }
 
@@ -455,13 +463,13 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     dialogData.data.diety = extraValue;
                 }
 
-                return this._createItem(itemName, dialogData.type, dialogData.data);
+                return this._createItem(itemName, dialogData.type, dialogData.data, DEFAULT_TOKEN);
             },
             options: { jQuery: false }
         });
     }
 
-    async _createItem(name, type, data) {
+    async _createItem(name, type, data, itemImg) {
         // If a weapon or a missile, get the associated skill
         if (type === 'weapongear' || type === 'missilegear') {
             data.assocSkill = utility.getAssocSkill(name, this.actor.itemTypes.skill, 'None');
@@ -491,9 +499,13 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             }
         }
 
-        // Guess the icon from the name
-        let img = utility.getImagePath(name);
-        if (img === CONFIG.DEFAULT_TOKEN) {
+        let img = itemImg;
+        if (img === DEFAULT_TOKEN) {
+            // Guess the icon from the name
+            img = utility.getImagePath(name);
+        }
+
+        if (img === DEFAULT_TOKEN) {
             switch (type) {
                 case 'skill':
                     if (data.type === 'Ritual') {
@@ -509,7 +521,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     
                 case 'spell':
                     img = utility.getImagePath(data.convocation);
-                    if (img === CONFIG.DEFAULT_TOKEN) {
+                    if (img === DEFAULT_TOKEN) {
 
                         img = utility.getImagePath("pentacle");
                     }
@@ -517,7 +529,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
                 case 'invocation':
                     img = utility.getImagePath(data.diety);
-                    if (img === CONFIG.DEFAULT_TOKEN) {
+                    if (img === DEFAULT_TOKEN) {
                         img = utility.getImagePath("circle");
                     }
                     break;
