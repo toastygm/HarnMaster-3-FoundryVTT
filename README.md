@@ -70,7 +70,7 @@ Note that when creating a character, you will be prompted whether to install sta
 
 The following capabilities are supported in both characters and creatures:
 
-* Automatic Dice Rolls (click on the dice icon next to the item). Holding SHIFT, ALT, or CTRL keys while clicking the icon will use defaults and bypass the dialog (except for damage rolls which always require the dialog).
+* Automatic Dice Rolls (click on the dice icon next to the item). Holding SHIFT, ALT, or CTRL keys while clicking the icon will use defaults and bypass the dialog (except for damage rolls which always require the dialog).  All of these are available as macros as well.
   * Skill check rolls
   * Spell success rolls (character only)
   * Ritual Invocation success rolls (character only)
@@ -96,6 +96,32 @@ The following capabilities are supported in both characters and creatures:
   * Move rate (characters only)
   * Spell EML and Ritual Invocation EML (accounting for spell level or invocation circle)
   * Weapon Attack ML (AML) and Defense ML (DML)
+
+## Macros
+
+A number of system capabilities are available as macros so you can automate your use of this system.  The following macros are defined:
+
+  skillRoll(itemName, noDialog)            -  roll against skill EML
+  castSpellRoll(itemName, noDialog)        -  spell casting roll against spell EML
+  invokeRitualRoll(itemName, noDialog)     -  ritual invocation roll against invocation EML
+  usePsionicRoll(itemName, noDialog)       -  psionic talent roll against talent EML
+  testAbilityD6Roll(abilityName, noDialog) -  3d6 roll against a specific ability
+  testAbilityD100Roll(ability, noDialog)   -  1d100 roll against a specific ability
+  weaponDamageRoll(itemName)               -  damage roll, using attributes from a particular melee weapon
+  missileDamageRoll(itemName)              -  damage roll, using attributes from a particular missile weapon
+  weaponAttackRoll(itemName, noDialog)     -  weapon attack roll, using attributes from a particular melee weapon
+  weaponDefendRoll(itemName, noDialog)     -  weapon defend roll, using attributes from a particular melee weapon
+  missileAttackRoll(itemName)              -  missile attack roll, using attributes froma particular missile weapon
+  injuryRoll()                             -  injury roll
+  healingRoll(itemName, noDialog)          -  healing roll for the specific injury specified
+  dodgeRoll(noDialog)                      -  dodge roll
+  shockRoll(noDialog)                      -  shock roll
+  stumbleRoll(noDialog)                    -  stumble roll
+  fumbleRoll(noDialog)                     -  fumble roll
+  genericDamageRoll()                      -  damage roll not specific to any weapon (you must enter details of the attack)
+
+_itemName_ = name (or id) of the item to affect
+_noDialog_ = \[**optional**\] flag whether or not to display dialog; if noDialog is true, all defaults will be used. Note that not all rolls support this, because some require input to operate.
 
 ## Special Considerations
 
@@ -224,3 +250,6 @@ The following images were taken from [The Noun Project](https://thenounproject.c
 * boxes by Sarah
 * lance by parkjisun
 * Trident by Yohann
+* Injury by HAMEL KHALED
+* break by ibrandify
+* hit by Guilherme Furtado
