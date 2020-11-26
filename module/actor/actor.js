@@ -34,7 +34,7 @@ export class HarnMasterActor extends Actor {
                     yes: {
                         label: 'Yes',
                         callback: async dlg => {
-                            HarnMasterActor._createDefaultCharacterSkills(data);
+                            await HarnMasterActor._createDefaultCharacterSkills(data);
                             HarnMasterActor._createDefaultHumanoidLocations(data);
                             return super.create(data, options); // Follow through the the rest of the Actor creation process upstream
                         }
@@ -51,37 +51,60 @@ export class HarnMasterActor extends Actor {
         } else if (data.type == 'creature') {
 
             // Create Creature Default Skills
-            this._createDefaultCreatureSkills(data);
-            super.create(data, options); // Follow through the the rest of the Actor creation process upstream
+            this._createDefaultCreatureSkills(data).then(result => {
+                super.create(data, options); // Follow through the the rest of the Actor creation process upstream
+            });
         } else {
             super.create(data, options); // Follow through the the rest of the Actor creation process upstream
         }
     }
 
-    static _createDefaultCharacterSkills(data) {
-        const physicalSkill = mergeObject({ type: "Physical" }, game.system.model.Item.skill, { overwrite: false });
-        const commSkill = mergeObject({ type: "Communication" }, game.system.model.Item.skill, { overwrite: false });
-        const combatSkill = mergeObject({ type: "Combat" }, game.system.model.Item.skill, { overwrite: false });
-        const craftSkill = mergeObject({ type: "Craft" }, game.system.model.Item.skill, { overwrite: false });
-        data.items.push((new Item({ name: 'Climbing', type: 'skill', data: physicalSkill, img: 'systems/hm3/images/icons/svg/climbing.svg' })).data);
-        data.items.push((new Item({ name: 'Condition', type: 'skill', data: physicalSkill, img: 'systems/hm3/images/icons/svg/muscle.svg' })).data);
-        data.items.push((new Item({ name: 'Jumping', type: 'skill', data: physicalSkill, img: 'systems/hm3/images/icons/svg/jump.svg' })).data);
-        data.items.push((new Item({ name: 'Stealth', type: 'skill', data: physicalSkill, img: 'systems/hm3/images/icons/svg/stealth.svg' })).data);
-        data.items.push((new Item({ name: 'Throwing', type: 'skill', data: physicalSkill, img: 'systems/hm3/images/icons/svg/throw.svg' })).data);
-        data.items.push((new Item({ name: 'Awareness', type: 'skill', data: commSkill, img: 'systems/hm3/images/icons/svg/awareness.svg' })).data);
-        data.items.push((new Item({ name: 'Intrigue', type: 'skill', data: commSkill, img: 'systems/hm3/images/icons/svg/cloak-dagger.svg' })).data);
-        data.items.push((new Item({ name: 'Oratory', type: 'skill', data: commSkill, img: 'systems/hm3/images/icons/svg/speaking.svg' })).data);
-        data.items.push((new Item({ name: 'Rhetoric', type: 'skill', data: commSkill, img: 'systems/hm3/images/icons/svg/rhetoric.svg' })).data);
-        data.items.push((new Item({ name: 'Singing', type: 'skill', data: commSkill, img: 'systems/hm3/images/icons/svg/musician-singing.svg' })).data);
-        data.items.push((new Item({ name: 'Initiative', type: 'skill', data: combatSkill, img: 'systems/hm3/images/icons/svg/initiative.svg' })).data);
-        data.items.push((new Item({ name: 'Unarmed', type: 'skill', data: combatSkill, img: 'systems/hm3/images/icons/svg/punch.svg' })).data);
-        data.items.push((new Item({ name: 'Dodge', type: 'skill', data: combatSkill, img: 'systems/hm3/images/icons/svg/dodge.svg' })).data);
+    static async _createDefaultCharacterSkills(data) {
+        let itemData;
+
+        const physicalSkills = await game.packs.find(p => p.collection === `hm3.std-skills-physical`).getContent();
+        itemData = duplicate(physicalSkills.find(i => i.name === 'Climbing'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        itemData = duplicate(physicalSkills.find(i => i.name === 'Condition'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        itemData = duplicate(physicalSkills.find(i => i.name === 'Jumping'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        itemData = duplicate(physicalSkills.find(i => i.name === 'Stealth'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        itemData = duplicate(physicalSkills.find(i => i.name === 'Throwing'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+
+        const commSkills = await game.packs.find(p => p.collection === `hm3.std-skills-communication`).getContent();
+        itemData = duplicate(commSkills.find(i => i.name === 'Awareness'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        itemData = duplicate(commSkills.find(i => i.name === 'Intrigue'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        itemData = duplicate(commSkills.find(i => i.name === 'Oratory'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        itemData = duplicate(commSkills.find(i => i.name === 'Rhetoric'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        itemData = duplicate(commSkills.find(i => i.name === 'Singing'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+
+        const combatSkills = await game.packs.find(p => p.collection === `hm3.std-skills-combat`).getContent();
+        itemData = duplicate(combatSkills.find(i => i.name === 'Initiative'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        itemData = duplicate(combatSkills.find(i => i.name === 'Unarmed'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        itemData = duplicate(combatSkills.find(i => i.name === 'Dodge'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
     }
 
-    static _createDefaultCreatureSkills(data) {
-        const combatSkill = mergeObject({ type: "Combat" }, game.system.model.Item.skill, { overwrite: false });
-        data.items.push((new Item({ name: 'Initiative', type: 'skill', data: combatSkill, img: 'systems/hm3/images/icons/svg/initiative.svg' })).data);
-        data.items.push((new Item({ name: 'Dodge', type: 'skill', data: combatSkill, img: 'systems/hm3/images/icons/svg/dodge.svg' })).data);
+    static async _createDefaultCreatureSkills(data) {
+        let itemData;
+
+        const combatSkills = await game.packs.find(p => p.collection === `hm3.std-skills-combat`).getContent();
+        itemData = duplicate(combatSkills.find(i => i.name === 'Initiative'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        itemData = duplicate(combatSkills.find(i => i.name === 'Unarmed'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        itemData = duplicate(combatSkills.find(i => i.name === 'Dodge'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
     }
 
     static _createDefaultHumanoidLocations(data) {
