@@ -138,7 +138,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     return false;
                 }
             }
-            return this._createItem(data.name, data.type, data.data);
+            return this._createItem(data.name, data.type, data.data, data.img);
         }
 
         return super._onDropItemCreate(data);
@@ -256,6 +256,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
             const itemId = li.data('itemId');
             macros.healingRoll(`Item$${itemId}`, fastforward, this.actor);
+            //const ifff = new ImportFFF();
+            //ifff.importFromJSON('test.json');
         });
 
         // Dodge Roll
@@ -317,10 +319,11 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         const otherData = other.data;
         const updateData = {};
 
-        if (!data.notes) data.notes = otherData.notes;
-        if (!data.source) data.source = otherData.source;
-        if (!data.description) data.description = otherData.description;
-        if (!data.macro) data.macro = otherData.macro;
+        if (!data.notes || data.notes === '') updateData['data.notes'] = otherData.notes;
+        if (!data.source || data.source === '') updateData['data.source'] = otherData.source;
+        if (!data.description || data.description === '') updateData['data.description'] = otherData.description;
+        if (!data.macro || data.macro === '') updateData['data.macro'] = otherData.macro;
+        if (item.data.img === DEFAULT_TOKEN) updateData['img'] = other.img;
 
         switch (item.data.type) {
             case 'skill':
@@ -351,11 +354,18 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 break;
 
             case 'psionic':
-                updateData['data.circle.skillBase.formula'] = otherData.skillBase.formula;
-                updateData['data.circle.skillBase.isFormulaValid'] = otherData.skillBase.isFormulaValid;
+                // If the skillbase is blank, copy it over from dropped item
+                if (!data.skillBase.formula) {
+                    updateData['data.skillBase.formula'] = otherData.skillBase.formula;
+                    updateData['data.skillBase.isFormulaValid'] = otherData.skillBase.isFormulaValid;
+                }
+                updateData['data.fatigue'] = otherData.fatigue;
+                break;
         }
 
         if (updateData) {
+            console.log('Changes:');
+            console.log(updateData);
             await item.update(updateData);
         }
 
@@ -453,13 +463,13 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     dialogData.data.diety = extraValue;
                 }
 
-                return this._createItem(itemName, dialogData.type, dialogData.data);
+                return this._createItem(itemName, dialogData.type, dialogData.data, DEFAULT_TOKEN);
             },
             options: { jQuery: false }
         });
     }
 
-    async _createItem(name, type, data) {
+    async _createItem(name, type, data, itemImg) {
         // If a weapon or a missile, get the associated skill
         if (type === 'weapongear' || type === 'missilegear') {
             data.assocSkill = utility.getAssocSkill(name, this.actor.itemTypes.skill, 'None');
@@ -489,9 +499,13 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             }
         }
 
-        // Guess the icon from the name
-        let img = utility.getImagePath(name);
-        if (img === CONFIG.DEFAULT_TOKEN) {
+        let img = itemImg;
+        if (img === DEFAULT_TOKEN) {
+            // Guess the icon from the name
+            img = utility.getImagePath(name);
+        }
+
+        if (img === DEFAULT_TOKEN) {
             switch (type) {
                 case 'skill':
                     if (data.type === 'Ritual') {
@@ -507,7 +521,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     
                 case 'spell':
                     img = utility.getImagePath(data.convocation);
-                    if (img === CONFIG.DEFAULT_TOKEN) {
+                    if (img === DEFAULT_TOKEN) {
 
                         img = utility.getImagePath("pentacle");
                     }
@@ -515,7 +529,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
                 case 'invocation':
                     img = utility.getImagePath(data.diety);
-                    if (img === CONFIG.DEFAULT_TOKEN) {
+                    if (img === DEFAULT_TOKEN) {
                         img = utility.getImagePath("circle");
                     }
                     break;
@@ -602,12 +616,44 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
         const item = this.actor.getOwnedItem(itemId);
 
-        // Only process inventory ("gear") items, otherwise ignore
+        // Only process skills and psionics, otherwise ignore
         if (item.data.type === 'skill' || item.data.type === 'psionic') {
-            const attr = "data.improveFlag";
-            return item.update({ [attr]: !getProperty(item.data, attr) });
+            if (!item.data.data.improveFlag) {
+                return item.update({ "data.improveFlag": true });
+            } else {
+                return this._improveToggleDialog(item);
+            }
         }
 
         return null;
+    }
+
+    _improveToggleDialog(item) {
+        const html = '<p>Do you want to perform a Skill Development Roll (SDR), or just disable the flag?</p>'
+    
+        // Create the dialog window
+        return new Promise(resolve => {
+            new Dialog({
+                title: 'Skill Development Toggle',
+                content: html.trim(),
+                buttons: {
+                    performSDR: {
+                        label: "Perform SDR",
+                        callback: async (html) => {
+                            return await this.actor.skillDevRoll(item);
+                        }
+                    },
+                    disableFlag: {
+                        label: "Disable Flag",
+                        callback: async (html) => {
+                            return item.update({ "data.improveFlag": false });
+                        }
+                    }
+                },
+                default: "performSDR",
+                close: () => resolve(false)
+            }).render(true)
+        });
+    
     }
 }

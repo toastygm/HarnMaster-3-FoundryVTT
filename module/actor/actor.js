@@ -65,8 +65,6 @@ export class HarnMasterActor extends Actor {
         const physicalSkills = await game.packs.find(p => p.collection === `hm3.std-skills-physical`).getContent();
         itemData = duplicate(physicalSkills.find(i => i.name === 'Climbing'));
         data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
-        itemData = duplicate(physicalSkills.find(i => i.name === 'Condition'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
         itemData = duplicate(physicalSkills.find(i => i.name === 'Jumping'));
         data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
         itemData = duplicate(physicalSkills.find(i => i.name === 'Stealth'));
@@ -867,5 +865,17 @@ export class HarnMasterActor extends Actor {
         return prob;
     }
     
+    async skillDevRoll(item) {
+        const result = await DiceHM3.sdrRoll(item.data);
+
+        if (result) {
+            return item.update({
+                "data.improveFlag": false,
+                "data.masteryLevel": item.data.data.masteryLevel + 1
+            });
+        } else {
+            return item.update({ "data.improveFlag": false });
+        }
+    }
 }
 

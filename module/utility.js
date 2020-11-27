@@ -224,7 +224,7 @@ export function createUniqueName(prefix, itemTypes) {
  * @param {String} name 
  */
 export function getImagePath(name) {
-    if (!name) return CONFIG.DEFAULT_TOKEN;
+    if (!name) return DEFAULT_TOKEN;
 
     const lcName = name.toLowerCase();
     const re = /\(([^\)]+)\)/;
@@ -254,7 +254,7 @@ export function getImagePath(name) {
         }
     }
 
-    return CONFIG.DEFAULT_TOKEN;
+    return DEFAULT_TOKEN;
 }
 
 export function getAssocSkill(name, skillsItemArray, defaultSkill) {
@@ -289,7 +289,7 @@ export function getAssocSkill(name, skillsItemArray, defaultSkill) {
 export function isStdIcon(iconPath, iconArray) {
     if (!iconPath || !iconArray) return false;
 
-    if (iconPath === CONFIG.DEFAULT_TOKEN) return true;
+    if (iconPath === DEFAULT_TOKEN) return true;
 
     let result = false;
     iconArray.forEach(i => {

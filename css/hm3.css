@@ -383,7 +383,8 @@
   .hm3 .sheet .sheet-header-character .profile-img {
     flex: 0 0 120px;
     height: 120px;
-    margin-right: 10px; }
+    margin-right: 10px;
+    object-fit: contain; }
   .hm3 .sheet .sheet-header-character .header-fields .name-attribute {
     border-bottom: 2px groove #eeede0; }
     .hm3 .sheet .sheet-header-character .header-fields .name-attribute h1.charname {

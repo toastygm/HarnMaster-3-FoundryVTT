@@ -254,6 +254,52 @@ export class DiceHM3 {
     }
 
     /*--------------------------------------------------------------------------------*/
+    /*        SKILL DEVELOPMENT ROLL PROCESSING
+    /*--------------------------------------------------------------------------------*/
+
+    static async sdrRoll(itemData) {
+
+        let roll = new Roll(`1d100 + @sb`, {sb: itemData.data.skillBase.value}).roll();
+
+        const isSuccess = roll.total > itemData.data.masteryLevel;
+
+        const chatTemplate = 'systems/hm3/templates/chat/standard-test-card.html';
+
+        const chatTemplateData = {
+            title: `${itemData.name} Skill Development Roll`,
+            origTarget: itemData.data.masteryLevel,
+            modifier: 0,
+            modifiedTarget: itemData.data.masteryLevel,
+            isSuccess: isSuccess,
+            rollValue: roll.total,
+            rollResult: roll.result,
+            showResult: true,
+            description: isSuccess ? "Success" : "Failure",
+            notes: ""
+        };
+
+        const html = await renderTemplate(chatTemplate, chatTemplateData);
+
+        const messageData = {
+            speaker: ChatMessage.getSpeaker(),
+            content: html.trim(),
+            user: game.user._id,
+            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            sound: CONFIG.sounds.dice,
+            roll: roll
+        };
+
+        const messageOptions = {
+            rollMode: game.settings.get("core", "rollMode")
+        };
+
+        // Create a chat message
+        await ChatMessage.create(messageData, messageOptions);
+    
+        return isSuccess;
+    }
+
+    /*--------------------------------------------------------------------------------*/
     /*        INJURY ROLL PROCESSING
     /*--------------------------------------------------------------------------------*/
 
