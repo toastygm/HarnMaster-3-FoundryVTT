@@ -65,8 +65,6 @@ export class HarnMasterActor extends Actor {
         const physicalSkills = await game.packs.find(p => p.collection === `hm3.std-skills-physical`).getContent();
         itemData = duplicate(physicalSkills.find(i => i.name === 'Climbing'));
         data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
-        itemData = duplicate(physicalSkills.find(i => i.name === 'Condition'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
         itemData = duplicate(physicalSkills.find(i => i.name === 'Jumping'));
         data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
         itemData = duplicate(physicalSkills.find(i => i.name === 'Stealth'));
