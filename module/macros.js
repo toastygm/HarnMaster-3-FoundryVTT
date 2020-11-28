@@ -132,8 +132,24 @@ export function skillRoll(itemName, noDialog = false, myActor=null) {
     const item = getItem(itemName, 'skill', actor);
     if (!item) return;
 
-    const label = `${item.data.name} Skill Test`;
-    return actor._d100StdRoll(label, item.data.data.effectiveMasteryLevel, speaker, noDialog, item.data.data.notes);
+    const stdRollData = {
+        label: `${item.data.name} Skill Test`,
+        target: item.data.data.effectiveMasteryLevel,
+        notesData: {
+            up: actor.data.data.universalPenalty,
+            pp: actor.data.data.physicalPenalty,
+            il: actor.data.data.totalInjuryLevels || 0,
+            fatigue: actor.data.data.fatigue,
+            eml: item.data.data.effectiveMasteryLevel,
+            ml: item.data.data.masteryLevel,
+            sb: item.data.data.skillBase.value,
+            si: item.data.data.skillIndex    
+        },
+        speaker: speaker,
+        fastforward: noDialog,
+        notes: item.data.data.notes
+    };
+    return actor._d100StdRoll(stdRollData);
 }
 
 export function castSpellRoll(itemName, noDialog = false, myActor=null) {
@@ -144,8 +160,27 @@ export function castSpellRoll(itemName, noDialog = false, myActor=null) {
     const item = getItem(itemName, 'spell', actor);
     if (!item) return;
 
-    const label = `Casting ${item.data.name}`;
-    return actor._d100StdRoll(label, item.data.data.effectiveMasteryLevel, speaker, noDialog, item.data.data.notes);
+    const stdRollData = {
+        label: `Casting ${item.data.name}`,
+        target: item.data.data.effectiveMasteryLevel,
+        notesData: {
+            up: actor.data.data.universalPenalty,
+            pp: actor.data.data.physicalPenalty,
+            il: actor.data.data.totalInjuryLevels || 0,
+            fatigue: actor.data.data.fatigue,
+            eml: item.data.data.effectiveMasteryLevel,
+            ml: item.data.data.masteryLevel,
+            sb: item.data.data.skillBase,
+            si: item.data.data.skillIndex,
+            spellName: item.data.name,
+            convocation: item.data.data.convocation,
+            level: item.data.data.level    
+        },
+        speaker: speaker,
+        fastforward: noDialog,
+        notes: item.data.data.notes
+    };
+    return actor._d100StdRoll(stdRollData);
 }
 
 export function invokeRitualRoll(itemName, noDialog = false, myActor = null) {
@@ -156,8 +191,27 @@ export function invokeRitualRoll(itemName, noDialog = false, myActor = null) {
     const item = getItem(itemName, 'invocation', actor);
     if (!item) return;
 
-    const label = `Invoking ${item.data.name} Ritual`;
-    return actor._d100StdRoll(label, item.data.data.effectiveMasteryLevel, speaker, noDialog, item.data.data.notes);
+    const stdRollData = {
+        label: `Invoking ${item.data.name} Ritual`,
+        target: item.data.data.effectiveMasteryLevel,
+        notesData: {
+            up: actor.data.data.universalPenalty,
+            pp: actor.data.data.physicalPenalty,
+            il: actor.data.data.totalInjuryLevels || 0,
+            fatigue: actor.data.data.fatigue,
+            eml: item.data.data.effectiveMasteryLevel,
+            ml: item.data.data.masteryLevel,
+            sb: item.data.data.skillBase,
+            si: item.data.data.skillIndex,
+            invocationName: item.data.name,
+            diety: item.data.data.diety,
+            circle: item.data.data.circle    
+        },
+        speaker: speaker,
+        fastforward: noDialog,
+        notes: item.data.data.notes
+    };
+    return actor._d100StdRoll(stdRollData);
 }
 
 export function usePsionicRoll(itemName, noDialog = false, myActor=null) {
@@ -168,8 +222,26 @@ export function usePsionicRoll(itemName, noDialog = false, myActor=null) {
     const item = getItem(itemName, 'psionic', actor);
     if (!item) return;
 
-    const label = `Using ${item.data.name} Talent`;
-    return actor._d100StdRoll(label, item.data.data.effectiveMasteryLevel, speaker, noDialog, item.data.data.notes);
+    const stdRollData = {
+        label: `Using ${item.data.name} Talent`,
+        target: item.data.data.effectiveMasteryLevel,
+        notesData: {
+            up: actor.data.data.universalPenalty,
+            pp: actor.data.data.physicalPenalty,
+            il: actor.data.data.totalInjuryLevels || 0,
+            fatigue: actor.data.data.fatigue,
+            eml: item.data.data.effectiveMasteryLevel,
+            ml: item.data.data.masteryLevel,
+            sb: item.data.data.skillBase.value,
+            si: item.data.data.skillIndex,
+            psionicName: item.data.name,
+            fatigueCost: item.data.data.fatigue  
+        },
+        speaker: speaker,
+        fastforward: noDialog,
+        notes: item.data.data.notes
+    };
+    return actor._d100StdRoll(stdRollData);
 }
 
 export function testAbilityD6Roll(ability, noDialog = false, myActor=null) {
@@ -187,8 +259,17 @@ export function testAbilityD6Roll(ability, noDialog = false, myActor=null) {
     }
     if (!ability || !abilities.includes(ability)) return;
 
-    const label = `d6 ${ability[0].toUpperCase()}${ability.slice(1)} Roll`;
-    return actor._d6StdRoll(label, actor.data.data.abilities[ability].effective, 3, speaker, noDialog);
+
+    const stdRollData = {
+        label: `d6 ${ability[0].toUpperCase()}${ability.slice(1)} Roll`,
+        target: actor.data.data.abilities[ability].effective,
+        numdice: 3,
+        notesData: {},
+        speaker: speaker,
+        fastforward: noDialog,
+        notes: ''
+    };
+    return actor._d6StdRoll(stdRollData);
 }
 
 export function testAbilityD100Roll(ability, noDialog = false, myActor = null) {
@@ -206,8 +287,15 @@ export function testAbilityD100Roll(ability, noDialog = false, myActor = null) {
     }
     if (!ability || !abilities.includes(ability)) return;
 
-    const label = `d100 ${ability[0].toUpperCase()}${ability.slice(1)} Roll`;
-    return actor._d100StdRoll(label, Math.max(95, Math.min(5, actor.data.data.abilities[ability].effective * 5)), speaker, noDialog);
+    const stdRollData = {
+        label: `d100 ${ability[0].toUpperCase()}${ability.slice(1)} Roll`,
+        target: Math.max(5, actor.data.data.abilities[ability].effective * 5),
+        notesData: {},
+        speaker: speaker,
+        fastforward: noDialog,
+        notes: ''
+    };
+    return actor._d100StdRoll(stdRollData);
 }
 
 export function weaponDamageRoll(itemName, myActor = null) {
@@ -219,9 +307,17 @@ export function weaponDamageRoll(itemName, myActor = null) {
     if (!item) return;
 
     const rollData = {
+        notesData: {
+            up: actor.data.data.universalPenalty,
+            pp: actor.data.data.physicalPenalty,
+            il: actor.data.data.totalInjuryLevels || 0,
+            fatigue: actor.data.data.fatigue,
+            weaponName: item.data.name 
+        },
         weapon: item.data.name,
         data: actor.data,
-        speaker: speaker
+        speaker: speaker,
+        notes: item.data.data.notes
     };
     return DiceHM3.damageRoll(rollData);
 }
@@ -235,6 +331,14 @@ export function missileDamageRoll(itemName, myActor = null) {
     if (!item) return;
 
     const rollData = {
+        notesData: {
+            up: actor.data.data.universalPenalty,
+            pp: actor.data.data.physicalPenalty,
+            il: actor.data.data.totalInjuryLevels || 0,
+            fatigue: actor.data.data.fatigue,
+            missileName: item.data.name,
+            aspect: item.data.data.weaponAspect
+        },
         name: item.data.name,
         aspect: item.data.data.weaponAspect,
         impactShort: item.data.data.impact.short,
@@ -242,7 +346,8 @@ export function missileDamageRoll(itemName, myActor = null) {
         impactLong: item.data.data.impact.long,
         impactExtreme: item.data.data.impact.extreme,
         data: actor.data,
-        speaker: speaker
+        speaker: speaker,
+        notes: item.data.data.notes
     };
     return DiceHM3.missileDamageRoll(rollData);
 }
@@ -255,16 +360,27 @@ export function weaponAttackRoll(itemName, noDialog = false, myActor = null) {
     const item = getItem(itemName, 'weapongear', actor);
     if (!item) return;
 
-    const label = `${item.data.name} Attack`;
-    const rollData = {
-        label: label,
+    const stdRollData = {
+        label: `${item.data.name} Attack`,
         target: item.data.data.attackMasteryLevel,
-        fastforward: noDialog,
-        data: this.data,
+        notesData: {
+            up: actor.data.data.universalPenalty,
+            pp: actor.data.data.physicalPenalty,
+            il: actor.data.data.totalInjuryLevels || 0,
+            fatigue: actor.data.data.fatigue,
+            ml: item.data.data.masteryLevel,
+            sb: item.data.data.skillBase,
+            si: item.data.data.skillIndex,
+            weaponName: item.data.name,
+            attack: item.data.data.attack,
+            atkMod: item.data.data.attackModifier,
+            aml: item.data.data.attackMasteryLevel  
+        },
         speaker: speaker,
+        fastforward: noDialog,
         notes: item.data.data.notes
     };
-    return DiceHM3.d100StdRoll(rollData);
+    return actor._d100StdRoll(stdRollData);
 }
 
 export function weaponDefendRoll(itemName, noDialog = false, myActor = null) {
@@ -275,15 +391,26 @@ export function weaponDefendRoll(itemName, noDialog = false, myActor = null) {
     const item = getItem(itemName, 'weapongear', actor);
     if (!item) return;
 
-    const label = `${item.data.name} Defense`;
-    const rollData = {
-        label: label,
+    const stdRollData = {
+        label: `${item.data.name} Defense`,
         target: item.data.data.defenseMasteryLevel,
+        notesData: {
+            up: actor.data.data.universalPenalty,
+            pp: actor.data.data.physicalPenalty,
+            il: actor.data.data.totalInjuryLevels || 0,
+            fatigue: actor.data.data.fatigue,
+            ml: item.data.data.masteryLevel,
+            sb: item.data.data.skillBase,
+            si: item.data.data.skillIndex,
+            weaponName: item.data.name,
+            defense: item.data.data.defense,
+            dml: item.data.data.defenseMasteryLevel  
+        },
+        speaker: speaker,
         fastforward: noDialog,
-        data: this.data,
-        speaker: speaker
+        notes: item.data.data.notes
     };
-    return DiceHM3.d100StdRoll(rollData);
+    return actor._d100StdRoll(stdRollData);
 }
 
 export function missileAttackRoll(itemName, myActor = null) {
@@ -295,15 +422,23 @@ export function missileAttackRoll(itemName, myActor = null) {
     if (!item) return;
 
     const rollData = {
+        notesData: {
+            up: actor.data.data.universalPenalty,
+            pp: actor.data.data.physicalPenalty,
+            il: actor.data.data.totalInjuryLevels || 0,
+            fatigue: actor.data.data.fatigue,
+            missileName: item.data.name
+        },
         name: item.data.name,
         target: item.data.data.attackMasteryLevel,
-        aspect: item.data.data.defaultAspect,
+        aspect: item.data.data.weaponAspect,
         rangeShort: item.data.data.range.short,
         rangeMedium: item.data.data.range.medium,
         rangeLong: item.data.data.range.long,
         rangeExtreme: item.data.data.range.extreme,
         data: this.data,
-        speaker: speaker
+        speaker: speaker,
+        notes: item.data.data.notes
     }
     return DiceHM3.missileAttackRoll(rollData);
 }
@@ -313,8 +448,10 @@ export function injuryRoll(myActor = null) {
     const actor = getActor(myActor, speaker);
     if (!actor) return;
     const rollData = {
+        notesData: {},
         actor: actor,
-        speaker: speaker
+        speaker: speaker,
+        notes: ''
     };
     return DiceHM3.injuryRoll(rollData);
 }
@@ -327,40 +464,90 @@ export function healingRoll(itemName, noDialog = false, myActor = null) {
     const item = getItem(itemName, 'injury', actor);
     if (!item) return;
 
-    const label = `${item.data.name} Healing Roll`;
-    return actor._d100StdRoll(label, item.data.data.healRate*actor.data.data.endurance, speaker, noDialog, item.data.data.notes);
+    const stdRollData = {
+        label: `${item.data.name} Healing Roll`,
+        target: item.data.data.healRate*actor.data.data.endurance,
+        notesData: {
+            up: actor.data.data.universalPenalty,
+            pp: actor.data.data.physicalPenalty,
+            il: actor.data.data.totalInjuryLevels || 0,
+            fatigue: actor.data.data.fatigue,
+            endurance: actor.data.data.endurance,
+            injuryName: item.data.name,
+            healRate: item.data.data.healRate  
+        },
+        speaker: speaker,
+        fastforward: noDialog,
+        notes: item.data.data.notes
+    };
+    return actor._d100StdRoll(stdRollData);
 }
 
 export function dodgeRoll(noDialog = false, myActor = null) {
     const speaker = ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) return;
-    const label = `Dodge Roll`;
-    return actor._d100StdRoll(label, actor.data.data.dodge, speaker, noDialog);
+
+    const stdRollData = {
+        label: `Dodge Roll`,
+        target: actor.data.data.dodge,
+        notesData: {},
+        speaker: speaker,
+        fastforward: noDialog,
+        notes: ''
+    };
+    return actor._d100StdRoll(stdRollData);
 }
 
 export function shockRoll(noDialog = false, myActor = null) {
     const speaker = ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) return;
-    const label = `Shock Roll`;
-    return actor._d6StdRoll(label, actor.data.data.endurance, actor.data.data.universalPenalty, speaker, noDialog);
+
+    const stdRollData = {
+        label: `Shock Roll`,
+        target: actor.data.data.endurance,
+        numdice: actor.data.data.universalPenalty,
+        notesData: {},
+        speaker: speaker,
+        fastforward: noDialog,
+        notes: ''
+    };
+    return actor._d6StdRoll(stdRollData);
 }
 
 export function stumbleRoll(noDialog = false, myActor = null) {
     const speaker = ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) return;
-    const label = `Stumble Roll`;
-    return actor._d6StdRoll(label, actor.data.data.stumbleTarget, 3, speaker, noDialog);
+
+    const stdRollData = {
+        label: `Stumble Roll`,
+        target: actor.data.data.stumbleTarget,
+        numdice: 3,
+        notesData: {},
+        speaker: speaker,
+        fastforward: noDialog,
+        notes: ''
+    };
+    return actor._d6StdRoll(stdRollData);
 }
 
 export function fumbleRoll(noDialog = false, myActor = null) {
     const speaker = ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) return;
-    const label = `Fumble Roll`;
-    return actor._d6StdRoll(label, actor.data.data.fumbleTarget, 3, speaker, noDialog);
+
+    const stdRollData = {
+        label: `Fumble Roll`,
+        target: actor.data.data.fumbleTarget,
+        numdice: 3,
+        notesData: {},
+        speaker: speaker,
+        fastforward: noDialog,
+        notes: ''
+    };
+    return actor._d6StdRoll(stdRollData);
 }
 
 export function genericDamageRoll(myActor = null) {
@@ -370,7 +557,9 @@ export function genericDamageRoll(myActor = null) {
     const rollData = {
         weapon: '',
         data: actor.data,
-        speaker: speaker
+        speaker: speaker,
+        notesData: {},
+        notes: ''
     };
     return DiceHM3.damageRoll(rollData);
 }
