@@ -75,7 +75,8 @@
         "description": "",
         "universalPenalty": 0,
         "physicalPenalty": 0,
-        "biography": ""
+        "biography": "",
+        "macros": {}
       }
     },
     "character": {
@@ -101,7 +102,7 @@
         "notes": "",
         "description": "",
         "source": "",
-        "macro": ""
+        "macros": {}
       },
       "gear": {
         "quantity": 1,

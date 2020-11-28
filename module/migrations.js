@@ -65,25 +65,25 @@ export async function migrateWorld() {
     }
 
     // Migrate Scene Actor Tokens
-    // for (let s of game.scenes.entities ) {
-    //     try {
-    //         const updateData = migrateSceneData(i.data);
-    //         if (!isObjectEmpty(updateData)) {
-    //             console.log(`Migrating Scene ${s.name}`);
-    //             await s.update(updateData, {enforceTypes: false});
-    //         }
-    //     } catch(err) {
-    //         console.error(err);
-    //     }
-    // }
+    for (let s of game.scenes.entities ) {
+        try {
+            const updateData = migrateSceneData(s.data);
+            if (!isObjectEmpty(updateData)) {
+                console.log(`Migrating Scene ${s.name}`);
+                await s.update(updateData, {enforceTypes: false});
+            }
+        } catch(err) {
+            console.error(err);
+        }
+    }
 
     // Migrate World Compendium Packs
-    // const packs = game.packs.filter(p => {
-    //     return (p.metadata.package === 'world') && ['Actor', 'Item', 'Scene'].includes(p.metadata.entity);
-    // });
-    // for (let p of packs) {
-    //     await migrateCompendium(p);
-    // }
+    const packs = game.packs.filter(p => {
+        return (p.metadata.package === 'world') && ['Actor', 'Item', 'Scene'].includes(p.metadata.entity);
+    });
+    for (let p of packs) {
+        await migrateCompendium(p);
+    }
 
     // Set migration as complete
     game.settings.set('hm3', 'systemMigrationVersion', game.system.data.version);
@@ -91,66 +91,128 @@ export async function migrateWorld() {
     ui.notifications.info(`HM3 System Migration to version ${game.system.data.version} completed!`, {permanent: true});  
 };
 
+/**
+ * Apply migration rules to all Entities within a single Compendium pack
+ * @param pack
+ * @return {Promise}
+ */
+export const migrateCompendium = async function(pack) {
+    const entity = pack.metadata.entity;
+    if ( !["Actor", "Item", "Scene"].includes(entity) ) return;
+  
+    // Begin by requesting server-side data model migration and get the migrated content
+    await pack.migrate();
+    const content = await pack.getContent();
+  
+    // Iterate over compendium entries - applying fine-tuned migration functions
+    for ( let ent of content ) {
+      try {
+        let updateData = null;
+        if (entity === "Item") updateData = migrateItemData(ent.data);
+        else if (entity === "Actor") updateData = migrateActorData(ent.data);
+        else if ( entity === "Scene" ) updateData = migrateSceneData(ent.data);
+        if (!isObjectEmpty(updateData)) {
+          expandObject(updateData);
+          updateData["_id"] = ent._id;
+          await pack.updateEntity(updateData);
+          console.log(`Migrated ${entity} entity ${ent.name} in Compendium ${pack.collection}`);
+        }
+      } catch(err) {
+        console.error(err);
+      }
+    }
+    console.log(`Migrated all ${entity} entities from Compendium ${pack.collection}`);
+  };
+  
+/**
+ * Migrate a single Scene entity to incorporate changes to the data model of it's actor data overrides
+ * Return an Object of updateData to be applied
+ * @param {Object} scene  The Scene data to Update
+ * @return {Object}       The updateData to apply
+ */
+export const migrateSceneData = function(scene) {
+    const tokens = duplicate(scene.tokens);
+    return {
+      tokens: tokens.map(t => {
+        if (!t.actorId || t.actorLink || !t.actorData.data) {
+          t.actorData = {};
+          return t;
+        }
+        const token = new Token(t);
+        if ( !token.actor ) {
+          t.actorId = null;
+          t.actorData = {};
+        } else if ( !t.actorLink ) {
+          const updateData = migrateActorData(token.data.actorData);
+          t.actorData = mergeObject(token.data.actorData, updateData);
+        }
+        return t;
+      })
+    };
+  };
+  
 export async function migrateActorData(actor) {
     const actorData = actor.data;
 
-    // process items
-    for (let i of actor.items) {
-        let migrateData = migrateItemData(i.data);
-        if (migrateData) {
-            console.log(`HM3 | Migrated Actor ${actor.data.name}, Item ${i.data.name}`);
-            try {
-                await i.update(migrateData);
-            } catch (err) {
-                console.error(err);
-            }
-        }
-
-        // Check if we need to convert skills from old
-        // format to new format.
-
-        switch(i.data.type) {
-            case 'physicalskill':
-                await convertToNewSkill(i, actor, 'Physical');
-                break;
-            case 'commskill':
-                await convertToNewSkill(i, actor, 'Communication');
-                break;
-            case 'combatskill':
-                await convertToNewSkill(i, actor, 'Combat');
-                break;
-            case 'craftskill':
-                await convertToNewSkill(i, actor, 'Craft');
-                break;
-            case 'magicskill':
-                await convertToNewSkill(i, actor, 'Magic');
-                break;
-            case 'ritualskill':
-                await convertToNewSkill(i, actor, 'Ritual');
-                break;
-            // case 'psionic':
-            //     await convertToNewSkill(i, actor, 'Psionic');
-            //     break;
-            case 'skill':
-                if (i.data.data.type === 'Psionic') {
-                    const updateData = {
-                        "data.notes": i.data.data.notes,
-                        "data.description": i.data.data.description,
-                        "data.source": i.data.data.source,
-                        "data.macro": "",
-                        "data.skillBase.value": i.data.data.skillBase.value,
-                        "data.skillBase.formula": i.data.data.skillbase.formula,
-                        "data.skillBase.isFormulaValid": i.data.data.skillbase.isFormulaValid,
-                        "data.masteryLevel": i.data.data.masteryLevel,
-                        "data.effectiveMasteryLevel": i.data.data.effectiveMasteryLevel,
-                        "data.improveFlag": false,
-                        "data.fatigue": i.data.data.psionic.fatigue            
-                    };
-
-                    await actor.createOwnedItem({type: "psionic", name: i.data.name, data: updateData});
-                    await actor.deleteOwnedItem(i.data._id);
+    if (actor.items) {
+        // process items
+        for (let i of actor.items) {
+            let migrateData = migrateItemData(i.data);
+            if (migrateData) {
+                console.log(`HM3 | Migrated Actor ${actor.data.name}, Item ${i.data.name}`);
+                try {
+                    await i.update(migrateData);
+                } catch (err) {
+                    console.error(err);
                 }
-                break;
+            }
+
+            // Check if we need to convert skills from old
+            // format to new format.
+
+            switch(i.data.type) {
+                case 'physicalskill':
+                    await convertToNewSkill(i, actor, 'Physical');
+                    break;
+                case 'commskill':
+                    await convertToNewSkill(i, actor, 'Communication');
+                    break;
+                case 'combatskill':
+                    await convertToNewSkill(i, actor, 'Combat');
+                    break;
+                case 'craftskill':
+                    await convertToNewSkill(i, actor, 'Craft');
+                    break;
+                case 'magicskill':
+                    await convertToNewSkill(i, actor, 'Magic');
+                    break;
+                case 'ritualskill':
+                    await convertToNewSkill(i, actor, 'Ritual');
+                    break;
+                // case 'psionic':
+                //     await convertToNewSkill(i, actor, 'Psionic');
+                //     break;
+                case 'skill':
+                    if (i.data.data.type === 'Psionic') {
+                        const updateData = {
+                            "data.notes": i.data.data.notes,
+                            "data.description": i.data.data.description,
+                            "data.source": i.data.data.source,
+                            "data.skillBase.value": i.data.data.skillBase.value,
+                            "data.skillBase.formula": i.data.data.skillbase.formula,
+                            "data.skillBase.isFormulaValid": i.data.data.skillbase.isFormulaValid,
+                            "data.masteryLevel": i.data.data.masteryLevel,
+                            "data.effectiveMasteryLevel": i.data.data.effectiveMasteryLevel,
+                            "data.improveFlag": false,
+                            "data.fatigue": i.data.data.psionic.fatigue,
+                            "data.macros": {}        
+                        };
+
+                        await actor.createOwnedItem({type: "psionic", name: i.data.name, data: updateData});
+                        await actor.deleteOwnedItem(i.data._id);
+                    }
+                    break;
+            }
         }
     }
 
@@ -213,6 +275,10 @@ export async function migrateActorData(actor) {
         if (actorData.data.endurance.max) {
             updateData['data.endurance'] = actorData.data.endurance.max;
         }
+
+        if (typeof actorData.data.macros === 'undefined') {
+            updateData['data.macros'] = {}
+        }
     }
     
     return updateData;
@@ -232,8 +298,8 @@ async function convertToNewSkill(i, actor, newType) {
         "data.masteryLevel": oldData.masteryLevel,
         "data.effectiveMasteryLevel": oldData.effectiveMasteryLevel,
         "data.ritual.piety": oldData.piety || 0,
-        "data.psionic.fatigue": oldData.fatigue || 0,
-        "data.psionic.time": ""
+        "data.macros": {},          // in 0.7.8, we support macros on all actors
+        "data.improveFlag": false
     };
 
     // Create the new skill
@@ -266,6 +332,15 @@ export function migrateItemData(itemData) {
     }
     if (typeof data.source === 'undefined') {
         updateData['data.source'] = "";
+    }
+
+    // In 0.7.8, we now support macros on all items
+    if (typeof data.macro !== 'undefined') {
+        updateData['data.-=macro'] = null
+    }
+
+    if (typeof data.macros === 'undefined') {
+        updateData['data.macros'] = {}
     }
 
     if (itemData.type.endsWith('gear')) {
@@ -340,14 +415,4 @@ export function migrateItemData(itemData) {
     }
 
     return updateData;
-}
-
-export function migrateSceneData(scene) {
-    const result = {};
-    return result;
-}
-
-export function migrateCompendium(pack) {
-    const result = {};
-    return result;
 }
