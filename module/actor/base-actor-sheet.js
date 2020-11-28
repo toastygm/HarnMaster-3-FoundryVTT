@@ -164,6 +164,25 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Delete Inventory Item
         html.find('.item-delete').click(this._onItemDelete.bind(this));
 
+        html.on("keyup", ".skill-name-filter", ev => {
+            const data = this.getData();
+            this.skillNameFilter = $(ev.currentTarget).val();
+            const lcSkillNameFilter = this.skillNameFilter.toLowerCase();
+            let skills = html.find('.skill-item');
+            for (let skill of skills) {
+                const skillName = skill.getAttribute('data-item-name');
+                if (lcSkillNameFilter) {
+                    if (skillName.toLowerCase().startsWith(lcSkillNameFilter)) {
+                        $(skill).show()
+                    } else {
+                        $(skill).hide()
+                    }
+                } else {
+                    $(skill).show();
+                }    
+            }
+        });
+
         // Standard 1d100 Skill Roll
         html.find('.skill-roll').click(ev => {
             const li = $(ev.currentTarget).parents(".item");
