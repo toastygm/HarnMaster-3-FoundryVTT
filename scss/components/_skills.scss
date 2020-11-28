@@ -14,6 +14,18 @@
       padding: 5px;
     }
 
+    .skill-name-filter {
+      background-image: url('../images/png/searchicon.png');
+      background-size: contain;
+      background-position: 5px -1px;
+      background-repeat: no-repeat;
+      width: 100%;
+      font-size: 15px;
+      padding: 5px 0px 5px 40px;
+      border: 2px groove #eeede0;
+      margin-top: 5px;
+    }
+
     .skills-list {
       list-style: none;
       margin: 7px 0;

@@ -298,3 +298,16 @@ export function isStdIcon(iconPath, iconArray) {
 
     return result;
 }
+
+/**
+ * String replacer function that applies the `text` string replacement
+ * mechansim to an arbitrary string (named "template" here)
+ * @param {String} template String containing ${} replacements
+ * @param {Object} values An object containing replacement key/value pairs
+ */
+export function stringReplacer(template, values) {
+    var keys = Object.keys(values);
+    var func = Function(...keys, "return `" + template + "`;");
+  
+    return func(...keys.map(k => values[k]));
+}

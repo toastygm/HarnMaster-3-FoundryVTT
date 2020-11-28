@@ -1,3 +1,5 @@
+import * as utility from './utility.js';
+
 export class DiceHM3 {
     /*--------------------------------------------------------------------------------*/
     /*        STANDARD D100 ROLL PROCESSING
@@ -23,7 +25,8 @@ export class DiceHM3 {
      * @param {Object} rollData 
      */
     static async d100StdRoll (rollData) {
-        
+        const speaker = rollData.speaker || ChatMessage.getSpeaker();
+
         const dialogOptions = {
             target: rollData.target,
             label: rollData.label,
@@ -46,6 +49,21 @@ export class DiceHM3 {
         // Prepare for Chat Message
         const chatTemplate = 'systems/hm3/templates/chat/standard-test-card.html';
 
+        const notesData = mergeObject(rollData.notesData, {
+            actor: speaker.alias,
+            target: rollData.target,
+            modifier: rollData.modifier,
+            roll: roll.rollObj.total,
+            rollText: roll.description,
+            isSuccess: roll.isSuccess,
+            isCritical: roll.isCritical,
+            isCS: roll.isSuccess && roll.isCritical,
+            isMS: roll.isSuccess && !roll.isCritical,
+            isMF: !roll.isSuccess && !roll.isCritical,
+            isCF: !roll.isSuccess && roll.isCritical
+        });
+        const renderedNotes = rollData.notes ? utility.stringReplacer(rollData.notes, notesData) : "";
+
         const chatTemplateData = {
             title: rollData.label,
             origTarget: rollData.target,
@@ -58,14 +76,15 @@ export class DiceHM3 {
             rollResult: roll.rollObj.total,
             showResult: false,
             description: roll.description,
-            notes: rollData.notes
+            notes: renderedNotes
         };
+
 
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
             user: game.user._id,
-            speaker: rollData.speaker || ChatMessage.getSpeaker(),
+            speaker: speaker,
             content: html.trim(),
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
             sound: CONFIG.sounds.dice,
@@ -150,6 +169,7 @@ export class DiceHM3 {
      * @param {Object} rollData 
      */
     static async d6Roll (rollData) {
+        const speaker = rollData.speaker || ChatMessage.getSpeaker();
         
         const dialogOptions = {
             target: Number(rollData.target),
@@ -175,6 +195,15 @@ export class DiceHM3 {
         // Prepare for Chat Message
         const chatTemplate = 'systems/hm3/templates/chat/standard-test-card.html';
 
+        const notesData = mergeObject(rollData.notesData, {
+            actor: speaker.alias,
+            target: rollData.target,
+            roll: roll.rollObj.total,
+            rollText: roll.description,
+            isSuccess: roll.isSuccess
+        });
+        const renderedNotes = rollData.notes ? utility.stringReplacer(rollData.notes, notesData) : "";
+
         const chatTemplateData = {
             title: rollData.label,
             origTarget: rollData.target,
@@ -185,14 +214,14 @@ export class DiceHM3 {
             rollResult: roll.rollObj.dice[0].values.join(" + "),
             showResult: roll.rollObj.dice[0].values.length > 1,
             description: roll.description,
-            notes: rollData.notes
+            notes: renderedNotes
         };
 
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
             user: game.user._id,
-            speaker: rollData.speaker || ChatMessage.getSpeaker(),
+            speaker: speaker,
             content: html.trim(),
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
             sound: CONFIG.sounds.dice,
@@ -258,11 +287,14 @@ export class DiceHM3 {
     /*--------------------------------------------------------------------------------*/
 
     static async sdrRoll(itemData) {
+        const speaker = ChatMessage.getSpeaker();
 
         let roll = new Roll(`1d100 + @sb`, {sb: itemData.data.skillBase.value}).roll();
 
         const isSuccess = roll.total > itemData.data.masteryLevel;
 
+        const re = RegExp('\(([^\)]+)\)');
+        const specMatch = itemData.name.match(/\(([^\)]+)\)/);
         const chatTemplate = 'systems/hm3/templates/chat/standard-test-card.html';
 
         const chatTemplateData = {
@@ -275,13 +307,17 @@ export class DiceHM3 {
             rollResult: roll.result,
             showResult: true,
             description: isSuccess ? "Success" : "Failure",
-            notes: ""
+            notes: ''
         };
+
+        if (specMatch && isSuccess) {
+            chatTemplateData.notes = `Since this is a specialized skill of ${specMatch[1]}, ML will be increased by 2`
+        }
 
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
-            speaker: ChatMessage.getSpeaker(),
+            speaker: speaker,
             content: html.trim(),
             user: game.user._id,
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
@@ -296,7 +332,7 @@ export class DiceHM3 {
         // Create a chat message
         await ChatMessage.create(messageData, messageOptions);
     
-        return isSuccess;
+        return isSuccess ? (specMatch ? 2 : 1 ) : 0;
     }
 
     /*--------------------------------------------------------------------------------*/
@@ -310,7 +346,8 @@ export class DiceHM3 {
      * @param {Object} rollData 
      */
     static async injuryRoll (rollData) {
-        
+        const speaker = rollData.speaker || ChatMessage.getSpeaker();
+
         let hitLocations = DiceHM3._getHitLocations(rollData.actor.items);
 
         const dialogOptions = {
@@ -338,7 +375,7 @@ export class DiceHM3 {
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
-            speaker: rollData.speaker || ChatMessage.getSpeaker(),
+            speaker: speaker,
             content: html.trim(),
             user: game.user._id,
             type: CONST.CHAT_MESSAGE_TYPES.OTHER,
@@ -680,7 +717,8 @@ export class DiceHM3 {
      * @param {Object} rollData 
      */
     static async damageRoll (rollData) {
-        
+        const speaker = rollData.speaker || ChatMessage.getSpeaker();
+
         let weapon = DiceHM3._calcWeaponAspect(rollData.weapon, rollData.data.items);
 
         const dialogOptions = {
@@ -706,6 +744,17 @@ export class DiceHM3 {
 
         const totalImpact = weapon.aspects[roll.chosenAspect] + roll.addlWeaponImpact + roll.rollObj.total;
 
+        const notesData = mergeObject(rollData.notesData, {
+            actor: speaker.alias,
+            aspect: roll.chosenAspect,
+            dice: Number(roll.damageDice),
+            impact: weapon.aspects[roll.chosenAspect],
+            addlImpact: roll.addlWeaponImpact,
+            totalImpact: totalImpact,
+            roll: roll.rollObj.total
+        });
+        const renderedNotes = rollData.notes ? utility.stringReplacer(rollData.notes, notesData) : "";
+
         const chatTemplateData = {
             title: title,
             weaponAspect: roll.chosenAspect,
@@ -715,12 +764,13 @@ export class DiceHM3 {
             totalImpact: totalImpact,
             rollResult: roll.rollObj.dice[0].values.join(" + "),
             rollValue: roll.rollObj.total,
+            notes: renderedNotes
         };
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
             user: game.user._id,
-            speaker: rollData.speaker || ChatMessage.getSpeaker(),
+            speaker: speaker,
             content: html.trim(),
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
             sound: CONFIG.sounds.dice,
@@ -847,6 +897,8 @@ export class DiceHM3 {
     /*--------------------------------------------------------------------------------*/
 
     static async missileAttackRoll(rollData) {
+        const speaker = rollData.speaker || ChatMessage.getSpeaker();
+
         // Create the Roll instance
         const roll = await DiceHM3.missileAttackDialog(rollData);
 
@@ -855,6 +907,23 @@ export class DiceHM3 {
 
         // Prepare for Chat Message
         const chatTemplate = 'systems/hm3/templates/chat/missile-attack-card.html';
+
+        const notesData = mergeObject(rollData.notesData, {
+            actor: speaker.alias,
+            aspect: rollData.aspect,
+            range: roll.range,
+            rangeModifier: roll.rangeModifier,
+            addlModifier: roll.addlModifier,
+            target: roll.modifiedTarget,
+            isSuccess: roll.isSuccess,
+            isCritical: roll.isCritical,
+            isCS: roll.isSuccess && roll.isCritical,
+            isMS: roll.isSuccess && !roll.isCritical,
+            isMF: !roll.isSuccess && !roll.isCritical,
+            isCF: !roll.isSuccess && roll.isCritical,
+            roll: roll.rollObj.total,
+        });
+        const renderedNotes = rollData.notes ? utility.stringReplacer(rollData.notes, notesData) : "";
 
         const chatTemplateData = {
             title: `${rollData.name} Attack`,
@@ -868,13 +937,14 @@ export class DiceHM3 {
             isSuccess: roll.isSuccess,
             isCritical: roll.isCritical,
             rollValue: roll.rollObj.total,
-            description: roll.description
+            description: roll.description,
+            notes: renderedNotes
         };
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
             user: game.user._id,
-            speaker: rollData.speaker || ChatMessage.getSpeaker(),
+            speaker: speaker,
             content: html.trim(),
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
             sound: CONFIG.sounds.dice,
@@ -960,14 +1030,8 @@ export class DiceHM3 {
     /*--------------------------------------------------------------------------------*/
 
     static async missileDamageRoll(rollData) {
-        // name: eventData.missile,
-        // aspect: eventData.aspect,
-        // impactShort: eventData.impactShort,
-        // impactMedium: eventData.impactMedium,
-        // impactLong: eventData.impactLong,
-        // impactExtreme: eventData.impactExtreme,
-        // data: this.data,
-        // speaker: ChatMessage.getSpeaker({actor: this})
+        const speaker = rollData.speaker || ChatMessage.getSpeaker();
+
         const dialogOptions = {
             name: rollData.name,
             impactShort: rollData.impactShort,
@@ -1002,6 +1066,18 @@ export class DiceHM3 {
 
         const totalImpact = Number(rangeImpact) + Number(roll.addlImpact) + Number(roll.rollObj.total);
 
+        const notesData = mergeObject(rollData.notesData, {
+            actor: speaker.alias,
+            aspect: rollData.aspect,
+            range: roll.range,
+            dice: Number(roll.damageDice),
+            impact: rangeImpact,
+            addlImpact: roll.addlImpact,
+            totalImpact: totalImpact,
+            roll: roll.rollObj.total
+        });
+        const renderedNotes = rollData.notes ? utility.stringReplacer(rollData.notes, notesData) : "";
+
         const chatTemplateData = {
             title: title,
             aspect: rollData.aspect,
@@ -1011,12 +1087,13 @@ export class DiceHM3 {
             addlImpact: roll.addlImpact,
             totalImpact: totalImpact,
             rollValue: roll.rollObj.total,
+            notes: renderedNotes
         };
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
             user: game.user._id,
-            speaker: rollData.speaker || ChatMessage.getSpeaker(),
+            speaker: speaker,
             content: html.trim(),
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
             sound: CONFIG.sounds.dice,

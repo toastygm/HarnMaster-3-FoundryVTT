@@ -35,13 +35,13 @@ export class HarnMasterItem extends Item {
         else if (data.type === 'Craft' && utility.isStdIcon(itemData.img, HM3.craftSkillIcons)) img = utility.getImagePath(itemData.name);
         else if (data.type === 'Magic' && utility.isStdIcon(itemData.img, HM3.magicIcons)) {
           img = utility.getImagePath(itemData.name);
-          if (img === CONFIG.DEFAULT_TOKEN) {
+          if (img === DEFAULT_TOKEN) {
             img = utility.getImagePath(HM3.defaultMagicIconName);
           }
         }
         else if (data.type === 'Ritual' && utility.isStdIcon(itemData.img, HM3.ritualIcons)) {
           img = utility.getImagePath(itemData.name);
-          if (img === CONFIG.DEFAULT_TOKEN) {
+          if (img === DEFAULT_TOKEN) {
             img = utility.getImagePath(HM3.defaultRitualIconName);
           }
         }
@@ -52,7 +52,7 @@ export class HarnMasterItem extends Item {
         
         if (utility.isStdIcon(itemData.img, HM3.psionicTalentIcons)) {
           img = utility.getImagePath(itemData.name);
-          if (img === CONFIG.DEFAULT_TOKEN) {
+          if (img === DEFAULT_TOKEN) {
             img = utility.getImagePath(HM3.defaultPsionicsIconName);
           }
         }
@@ -61,9 +61,9 @@ export class HarnMasterItem extends Item {
       case 'spell':
         if (utility.isStdIcon(itemData.img, HM3.magicIcons)) {
           img = utility.getImagePath(itemData.name);
-          if (img === CONFIG.DEFAULT_TOKEN) {
+          if (img === DEFAULT_TOKEN) {
             img = utility.getImagePath(data.convocation);
-            if (img === CONFIG.DEFAULT_TOKEN) {
+            if (img === DEFAULT_TOKEN) {
               img = utility.getImagePath(HM3.defaultMagicIconName);
             }
           }
@@ -73,9 +73,9 @@ export class HarnMasterItem extends Item {
       case 'invocation':
         if (utility.isStdIcon(itemData.img, HM3.ritualIcons)) {
           img = utility.getImagePath(itemData.name);
-          if (img === CONFIG.DEFAULT_TOKEN) {
+          if (img === DEFAULT_TOKEN) {
             img = utility.getImagePath(data.diety);
-            if (img === CONFIG.DEFAULT_TOKEN) {
+            if (img === DEFAULT_TOKEN) {
               img = utility.getImagePath(HM3.defaultRitualIconName);
             }
           }
@@ -84,7 +84,7 @@ export class HarnMasterItem extends Item {
         
       case 'weapongear':
       case 'missilegear':
-        if (itemData.img === CONFIG.DEFAULT_TOKEN) {
+        if (itemData.img === DEFAULT_TOKEN) {
           if (utility.isStdIcon(itemData.img, HM3.weaponSkillIcons)) {
             img = utility.getImagePath(itemData.name);
           }
@@ -92,10 +92,10 @@ export class HarnMasterItem extends Item {
         break;
         
       case 'miscgear':
-        if (itemData.img === CONFIG.DEFAULT_TOKEN) {
+        if (itemData.img === DEFAULT_TOKEN) {
           if (utility.isStdIcon(itemData.img, HM3.miscGearIcons)) {
             img = utility.getImagePath(itemData.name);
-            if (img === CONFIG.DEFAULT_TOKEN) {
+            if (img === DEFAULT_TOKEN) {
               img = utility.getImagePath(HM3.defaultMiscItemIconName);
             }
           }
