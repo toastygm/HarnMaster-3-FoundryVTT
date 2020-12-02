@@ -1,0 +1,74 @@
+<div class="chat-card item-card" data-actor-id="{{actorId}}">
+    <header class="card-header flexrow">
+        <h3 class="title">{{title}}</h3>
+    </header>
+
+    {{#if notes}}
+    <div class="card-note">
+        <span>{{notes}}</span>
+    </div>
+    {{/if}}
+
+    <div class="card-content">
+        <span class="label">Attacker:</span>
+        <span class="value">{{attacker}}</span>
+    </div>
+
+    <div class="card-content">
+        <span class="label">Defender:</span>
+        <span class="value">{{defender}}</span>
+    </div>
+
+    <div class="card-content">
+        <span class="label">Attack Weapon (AML):</span>
+        <span class="value">{{attackWeapon}} ({{effAML}})</span>
+    </div>
+
+    {{#if defense}}
+    <div class="card-content">
+        <span class="label">Defense{{#if effDML}} (DML){{/if}}:</span>
+        <span class="value">{{defense}}{{#if effDML}} ({{effDML}}){{/if}}</span>
+    </div>
+    {{/if}}
+    
+    <div class="card-content">
+        <span class="label">Attack Roll:</span>
+        <span class="value">{{attackRoll}} = {{atkRollResult}}</span>
+    </div>
+
+    {{#if defenseRoll}}
+    <div class="card-content">
+        <span class="label">Defense Roll:</span>
+        <span class="value">{{defenseRoll}} = {{defRollResult}}</span>
+    </div>
+    {{/if}}
+
+    <div class="card-content">
+        <span class="result-desc">{{resultDesc}}</span>
+    </div>
+
+    {{#if hasAttackHit}}
+    {{#if (ne addlWeaponImpact 0)}}
+    <div class="card-content">
+        <span class="label">Additional Attack Weapon Impact:</span>
+        <span class="value">{{addlWeaponImpact}}</span>
+    </div>
+
+    <div class="card-content">
+        <span class="label">Attack Impact (Base + Addl + Roll):</span>
+        <span class="value">{{weaponImpact}} + {{addlWeaponImpact}} + ({{impactRoll}}) = <strong>{{totalImpact}}</strong></span>
+    </div>
+    {{else}}
+    <div class="card-content">
+        <span class="label">Attack Impact (Base + Roll):</span>
+        <span class="value">{{weaponImpact}} + ({{impactRoll}}) = <strong>{{totalImpact}}</strong></span>
+    </div>
+    {{/if}}
+
+    <div class="card-buttons">
+        <button data-action="injury" data-token-id="{{defTokenId}}" data-aim="{{atkAim}}" data-aspect="{{atkAspect}}"
+        data-impact="{{totalImpact}}">Calculate {{defender}} Injury</button>
+    </div>
+    {{/if}}
+
+</div>

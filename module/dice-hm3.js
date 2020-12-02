@@ -348,20 +348,28 @@ export class DiceHM3 {
     static async injuryRoll (rollData) {
         const speaker = rollData.speaker || ChatMessage.getSpeaker();
 
-        let hitLocations = DiceHM3._getHitLocations(rollData.actor.items);
+        let result = null;
+        if (typeof rollData.impact == 'undefined') {
+            let hitLocations = DiceHM3._getHitLocations(rollData.actor.items);
 
-        const dialogOptions = {
-            hitLocations: hitLocations,
-            data: rollData.actor.data,
-            items: rollData.actor.items,
-            name: rollData.actor.name
-        };
-
-        // Create the Roll instance
-        const result = await DiceHM3.injuryDialog(dialogOptions);
+            const dialogOptions = {
+                hitLocations: hitLocations,
+                data: rollData.actor.data,
+                items: rollData.actor.items,
+                name: rollData.actor.name
+            };
+    
+            // Create the Roll instance
+            result = await DiceHM3.injuryDialog(dialogOptions);
+        } else {
+            result = DiceHM3._calcInjury('Random', rollData.impact, rollData.aspect,
+                true, rollData.aim, rollData);
+        }
 
         // If user cancelled the roll, then return immediately
         if (!result) return null;
+
+        if (result && rollData.tokenId) result.tokenId = rollData.tokenId;
 
         if (result.addToCharSheet) {
             DiceHM3.createInjury(rollData.actor, result);
@@ -584,7 +592,7 @@ export class DiceHM3 {
                 break;
 
             case 'S3':
-                result .injuryLevel = 3;
+                result.injuryLevel = 3;
                 break;
 
             case 'G4':
@@ -965,13 +973,34 @@ export class DiceHM3 {
     
         // Render modal dialog
         let dlgTemplate = dialogOptions.template || "systems/hm3/templates/chat/missile-attack-dialog.html";
+
         let dialogData = {
-            rangeShort: dialogOptions.rangeShort,
-            rangeMedium: dialogOptions.rangeMedium,
-            rangeLong: dialogOptions.rangeLong,
-            rangeExtreme: dialogOptions.rangeExtreme,
-            target: dialogOptions.target
+            targetRange: dialogOptions.range,
+            ranges: {
+                short: `Short (${dialogOptions.rangeShort})`,
+                medium: `Medium (${dialogOptions.rangeMedium})`,
+                long: `Long (${dialogOptions.rangeLong})`,
+                extreme: `Extreme (${dialogOptions.rangeExtreme})`
+            },
+            target: dialogOptions.target,
+            rangeExceedsExtreme: false
         };
+
+        if (typeof dialogOptions.range !== 'undefined') {
+            if (dialogOptions.range <= dialogOptions.rangeShort) {
+                dialogData.defaultRange = 'short';
+            } else if (dialogOptions.range <= dialogOptions.rangeMedium) {
+                dialogData.defaultRange = 'medium';
+            } else if (dialogOptions.range <= dialogOptions.rangeLong) {
+                dialogData.defaultRange = 'long';
+            } else if (dialogOptions.range <= dialogOptions.rangeExtreme) {
+                dialogData.defaultRange = 'extreme';
+            } else {
+                dialogData.defaultRange = 'extreme';
+                dialogData.rangeExceedsExtreme = true;
+            }
+        }
+
         const html = await renderTemplate(dlgTemplate, dialogData);
         const title = `${dialogOptions.name} Attack`;
 

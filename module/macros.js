@@ -1,4 +1,5 @@
 import { DiceHM3 } from './dice-hm3.js';
+import * as combat from './combat.js';
 
 /**
  * Create a script macro from an Item drop.
@@ -352,6 +353,50 @@ export function missileDamageRoll(itemName, myActor = null) {
     return DiceHM3.missileDamageRoll(rollData);
 }
 
+export function weaponAttack(itemName, noDialog = false, myActor = null) {
+    const speaker = ChatMessage.getSpeaker();
+    const combatant = getCombatant();
+    if (!combatant) return;
+
+    const combatantToken = canvas.tokens.get(combatant.token._id);
+
+    const targetToken = getSingleTarget();
+    if (!targetToken) return;
+
+    const weapon = getItem(itemName, 'weapongear', combatant.actor);
+    if (!weapon) return;
+
+    return combat.meleeAttack(combatantToken, targetToken, weapon);
+}
+
+export function missileAttack(itemName, noDialog = false) {
+    const speaker = ChatMessage.getSpeaker();
+    const combatant = getCombatant();
+    if (!combatant) return;
+
+    const combatantToken = canvas.tokens.get(combatant.token._id);
+    
+    const targetToken = getSingleTarget();
+    if (!targetToken) return;
+
+    const missile = getItem(itemName, 'missilegear', combatant.actor);
+    if (!missile) return;
+
+    return combat.missileAttack(combatantToken, targetToken, missile);
+}
+
+export function weaponAttackResume(atkTokenId, defTokenId, action, effAML, aim, aspect, impactMod) {
+    const speaker = ChatMessage.getSpeaker();
+
+    const atkToken = canvas.tokens.get(atkTokenId);
+    if (!atkToken) return null;
+
+    const defToken = canvas.tokens.get(defTokenId);
+    if (!defToken) return null;
+
+    return combat.meleeAttackResume(atkToken, defToken, action, effAML, aim, aspect, impactMod);
+}
+
 export function weaponAttackRoll(itemName, noDialog = false, myActor = null) {
     const speaker = ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
@@ -415,8 +460,14 @@ export function weaponDefendRoll(itemName, noDialog = false, myActor = null) {
 
 export function missileAttackRoll(itemName, myActor = null) {
     const speaker = ChatMessage.getSpeaker();
-    const actor = getActor(myActor, speaker);
+    const combatant = getCombatant();
+    const actor = combatant.actor;
     if (!actor) return;
+
+    const targetToken = getSingleTarget();
+    if (!targetToken) return;
+
+    const range = missileRange(combatant.token, targetToken);
 
     const item = getItem(itemName, 'missilegear', actor);
     if (!item) return;
@@ -430,8 +481,11 @@ export function missileAttackRoll(itemName, myActor = null) {
             missileName: item.data.name
         },
         name: item.data.name,
+        attackerName: combatant.token.data.name,
+        defenderName: targetToken.data.name,
         target: item.data.data.attackMasteryLevel,
         aspect: item.data.data.weaponAspect,
+        range: range,
         rangeShort: item.data.data.range.short,
         rangeMedium: item.data.data.range.medium,
         rangeLong: item.data.data.range.long,
@@ -572,6 +626,7 @@ function getItem(itemName, type, actor) {
 
     if (!itemName) {
         ui.notifications.warn('No item name was specified. You must specify an item name.');
+        return null;
     }
 
     let item = null;
@@ -592,9 +647,36 @@ function getItem(itemName, type, actor) {
 
     if (!item) {
         ui.notifications.warn(`The item ${itemName} was not found`);
+        return null;
     }
 
     return item;
+}
+
+function getCombatant() {
+    if (game.combats.size === 0 || game.combats.active.data.combatants.length === 0) {
+        ui.notifications.warn(`No active combatant.`);
+        return null;
+    }
+
+    const combatant = game.combats.active.combatant;
+
+    return {actor: combatant.actor, token: combatant.token};
+}
+
+function getSingleTarget() {
+    const numTargets = canvas.tokens.controlled.length;
+    if (numTargets === 0) {
+        ui.notifications.warn(`No selected actors on the canvas.`);
+        return null;
+    }
+
+    if (numTargets > 1) {
+        ui.notifications.warn(`There are ${numTargets} selected actors on the canvas, please select only one`);
+        return null;
+    }
+
+    return canvas.tokens.controlled[0];
 }
 
 function getActor(actor, speaker) {
@@ -628,3 +710,4 @@ function getActor(actor, speaker) {
 
     return resultActor;
 }
+

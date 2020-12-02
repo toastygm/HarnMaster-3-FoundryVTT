@@ -83,7 +83,9 @@
 
         {{#if isAmputate}}
         <div class="card-content">
-            <span class="note failure-text">NOTE: Roll for Amputation</span>
+            <span class="note failure-text">NOTE: Roll {{injuryLevel}}d6 vs. 1/10 of your weight<br/>
+            to determine if your limb is amputated.<br/>
+            If amputated, injury increases to G5.</span>
         </div>
         {{/if}}
 
@@ -92,12 +94,27 @@
             <span>{{name}} received a Kill shot!!</span>
         </div>
         <div class="card-content notice-body">
-            <span>Roll against Endurance<br/>
-                to determine if killed.<br/>
+            <span>Roll {{injuryLevel}}d6 vs. Endurance (not<br/>
+                Shock Roll) to determine if killed.<br/>
+                If not killed, roll normal Shock Roll.<br/>
                 Recording as Grevious injury<br/>
                 in case not killed.<br/>
                 Good Luck!</span>
         </div>
         {{/if}}
+        
+        <div class="card-buttons">
+            {{#if isFumbleRoll}}
+            <button data-action="fumble" {{#if tokenId}}data-token-id="{{tokenId}}"{{else}}data-actor-id="{{actorId}}"{{/if}}>Fumble Roll</button>
+            {{/if}}
+
+            {{#if isStumbleRoll}}
+            <button data-action="stumble" {{#if tokenId}}data-token-id="{{tokenId}}"{{else}}data-actor-id="{{actorId}}"{{/if}}>Stumble Roll</button>
+            {{/if}}
+
+            {{#if injuryLevel}}
+            <button data-action="shock" {{#if tokenId}}data-token-id="{{tokenId}}"{{else}}data-actor-id="{{actorId}}"{{/if}}>Shock Roll</button>
+            {{/if}}
+        </div>
     {{/unless}}
 </div>
