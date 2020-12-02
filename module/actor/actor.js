@@ -1,5 +1,8 @@
 import { HM3 } from '../config.js';
 import { DiceHM3 } from '../dice-hm3.js';
+import * as combat from '../combat.js';
+import * as macros from '../macros.js';
+import { HarnMasterBaseActorSheet } from './base-actor-sheet.js';
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
@@ -873,6 +876,113 @@ export class HarnMasterActor extends Actor {
         } else {
             return item.update({ "data.improveFlag": false });
         }
+    }
+
+    static chatListeners(html) {
+        html.on('click', '.card-buttons button', this._onChatCardAction.bind(this));
+    }
+
+    static async _onChatCardAction(event) {
+        event.preventDefault();
+
+        const button = event.currentTarget;
+        button.disabled = true;
+        const action = button.dataset.action;
+
+        let actor = null;
+        if (button.dataset.actorId) {
+            actor = game.actors.get(button.dataset.actorId);
+            if (!actor) {
+                console.warn(`HM3 | Action=${action}; Cannot find actor ${button.dataset.actorId}`);
+                button.disabled = false;
+                return null;
+            }
+        }
+        let token = null;
+        if (button.dataset.tokenId) {
+            token = canvas.tokens.get(button.dataset.tokenId);
+            if (!token) {
+                console.warn(`HM3 | Action=${action}; Cannot find token ${button.dataset.tokenId}`);
+                button.disabled = false;
+                return null;
+            }
+        }
+
+        if (!actor && token) {
+            actor = token.actor;
+        }
+
+        let atkToken = null;
+        if (button.dataset.atkTokenId) {
+            atkToken = canvas.tokens.get(button.dataset.atkTokenId);
+            if (!atkToken) {
+                console.warn(`HM3 | Action=${action}; Cannot find attack token ${button.dataset.atkTokenId}`)
+                button.disabled = false;
+                return null;
+            }
+        }
+
+        let defToken = null;
+        if (button.dataset.defTokenId) {
+            defToken = canvas.tokens.get(button.dataset.defTokenId);
+            if (!defToken) {
+                console.warn(`HM3 | Action=${action}; Cannot find defense token ${button.dataset.defTokenId}`)
+                button.disabled = false;
+                return null;
+            }
+        }
+
+        switch (action) {
+            case 'injury':
+                DiceHM3.injuryRoll({
+                    items: token.actor.items,
+                    name: token.name,
+                    actor: token.actor,
+                    impact: button.dataset.impact,
+                    aspect: button.dataset.aspect,
+                    aim: button.dataset.aim,
+                    tokenId: token.id
+                });
+                break;
+
+            case 'dodge':
+                combat.meleeDodgeResume(atkToken, defToken, button.dataset.weapon, 
+                    button.dataset.effAml, button.dataset.aim, 
+                    button.dataset.aspect, button.dataset.impactMod)
+                break;
+
+            case 'ignore':
+                combat.meleeIgnoreResume(atkToken, defToken, button.dataset.weapon, 
+                    button.dataset.effAml, button.dataset.aim, 
+                    button.dataset.aspect, button.dataset.impactMod)
+                break;
+
+            case 'block':
+                combat.meleeBlockResume(atkToken, defToken, button.dataset.weapon, 
+                    button.dataset.effAml, button.dataset.aim, 
+                    button.dataset.aspect, button.dataset.impactMod)
+                break;
+
+            case 'counterstrike':
+                combat.meleeCounterstrikeResume(atkToken, defToken, button.dataset.weapon, 
+                    button.dataset.effAml, button.dataset.aim, 
+                    button.dataset.aspect, button.dataset.impactMod)
+                break;
+
+            case 'shock':
+                macros.shockRoll(false, actor);
+                break;
+
+            case 'stumble':
+                macros.stumbleRoll(false, actor);
+                break;
+
+            case 'fumble':
+                macros.fumbleRoll(false, actor);
+                break;
+        }
+
+        button.disabled = false;
     }
 }
 

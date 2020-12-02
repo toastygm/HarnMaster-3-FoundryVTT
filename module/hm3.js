@@ -78,6 +78,9 @@ Hooks.once('init', async function() {
   });
 });
 
+Hooks.on('renderChatLog', (app, html, data) => HarnMasterActor.chatListeners(html));
+Hooks.on('renderChatPopout', (app, html, data) => HarnMasterActor.chatListeners(html));
+
 /**
  * Once the entire VTT framework is initialized, check to see if
  * we should perform a data migration.
