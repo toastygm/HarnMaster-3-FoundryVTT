@@ -101,7 +101,7 @@ export async function meleeAttack(attackToken, defendToken, weaponItem) {
 
 async function meleeAttackDialog(dialogOptions) {
     // Render modal dialog
-    let dlgTemplate = "systems/hm3/templates/chat/melee-attack-dialog.html";
+    let dlgTemplate = "systems/hm3/templates/dialog/melee-attack-dialog.html";
 
     const html = await renderTemplate(dlgTemplate, dialogOptions);
 
@@ -132,7 +132,7 @@ async function meleeAttackDialog(dialogOptions) {
 
 async function meleeBlockDialog(dialogOptions) {
     // Render modal dialog
-    let dlgTemplate = "systems/hm3/templates/chat/melee-attack-dialog.html";
+    let dlgTemplate = "systems/hm3/templates/dialog/melee-attack-dialog.html";
 
     const html = await renderTemplate(dlgTemplate, dialogOptions);
 

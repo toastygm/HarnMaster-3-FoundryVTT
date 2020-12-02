@@ -112,7 +112,7 @@ export class DiceHM3 {
     static async d100StdDialog(dialogOptions) {
     
         // Render modal dialog
-        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/chat/standard-test-dialog.html";
+        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/dialog/standard-test-dialog.html";
         let dialogData = {
             target: dialogOptions.target,
             modifier: dialogOptions.modifier
@@ -249,7 +249,7 @@ export class DiceHM3 {
     static async d6Dialog(dialogOptions) {
     
         // Render modal dialog
-        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/chat/standard-test-dialog.html";
+        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/dialog/standard-test-dialog.html";
         let dialogData = {
             target: dialogOptions.target,
             modifier: dialogOptions.modifier
@@ -470,7 +470,7 @@ export class DiceHM3 {
     static async injuryDialog(dialogOptions) {
     
         // Render modal dialog
-        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/chat/injury-dialog.html";
+        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/dialog/injury-dialog.html";
         let dialogData = {
             aim: 'mid',
             location: 'Random',
@@ -854,7 +854,7 @@ export class DiceHM3 {
     static async damageDialog(dialogOptions) {
     
         // Render modal dialog
-        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/chat/damage-dialog.html";
+        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/dialog/damage-dialog.html";
         let dialogData = {
             weapon: dialogOptions.weapon,
             damageDice: 1,
@@ -972,7 +972,7 @@ export class DiceHM3 {
     static async missileAttackDialog(dialogOptions) {
     
         // Render modal dialog
-        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/chat/missile-attack-dialog.html";
+        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/dialog/missile-attack-dialog.html";
 
         let dialogData = {
             targetRange: dialogOptions.range,
@@ -1142,7 +1142,7 @@ export class DiceHM3 {
     static async missileDamageDialog(dialogOptions) {
     
         // Render modal dialog
-        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/chat/missile-damage-dialog.html";
+        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/dialog/missile-damage-dialog.html";
         let dialogData = {
             name: dialogOptions.name,
             impactShort: dialogOptions.impactShort,
