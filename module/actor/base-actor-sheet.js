@@ -383,8 +383,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         }
 
         if (updateData) {
-            console.log('Changes:');
-            console.log(updateData);
             await item.update(updateData);
         }
 
