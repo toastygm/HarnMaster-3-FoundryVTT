@@ -888,6 +888,7 @@ export class HarnMasterActor extends Actor {
         const button = event.currentTarget;
         button.disabled = true;
         const action = button.dataset.action;
+        const weaponType = button.dataset.weaponType;
 
         let actor = null;
         if (button.dataset.actorId) {
@@ -946,19 +947,19 @@ export class HarnMasterActor extends Actor {
                 break;
 
             case 'dodge':
-                combat.meleeDodgeResume(atkToken, defToken, button.dataset.weapon, 
+                combat.dodgeResume(atkToken, defToken, button.dataset.weaponType, button.dataset.weapon, 
                     button.dataset.effAml, button.dataset.aim, 
                     button.dataset.aspect, button.dataset.impactMod)
                 break;
 
             case 'ignore':
-                combat.meleeIgnoreResume(atkToken, defToken, button.dataset.weapon, 
+                combat.ignoreResume(atkToken, defToken, button.dataset.weaponType, button.dataset.weapon, 
                     button.dataset.effAml, button.dataset.aim, 
                     button.dataset.aspect, button.dataset.impactMod)
                 break;
 
             case 'block':
-                combat.meleeBlockResume(atkToken, defToken, button.dataset.weapon, 
+                combat.blockResume(atkToken, defToken, button.dataset.weaponType, button.dataset.weapon, 
                     button.dataset.effAml, button.dataset.aim, 
                     button.dataset.aspect, button.dataset.impactMod)
                 break;

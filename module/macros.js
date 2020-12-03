@@ -130,7 +130,7 @@ export function skillRoll(itemName, noDialog = false, myActor=null) {
     const actor = getActor(myActor, speaker);
     if (!actor) return;
 
-    const item = getItem(itemName, 'skill', actor);
+    const item = combat.getItem(itemName, 'skill', actor);
     if (!item) return;
 
     const stdRollData = {
@@ -158,7 +158,7 @@ export function castSpellRoll(itemName, noDialog = false, myActor=null) {
     const actor = getActor(myActor, speaker);
     if (!actor) return;
 
-    const item = getItem(itemName, 'spell', actor);
+    const item = combat.getItem(itemName, 'spell', actor);
     if (!item) return;
 
     const stdRollData = {
@@ -189,7 +189,7 @@ export function invokeRitualRoll(itemName, noDialog = false, myActor = null) {
     const actor = getActor(myActor, speaker);
     if (!actor) return;
 
-    const item = getItem(itemName, 'invocation', actor);
+    const item = combat.getItem(itemName, 'invocation', actor);
     if (!item) return;
 
     const stdRollData = {
@@ -220,7 +220,7 @@ export function usePsionicRoll(itemName, noDialog = false, myActor=null) {
     const actor = getActor(myActor, speaker);
     if (!actor) return;
 
-    const item = getItem(itemName, 'psionic', actor);
+    const item = combat.getItem(itemName, 'psionic', actor);
     if (!item) return;
 
     const stdRollData = {
@@ -304,7 +304,7 @@ export function weaponDamageRoll(itemName, myActor = null) {
     const actor = getActor(myActor, speaker);
     if (!actor) return;
 
-    const item = getItem(itemName, 'weapongear', actor);
+    const item = combat.getItem(itemName, 'weapongear', actor);
     if (!item) return;
 
     const rollData = {
@@ -328,7 +328,7 @@ export function missileDamageRoll(itemName, myActor = null) {
     const actor = getActor(myActor, speaker);
    if (!actor) return;
 
-    const item = getItem(itemName, 'missilegear', actor);
+    const item = combat.getItem(itemName, 'missilegear', actor);
     if (!item) return;
 
     const rollData = {
@@ -363,7 +363,7 @@ export function weaponAttack(itemName, noDialog = false, myActor = null) {
     const targetToken = getSingleTarget();
     if (!targetToken) return;
 
-    const weapon = getItem(itemName, 'weapongear', combatant.actor);
+    const weapon = combat.getItem(itemName, 'weapongear', combatant.actor);
     if (!weapon) return;
 
     return combat.meleeAttack(combatantToken, targetToken, weapon);
@@ -379,7 +379,7 @@ export function missileAttack(itemName, noDialog = false) {
     const targetToken = getSingleTarget();
     if (!targetToken) return;
 
-    const missile = getItem(itemName, 'missilegear', combatant.actor);
+    const missile = combat.getItem(itemName, 'missilegear', combatant.actor);
     if (!missile) return;
 
     return combat.missileAttack(combatantToken, targetToken, missile);
@@ -402,7 +402,7 @@ export function weaponAttackRoll(itemName, noDialog = false, myActor = null) {
     const actor = getActor(myActor, speaker);
     if (!actor) return;
 
-    const item = getItem(itemName, 'weapongear', actor);
+    const item = combat.getItem(itemName, 'weapongear', actor);
     if (!item) return;
 
     const stdRollData = {
@@ -433,7 +433,7 @@ export function weaponDefendRoll(itemName, noDialog = false, myActor = null) {
     const actor = getActor(myActor, speaker);
     if (!actor) return;
 
-    const item = getItem(itemName, 'weapongear', actor);
+    const item = combat.getItem(itemName, 'weapongear', actor);
     if (!item) return;
 
     const stdRollData = {
@@ -469,7 +469,7 @@ export function missileAttackRoll(itemName, myActor = null) {
 
     const range = missileRange(combatant.token, targetToken);
 
-    const item = getItem(itemName, 'missilegear', actor);
+    const item = combat.getItem(itemName, 'missilegear', actor);
     if (!item) return;
 
     const rollData = {
@@ -505,6 +505,7 @@ export function injuryRoll(myActor = null) {
         notesData: {},
         actor: actor,
         speaker: speaker,
+        name: actor.token ? actor.token.name : actor.name,
         notes: ''
     };
     return DiceHM3.injuryRoll(rollData);
@@ -515,7 +516,7 @@ export function healingRoll(itemName, noDialog = false, myActor = null) {
     const actor = getActor(myActor, speaker);
     if (!actor) return;
 
-    const item = getItem(itemName, 'injury', actor);
+    const item = combat.getItem(itemName, 'injury', actor);
     if (!item) return;
 
     const stdRollData = {
@@ -616,41 +617,6 @@ export function genericDamageRoll(myActor = null) {
         notes: ''
     };
     return DiceHM3.damageRoll(rollData);
-}
-
-function getItem(itemName, type, actor) {
-    if (!actor || typeof actor !== 'object') {
-        ui.notifications.warn('No actor was selected. You must select an actor.');
-        return null;
-    }
-
-    if (!itemName) {
-        ui.notifications.warn('No item name was specified. You must specify an item name.');
-        return null;
-    }
-
-    let item = null;
-    if (itemName.startsWith("Item$")) {
-        return actor.getOwnedItem(itemName.slice(5));
-    }
-    if (!item) {
-        const lcItemName = itemName.toLowerCase();
-        const items = actor ? actor.items.filter(i => i.type === type && i.name.toLowerCase() === lcItemName) : [];
-        if (items.length > 1) {
-            ui.notifications.warn(`Your controlled Actor ${actor.name} has more than one ${type} with name ${itemName}. The first matched ${type} will be chosen.`);
-        } else if (items.length === 0) {
-            ui.notifications.warn(`Your controlled Actor does not have a ${type} named ${itemName}`);
-            return null;
-        }
-        item = items[0];
-    }
-
-    if (!item) {
-        ui.notifications.warn(`The item ${itemName} was not found`);
-        return null;
-    }
-
-    return item;
 }
 
 function getCombatant() {

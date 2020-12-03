@@ -1,63 +1,112 @@
 import { DiceHM3 } from './dice-hm3.js';
 import { HM3 } from "./config.js";
 
+/**
+ * Initiates a missile attack.
+ * 
+ * Displays a missile attack dialog asking for attributes of the attack (aim location,
+ * special modifiers, etc.) and generates a missile attack chat message that includes
+ * buttons for selecting the appropriate defense.
+ * 
+ * No die rolling occurs as a result of this function, only the declaration of the attack.
+ * 
+ * @param attackToken {Token} Token representing attacker 
+ * @param defendToken {Token} Token representing defender 
+ * @param weaponItem {Item} Missile weapon used by attacker
+ */
 export async function missileAttack(attackToken, defendToken, missileItem) {
+    if (!isValidToken(attackToken) || !isValidToken(defendToken)) return null;
+
+    const speaker = ChatMessage.getSpeaker();
     const range = missileRange(attackToken, defendToken);
 
-    const dialogData = {
-        aimlocations: ['Low', 'Mid', 'High'],
-        defaultAim: 'Mid',
-        title: `${missileItem.data.name} Missile Attack`,
-        type: 'Attack',
-        buttonLabel: 'Attack'
+    const options = {
+        distance: range,
+        weapon: missileItem,
+        type: 'Attack'
     };
 
-    const dialogResult = await meleeAttackDialog(dialogData);
+    const dialogResult = await attackDialog(options);
 
     // If user cancelled the dialog, then return immediately
     if (!dialogResult) return null;
 
+    const effAML = dialogResult.weapon.data.data.attackMasteryLevel + dialogResult.addlModifier;
+
+    // Prepare for Chat Message
+    const chatTemplate = 'systems/hm3/templates/chat/attack-card.html';
+
+    const chatTemplateData = {
+        title: `${missileItem.data.name} Missile Attack`,
+        attacker: attackToken.name,
+        atkTokenId: attackToken.id,
+        defender: defendToken.name,
+        defTokenId: defendToken.id,
+        weaponType: 'missile',
+        weaponName: missileItem.name,
+        range: dialogResult.range,
+        rangeExceedsExtreme: dialogResult.rangeExceedsExtreme,
+        distance: range,
+        aim: dialogResult.aim,
+        aspect: dialogResult.aspect,
+        addlModifierAbs: Math.abs(dialogResult.addlModifier),
+        addlModifierSign: dialogResult.addlModifier<0?'-':'+',
+        origAML: missileItem.data.data.attackMasteryLevel,
+        effAML: effAML,
+        impactMod: dialogResult.impactMod,
+        hasDodge: true,
+        hasBlock: true,
+        hasCounterstrike: false,
+        hasIgnore: true
+    };
+
+    const html = await renderTemplate(chatTemplate, chatTemplateData);
+
+    const messageData = {
+        user: game.user._id,
+        speaker: speaker,
+        content: html.trim(),
+        type: CONST.CHAT_MESSAGE_TYPES.OTHER
+    };
+
+    const messageOptions = {};
+
+    // Create a chat message
+    await ChatMessage.create(messageData, messageOptions);
+    AudioHelper.play({src: "sounds/drums.wav", autoplay: true, loop: false}, true);
+    return null;
 }
 
+/**
+ * Initiates a melee attack.
+ * 
+ * Displays a melee attack dialog asking for attributes of the attack (aim location,
+ * special modifiers, etc.) and generates a melee attack chat message that includes
+ * buttons for selecting the appropriate defense.
+ * 
+ * No die rolling occurs as a result of this function, only the declaration of the attack.
+ * 
+ * @param attackToken {Token} Token representing attacker 
+ * @param defendToken {Token} Token representing defender 
+ * @param weaponItem {Item} Melee weapon used by attacker
+ */
 export async function meleeAttack(attackToken, defendToken, weaponItem) {
+    if (!isValidToken(attackToken) || !isValidToken(defendToken)) return null;
+
     const speaker = ChatMessage.getSpeaker();
     // display dialog, get aspect, aim, and addl damage
 
-    const weaponAspect = calcWeaponAspect(weaponItem);
+    const options = {
+        weapon: weaponItem,
+        type: 'Attack'
+    }
 
-    const dialogData = {
-        aimlocations: ['Low', 'Mid', 'High'],
-        defaultAim: 'Mid',
-        weaponAspects: weaponAspect.aspects,
-        defaultAspect: weaponAspect.defaultAspect,
-        title: `${weaponItem.data.name} Melee Attack`,
-        type: 'Attack',
-        buttonLabel: 'Attack'
-    };
-
-    const dialogResult = await meleeAttackDialog(dialogData);
+    const dialogResult = await attackDialog(options);
 
     // If user cancelled the dialog, then return immediately
     if (!dialogResult) return null;
 
-    //const renderedNotes = rollData.notes ? utility.stringReplacer(rollData.notes, notesData) : "";
-
-    let impactModifier = 0;
-    switch(dialogResult.aspect) {
-        case 'Blunt':
-            impactModifier = weaponItem.data.data.blunt;
-            break;
-
-        case 'Edged':
-            impactModifier = weaponItem.data.data.edged;
-            break;
-
-        case 'Piercing':
-            impactModifier = weaponItem.data.data.piercing;
-            break;
-    }
-
-    const effAML = weaponItem.data.data.attackMasteryLevel + dialogResult.addlModifier;
+    const effAML = dialogResult.weapon.data.data.attackMasteryLevel + dialogResult.addlModifier;
 
     // Prepare for Chat Message
     const chatTemplate = 'systems/hm3/templates/chat/attack-card.html';
@@ -68,6 +117,7 @@ export async function meleeAttack(attackToken, defendToken, weaponItem) {
         atkTokenId: attackToken.id,
         defender: defendToken.name,
         defTokenId: defendToken.id,
+        weaponType: 'melee',
         weaponName: weaponItem.name,
         aim: dialogResult.aim,
         aspect: dialogResult.aspect,
@@ -75,7 +125,7 @@ export async function meleeAttack(attackToken, defendToken, weaponItem) {
         addlModifierSign: dialogResult.addlModifier<0?'-':'+',
         origAML: weaponItem.data.data.attackMasteryLevel,
         effAML: effAML,
-        impactMod: impactModifier,
+        impactMod: dialogResult.impactMod,
         hasDodge: true,
         hasBlock: true,
         hasCounterstrike: true,
@@ -88,163 +138,300 @@ export async function meleeAttack(attackToken, defendToken, weaponItem) {
         user: game.user._id,
         speaker: speaker,
         content: html.trim(),
-        type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-        sound: CONFIG.sounds.combat
+        type: CONST.CHAT_MESSAGE_TYPES.OTHER
     };
 
     const messageOptions = {};
 
     // Create a chat message
-    await ChatMessage.create(messageData, messageOptions)
+    await ChatMessage.create(messageData, messageOptions);
+    AudioHelper.play({src: "sounds/drums.wav", autoplay: true, loop: false}, true);
     return null;
 }
 
-async function meleeAttackDialog(dialogOptions) {
-    // Render modal dialog
-    let dlgTemplate = "systems/hm3/templates/dialog/melee-attack-dialog.html";
+/**
+ * Displays a dialog asking user to choose a weapon (and optionally a modifier).
+ * 
+ * Options:
+ * weapons (Array<Item>) a list of items (weapongear or missilegear)
+ * defaultWeapon (Item) the default item choice
+ * modifierType (string) A word to put between "Additional ??? Modifier"
+ * 
+ * @param {Object} options 
+ */
+async function selectWeaponDialog(options) {
+    let queryWeaponDialog = "systems/hm3/templates/dialog/query-weapon-dialog.html";
 
-    const html = await renderTemplate(dlgTemplate, dialogOptions);
+    const dialogOptions = {
+        title: 'Select Weapon'
+    };
+    dialogOptions.weapons = options.weapons.map(w => w.name);
+    dialogOptions.defaultWeapon = options.defaultWeapon;
+    if (options.modifierType) {
+        dialogOptions.modifierType = options.modifierType;
+    }
+    dialogOptions.prompt = options.prompt ? options.prompt : 'Please select your weapon';
+    
+    const html = await renderTemplate(queryWeaponDialog, dialogOptions);
 
-    // Create the dialog window
-    return new Promise(resolve => {
-        new Dialog({
-            title: dialogOptions.title,
-            content: html.trim(),
-            buttons: {
-                attack: {
-                    label: dialogOptions.buttonLabel,
-                    callback: html => {
-                        const form = html[0].querySelector("form");
-                        const result = {};
-                        if (form.addlModifier) result.addlModifier = Number(form.addlModifier.value);
-                        if (form.weaponAspect) result.aspect = form.weaponAspect.value;
-                        if (form.aim) result.aim = form.aim.value;
-                        if (form.weapon) result.weapon = form.weapon.value;
-                        resolve(result);
-                    }
+    // Request weapon name
+    return Dialog.prompt({
+        title: dialogOptions.title,
+        content: html.trim(),
+        label: "OK",
+        callback: html => {
+            const form = html[0].querySelector("form");
+            const formAddlModifier = form.addlModifier ? parseInt(form.addlModifier.value) : 0;
+            const formWeapon = form.weapon.value;
+
+            return {weapon: formWeapon, addlModifier: formAddlModifier};
+        }
+    });
+
+}
+
+/**
+ * Queries for the weapon to use, and additional weapon parameters (aim, aspect, range).
+ * 
+ * options should include:
+ * weapons (Array<Item>): a list of Items, available weapons to choose from
+ * defaultWeapon (string): default choice (Item name) from weapon list
+ * weapon (Item): if provided, this weapon Item will be used and no weapon query performed
+ * type (string): either 'Block', 'Attack', or 'Counterstrike'
+ * distance (number): the distance to the target
+ * 
+ * The return value will be an object with the following keys:
+ *  weapon (Item):      An Item representing the weapon (weapongear or missilegear)
+ *  aspect (string):    The aspect (Blunt, Edged, Piercing)
+ *  aim (string):       The aim location (High, Mid, Low)
+ *  addlModifier (number): Modifier to the attack roll (AML)
+ *  range (string):     The range to target (Short, Medium, Long, Extreme)
+ *  rangeExceedsExtreme (boolean): Whether the distance to target exceeds its extreme range
+ *  impactMod (number): Weapon impact modifier (based on weapon aspect or range)
+ * 
+ * @param {Object} options 
+ */
+async function attackDialog(options) {
+    if (!options.weapon && options.weapons) {
+        const result = await selectWeaponDialog(options);
+
+        if (!result) return null;
+
+        options.weapon = options.weapons.find(w => result.weapon === w.name);
+    }
+
+    if (!options.weapon) return null;
+
+    const dialogOptions = {
+        weapon: options.weapon.name,
+        aimLocations: ['Low', 'Mid', 'High'],
+        defaultAim: 'Mid'
+    };
+
+    if (options.weapon.data.type === 'weapongear') {
+        dialogOptions.title = `Weapon ${options.type} with ${options.weapon.name}`;
+        const weaponAspect = calcWeaponAspect(options.weapon);
+        if (!weaponAspect.defaultAspect) return null;   // no aspects available, shouldn't happen
+        mergeObject(dialogOptions, weaponAspect);
+    } else if (options.weapon.data.type === 'missilegear') {
+        dialogOptions.title = `Missile ${options.type} with ${options.weapon.name}`;
+
+        const weaponData = options.weapon.data.data;
+
+        // Missiles only have a single weapon aspect
+        dialogOptions.aspects = {};
+        dialogOptions.aspects[weaponData.weaponAspect] = -1;
+        dialogOptions.defaultAspect = weaponData.weaponAspect;
+
+        const shortDesc = `Short (${weaponData.range.short})`;
+        const mediumDesc = `Medium (${weaponData.range.medium})`;
+        const longDesc = `Long (${weaponData.range.long})`;
+        const extremeDesc = `Extreme (${weaponData.range.extreme})`;
+        dialogOptions.ranges = {};
+        dialogOptions.ranges[shortDesc] = weaponData.impact.short;
+        dialogOptions.ranges[mediumDesc] = weaponData.impact.medium;
+        dialogOptions.ranges[longDesc] = weaponData.impact.long;
+        dialogOptions.ranges[extremeDesc] = weaponData.impact.extreme;
+        dialogOptions.rangeExceedsExtreme = false;
+
+        // Set range based on distance
+        if (options.distance) {
+            dialogOptions.distance = options.distance;
+            if (options.distance <= weaponData.range.short) {
+                dialogOptions.defaultRange = shortDesc;
+            } else if (options.distance <= weaponData.range.medium) {
+                dialogOptions.defaultRange = mediumDesc;
+            } else if (options.distance <= weaponData.range.long) {
+                dialogOptions.defaultRange = longDesc;
+            } else if (options.distance <= weaponData.range.extreme) {
+                dialogOptions.defaultRange = extremeDesc;
+            } else {
+                dialogOptions.defaultRange = extremeDesc;
+                dialogOptions.rangeExceedsExtreme = true;
+            }
+        } else {
+            // Distance not specified, set it to extreme by default
+            dialogOptions.defaultRange = extremeDesc;
+        }
+    } else {
+        // Not a weapon!!
+        return null;
+    }
+
+    dialogOptions.title = `${options.type} with ${options.weapon.name}`;
+
+    const attackDialog = "systems/hm3/templates/dialog/attack-dialog.html";
+    const html = await renderTemplate(attackDialog, dialogOptions);
+
+    // Request weapon details
+    return Dialog.prompt({
+        title: dialogOptions.title,
+        content: html.trim(),
+        label: options.type,
+        callback: html => {
+            const form = html[0].querySelector("form");
+            const formRange = form.range ? form.range.value : null;
+
+            const result = {
+                weapon: options.weapon,
+                aspect: form.weaponAspect ? form.weaponAspect.value : null,
+                aim: form.aim ? form.aim.value : null,
+                addlModifier: form.addlModifier ? parseInt(form.addlModifier.value) : 0,
+                range: null,
+                rangeExceedsExtreme: false,
+                impactMod: 0
+            };
+
+            if (formRange) {
+                // Grab range and impact mod (from selected range) for missile weapon
+                if (formRange.startsWith('Short')) {
+                    result.range = 'Short';
+                } else if (formRange.startsWith('Medium')) {
+                    result.range = 'Medium';
+                } else if (formRange.startsWith('Long')) {
+                    result.range = 'Long';
+                } else {
+                    result.range = 'Extreme';
+                    result.rangeExceedsExtreme = true
                 }
-            },
-            default: "attack",
-            close: () => resolve(null)
-        }, dialogOptions).render(true)
+                result.impactMod = dialogOptions.ranges[formRange] || 0;
+            } else {
+                // Grab impact mod (from selected aspect) for melee weapon
+                result.impactMod = dialogOptions.aspects[result.aspect] || 0;
+            }
+            return result;
+        }
     });
 }
 
-async function meleeBlockDialog(dialogOptions) {
-    // Render modal dialog
-    let dlgTemplate = "systems/hm3/templates/dialog/melee-attack-dialog.html";
+function isValidToken(token) {
+    if (!token) {
+        ui.notifications.warn('No token selected.');
+        false;
+    }
 
-    const html = await renderTemplate(dlgTemplate, dialogOptions);
+    if (!token.actor) {
+        ui.notifications.warn(`Token ${token.name} is not a valid actor.`);
+        return false;
+    };
 
-    // Create the dialog window
-    return new Promise(resolve => {
-        new Dialog({
-            title: dialogOptions.title,
-            content: html.trim(),
-            buttons: {
-                block: {
-                    label: "Block",
-                    callback: html => {
-                        const form = html[0].querySelector("form");
-                        const formAddlModifier = Number(form.addlModifier.value);
-                        const formWeapon = form.weapon.value;
-
-                        const result = {
-                            weapon: formWeapon,
-                            addlModifier: formAddlModifier
-                        };
-                        resolve(result);
-                    }
-                }
-            },
-            default: "block",
-            close: () => resolve(null)
-        }, dialogOptions).render(true)
-    });
+    if (['character', 'creature'].includes(token.actor.data.type)) {
+        return true;
+    } else {
+        ui.notifications.warn(`Token ${token.name} is not a character or creature.`);
+        return false;
+    }
 }
 
-export async function meleeCounterstrikeResume(atkToken, defToken, weaponName, effAML, aim, aspect, impactMod) {
+/**
+ * Determine default melee weapon based on maximum impact.
+ * 
+ * @param {Token} token 
+ */
+function defaultMeleeWeapon(token) {
+    if (!isValidToken(token)) return {weapons: [], defaultWeapon: null};
+
+    const equippedWeapons = token.actor.itemTypes.weapongear.filter(w => w.data.data.isEquipped);
+    let defaultWeapon = null;
+    if (equippedWeapons.length > 0) {
+        let maxImpact = -1;
+        equippedWeapons.forEach(w => {
+            const data = w.data.data;
+            const impactMax = Math.max(data.blunt, data.edged, data.piercing);
+            if (impactMax > maxImpact) {
+                maxImpact = impactMax;
+                defaultWeapon = w;
+            }
+        });
+    }
+    
+    return {
+        weapons: equippedWeapons,
+        defaultWeapon: defaultWeapon
+    }
+}
+
+export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod) {
+    if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
+
     const speaker = ChatMessage.getSpeaker();
 
+    // Get weapon with maximum impact
+    const options = defaultMeleeWeapon(defToken);
+
+    if (!options.weapons) {
+        ui.notifications.warn(`You have no equipped weapons, counterstrike defense refused.`);
+        return null;
+    }
+
+    options.type = 'Counterstrike';
+    const csDialogResult = await attackDialog(options);
+    if (!csDialogResult) return null;
+
+    // Roll Attacker's Attack
     const atkRoll = DiceHM3.rollTest({
         data: {},
         diceSides: 100,
         diceNum: 1,
         modifier: 0,
-        target: effAML
+        target: atkEffAML
     });
 
-    const weapons = defToken.actor.itemTypes.weapongear.map(w => w.name);
-
-    if (weapons.length === 0) {
-        return ui.notifications.warn("No weapons exist that can be used for counterstrike, counterstrike defense refused.");
-    }
-    const dialogOptions = {
-        title: `Counterstrike with Weapon`,
-        weapons: weapons,
-        defaultWeapon: weapons[0],
-        aimlocations: ['Low', 'Mid', 'High'],
-        defaultAim: 'Mid',
-        weaponAspects: {'Blunt':0, 'Piercing':0, 'Edged':0},
-        defaultAspect: null,
-        type: 'Counterstrike',
-        buttonLabel: 'Counterstrike'
-    }
-
-    const dialogResult = await meleeAttackDialog(dialogOptions);
-    if (!dialogResult) return null;
-
-    let effCsAML = 0;
-    let csImpact = 0;
-    let csAspect = 'Blunt';
-    defToken.actor.itemTypes.weapongear.forEach(w => {
-        if (w.name === dialogResult.weapon) {
-            const data = w.data.data;
-            effCsAML = data.attackMasteryLevel;
-            csImpact = Math.max(data.blunt, data.edged, data.piercing);
-            if (csImpact === data.blunt) {
-                csAspect = 'Blunt';
-            } else if (csImpact === data.edged) {
-                csAspect = 'Edged';
-            } else {
-                csAspect = 'Piercing';
-            }
-        }
-    });
-
+    // Roll Counterstrike Attack
     const csRoll = DiceHM3.rollTest({
         data: {},
         diceSides: 100,
         diceNum: 1,
-        modifier: dialogResult.addlModifier,
-        target: effCsAML
+        modifier: csDialogResult.addlModifier,
+        target: csDialogResult.weapon.data.data.attackMasteryLevel
     });
 
+    // If we have "Dice So Nice" module, roll them dice!
     if (game.dice3d) {
-        await game.dice3d.showForRoll(atkRoll.rollObj);
-        await game.dice3d.showForRoll(csRoll.rollObj);
+        const aRoll = atkRoll.rollObj;
+        aRoll.dice[0].options.colorset = "glitterparty";
+        await game.dice3d.showForRoll(aRoll);
+
+        const cRoll = atkRoll.rollObj;
+        cRoll.dice[0].options.colorset = "bloodmoon";
+        await game.dice3d.showForRoll(cRoll);
     }
 
     const atkResult = `${atkRoll.isCritical?'c':'m'}${atkRoll.isSuccess?'s':'f'}`;
     const defResult = `${csRoll.isCritical?'c':'m'}${csRoll.isSuccess?'s':'f'}`;
+    const combatResult = meleeCombatResult(atkResult, defResult, 'counterstrike',
+        atkImpactMod, csDialogResult.impactMod);
 
-    const combatResult = meleeCombatResult(atkResult, defResult, 'counterstrike', impactMod);
-
-    const atkImpactRoll = DiceHM3.rollTest({
-        data: {},
-        diceSides: 6,
-        diceNum: combatResult.outcome.atkDice,
-        modifier: 0,
-        target: 0
-    });
-
-    const csImpactRoll = DiceHM3.rollTest({
-        data: {},
-        diceSides: 6,
-        diceNum: combatResult.outcome.defDice,
-        modifier: 0,
-        target: 0
-    });
+    // We now know the results of the attack, roll applicable damage
+    let atkImpactRoll = null;
+    if (combatResult.outcome.atkDice) {
+        atkImpactRoll = new Roll(`${combatResult.outcome.atkDice}d6`).roll();
+    }
+    
+    let csImpactRoll = null;
+    if (combatResult.outcome.defDice) {
+        csImpactRoll = new Roll(`${combatResult.outcome.defDice}d6`).roll();
+    }
 
     const atkChatData = {
         title: `Attack Result`,
@@ -252,8 +439,8 @@ export async function meleeCounterstrikeResume(atkToken, defToken, weaponName, e
         atkTokenId: atkToken.id,
         defender: defToken.name,
         defTokenId: defToken.id,
-        attackWeapon: weaponName,
-        effAML: effAML,
+        attackWeapon: atkWeaponName,
+        effAML: atkEffAML,
         defense: 'Counterstrike',
         effDML: 0,
         attackRoll: atkRoll.rollObj.total,
@@ -263,11 +450,11 @@ export async function meleeCounterstrikeResume(atkToken, defToken, weaponName, e
         resultDesc: combatResult.desc,
         hasAttackHit: combatResult.outcome.atkDice,
         addlWeaponImpact: 0,   // in future, maybe ask this in dialog?
-        weaponImpact: impactMod,
-        impactRoll: atkImpactRoll.rollObj.dice[0].values.join(" + "),
-        totalImpact: atkImpactRoll.rollObj.total + parseInt(impactMod),
-        atkAim: aim,
-        atkAspect: aspect
+        weaponImpact: atkImpactMod,
+        impactRoll: atkImpactRoll ? atkImpactRoll.dice[0].values.join(" + ") : null,
+        totalImpact: atkImpactRoll ? atkImpactRoll.total + parseInt(atkImpactMod) : 0,
+        atkAim: atkAim,
+        atkAspect: atkAspect
     } 
 
     const csChatData = {
@@ -276,8 +463,8 @@ export async function meleeCounterstrikeResume(atkToken, defToken, weaponName, e
         atkTokenId: defToken.id,
         defender: atkToken.name,
         defTokenId: atkToken.id,
-        attackWeapon: dialogResult.weapon,
-        effAML: effCsAML,
+        attackWeapon: csDialogResult.weapon.name,
+        effAML: csDialogResult.weapon.data.data.attackMasteryLevel + csDialogResult.addlModifier,
         effDML: 0,
         attackRoll: csRoll.rollObj.total,
         atkRollResult: csRoll.description,
@@ -286,16 +473,18 @@ export async function meleeCounterstrikeResume(atkToken, defToken, weaponName, e
         resultDesc: combatResult.csDesc,
         hasAttackHit: combatResult.outcome.defDice,
         addlWeaponImpact: 0,   // in future, maybe ask this in dialog?
-        weaponImpact: csImpact,
-        impactRoll: csImpactRoll.rollObj.dice[0].values.join(" + "),
-        totalImpact: csImpactRoll.rollObj.total + parseInt(impactMod),
-        atkAim: dialogResult.aim,
-        atkAspect: csAspect
+        weaponImpact: csDialogResult.impactMod,
+        impactRoll: csImpactRoll ? csImpactRoll.dice[0].values.join(" + ") : null,
+        totalImpact: csImpactRoll ? csImpactRoll.total + parseInt(csDialogResult.impactMod) : 0,
+        atkAim: csDialogResult.aim,
+        atkAspect: csDialogResult.aspect
     } 
 
     let chatTemplate = "systems/hm3/templates/chat/attack-result-card.html";
 
-    // Weapon Attack Chat
+    /*-----------------------------------------------------
+     *    Attack Chat
+     *----------------------------------------------------*/
     let html = await renderTemplate(chatTemplate, atkChatData);
 
     let messageData = {
@@ -306,10 +495,9 @@ export async function meleeCounterstrikeResume(atkToken, defToken, weaponName, e
     if (combatResult.outcome.atkDice) {
         messageData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
         messageData.sound = CONFIG.sounds.dice;
-        messageData.roll = atkImpactRoll.rollObj;
+        messageData.roll = atkImpactRoll;
     } else {
         messageData.type = CONST.CHAT_MESSAGE_TYPES.OTHER;
-        messageData.sound = null;
     }
 
     const messageOptions = {};
@@ -317,7 +505,9 @@ export async function meleeCounterstrikeResume(atkToken, defToken, weaponName, e
     // Create a chat message
     await ChatMessage.create(messageData, messageOptions)
 
-    // Counterstrike Chat
+    /*-----------------------------------------------------
+     *    Counterstrike Chat
+     *----------------------------------------------------*/
     html = await renderTemplate(chatTemplate, csChatData);
 
     messageData = {
@@ -328,10 +518,9 @@ export async function meleeCounterstrikeResume(atkToken, defToken, weaponName, e
     if (combatResult.outcome.defDice) {
         messageData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
         messageData.sound = CONFIG.sounds.dice;
-        messageData.roll = csImpactRoll.rollObj;
+        messageData.roll = csImpactRoll;
     } else {
         messageData.type = CONST.CHAT_MESSAGE_TYPES.OTHER;
-        messageData.sound = null;
     }
 
     // Create a chat message
@@ -340,7 +529,9 @@ export async function meleeCounterstrikeResume(atkToken, defToken, weaponName, e
     return null;
 }
 
-export async function meleeDodgeResume(atkToken, defToken, weaponName, effAML, aim, aspect, impactMod) {
+export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod) {
+    if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
+
     const speaker = ChatMessage.getSpeaker();
 
     const atkRoll = DiceHM3.rollTest({
@@ -362,22 +553,28 @@ export async function meleeDodgeResume(atkToken, defToken, weaponName, effAML, a
     });
 
     if (game.dice3d) {
-        await game.dice3d.showForRoll(atkRoll.rollObj);
-        await game.dice3d.showForRoll(defRoll.rollObj);
+        const aRoll = atkRoll.rollObj;
+        aRoll.dice[0].options.colorset = "glitterparty";
+        await game.dice3d.showForRoll(aRoll);
+
+        const dRoll = defRoll.rollObj;
+        dRoll.dice[0].options.colorset = "bloodmoon";
+        await game.dice3d.showForRoll(dRoll);
     }
 
     const atkResult = `${atkRoll.isCritical?'c':'m'}${atkRoll.isSuccess?'s':'f'}`;
     const defResult = `${defRoll.isCritical?'c':'m'}${defRoll.isSuccess?'s':'f'}`;
+    let combatResult = null;
+    if (type === 'melee') {
+        combatResult = meleeCombatResult(atkResult, defResult, 'dodge', impactMod);
+    } else {
+        combatResult = missileCombatResult(atkResult, defResult, 'dodge', impactMod);
+    }
 
-    const combatResult = meleeCombatResult(atkResult, defResult, 'dodge', impactMod);
-
-    const atkImpactRoll = DiceHM3.rollTest({
-        data: {},
-        diceSides: 6,
-        diceNum: combatResult.outcome.atkDice,
-        modifier: 0,
-        target: effDML
-    });
+    let atkImpactRoll = null;
+    if (combatResult.outcome.atkDice) {
+        atkImpactRoll = new Roll(`${combatResult.outcome.atkDice}d6`).roll();
+    }
 
     const chatData = {
         title: `Attack Result`,
@@ -397,8 +594,8 @@ export async function meleeDodgeResume(atkToken, defToken, weaponName, effAML, a
         hasAttackHit: combatResult.outcome.atkDice,
         addlWeaponImpact: 0,   // in future, maybe ask this in dialog?
         weaponImpact: impactMod,
-        impactRoll: atkImpactRoll.rollObj.dice[0].values.join(" + "),
-        totalImpact: atkImpactRoll.rollObj.total + parseInt(impactMod),
+        impactRoll: atkImpactRoll ? atkImpactRoll.dice[0].values.join(" + ") : null,
+        totalImpact: atkImpactRoll ? atkImpactRoll.total + parseInt(impactMod) : 0,
         atkAim: aim,
         atkAspect: aspect
     } 
@@ -415,10 +612,9 @@ export async function meleeDodgeResume(atkToken, defToken, weaponName, effAML, a
     if (combatResult.outcome.atkDice) {
         messageData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
         messageData.sound = CONFIG.sounds.dice;
-        messageData.roll = atkImpactRoll.rollObj;
+        messageData.roll = atkImpactRoll;
     } else {
         messageData.type = CONST.CHAT_MESSAGE_TYPES.OTHER;
-        messageData.sound = null;
     }
 
     const messageOptions = {};
@@ -429,7 +625,9 @@ export async function meleeDodgeResume(atkToken, defToken, weaponName, effAML, a
     return null;
 }
 
-export async function meleeBlockResume(atkToken, defToken, weaponName, effAML, aim, aspect, impactMod) {
+export async function blockResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod) {
+    if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
+
     const speaker = ChatMessage.getSpeaker();
 
     const atkRoll = DiceHM3.rollTest({
@@ -440,26 +638,73 @@ export async function meleeBlockResume(atkToken, defToken, weaponName, effAML, a
         target: effAML
     });
 
-    // pop up dialog asking for which weapon to use for blocking
-    const weapons = defToken.actor.itemTypes.weapongear.map(w => w.name);
+    let prompt = null;
 
+    // setup defensive available weapons.  This is all equipped melee weapons initially,
+    // but later we may limit it to only shields.
+    let defAvailWeapons = defToken.actor.itemTypes.weapongear;
+    const shields = defAvailWeapons.filter(w => w.data.data.isEquipped && /shield|\bbuckler\b/i.test(w.name));
+
+    // Missile Pre-processing.  If attacker is using a high-velocity weapon, then defender
+    // can only block with a shield.  If attacker is using a low-velocity weapon, then defender
+    // can either block with a shield (at full DML) or with a melee weapon (at 1/2 DML).
+    if (type === 'missile') {
+        const highVelocityMissile = /\bbow\b|shortbow|longbow|crossbow|\bsling\b|\barrow\b|\bbolt\b|\bbullet\b/i.test(weaponName);
+    
+        if (highVelocityMissile) {
+            if (!shields.length) {
+                ui.notifications.warn(`${weaponName} is a high-velocity missile that can only be blocked with a shield, and you don't have a shield equipped. Block defense refused.`);
+                return null;
+            } else {
+                defAvailWeapons = shields;
+                prompt = `${weaponName} is a high-velocity missile, and can only be blocked with a shield. Choose which shield to use.`;
+            }
+        } else {
+            prompt = `${weaponName} is a low-velocity missile, and can be blocked either by a shield (at full DML) or by a melee weapon (at &#189; DML). Choose wisely.`;
+        }
+    }
+
+    // pop up dialog asking for which weapon to use for blocking
+    // Only melee weapons can be used for blocking
+    // Default weapon is one with highest DML
+    let weapons = [];
+    let defaultWeapon = null;
+    let maxDML = -9999;
+    defAvailWeapons.forEach(w => {
+        if (w.data.data.isEquipped) {
+            if (w.data.data.defenseMasteryLevel > maxDML) {
+                defaultWeapon = w;
+            }
+            weapons.push(w);
+        }
+    })
+    
     if (weapons.length === 0) {
         return ui.notifications.warn("No weapons exist that can be used for blocking, block defense refused.");
     }
-    const dialogOptions = {
-        title: `Melee Block with Weapon`,
+    
+    const options = {
+        prompt: prompt,
         weapons: weapons,
-        defaultWeapon: weapons[0],
-        type: 'Block'
-    }
+        defaultWeapon: defaultWeapon, 
+        modifierType: 'Defense'
+    };
+    const dialogResult = await selectWeaponDialog(options);
 
-    const dialogResult = await meleeBlockDialog(dialogOptions);
     if (!dialogResult) return null;
 
     let effDML = 5;
     defToken.actor.itemTypes.weapongear.forEach(w => {
         if (w.name === dialogResult.weapon) effDML = w.data.data.defenseMasteryLevel;
     });
+
+    // If attacking weapon is a missile and defending weapon is not
+    // a sheild, then it will defend at 1/2 DML.
+    if (type === 'missile') {
+        if (!shields.some(s => s.name === dialogResult.weapon.name)) {
+            effDML = Math.max(Math.round(effDML/2), 5);
+        }
+    }
 
     const defRoll = DiceHM3.rollTest({
         data: {},
@@ -470,22 +715,29 @@ export async function meleeBlockResume(atkToken, defToken, weaponName, effAML, a
     });
 
     if (game.dice3d) {
-        await game.dice3d.showForRoll(atkRoll.rollObj);
-        await game.dice3d.showForRoll(defRoll.rollObj);
+        const aRoll = atkRoll.rollObj;
+        aRoll.dice[0].options.colorset = "glitterparty";
+        await game.dice3d.showForRoll(aRoll);
+
+        const dRoll = defRoll.rollObj;
+        dRoll.dice[0].options.colorset = "bloodmoon";
+        await game.dice3d.showForRoll(dRoll);
     }
 
     const atkResult = `${atkRoll.isCritical?'c':'m'}${atkRoll.isSuccess?'s':'f'}`;
     const defResult = `${defRoll.isCritical?'c':'m'}${defRoll.isSuccess?'s':'f'}`;
 
-    const combatResult = meleeCombatResult(atkResult, defResult, 'block', impactMod);
+    let combatResult;
+    if (type === 'melee') {
+        combatResult = meleeCombatResult(atkResult, defResult, 'block', impactMod);
+    } else {
+        combatResult = missileCombatResult(atkResult, defResult, 'block', impactMod);
+    }
 
-    const atkImpactRoll = DiceHM3.rollTest({
-        data: {},
-        diceSides: 6,
-        diceNum: combatResult.outcome.atkDice,
-        modifier: 0,
-        target: effDML
-    });
+    let atkImpactRoll = null;
+    if (combatResult.outcome.atkDice) {
+        atkImpactRoll = new Roll(`${combatResult.outcome.atkDice}d6`).roll();
+    }
 
     const chatData = {
         title: `Attack Result`,
@@ -505,8 +757,8 @@ export async function meleeBlockResume(atkToken, defToken, weaponName, effAML, a
         hasAttackHit: combatResult.outcome.atkDice,
         addlWeaponImpact: 0,   // in future, maybe ask this in dialog?
         weaponImpact: impactMod,
-        impactRoll: atkImpactRoll.rollObj.dice[0].values.join(" + "),
-        totalImpact: atkImpactRoll.rollObj.total + parseInt(impactMod),
+        impactRoll: atkImpactRoll ? atkImpactRoll.dice[0].values.join(" + ") : null,
+        totalImpact: atkImpactRoll ? atkImpactRoll.total + parseInt(impactMod) : 0,
         atkAim: aim,
         atkAspect: aspect
     } 
@@ -523,10 +775,9 @@ export async function meleeBlockResume(atkToken, defToken, weaponName, effAML, a
     if (combatResult.outcome.atkDice) {
         messageData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
         messageData.sound = CONFIG.sounds.dice;
-        messageData.roll = atkImpactRoll.rollObj;
+        messageData.roll = atkImpactRoll;
     } else {
         messageData.type = CONST.CHAT_MESSAGE_TYPES.OTHER;
-        messageData.sound = null;
     }
 
     const messageOptions = {};
@@ -537,7 +788,9 @@ export async function meleeBlockResume(atkToken, defToken, weaponName, effAML, a
     return null;
 }
 
-export async function meleeIgnoreResume(atkToken, defToken, weaponName, effAML, aim, aspect, impactMod) {
+export async function ignoreResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod) {
+    if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
+
     const speaker = ChatMessage.getSpeaker();
 
     const atkRoll = DiceHM3.rollTest({
@@ -551,20 +804,23 @@ export async function meleeIgnoreResume(atkToken, defToken, weaponName, effAML, 
     const effDML = 0;
 
     if (game.dice3d) {
-        await game.dice3d.showForRoll(atkRoll.rollObj);
+        const aRoll = atkRoll.rollObj;
+        aRoll.dice[0].options.colorset = "glitterparty";
+        await game.dice3d.showForRoll(aRoll);
     }
 
     const atkResult = `${atkRoll.isCritical?'c':'m'}${atkRoll.isSuccess?'s':'f'}`;
+    let combatResult;
+    if (type === 'melee') {
+        combatResult = meleeCombatResult(atkResult, null, 'ignore', impactMod);
+    } else {
+        combatResult = missileCombatResult(atkResult, null, 'ignore', impactMod);
+    }
 
-    const combatResult = meleeCombatResult(atkResult, null, 'ignore', impactMod);
-
-    const atkImpactRoll = DiceHM3.rollTest({
-        data: {},
-        diceSides: 6,
-        diceNum: combatResult.outcome.atkDice,
-        modifier: 0,
-        target: 0
-    });
+    let atkImpactRoll = null;
+    if (combatResult.outcome.atkDice) {
+        atkImpactRoll = new Roll(`${combatResult.outcome.atkDice}d6`).roll();
+    }
 
     const chatData = {
         title: `Attack Result`,
@@ -584,8 +840,8 @@ export async function meleeIgnoreResume(atkToken, defToken, weaponName, effAML, 
         hasAttackHit: combatResult.outcome.atkDice,
         addlWeaponImpact: 0,   // in future, maybe ask this in dialog?
         weaponImpact: impactMod,
-        impactRoll: atkImpactRoll.rollObj.dice[0].values.join(" + "),
-        totalImpact: atkImpactRoll.rollObj.total + parseInt(impactMod),
+        impactRoll: atkImpactRoll ? atkImpactRoll.dice[0].values.join(" + ") : null,
+        totalImpact: atkImpactRoll ? atkImpactRoll.total + parseInt(impactMod) : 0,
         atkAim: aim,
         atkAspect: aspect
     } 
@@ -602,10 +858,9 @@ export async function meleeIgnoreResume(atkToken, defToken, weaponName, effAML, 
     if (combatResult.outcome.atkDice) {
         messageData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
         messageData.sound = CONFIG.sounds.dice;
-        messageData.roll = atkImpactRoll.rollObj;
+        messageData.roll = atkImpactRoll;
     } else {
         messageData.type = CONST.CHAT_MESSAGE_TYPES.OTHER;
-        messageData.sound = null;
     }
 
     const messageOptions = {};
@@ -666,8 +921,15 @@ export function meleeCombatResult(atkResult, defResult, defense, atkAddlImpact=0
 
 export function missileCombatResult(atkResult, defResult, defense, atkAddlImpact=0) {
     let outcome = null;
-    if (HM3.missileCombatTable[defense]) {
-        const outcome = HM3.missileCombatTable[defense][`${atkResult}:${defResult}`];
+    let index = null;
+    const defenseTable = HM3.missileCombatTable[defense];
+    if (defenseTable) {
+        if (defense === 'ignore') {
+            index = atkResult;
+        } else {
+            index = `${atkResult}:${defResult}`;
+        }
+        outcome = defenseTable[index];
     }
 
     if (!outcome) return null;
@@ -675,7 +937,7 @@ export function missileCombatResult(atkResult, defResult, defense, atkAddlImpact
     const result = { outcome: outcome, desc: 'No result' };
     
     if (outcome.atkDice && !outcome.defDice) {
-        result.desc = `Missile strikes for ${diceFormula(outcome.atkDice, addlImpact)} impact.`;
+        result.desc = `Missile strikes for ${diceFormula(outcome.atkDice, atkAddlImpact)} impact.`;
     } else if (outcome.wild) {
         result.desc = `Missile goes wild; effects at GM discretion.`;
     } else if (outcome.block) {
@@ -715,32 +977,61 @@ function calcWeaponAspect(weapon) {
     // It is here so that it can be selected (no default impact
     // damage would be specified for that aspect).
     const result = {
-        defaultAspect: "Other",
-        aspects: {
-            "Blunt": 0,
-            "Edged": 0,
-            "Piercing": 0,
-            "Fire": 0,
-            "Other": 0
-        }
+        defaultAspect: null,
+        aspects: {}
     }
 
-    const maxImpact = Math.max(data.blunt, data.piercing, data.edged, 0);
-    result.aspects["Blunt"] = data.blunt;
-    result.aspects["Edged"] = data.edged;
-    result.aspects["Piercing"] = data.piercing;
-    if (maxImpact === data.piercing) {
-        result.defaultAspect = "Piercing";
-    } else if (maxImpact === data.edged) {
-        result.defaultAspect = "Edged";
-    } else if (maxImpact === data.blunt) {
-        result.defaultAspect = "Blunt";
-    } else {
-        // This shouldn't happen, but if all else fails, choose "Other"
-        result.defaultAspect = "Other"
+    // Any impact < 0 indicates that aspect is not available
+    const maxImpact = Math.max(data.blunt, data.piercing, data.edged);
+    if (maxImpact >= 0) {
+        if (data.blunt >= 0) result.aspects["Blunt"] = data.blunt;
+        if (data.edged >= 0) result.aspects["Edged"] = data.edged;
+        if (data.piercing >= 0) result.aspects["Piercing"] = data.piercing;
+        if (maxImpact === data.piercing) {
+            result.defaultAspect = "Piercing";
+        } else if (maxImpact === data.edged) {
+            result.defaultAspect = "Edged";
+        } else if (maxImpact === data.blunt) {
+            result.defaultAspect = "Blunt";
+        }    
     }
 
     return result;
+}
+
+export function getItem(itemName, type, actor) {
+    if (!actor || typeof actor !== 'object') {
+        ui.notifications.warn('No actor was selected. You must select an actor.');
+        return null;
+    }
+
+    if (!itemName) {
+        ui.notifications.warn('No item name was specified. You must specify an item name.');
+        return null;
+    }
+
+    let item = null;
+    if (itemName.startsWith("Item$")) {
+        return actor.getOwnedItem(itemName.slice(5));
+    }
+    if (!item) {
+        const lcItemName = itemName.toLowerCase();
+        const items = actor ? actor.items.filter(i => i.type === type && i.name.toLowerCase() === lcItemName) : [];
+        if (items.length > 1) {
+            ui.notifications.warn(`Your controlled Actor ${actor.name} has more than one ${type} with name ${itemName}. The first matched ${type} will be chosen.`);
+        } else if (items.length === 0) {
+            ui.notifications.warn(`Your controlled Actor does not have a ${type} named ${itemName}`);
+            return null;
+        }
+        item = items[0];
+    }
+
+    if (!item) {
+        ui.notifications.warn(`The item ${itemName} was not found`);
+        return null;
+    }
+
+    return item;
 }
 
 /**
@@ -750,9 +1041,9 @@ function calcWeaponAspect(weapon) {
  * @param {Token} targetToken 
  */
 export function missileRange(sourceToken, targetToken) {
-    if (!sourceToken || !targetToken || !canvas.scene.grid) return 9999;
+    if (!sourceToken || !targetToken || !canvas.scene || !canvas.scene.data.grid) return 9999;
     const dist = Math.sqrt(Math.pow(sourceToken.x - targetToken.x, 2) + Math.pow(sourceToken.y - targetToken.y, 2));
-    const gridRange = Math.round(dist/canvas.scene.grid);
-    const range = Math.round(gridRange * canvas.scene.gridDistance);
+    const gridRange = Math.round(dist/canvas.scene.data.grid);
+    const range = Math.round(gridRange * canvas.scene.data.gridDistance);
     return range;
 }

@@ -1,0 +1,53 @@
+<form>
+    <div class="form-group">
+        <label for="weaponAspect">Weapon Aspect:</label>
+        <select name="weaponAspect">
+            {{#select defaultAspect}}
+            {{#each aspects as |value key|}}
+                <option value="{{key}}">{{key}}{{#if (gt value -1)}} ({{value}}){{/if}}</option>
+            {{/each}}
+            {{/select}}
+        </select>
+    </div>
+    
+    {{#if ranges}}
+    <div class="form-group">
+        <label>Distance:</label>
+        <span>{{distance}}</span>
+    </div>
+
+    {{#if rangeExceedsExtreme}}
+    <div class="form-group">
+        <div>WARNING: Distance exceeds the extreme range for this weapon.<br/>
+            Please consult with your GM before continuing this attack.</div>
+    </div>
+    {{/if}}
+
+    <div class="form-group">
+        <label>Range (Max Distance):</label>
+        <select name="range">
+            {{#select defaultRange}}
+            {{#each ranges as |value key|}}
+                <option value="{{key}}">{{key}}</option>
+            {{/each}}
+            {{/select}}
+        </select>
+    </div>
+    {{/if}}
+
+    <div class="form-group">
+        <label>Aim:</label>
+        <select name="aim">
+            {{#select defaultAim}}
+            {{#each aimLocations}}
+                <option value="{{this}}">{{this}}</option>
+            {{/each}}
+            {{/select}}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Additional {{type}} Modifier:</label>
+        <input type="number" name="addlModifier" value="0" />
+    </div>
+</form>

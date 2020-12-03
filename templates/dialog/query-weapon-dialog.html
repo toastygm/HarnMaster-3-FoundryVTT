@@ -1,0 +1,21 @@
+<form id="weapon-query">
+    <p>{{prompt}}<br/></p>
+
+    <div class="form-group">
+        <label>Weapon:</label>
+        <select name="weapon">
+            {{#select defaultWeapon}}
+            {{#each weapons}}
+                <option value="{{this}}">{{this}}</option>
+            {{/each}}
+            {{/select}}
+        </select>
+    </div>
+
+    {{#if modifierType}}
+    <div class="form-group">
+        <label>Addl {{modifierType}} Modifier:</label>
+        <input type="number" name="addlModifier" value="0" />
+    </div>
+    {{/if}}
+</form>
