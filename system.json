@@ -54,6 +54,13 @@
       "entity": "Item"
     },
     {
+      "label": "Std Psionics",
+      "name": "std-psionics",
+      "path": "packs/std-psionics.db",
+      "system": "hm3",
+      "entity": "Item"
+    },
+    {
       "label": "Std Melee Weapons",
       "name": "std-weapons",
       "path": "packs/std-melee-weapons.db",
