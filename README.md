@@ -259,4 +259,4 @@ The following images were taken from [The Noun Project](https://thenounproject.c
 * armor by Postcat Studio
 * Man Fainted by Gan Khoon Lay
 * bullseye by Creative Stall
-
+* blowgun by Peter Selinger
