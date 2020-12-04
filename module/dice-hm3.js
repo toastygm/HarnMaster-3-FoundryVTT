@@ -396,7 +396,8 @@ export class DiceHM3 {
 
         // Create a chat message
         await ChatMessage.create(messageData, messageOptions);
-    
+        AudioHelper.play({src: "systems/hm3/audio/grunt1.ogg", autoplay: true, loop: false}, true);
+
         return result;
     }
     
