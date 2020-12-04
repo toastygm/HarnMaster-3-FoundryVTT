@@ -624,7 +624,7 @@ export function changeFatigue(newValue, myActor = null) {
     const actor = getActor(myActor, speaker);
     if (!actor || !actor.owner) {
         ui.notifications.warn(`You are not an owner of ${actor.name}, so you may not change fatigue.`);
-        return null;
+        return false;
     }
 
     const updateData = {};
@@ -639,6 +639,8 @@ export function changeFatigue(newValue, myActor = null) {
     if (typeof updateData['data.fatigue'] !== 'undefined') {
         actor.update(updateData);
     }
+    
+    return true;
 }
 
 export function changeMissileQuanity(missileName, newValue, myActor = null) {
@@ -646,13 +648,13 @@ export function changeMissileQuanity(missileName, newValue, myActor = null) {
     const actor = getActor(myActor, speaker);
     if (!actor.owner) {
         ui.notifications.warn(`You are not an owner of ${actor.name}, so you may not change ${missileName} quantity.`);
-        return null;
+        return false;
     }
 
     const missile = combat.getItem(missileName, 'missilegear', actor);
     if (!missile) {
         ui.notifications.warn(`${actor.name} does not have any missiles named ${missileName}.`);
-        return null;
+        return false;
     }
 
     const updateData = {};
@@ -664,9 +666,12 @@ export function changeMissileQuanity(missileName, newValue, myActor = null) {
         const value = parseInt(newValue, 10);
         if (!isNaN(value)) updateData['data.quantity'] = value;
     }
-    if (typeof updateData['data.fatigue'] !== 'undefined') {
-        missile.update(updateData);
+
+    if (typeof updateData['data.quantity'] !== 'undefined') {
+        updateData['_id'] = missile._id;
+        actor.updateOwnedItem(updateData);
     }
+    return true;
 }
 
 export function setSkillDevelopmentFlag(skillName, myActor = null) {
