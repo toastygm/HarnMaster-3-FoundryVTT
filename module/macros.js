@@ -619,6 +619,56 @@ export function genericDamageRoll(myActor = null) {
     return DiceHM3.damageRoll(rollData);
 }
 
+export function changeFatigue(newValue, myActor = null) {
+    const speaker = ChatMessage.getSpeaker();
+    const actor = getActor(myActor, speaker);
+    if (!actor || !actor.owner) {
+        ui.notifications.warn(`You are not an owner of ${actor.name}, so you may not change fatigue.`);
+        return null;
+    }
+
+    const updateData = {};
+    if (/^\s*[+-]/.test(newValue)) {
+        // relative change
+        const changeValue = parseInt(newValue, 10);
+        if (!isNaN(changeValue)) updateData['data.fatigue'] = Math.max(actor.data.data.fatigue + changeValue, 0);
+    } else {
+        const value = parseInt(newValue, 10);
+        if (!isNaN(value)) updateData['data.fatigue'] = value;
+    }
+    if (typeof updateData['data.fatigue'] !== 'undefined') {
+        actor.update(updateData);
+    }
+}
+
+export function changeMissileQuanity(missileName, newValue, myActor = null) {
+    const speaker = ChatMessage.getSpeaker();
+    const actor = getActor(myActor, speaker);
+    if (!actor.owner) {
+        ui.notifications.warn(`You are not an owner of ${actor.name}, so you may not change ${missileName} quantity.`);
+        return null;
+    }
+
+    const missile = combat.getItem(missileName, 'missilegear', actor);
+    if (!missile) {
+        ui.notifications.warn(`${actor.name} does not have any missiles named ${missileName}.`);
+        return null;
+    }
+
+    const updateData = {};
+    if (/^\s*[+-]/.test(newValue)) {
+        // relative change
+        const changeValue = parseInt(newValue, 10);
+        if (!isNaN(changeValue)) updateData['data.quantity'] = Math.max(missile.data.data.quantity + changeValue, 0);
+    } else {
+        const value = parseInt(newValue, 10);
+        if (!isNaN(value)) updateData['data.quantity'] = value;
+    }
+    if (typeof updateData['data.fatigue'] !== 'undefined') {
+        missile.update(updateData);
+    }
+}
+
 function getCombatant() {
     if (game.combats.size === 0 || game.combats.active.data.combatants.length === 0) {
         ui.notifications.warn(`No active combatant.`);
