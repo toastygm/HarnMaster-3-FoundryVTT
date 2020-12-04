@@ -669,6 +669,26 @@ export function changeMissileQuanity(missileName, newValue, myActor = null) {
     }
 }
 
+export function setSkillDevelopmentFlag(skillName, myActor = null) {
+    const speaker = ChatMessage.getSpeaker();
+    const actor = getActor(myActor, speaker);
+    if (!actor.owner) {
+        ui.notifications.warn(`You are not an owner of ${actor.name}, so you may not set the skill development flag.`);
+        return null;
+    }
+
+    const skill = combat.getItem(skillName, 'skill', actor);
+    if (!missile) {
+        ui.notifications.warn(`${actor.name} does not have a skill named ${skillName}.`);
+        return null;
+    }
+
+    if (!skill.data.data.improveFlag) {
+        const updateData = { 'data.improveFlag': true };
+        skill.update(updateData);
+    }
+}
+
 function getCombatant() {
     if (game.combats.size === 0 || game.combats.active.data.combatants.length === 0) {
         ui.notifications.warn(`No active combatant.`);
