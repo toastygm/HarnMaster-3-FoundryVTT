@@ -363,7 +363,7 @@ export class DiceHM3 {
             result = await DiceHM3.injuryDialog(dialogOptions);
         } else {
             result = DiceHM3._calcInjury('Random', rollData.impact, rollData.aspect,
-                true, rollData.aim, rollData);
+                game.settings.get('hm3', 'addInjuryToActorSheet') !== 'disable', rollData.aim, rollData);
         }
 
         // If user cancelled the roll, then return immediately
@@ -396,8 +396,9 @@ export class DiceHM3 {
 
         // Create a chat message
         await ChatMessage.create(messageData, messageOptions);
-        AudioHelper.play({src: "systems/hm3/audio/grunt1.ogg", autoplay: true, loop: false}, true);
-
+        if (game.settings.get("hm3", "combatAudio")) {
+            AudioHelper.play({src: "systems/hm3/audio/grunt1.ogg", autoplay: true, loop: false}, true);
+        }
         return result;
     }
     
@@ -470,6 +471,8 @@ export class DiceHM3 {
      */
     static async injuryDialog(dialogOptions) {
     
+        const recordInjury = game.settings.get("hm3", "addInjuryToActorSheet");
+
         // Render modal dialog
         let dlgTemplate = dialogOptions.template || "systems/hm3/templates/dialog/injury-dialog.html";
         let dialogData = {
@@ -477,7 +480,7 @@ export class DiceHM3 {
             location: 'Random',
             impact: 0,
             aspect: 'Blunt',
-            addToCharSheet: true,
+            askRecordInjury:  recordInjury === 'ask',
             hitLocations: dialogOptions.hitLocations
         };
 
@@ -497,7 +500,8 @@ export class DiceHM3 {
                             const formImpact = form.impact.value;
                             const formAspect = form.aspect.value;
                             const formAim = form.aim.value;
-                            const formAddToCharSheet = form.addToCharSheet.checked;
+                            const formAddToCharSheet = dialogData.askRecordInjury ?
+                                form.addToCharSheet.checked : recordInjury === 'enable';
                             resolve(DiceHM3._calcInjury(formLocation, formImpact, formAspect, 
                                 formAddToCharSheet, formAim, dialogOptions));
                         }
@@ -521,6 +525,9 @@ export class DiceHM3 {
      * @param {Object} dialogOptions 
      */
     static _calcInjury(location, impact, aspect, addToCharSheet, aim, dialogOptions) {
+        const enableAmputate = game.settings.get('hm3', 'amputatetion');
+        const enableBloodloss = game.settings.get('hm3', 'Bloodloss');
+
         const result = {
             isRandom: location === 'Random',
             name: dialogOptions.name,
@@ -598,24 +605,24 @@ export class DiceHM3 {
 
             case 'G4':
                 result.injuryLevel = 4;
-                result.isAmputate = armorLocation.data.isAmputate && (aspect === 'Edged');
+                result.isAmputate = enableAmputate && armorLocation.data.isAmputate && (aspect === 'Edged');
                 break;
 
             case 'K4':
                 result.injuryLevel = 4;
                 result.isKillShot = true;
-                result.isAmputate = armorLocation.data.isAmputate && (aspect === 'Edged');
+                result.isAmputate = enableAmputate && armorLocation.data.isAmputate && (aspect === 'Edged');
                 break;
 
             case 'G5':
                 result.injuryLevel = 5;
-                result.isAmputate = armorLocation.data.isAmputate && (aspect === 'Edged');
+                result.isAmputate = enableAmputate && armorLocation.data.isAmputate && (aspect === 'Edged');
                 break;
 
             case 'K5':
                 result.injuryLevel = 5;
                 result.isKillShot = true;
-                result.isAmputate = armorLocation.data.isAmputate && (aspect === 'Edged');
+                result.isAmputate = enableAmputate && armorLocation.data.isAmputate && (aspect === 'Edged');
                 break;
 
             case 'NA':
@@ -630,7 +637,7 @@ export class DiceHM3 {
             return result;
         }
 
-        result.isBleeder = result.injuryLevel >= 4 && result.aspect != 'Fire';
+        result.isBleeder = enableBloodloss && result.injuryLevel >= 4 && result.aspect != 'Fire';
 
         if (armorLocation.data.isFumble) {
             result.isFumble = result.injuryLevel >= 4;

@@ -22,7 +22,7 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
     }
 
     const speaker = ChatMessage.getSpeaker();
-    const range = missileRange(attackToken, defendToken);
+    const range = rangeToTarget(attackToken, defendToken);
 
     const options = {
         distance: range,
@@ -77,7 +77,9 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
 
     // Create a chat message
     await ChatMessage.create(messageData, messageOptions);
-    AudioHelper.play({src: "sounds/drums.wav", autoplay: true, loop: false}, true);
+    if (game.settings.get('hm3', 'combatAudio')) {
+        AudioHelper.play({src: "sounds/drums.wav", autoplay: true, loop: false}, true);
+    }
     return null;
 }
 
@@ -98,6 +100,11 @@ export async function meleeAttack(attackToken, defendToken, weaponItem) {
     if (!isValidToken(attackToken) || !isValidToken(defendToken)) return null;
     if (!attackToken.owner) {
         ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
+        return null;
+    }
+
+    if (rangeToTarget(attackToken, defendToken, true) > 1) {
+        ui.notifications.warn(`${defendToken.name} is outside of melee range.`);
         return null;
     }
 
@@ -153,7 +160,9 @@ export async function meleeAttack(attackToken, defendToken, weaponItem) {
 
     // Create a chat message
     await ChatMessage.create(messageData, messageOptions);
-    AudioHelper.play({src: "sounds/drums.wav", autoplay: true, loop: false}, true);
+    if (game.settings.get('hm3', 'combatAudio')) {
+        AudioHelper.play({src: "sounds/drums.wav", autoplay: true, loop: false}, true);
+    }
     return null;
 }
 
@@ -636,7 +645,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
 
     // Create a chat message
     await ChatMessage.create(messageData, messageOptions)
-    if (!combatResult.outcome.atkDice) {
+    if (!combatResult.outcome.atkDice && game.settings.get('hm3', 'combatAudio')) {
         AudioHelper.play({src: "systems/hm3/audio/swoosh1.ogg", autoplay: true, loop: false}, true);
     }
 
@@ -767,7 +776,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
     // Weapon Break Check
     let atkWeaponBroke = false;
     let defWeaponBroke = false;
-    if (type === "melee" && combatResult.outcome.block && defWeapon) {
+    if (type === "melee" && game.settings.get('hm3', 'weaponDamage') && combatResult.outcome.block && defWeapon) {
         const atkWeapon = atkToken.actor.itemTypes.weapongear.find(w => w.name === weaponName);
         if (atkWeapon) {
             const atkWeaponQuality = atkWeapon.data.data.weaponQuality;
@@ -835,7 +844,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
 
     // Create a chat message
     await ChatMessage.create(messageData, messageOptions)
-    if (!combatResult.outcome.atkDice) {
+    if (!combatResult.outcome.atkDice && game.settings.get('hm3', 'combatAudio')) {
         AudioHelper.play({src: "systems/hm3/audio/shield-bash.ogg", autoplay: true, loop: false}, true);
     }
 
@@ -1098,12 +1107,15 @@ export function getItem(itemName, type, actor) {
  * @param {Token} sourceToken 
  * @param {Token} targetToken 
  */
-export function missileRange(sourceToken, targetToken) {
+export function rangeToTarget(sourceToken, targetToken, gridUnits=false) {
     if (!sourceToken || !targetToken || !canvas.scene || !canvas.scene.data.grid) return 9999;
     const dist = Math.sqrt(Math.pow(sourceToken.x - targetToken.x, 2) + Math.pow(sourceToken.y - targetToken.y, 2));
     const gridRange = Math.round(dist/canvas.scene.data.grid);
-    const range = Math.round(gridRange * canvas.scene.data.gridDistance);
-    return range;
+    if (!gridUnits && game.settings.get('hm3', 'distanceUnits') === 'grid') {
+        return Math.round(gridRange * canvas.scene.data.gridDistance);
+    } else {
+        return gridRange;
+    }
 }
 
 /**
