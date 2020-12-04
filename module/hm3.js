@@ -8,8 +8,9 @@ import { HarnMasterItemSheet } from "./item/item-sheet.js";
 import { HM3 } from "./config.js";
 import { DiceHM3 } from "./dice-hm3.js";
 import { registerSystemSettings } from "./settings.js";
-import * as migrations from "./migrations.js"
-import * as macros from "./macros.js"
+import * as migrations from "./migrations.js";
+import * as macros from "./macros.js";
+import * as combat from "./combat.js";
 
 Hooks.once('init', async function() {
 
@@ -78,6 +79,11 @@ Hooks.once('init', async function() {
   });
 });
 
+Hooks.on("renderChatMessage", (app, html, data) => {
+  // Display action buttons
+  console.log(`renderChatMessage`);
+  combat.displayChatActionButtons(app, html, data);
+});
 Hooks.on('renderChatLog', (app, html, data) => HarnMasterActor.chatListeners(html));
 Hooks.on('renderChatPopout', (app, html, data) => HarnMasterActor.chatListeners(html));
 

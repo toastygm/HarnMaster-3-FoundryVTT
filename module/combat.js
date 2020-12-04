@@ -1105,3 +1105,45 @@ export function missileRange(sourceToken, targetToken) {
     const range = Math.round(gridRange * canvas.scene.data.gridDistance);
     return range;
 }
+
+/**
+ * Optionally hide the display of chat card action buttons which cannot be performed by the user
+ */
+export const displayChatActionButtons = function(message, html, data) {
+    const chatCard = html.find(".hm3.chat-card");
+    if ( chatCard.length > 0 ) {
+        // If the user is the GM, proceed
+        if (game.user.isGM) return;
+
+        // Otherwise conceal action buttons
+        const buttons = chatCard.find("button[data-action]");
+        buttons.each((i, btn) => {
+            if (['dodge','ignore','block','counterstrike'].includes(btn.dataset.action)) {
+                const defToken = btn.dataset.defTokenId ? 
+                    canvas.tokens.get(btn.dataset.defTokenId) : null;
+                if (!defToken || !defToken.owner) {
+                    btn.style.display = "none";
+                }
+            } else if (btn.dataset.action === 'injury') {
+                const token = btn.dataset.tokenId ? 
+                    canvas.tokens.get(btn.dataset.tokenId) : null;
+                if (!token || !token.owner) {
+                    btn.style.display = "none";
+                }
+            } else if (['stumble','fumble','shock'].includes(btn.dataset.action)) {
+                let actor;
+                if (btn.dataset.tokenId) {
+                    const token = btn.dataset.tokenId ? 
+                        canvas.tokens.get(btn.dataset.tokenId) : null;
+                    actor = token ? token.actor : null;
+                } else if (btn.dataset.actorId) {
+                    actor = game.actors.get(btn.dataset.actorId);
+                }
+                if (!actor || !actor.owner) {
+                    btn.style.display = "none";
+                }
+            }
+        });
+    }
+};
+  
