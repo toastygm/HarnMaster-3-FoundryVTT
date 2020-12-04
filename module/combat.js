@@ -16,6 +16,10 @@ import { HM3 } from "./config.js";
  */
 export async function missileAttack(attackToken, defendToken, missileItem) {
     if (!isValidToken(attackToken) || !isValidToken(defendToken)) return null;
+    if (!attackToken.owner) {
+        ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
+        return null;
+    }
 
     const speaker = ChatMessage.getSpeaker();
     const range = missileRange(attackToken, defendToken);
@@ -92,6 +96,10 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
  */
 export async function meleeAttack(attackToken, defendToken, weaponItem) {
     if (!isValidToken(attackToken) || !isValidToken(defendToken)) return null;
+    if (!attackToken.owner) {
+        ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
+        return null;
+    }
 
     const speaker = ChatMessage.getSpeaker();
     // display dialog, get aspect, aim, and addl damage
@@ -373,7 +381,10 @@ function defaultMeleeWeapon(token) {
 
 export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
-
+    if (!defToken.owner) {
+        ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
+        return null;
+    }
     const speaker = ChatMessage.getSpeaker();
 
     // Get weapon with maximum impact
@@ -531,6 +542,10 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
 
 export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
+    if (!defToken.owner) {
+        ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
+        return null;
+    }
 
     const speaker = ChatMessage.getSpeaker();
 
@@ -621,12 +636,19 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
 
     // Create a chat message
     await ChatMessage.create(messageData, messageOptions)
+    if (!combatResult.outcome.atkDice) {
+        AudioHelper.play({src: "systems/hm3/audio/swoosh1.ogg", autoplay: true, loop: false}, true);
+    }
 
     return null;
 }
 
 export async function blockResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
+    if (!defToken.owner) {
+        ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
+        return null;
+    }
 
     const speaker = ChatMessage.getSpeaker();
 
@@ -694,9 +716,12 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
     if (!dialogResult) return null;
 
     let effDML = 5;
-    defToken.actor.itemTypes.weapongear.forEach(w => {
-        if (w.name === dialogResult.weapon) effDML = w.data.data.defenseMasteryLevel;
-    });
+    const defWeapon = defToken.actor.itemTypes.weapongear.find(w => w.name === dialogResult.weapon);
+    if (defWeapon) {
+        effDML = defWeapon.data.data.defenseMasteryLevel;
+    } else {
+        effDML = 5;
+    }
 
     // If attacking weapon is a missile and defending weapon is not
     // a sheild, then it will defend at 1/2 DML.
@@ -739,6 +764,30 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         atkImpactRoll = new Roll(`${combatResult.outcome.atkDice}d6`).roll();
     }
 
+    // Weapon Break Check
+    let atkWeaponBroke = false;
+    let defWeaponBroke = false;
+    if (type === "melee" && combatResult.outcome.block && defWeapon) {
+        const atkWeapon = atkToken.actor.itemTypes.weapongear.find(w => w.name === weaponName);
+        if (atkWeapon) {
+            const atkWeaponQuality = atkWeapon.data.data.weaponQuality;
+            const defWeaponQuality = defWeapon.data.data.weaponQuality;
+
+            const atkBreakRoll = new Roll('3d6').roll();
+            const defBreakRoll = new Roll('3d6').roll();
+
+            if (atkWeaponQuality <= defWeaponQuality) {
+                // Check attacker first, then defender
+                atkWeaponBroke = atkBreakRoll.total > atkWeaponQuality;
+                defWeaponBroke = !atkWeaponBroke && defBreakRoll.total > defWeaponQuality;
+            } else {
+                // Check defender first, then attacker
+                defWeaponBroke = defBreakRoll.total > defWeaponQuality;
+                atkWeaponBroke = !defWeaponBroke && atkBreakRoll.total > atkWeaponQuality;
+            }
+        }
+    }
+
     const chatData = {
         title: `Attack Result`,
         attacker: atkToken.name,
@@ -760,7 +809,9 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         impactRoll: atkImpactRoll ? atkImpactRoll.dice[0].values.join(" + ") : null,
         totalImpact: atkImpactRoll ? atkImpactRoll.total + parseInt(impactMod) : 0,
         atkAim: aim,
-        atkAspect: aspect
+        atkAspect: aspect,
+        atkWeaponBroke: atkWeaponBroke,
+        defWeaponBroke: defWeaponBroke
     } 
 
     let chatTemplate = "systems/hm3/templates/chat/attack-result-card.html";
@@ -784,12 +835,19 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
 
     // Create a chat message
     await ChatMessage.create(messageData, messageOptions)
+    if (!combatResult.outcome.atkDice) {
+        AudioHelper.play({src: "systems/hm3/audio/shield-bash.ogg", autoplay: true, loop: false}, true);
+    }
 
     return null;
 }
 
 export async function ignoreResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
+    if (!defToken.owner) {
+        ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
+        return null;
+    }
 
     const speaker = ChatMessage.getSpeaker();
 
@@ -909,7 +967,7 @@ export function meleeCombatResult(atkResult, defResult, defense, atkAddlImpact=0
     } else if (outcome.defStumble && outcome.atkStumble) {
         result.desc = `Both attacker and defender stumble.`;
     } else if (outcome.block) {
-        result.desc = `Attack blocked (make weapon damage roll).`;
+        result.desc = `Attack blocked.`;
     } else if (outcome.miss) {
         result.desc = `Attack missed (or standoff).`;
     } else if (outcome.dta) {

@@ -47,7 +47,19 @@
         <span class="result-desc">{{resultDesc}}</span>
     </div>
 
-    {{#if hasAttackHit}}
+    {{#if atkWeaponBroke}}
+    <div class="card-content">
+        <span class="weapon-broke">Attacker's weapon broke!</span>
+    </div>
+    {{/if}}
+
+    {{#if defWeaponBroke}}
+    <div class="card-content">
+        <span class="weapon-broke">Defender's shield/weapon broke!</span>
+    </div>
+    {{/if}}
+
+     {{#if hasAttackHit}}
     {{#if (ne addlWeaponImpact 0)}}
     <div class="card-content">
         <span class="label">Additional Attack Weapon Impact:</span>
