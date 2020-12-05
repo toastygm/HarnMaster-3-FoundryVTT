@@ -72,6 +72,12 @@ function askWeaponMacro(name, slot, img) {
             title: 'Select Weapon Macro',
             content: html.trim(),
             buttons: {
+                enhAttackButton: {
+                    label: "Enhanced Attack",
+                    callback: async (html) => {
+                        return await applyMacro(name, `game.hm3.macros.weaponAttack("${name}");`, slot, img, {"hm3.itemMacro": false});
+                    }
+                },
                 attackButton: {
                     label: "Attack",
                     callback: async (html) => {
@@ -91,7 +97,7 @@ function askWeaponMacro(name, slot, img) {
                     }
                 }
             },
-            default: "attackButton",
+            default: "enhAttackButton",
             close: () => resolve(false)
         }).render(true)
     });
@@ -106,6 +112,12 @@ function askMissileMacro(name, slot, img) {
             title: 'Select Missile Macro',
             content: html.trim(),
             buttons: {
+                enhAttackButton: {
+                    label: "Enhanced Attack",
+                    callback: async (html) => {
+                        return await applyMacro(name, `game.hm3.macros.missileAttack("${name}");`, slot, img, {"hm3.itemMacro": false});
+                    }
+                },
                 attackButton: {
                     label: "Attack",
                     callback: async (html) => {
@@ -119,7 +131,7 @@ function askMissileMacro(name, slot, img) {
                     }
                 }
             },
-            default: "attackButton",
+            default: "enhAttackButton",
             close: () => resolve(false)
         }).render(true)
     });
@@ -639,7 +651,7 @@ export function changeFatigue(newValue, myActor = null) {
     if (typeof updateData['data.fatigue'] !== 'undefined') {
         actor.update(updateData);
     }
-    
+
     return true;
 }
 
