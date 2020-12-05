@@ -116,11 +116,17 @@ Function                                       | Description
 **missileAttackRoll**(itemName)                | missile attack roll, using attributes froma particular missile weapon
 **injuryRoll**()                               | injury roll
 **healingRoll**(itemName, _noDialog_)          | healing roll for the specific injury specified
-**dodgeRoll**(noDialog)                        | dodge roll
-**shockRoll**(noDialog)                        | shock roll
-**stumbleRoll**(noDialog)                      | stumble roll
-**fumbleRoll**(noDialog)                       | fumble roll
+**dodgeRoll**(_noDialog_)                        | dodge roll
+**shockRoll**(_noDialog_)                        | shock roll
+**stumbleRoll**(_noDialog_)                      | stumble roll
+**fumbleRoll**(_noDialog_)                       | fumble roll
 **genericDamageRoll**()                        | damage roll not specific to any weapon (you must enter details of the attack)
+**changeMissileQuanity**(missileName, newQty)  | Change missile quantity: +XX to increase, -XX to decrease, XX to change to exact value
+**changeFatigue**(newValue)                    | Change fatigue value: +XX to increase, -XX to decrease, XX to change to exact value
+**setSkillDevelopmentFlag**(skillName)         | Set the flag for a Skill Development Roll (only set, **not** unset)
+**weaponAttack**(weaponName)                   | Initiate melee attack from current combatant against selected token with weapon
+**missileAttack**(missileName)                 | Initiate missile attack from current combatant against selected token with missile
+**weaponAttackResume**(atkTokenId, defTokenId, action, attackAML, attackAim, attackWpnAspect, attackImpactModification)  | Continue attack with defender. "action" can be one of "dodge", "block", "counterstrike", or "ignore".
 
 _itemName_ = name (or id) of the item to affect
 
