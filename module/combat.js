@@ -41,9 +41,15 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
 
     // If a weapon was provided, don't ask for it.
     if (missileItem) {
-        options['weapon'] = missileItem;
+        if (missileItem.data.data.isEquipped) {
+            options['weapon'] = missileItem;
+        } else {
+            ui.notification.warn(`${missileItem.name} is not equipped.`);
+            return null;
+        }
     } else {
         ui.notifications.warn(`You must specify a missile weapon to use.`);
+        return null;
     }
 
     const dialogResult = await attackDialog(options);
@@ -147,7 +153,12 @@ export async function meleeAttack(attackToken, defendToken, weaponItem=null) {
 
     // If a weapon was provided, don't ask for it.
     if (weaponItem) {
-        options['weapon'] = weaponItem;
+        if (weaponItem.data.data.isEquipped) {
+            options['weapon'] = weaponItem;
+        } else {
+            ui.notification.warn(`${weaponItem.name} is not equipped.`);
+            return null;
+        }
     } else {
         const defWpns = defaultMeleeWeapon(attackToken);
         if (!defWpns.weapons || !defWpns.weapons.length) {
@@ -275,15 +286,21 @@ async function selectWeaponDialog(options) {
  * @param {Object} options 
  */
 async function attackDialog(options) {
-    if (!options.weapon && options.weapons) {
-        const result = await selectWeaponDialog(options);
-
-        if (!result) return null;
-
-        options.weapon = options.weapons.find(w => result.weapon === w.name);
+    if (options.weapons) {
+        const equippedWeapons = options.weapons.filter(w => isEquipped);
+        options.weapons = equippedWeapons;
     }
 
-    if (!options.weapon) return null;
+    if (!options.weapon && options.weapons && options.weapons.length) {
+        const result = await selectWeaponDialog(options);
+
+        if (result) options.weapon = options.weapons.find(w => result.weapon === w.name);
+    }
+
+    if (!options.weapon) {
+        ui.notifications.warn(`No equipped weapons available for attack.`);
+        return null;
+    }
 
     const dialogOptions = {
         weapon: options.weapon.name,
@@ -1204,7 +1221,8 @@ export const displayChatActionButtons = function(message, html, data) {
         // Otherwise conceal action buttons
         const buttons = chatCard.find("button[data-action]");
         buttons.each((i, btn) => {
-            if (['dodge','ignore','block','counterstrike'].includes(btn.dataset.action)) {
+            if (['dodge','ignore','block','counterstrike', 'dta-attack'].includes(btn.dataset.action)) {
+                // Only show these buttons to the defender
                 const defToken = btn.dataset.defTokenId ? 
                     canvas.tokens.get(btn.dataset.defTokenId) : null;
                 if (!defToken || !defToken.owner) {
