@@ -10,6 +10,25 @@
     </div>
     {{/if}}
 
+    {{#if addlModifierAbs}}
+    <div class="grid grid-2col">
+        <div class="card-content flexrow">
+            <span class="label">{{mlType}}:</span>
+            <span class="value">{{origEML}}</span>
+        </div>
+    
+        <div class="card-content flexrow">
+            <span class="label">Mod:</span>
+            <span class="value">{{addlModifierSign}}{{addlModifierAbs}}</span>
+        </div>
+    </div>
+
+    <div class="card-content flex-group-center">
+        <span class="label">Effective {{mlType}}:</span>
+        <span class="value">{{origEML}} {{addlModifierSign}} {{addlModifierAbs}} = <strong>{{effEML}}</strong></span>
+    </div>
+    {{/if}}
+
     <div class="grid grid-2col mingap">
         <span class="header">Attack</span>
         <span class="header">Defend</span>
@@ -58,15 +77,15 @@
         <span class="value">{{addlWeaponImpact}}</span>
     </div>
 
-    <div class="card-content center">
-        <div class="flexcol">
+    <div class="card-content">
+        <div class="flexcol flex-center">
             <span class="label">Attack Impact (Base + Addl + Roll):</span>
             <span class="value">{{weaponImpact}} + {{addlWeaponImpact}} + ({{impactRoll}}) = <strong>{{totalImpact}}</strong></span>    
         </div>
     </div>
     {{else}}
-    <div class="card-content center">
-        <div class="flexcol">
+    <div class="card-content">
+        <div class="flexcol flex-center">
             <span class="label">Attack Impact (Base + Roll):</span>
             <span class="value">{{weaponImpact}} + ({{impactRoll}}) = <strong>{{totalImpact}}</strong></span>    
         </div>
