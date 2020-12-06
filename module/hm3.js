@@ -81,7 +81,6 @@ Hooks.once('init', async function() {
 
 Hooks.on("renderChatMessage", (app, html, data) => {
   // Display action buttons
-  console.log(`renderChatMessage`);
   combat.displayChatActionButtons(app, html, data);
 });
 Hooks.on('renderChatLog', (app, html, data) => HarnMasterActor.chatListeners(html));

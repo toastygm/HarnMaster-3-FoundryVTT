@@ -62,9 +62,7 @@
 .flex-group-right {
   justify-content: center;
   align-items: center;
-  text-align: center;
-  padding: 5px;
-  border: 1px solid #999; }
+  text-align: center; }
 
 .flex-group-left {
   justify-content: flex-start;
@@ -95,14 +93,36 @@
     .chat-card .card-header h3 {
       flex: 1;
       margin: 0;
-      line-height: 36px;
+      line-height: 25px;
       font-family: "Modesto Condensed", "Palatino Linotype", serif;
       font-size: 20px;
+      font-weight: 700;
+      color: #4b4a44; }
+    .chat-card .card-header h4 {
+      flex: 1;
+      margin: 0;
+      line-height: 20px;
+      font-family: "Modesto Condensed", "Palatino Linotype", serif;
+      font-size: 16px;
       font-weight: 700;
       color: #4b4a44; }
     .chat-card .card-header h3:hover {
       color: #111;
       text-shadow: 0 0 10px red; }
+  .chat-card .mingap {
+    gap: 3px; }
+  .chat-card .header {
+    text-align: center;
+    font-weight: bold; }
+  .chat-card .center {
+    text-align: center; }
+  .chat-card .result-desc {
+    color: blue;
+    font-weight: bold; }
+  .chat-card .weapon-broke {
+    text-align: center;
+    color: red;
+    font-weight: bold; }
   .chat-card .card-content {
     margin: 5px 0; }
     .chat-card .card-content h3 {
@@ -110,7 +130,11 @@
       margin: 0;
       font-weight: bold; }
     .chat-card .card-content .label {
-      font-weight: bold; }
+      font-weight: bold;
+      padding-right: 5px;
+      text-align: right; }
+    .chat-card .card-content .value {
+      text-align: left; }
   .chat-card .card-footer {
     padding: 3px 0 0;
     border-top: 2px groove #FFF;

@@ -15,25 +15,45 @@ import { HM3 } from "./config.js";
  * @param weaponItem {Item} Missile weapon used by attacker
  */
 export async function missileAttack(attackToken, defendToken, missileItem) {
-    if (!isValidToken(attackToken) || !isValidToken(defendToken)) return null;
+    if (!attackToken || !isValidToken(attackToken)) {
+        console.error(`HM3 | meleeAttack attackToken=${attackToken} is not valid.`);
+        return null;
+    }
+    
+    
+    if (!defendToken || !isValidToken(defendToken)) {
+        console.error(`HM3 | meleeAttack defendToken=${defendToken} is not valid.`);
+        return null;
+    }
+
     if (!attackToken.owner) {
         ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
         return null;
     }
 
-    const speaker = ChatMessage.getSpeaker();
+    const speaker = ChatMessage.getSpeaker({token: attackToken});
     const range = rangeToTarget(attackToken, defendToken);
 
     const options = {
         distance: range,
-        weapon: missileItem,
         type: 'Attack'
     };
+
+    // If a weapon was provided, don't ask for it.
+    if (missileItem) {
+        options['weapon'] = missileItem;
+    } else {
+        ui.notifications.warn(`You must specify a missile weapon to use.`);
+    }
 
     const dialogResult = await attackDialog(options);
 
     // If user cancelled the dialog, then return immediately
     if (!dialogResult) return null;
+
+    if (!missileItem) {
+        missileItem = dialogResult.weapon;
+    }
 
     const effAML = dialogResult.weapon.data.data.attackMasteryLevel + dialogResult.addlModifier;
 
@@ -96,8 +116,18 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
  * @param defendToken {Token} Token representing defender 
  * @param weaponItem {Item} Melee weapon used by attacker
  */
-export async function meleeAttack(attackToken, defendToken, weaponItem) {
-    if (!isValidToken(attackToken) || !isValidToken(defendToken)) return null;
+export async function meleeAttack(attackToken, defendToken, weaponItem=null) {
+    if (!attackToken || !isValidToken(attackToken)) {
+        console.error(`HM3 | meleeAttack attackToken=${attackToken} is not valid.`);
+        return null;
+    }
+    
+    
+    if (!defendToken || !isValidToken(defendToken)) {
+        console.error(`HM3 | meleeAttack defendToken=${defendToken} is not valid.`);
+        return null;
+    }
+
     if (!attackToken.owner) {
         ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
         return null;
@@ -108,12 +138,24 @@ export async function meleeAttack(attackToken, defendToken, weaponItem) {
         return null;
     }
 
-    const speaker = ChatMessage.getSpeaker();
-    // display dialog, get aspect, aim, and addl damage
+    const speaker = ChatMessage.getSpeaker({token: attackToken});
 
+    // display dialog, get aspect, aim, and addl damage
     const options = {
-        weapon: weaponItem,
         type: 'Attack'
+    }
+
+    // If a weapon was provided, don't ask for it.
+    if (weaponItem) {
+        options['weapon'] = weaponItem;
+    } else {
+        const defWpns = defaultMeleeWeapon(attackToken);
+        if (!defWpns.weapons || !defWpns.weapons.length) {
+            ui.notifications.warn(`${attackToken} does not have any equipped melee weapons.`);
+            return null;
+        }
+        options['weapons'] = defWpns.weapons;
+        options['defaultWeapon'] = defWpns.defaultWeapon;
     }
 
     const dialogResult = await attackDialog(options);
@@ -121,6 +163,10 @@ export async function meleeAttack(attackToken, defendToken, weaponItem) {
     // If user cancelled the dialog, then return immediately
     if (!dialogResult) return null;
 
+    if (!weaponItem) {
+        weaponItem = dialogResult.weapon;
+    }
+    
     const effAML = dialogResult.weapon.data.data.attackMasteryLevel + dialogResult.addlModifier;
 
     // Prepare for Chat Message
@@ -394,7 +440,8 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
         return null;
     }
-    const speaker = ChatMessage.getSpeaker();
+
+    const speaker = ChatMessage.getSpeaker({token: atkToken});
 
     // Get weapon with maximum impact
     const options = defaultMeleeWeapon(defToken);
@@ -497,7 +544,8 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         impactRoll: csImpactRoll ? csImpactRoll.dice[0].values.join(" + ") : null,
         totalImpact: csImpactRoll ? csImpactRoll.total + parseInt(csDialogResult.impactMod) : 0,
         atkAim: csDialogResult.aim,
-        atkAspect: csDialogResult.aspect
+        atkAspect: csDialogResult.aspect,
+        dta: combatResult.outcome.dta
     } 
 
     let chatTemplate = "systems/hm3/templates/chat/attack-result-card.html";
@@ -556,7 +604,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         return null;
     }
 
-    const speaker = ChatMessage.getSpeaker();
+    const speaker = ChatMessage.getSpeaker({token: atkToken});
 
     const atkRoll = DiceHM3.rollTest({
         data: {},
@@ -621,7 +669,8 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         impactRoll: atkImpactRoll ? atkImpactRoll.dice[0].values.join(" + ") : null,
         totalImpact: atkImpactRoll ? atkImpactRoll.total + parseInt(impactMod) : 0,
         atkAim: aim,
-        atkAspect: aspect
+        atkAspect: aspect,
+        dta: combatResult.outcome.dta
     } 
 
     let chatTemplate = "systems/hm3/templates/chat/attack-result-card.html";
@@ -659,7 +708,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         return null;
     }
 
-    const speaker = ChatMessage.getSpeaker();
+    const speaker = ChatMessage.getSpeaker({token: atkToken});
 
     const atkRoll = DiceHM3.rollTest({
         data: {},
@@ -804,12 +853,17 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         defender: defToken.name,
         defTokenId: defToken.id,
         attackWeapon: weaponName,
+        defendWeapon: defWeapon ? defWeapon.name : "",
         effAML: effAML,
         defense: `Block w/ ${dialogResult.weapon}`,
         effDML: effDML + dialogResult.addlModifier,
         attackRoll: atkRoll.rollObj.total,
+        atkIsCritical: atkRoll.isCritical,
+        atkIsSuccess: atkRoll.isSuccess,
         atkRollResult: atkRoll.description,
         defenseRoll: defRoll.rollObj.total,
+        defIsCritical: defRoll.isCritical,
+        defIsSuccess: defRoll.isSuccess,
         defRollResult: defRoll.description,
         resultDesc: combatResult.desc,
         hasAttackHit: combatResult.outcome.atkDice,
@@ -819,6 +873,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         totalImpact: atkImpactRoll ? atkImpactRoll.total + parseInt(impactMod) : 0,
         atkAim: aim,
         atkAspect: aspect,
+        dta: combatResult.outcome.dta,
         atkWeaponBroke: atkWeaponBroke,
         defWeaponBroke: defWeaponBroke
     } 
@@ -858,7 +913,7 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
         return null;
     }
 
-    const speaker = ChatMessage.getSpeaker();
+    const speaker = ChatMessage.getSpeaker({token: atkToken});
 
     const atkRoll = DiceHM3.rollTest({
         data: {},
@@ -910,7 +965,8 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
         impactRoll: atkImpactRoll ? atkImpactRoll.dice[0].values.join(" + ") : null,
         totalImpact: atkImpactRoll ? atkImpactRoll.total + parseInt(impactMod) : 0,
         atkAim: aim,
-        atkAspect: aspect
+        atkAspect: aspect,
+        dta: combatResult.outcome.dta
     } 
 
     let chatTemplate = "systems/hm3/templates/chat/attack-result-card.html";
@@ -957,30 +1013,40 @@ export function meleeCombatResult(atkResult, defResult, defense, atkAddlImpact=0
     
     if (outcome.atkDice && !outcome.defDice) {
         result.desc = `Attacker strikes for ${diceFormula(outcome.atkDice, atkAddlImpact)} impact.`;
-        result.csDesc = `Counterstrike Misses`;
+        result.csDesc = `Counterstriker Misses`;
     } else if (outcome.defDice && !outcome.atkDice) {
-        result.csDesc = `Counterstrike strikes for ${diceFormula(outcome.defDice, defAddlImpact)} impact.`;
-        result.desc = `Attack Misses`;
+        result.csDesc = `Counterstriker strikes for ${diceFormula(outcome.defDice, defAddlImpact)} impact.`;
+        result.desc = `Attacker Misses`;
     } else if (outcome.atkDice && outcome.defDice) {
-        result.desc = `Attacker strikes for ${diceFormula(outcome.atkDice, atkAddlImpact)} impact and defender strikes for ${diceFormula(outcome.defDice, defAddlImpact)} impact.`;
+        result.desc = `Attacker strikes for ${diceFormula(outcome.atkDice, atkAddlImpact)} impact.`
+        result.csDesc = `Counterstriker strikes for ${diceFormula(outcome.defDice, defAddlImpact)} impact.`;
     } else if (outcome.atkFumble && !outcome.defFumble) {
         result.desc = `Attacker fumbles.`;
+        result.csDesc = `Counterstriker misses.`
     } else if (outcome.defFumble && !outcome.atkFumble) {
-        result.desc = `Defender fumbles.`;
+        result.desc = `Attacker misses.`;
+        result.csDesc = `Counterstriker fumbles`;
     } else if (outcome.atkFumble && outcome.defFumble) {
-        result.desc = `Both attacker and defender fumble.`;
+        result.desc = `Attacker fumbles.`;
+        result.csDesc = `Counterstriker fumbles.`;
     } else if (outcome.atkStumble && !outcome.defStumble) {
         result.desc = `Attacker stumbles.`;
+        result.csDesc = `Counterstriker misses.`;
     } else if (outcome.defStumble && !outcome.atkStumble) {
-        result.desc = `Defender stumbles.`;
+        result.desc = `Attacker misses.`;
+        result.csDesc = `Counterstriker stumbles.`;
     } else if (outcome.defStumble && outcome.atkStumble) {
-        result.desc = `Both attacker and defender stumble.`;
+        result.desc = `Attacker stumbles.`;
+        result.csDesc = `Counterstriker stumbles.`;
     } else if (outcome.block) {
-        result.desc = `Attack blocked.`;
+        result.desc = `Attacker blocked.`;
+        result.csDesc = `Counterstriker blocked.`;
     } else if (outcome.miss) {
-        result.desc = `Attack missed (or standoff).`;
+        result.desc = `Attack missed.`;
+        result.csDesc = `Counterstrike missed.`;
     } else if (outcome.dta) {
         result.desc = `Defender gains Tactical Advantage.`;
+        result.csDesc = `Counterstriker achieves Tactical Advantage!`
     }
 
     return result;

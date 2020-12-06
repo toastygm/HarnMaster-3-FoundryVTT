@@ -1,6 +1,7 @@
 <div class="hm3 chat-card item-card" data-actor-id="{{actorId}}">
-    <header class="card-header flexrow">
+    <header class="card-header flexcol">
         <h3 class="title">{{title}}</h3>
+        <h4 class="subtitle">{{attacker}} vs. {{defender}}</h4>
     </header>
 
     {{#if notes}}
@@ -9,71 +10,66 @@
     </div>
     {{/if}}
 
-    <div class="card-content">
-        <span class="label">Attacker:</span>
-        <span class="value">{{attacker}}</span>
+    <div class="grid grid-2col mingap">
+        <span class="header">Attack</span>
+        <span class="header">Defend</span>
+        <span class="center">{{attackWeapon}}</span>
+        <span class="center">{{#if defense}}{{defense}}{{else}}&#8212;{{/if}}</span>
+        <span class="center">Eff. AML: {{effAML}}</span>
+        <span class="center">{{#if effDML}}Eff. DML: {{effDML}}{{else}}&#8212;{{/if}}</span>
+        <span class="center">Roll: {{attackRoll}}</span>
+        <span class="center">{{#if defenseRoll}}Roll: {{defenseRoll}}{{else}}&#8212;{{/if}}</span>
+        {{#if atkIsSuccess}}
+        <span class="center {{#if atkIsCritical}}critical-success-block{{else}}success-text{{/if}}">{{atkRollResult}}</span>
+        {{else}}
+        <span class="center {{#if atkIsCritical}}critical-failure-block{{else}}failure-text{{/if}}">{{atkRollResult}}</span>
+        {{/if}}
+        {{#if defenseRoll}}
+        {{#if defIsSuccess}}
+        <span class="center {{#if defIsCritical}}critical-success-block{{else}}success-text{{/if}}">{{defRollResult}}</span>
+        {{else}}
+        <span class="center {{#if defIsCritical}}critical-failure-block{{else}}failure-text{{/if}}">{{defRollResult}}</span>
+        {{/if}}
+        {{else}}
+        <span class="center">&#8212;</span>
+        {{/if}}
     </div>
 
-    <div class="card-content">
-        <span class="label">Defender:</span>
-        <span class="value">{{defender}}</span>
-    </div>
-
-    <div class="card-content">
-        <span class="label">Attack Weapon (AML):</span>
-        <span class="value">{{attackWeapon}} ({{effAML}})</span>
-    </div>
-
-    {{#if defense}}
-    <div class="card-content">
-        <span class="label">Defense{{#if effDML}} (DML){{/if}}:</span>
-        <span class="value">{{defense}}{{#if effDML}} ({{effDML}}){{/if}}</span>
-    </div>
-    {{/if}}
-    
-    <div class="card-content">
-        <span class="label">Attack Roll:</span>
-        <span class="value">{{attackRoll}} = {{atkRollResult}}</span>
-    </div>
-
-    {{#if defenseRoll}}
-    <div class="card-content">
-        <span class="label">Defense Roll:</span>
-        <span class="value">{{defenseRoll}} = {{defRollResult}}</span>
-    </div>
-    {{/if}}
-
-    <div class="card-content">
+    <div class="card-content center">
         <span class="result-desc">{{resultDesc}}</span>
     </div>
 
     {{#if atkWeaponBroke}}
-    <div class="card-content">
-        <span class="weapon-broke">Attacker's weapon broke!</span>
+    <div class="card-content center">
+        <span class="weapon-broke">{{attacker}}'s {{attackWeapon}} broke!</span>
     </div>
     {{/if}}
 
     {{#if defWeaponBroke}}
-    <div class="card-content">
-        <span class="weapon-broke">Defender's shield/weapon broke!</span>
+    <div class="card-content center">
+        <span class="weapon-broke">{{defender}}'s {{defendWeapon}} broke!</span>
     </div>
     {{/if}}
 
-     {{#if hasAttackHit}}
+    {{#if hasAttackHit}}
     {{#if (ne addlWeaponImpact 0)}}
-    <div class="card-content">
-        <span class="label">Additional Attack Weapon Impact:</span>
+    <div class="card-content center">
+        <span class="label">Addl Weapon Impact:</span>
         <span class="value">{{addlWeaponImpact}}</span>
     </div>
 
-    <div class="card-content">
-        <span class="label">Attack Impact (Base + Addl + Roll):</span>
-        <span class="value">{{weaponImpact}} + {{addlWeaponImpact}} + ({{impactRoll}}) = <strong>{{totalImpact}}</strong></span>
+    <div class="card-content center">
+        <div class="flexcol">
+            <span class="label">Attack Impact (Base + Addl + Roll):</span>
+            <span class="value">{{weaponImpact}} + {{addlWeaponImpact}} + ({{impactRoll}}) = <strong>{{totalImpact}}</strong></span>    
+        </div>
     </div>
     {{else}}
-    <div class="card-content">
-        <span class="label">Attack Impact (Base + Roll):</span>
-        <span class="value">{{weaponImpact}} + ({{impactRoll}}) = <strong>{{totalImpact}}</strong></span>
+    <div class="card-content center">
+        <div class="flexcol">
+            <span class="label">Attack Impact (Base + Roll):</span>
+            <span class="value">{{weaponImpact}} + ({{impactRoll}}) = <strong>{{totalImpact}}</strong></span>    
+        </div>
     </div>
     {{/if}}
 
@@ -83,4 +79,9 @@
     </div>
     {{/if}}
 
+    {{#if dta}}
+    <div class="card-buttons">
+        <button data-action="dta-attack" data-atk-token-id="{{defTokenId}}"" data-def-token-id="{{atkTokenId}}">Initiate DTA Attack</button>
+    </div>
+    {{/if}}
 </div>

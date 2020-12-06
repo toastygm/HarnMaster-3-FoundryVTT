@@ -884,7 +884,6 @@ export class HarnMasterActor extends Actor {
 
     static async _onChatCardAction(event) {
         event.preventDefault();
-
         const button = event.currentTarget;
         button.disabled = true;
         const action = button.dataset.action;
@@ -932,7 +931,6 @@ export class HarnMasterActor extends Actor {
                 return null;
             }
         }
-
         switch (action) {
             case 'injury':
                 DiceHM3.injuryRoll({
@@ -944,6 +942,10 @@ export class HarnMasterActor extends Actor {
                     aim: button.dataset.aim,
                     tokenId: token.id
                 });
+                break;
+
+            case 'dta-attack':
+                macros.weaponAttack(null,false, atkToken);
                 break;
 
             case 'dodge':
