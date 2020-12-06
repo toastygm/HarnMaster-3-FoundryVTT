@@ -14,7 +14,7 @@ export const registerSystemSettings = function () {
         hint: "Enable optional combat rule that allows weapons to be damaged or destroyed on successful block",
         scope: "world",
         config: true,
-        default: true,
+        default: false,
         type: Boolean
     });
 
@@ -23,7 +23,7 @@ export const registerSystemSettings = function () {
         hint: "Enable optional combat rule that tracks bloodloss as an injury (partially implemented)",
         scope: "world",
         config: true,
-        default: true,
+        default: false,
         type: Boolean
     });
 
@@ -55,14 +55,14 @@ export const registerSystemSettings = function () {
         hint: "Enable optional combat rule that supports limb amputations",
         scope: "world",
         config: true,
-        default: true,
+        default: false,
         type: Boolean
     });
 
 
     game.settings.register("hm3", "distanceUnits", {
         name: "Distance Units",
-        hint: "What units should be used for range calculations",
+        hint: "What units should be used for a missile weapon's short/medium/long/extreme range attributes?",
         scope: "world",
         config: true,
         default: "scene",
