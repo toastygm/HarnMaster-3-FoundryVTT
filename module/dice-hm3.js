@@ -778,7 +778,7 @@ export class DiceHM3 {
             weaponImpact: weapon.aspects[roll.chosenAspect],
             addlWeaponImpact: roll.addlWeaponImpact,
             totalImpact: totalImpact,
-            rollResult: roll.rollObj.dice[0].values.join(" + "),
+            impactRoll: roll.rollObj.dice[0].values.join(" + "),
             rollValue: roll.rollObj.total,
             notes: renderedNotes
         };
