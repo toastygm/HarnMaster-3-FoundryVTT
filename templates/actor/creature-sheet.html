@@ -475,7 +475,7 @@
                     {{#each actor.items as |item id|}}
                         {{#if (eq item.type "weapongear")}}
                             <li class="item weapon {{#unless data.isCarried}}nocarry{{/unless}} flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
-                                <div class="item-name weapon-name {{#if (and data.isEquipped data.isCarried)}}weapon-damage-roll{{/if}} flexrow" data-weapon="{{item.name}}">
+                                <div class="item-name weapon-name {{#if (and data.isEquipped data.isCarried)}}melee-weapon-attack{{/if}} flexrow">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                                     <h4>{{item.name}}</h4>
                                 </div>
@@ -487,17 +487,17 @@
                                 {{#if (lt data.blunt 0)}}
                                 <div class="item-detail weapon-blunt"><i class="fas fa-times"></i></div>
                                 {{else}}
-                                <div class="item-detail weapon-blunt">{{data.blunt}}</div>
+                                <div class="item-detail weapon-blunt {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="weapon-damage-roll" title="{{item.name}} Blunt Damage Roll" data-weapon="{{item.name}}" data-aspect="Blunt">{{data.blunt}}</a>{{else}}{{data.blunt}}{{/if}}</div>
                                 {{/if}}
                                 {{#if (lt data.edged 0)}}
                                 <div class="item-detail weapon-edged"><i class="fas fa-times"></i></div>
                                 {{else}}
-                                <div class="item-detail weapon-edged">{{data.edged}}</div>
+                                <div class="item-detail weapon-edged {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="weapon-damage-roll" title="{{item.name}} Edged Damage Roll" data-weapon="{{item.name}}" data-aspect="Edged">{{data.edged}}</a>{{else}}{{data.edged}}{{/if}}</div>
                                 {{/if}}
                                 {{#if (lt data.piercing 0)}}
                                 <div class="item-detail weapon-piercing"><i class="fas fa-times"></i></div>
                                 {{else}}
-                                <div class="item-detail weapon-piercing">{{data.piercing}}</div>
+                                <div class="item-detail weapon-piercing {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="weapon-damage-roll" title="{{item.name}} Piercing Damage Roll" data-weapon="{{item.name}}" data-aspect="Piercing">{{data.piercing}}</a>{{else}}{{data.piercing}}{{/if}}</div>
                                 {{/if}}
                                 <div class="item-detail weapon-attack {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="weapon-attack-roll" title="{{item.name}} Attack Roll">{{data.attackMasteryLevel}}</a>{{else}}{{data.attackMasteryLevel}}{{/if}}</div>
                                 <div class="item-detail weapon-defense {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="weapon-defend-roll" title="{{item.name}} Defense Roll">{{data.defenseMasteryLevel}}</a>{{else}}{{data.defenseMasteryLevel}}{{/if}}</div>
@@ -536,7 +536,7 @@
                     {{#each actor.items as |item id|}}
                         {{#if (eq item.type "missilegear")}}
                             <li class="item missile {{#unless data.isCarried}}nocarry{{/unless}} flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
-                                <div class="item-name missile-name {{#if (and data.isEquipped data.isCarried)}}missile-damage-roll{{/if}} flexrow">
+                                <div class="item-name missile-name {{#if (and data.isEquipped data.isCarried)}}missile-weapon-attack{{/if}} flexrow">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                                     <h4>{{item.name}}</h4>
                                 </div>
@@ -546,25 +546,24 @@
                                 {{#if (lt data.range.short 0)}}
                                 <div class="item-detail missile-short"><i class="fas fa-times"></i></div>
                                 {{else}}
-                                <div class="item-detail missile-short">{{data.range.short}}/{{data.impact.short}}</div>
+                                <div class="item-detail missile-short {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="missile-damage-roll" title="{{item.name}} Short-Range Damage Roll" data-weapon="{{item.name}}" data-range="Short">{{data.range.short}}/{{data.impact.short}}</a>{{else}}{{data.range.short}}/{{data.impact.short}}{{/if}}</div>
                                 {{/if}}
                                 {{#if (lt data.range.medium 0)}}
                                 <div class="item-detail missile-medium"><i class="fas fa-times"></i></div>
                                 {{else}}
-                                <div class="item-detail missile-medium">{{data.range.medium}}/{{data.impact.medium}}</div>
+                                <div class="item-detail missile-medium {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="missile-damage-roll" title="{{item.name}} Medium-Range Damage Roll" data-weapon="{{item.name}}" data-range="Medium">{{data.range.medium}}/{{data.impact.medium}}</a>{{else}}{{data.range.medium}}/{{data.impact.medium}}{{/if}}</div>
                                 {{/if}}
                                 {{#if (lt data.range.long 0)}}
                                 <div class="item-detail missile-long"><i class="fas fa-times"></i></div>
                                 {{else}}
-                                <div class="item-detail missile-long">{{data.range.long}}/{{data.impact.long}}</div>
+                                <div class="item-detail missile-long {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="missile-damage-roll" title="{{item.name}} Long-Range Damage Roll" data-weapon="{{item.name}}" data-range="Long">{{data.range.long}}/{{data.impact.long}}</a>{{else}}{{data.range.long}}/{{data.impact.long}}{{/if}}</div>
                                 {{/if}}
                                 {{#if (lt data.range.extreme 0)}}
                                 <div class="item-detail missile-extreme"><i class="fas fa-times"></i></div>
                                 {{else}}
-                                <div class="item-detail missile-extreme">{{data.range.extreme}}/{{data.impact.extreme}}</div>
+                                <div class="item-detail missile-extreme {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="missile-damage-roll" title="{{item.name}} Extreme-Range Damage Roll" data-weapon="{{item.name}}" data-range="Extreme">{{data.range.extreme}}/{{data.impact.extreme}}</a>{{else}}{{data.range.extreme}}/{{data.impact.extreme}}{{/if}}</div>
                                 {{/if}}
-                                <div class="item-detail missile-attack {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="missile-attack-roll" 
-                                    title="Missile Attack Roll">{{data.attackMasteryLevel}}</a>{{else}}{{data.attackMasteryLevel}}{{/if}}</div>
+                                <div class="item-detail missile-attack {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="missile-attack-roll" title="Missile Attack Roll">{{data.attackMasteryLevel}}</a>{{else}}{{data.attackMasteryLevel}}{{/if}}</div>
                                 <div class="item-detail missile-notes">{{data.notes}}</div>
                                 <div class="item-controls-wide">
                                     <a class="item-control item-equip" title="Equip Missile"><i class="{{#if data.isEquipped}}active{{/if}} fas fa-shield-alt"></i></a>
