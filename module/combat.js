@@ -15,16 +15,27 @@ import { HM3 } from "./config.js";
  * @param weaponItem {Item} Missile weapon used by attacker
  */
 export async function missileAttack(attackToken, defendToken, missileItem) {
-    if (!attackToken || !isValidToken(attackToken)) {
+    if (!attackToken) {
+        ui.notifications.warn(`No attacker token identified.`);
+        return null;
+    }
+
+    if (!isValidToken(attackToken)) {
         console.error(`HM3 | meleeAttack attackToken=${attackToken} is not valid.`);
         return null;
     }
     
     
-    if (!defendToken || !isValidToken(defendToken)) {
+    if (!defendToken) {
+        ui.notifications.warn(`No defender token identified.`);
+        return null;
+    }
+
+    if (!isValidToken(defendToken)) {
         console.error(`HM3 | meleeAttack defendToken=${defendToken} is not valid.`);
         return null;
     }
+
 
     if (!attackToken.owner) {
         ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
@@ -123,13 +134,23 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
  * @param weaponItem {Item} Melee weapon used by attacker
  */
 export async function meleeAttack(attackToken, defendToken, weaponItem=null) {
-    if (!attackToken || !isValidToken(attackToken)) {
+    if (!attackToken) {
+        ui.notifications.warn(`No attacker token identified.`);
+        return null;
+    }
+
+    if (!isValidToken(attackToken)) {
         console.error(`HM3 | meleeAttack attackToken=${attackToken} is not valid.`);
         return null;
     }
     
     
-    if (!defendToken || !isValidToken(defendToken)) {
+    if (!defendToken) {
+        ui.notifications.warn(`No defender token identified.`);
+        return null;
+    }
+
+    if (!isValidToken(defendToken)) {
         console.error(`HM3 | meleeAttack defendToken=${defendToken} is not valid.`);
         return null;
     }
