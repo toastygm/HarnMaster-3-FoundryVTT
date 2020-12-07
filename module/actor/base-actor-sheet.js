@@ -233,14 +233,39 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         html.find('.weapon-damage-roll').click(ev => {
             const li = $(ev.currentTarget).parents(".item");
             const itemId = li.data('itemId');
-            macros.weaponDamageRoll(`Item$${itemId}`, this.actor);
+            const aspect = ev.currentTarget.dataset.aspect;
+            macros.weaponDamageRoll(`Item$${itemId}`, aspect, this.actor);
         });
 
         // Missile Damage Roll
         html.find('.missile-damage-roll').click(ev => {
             const li = $(ev.currentTarget).parents(".item");
             const itemId = li.data('itemId');
-            macros.missileDamageRoll(`Item$${itemId}`, this.actor);
+            const range = ev.currentTarget.dataset.range;
+            macros.missileDamageRoll(`Item$${itemId}`, range, this.actor);
+        });
+
+        // Melee Weapon Attack
+        html.find('.melee-weapon-attack').click(ev => {
+            if (!this.actor.token) {
+                ui.notifications.warn(`You may only perform this action from a token's actor sheet; double-click on a specific token on the canvas.`)
+                return null;
+            }
+            const li = $(ev.currentTarget).parents(".item");
+            const itemId = li.data('itemId');
+            macros.weaponAttack(`Item$${itemId}`, false, this.actor.token);
+        });
+
+        // Missile Weapon Attack
+        html.find('.missile-weapon-attack').click(ev => {
+            if (!this.actor.token) {
+                ui.notifications.warn(`You may only perform this action from a token's actor sheet; double-click on a specific token on the canvas.`)
+                return null;
+            }
+            const li = $(ev.currentTarget).parents(".item");
+            const itemId = li.data('itemId');
+            console.log(`ItemId=${itemId}`);
+            macros.missileAttack(`Item$${itemId}`, false, this.actor.token);
         });
 
         // Weapon Attack Roll
