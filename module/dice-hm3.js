@@ -739,7 +739,7 @@ export class DiceHM3 {
 
         const dialogOptions = {
             weapon: rollData.weapon,
-            weaponAspect: weapon.defaultAspect,
+            weaponAspect: rollData.aspect ? rollData.aspect : weapon.defaultAspect,
             weaponAspects: weapon.aspects,
             data: rollData.actorData
         };
@@ -1071,10 +1071,13 @@ export class DiceHM3 {
 
         const dialogOptions = {
             name: rollData.name,
-            impactShort: rollData.impactShort,
-            impactMedium: rollData.impactMedium,
-            impactLong: rollData.impactLong,
-            impactExtreme: rollData.impactExtreme,
+            ranges: {
+                "Short": rollData.impactShort,
+                "Medium": rollData.impactMedium,
+                "Long": rollData.impactLong,
+                "Extreme": rollData.impactExtreme
+            },
+            defaultRange: rollData.defaultRange ? rollData.defaultRange : "Extreme",
             data: rollData.data
         };
 
@@ -1153,10 +1156,8 @@ export class DiceHM3 {
         let dlgTemplate = dialogOptions.template || "systems/hm3/templates/dialog/missile-damage-dialog.html";
         let dialogData = {
             name: dialogOptions.name,
-            impactShort: dialogOptions.impactShort,
-            impactMedium: dialogOptions.impactMedium,
-            impactLong: dialogOptions.impactLong,
-            impactExtreme: dialogOptions.impactExtreme
+            ranges: dialogOptions.ranges,
+            defaultRange: dialogOptions.defaultRange
         };
         const html = await renderTemplate(dlgTemplate, dialogData);
         
