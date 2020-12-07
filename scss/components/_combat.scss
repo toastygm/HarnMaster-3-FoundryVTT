@@ -54,10 +54,14 @@
 
             .item-name.damage-roll:hover .item-image {
                 background-image: url("../../../icons/svg/d20-grey.svg") !important;
+                background-repeat: no-repeat;
+                background-position: center;
             }
         
             .item-name.damage-roll .item-image:hover {
                 background-image: url("../../../icons/svg/d20-black.svg") !important;
+                background-repeat: no-repeat;
+                background-position: center;
             }
             
             .weapon-image {
@@ -134,16 +138,40 @@
             .weapon-blunt {
                 flex: 0 0 25px;
                 text-align: center;
+
+                &.active:hover {
+                    background-image: url("../../../icons/svg/d20-grey.svg") !important;
+                    background-size: 27px;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    color: black;
+                }
             }
 
             .weapon-edged {
                 flex: 0 0 25px;
                 text-align: center;
+
+                &.active:hover {
+                    background-image: url("../../../icons/svg/d20-grey.svg") !important;
+                    background-size: 27px;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    color: black;
+                }
             }
 
             .weapon-piercing {
                 flex: 0 0 25px;
                 text-align: center;
+
+                &.active:hover {
+                    background-image: url("../../../icons/svg/d20-grey.svg") !important;
+                    background-size: 27px;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    color: black;
+                }
             }
 
             .weapon-value {
@@ -158,6 +186,8 @@
                 &.active:hover {
                     background-image: url("../../../icons/svg/d20-grey.svg") !important;
                     background-size: 27px;
+                    background-repeat: no-repeat;
+                    background-position: center;
                     color: black;
                 }
             }
@@ -169,6 +199,8 @@
                 &.active:hover {
                     background-image: url("../../../icons/svg/d20-grey.svg") !important;
                     background-size: 27px;
+                    background-repeat: no-repeat;
+                    background-position: center;
                     color: black;
                 }
             }
@@ -225,10 +257,14 @@
 
             .item-name.missile-damage-roll:hover .item-image {
                 background-image: url("../../../icons/svg/d20-grey.svg") !important;
+                background-repeat: no-repeat;
+                background-position: center;
             }
         
             .item-name.missile-damage-roll .item-image:hover {
                 background-image: url("../../../icons/svg/d20-black.svg") !important;
+                background-repeat: no-repeat;
+                background-position: center;
             }
             
             .missile-image {
@@ -299,21 +335,53 @@
             .missile-short {
                 flex: 0 0 45px;
                 text-align: center;
+
+                &.active:hover {
+                    background-image: url("../../../icons/svg/d20-grey.svg") !important;
+                    background-size: 27px;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    color: black;
+                }
             }
 
             .missile-medium {
                 flex: 0 0 45px;
                 text-align: center;
+
+                &.active:hover {
+                    background-image: url("../../../icons/svg/d20-grey.svg") !important;
+                    background-size: 27px;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    color: black;
+                }
             }
 
             .missile-long {
                 flex: 0 0 45px;
                 text-align: center;
+
+                &.active:hover {
+                    background-image: url("../../../icons/svg/d20-grey.svg") !important;
+                    background-size: 27px;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    color: black;
+                }
             }
 
             .missile-extreme {
                 flex: 0 0 45px;
                 text-align: center;
+
+                &.active:hover {
+                    background-image: url("../../../icons/svg/d20-grey.svg") !important;
+                    background-size: 27px;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    color: black;
+                }
             }
 
             .missile-value {
@@ -328,6 +396,8 @@
                 &.active:hover {
                     background-image: url("../../../icons/svg/d20-grey.svg") !important;
                     background-size: 27px;
+                    background-repeat: no-repeat;
+                    background-position: center;
                     color: black;
                 }
             }
