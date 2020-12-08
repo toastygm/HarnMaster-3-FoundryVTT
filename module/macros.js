@@ -430,7 +430,6 @@ export function weaponAttack(itemName = null, noDialog = false, myToken = null) 
     const combatant = getTokenInCombat(myToken);
     if (!combatant) return null;
 
-    console.log(combatant);
     const targets = game.user.targets;
     if (!targets || targets.size !== 1) {
         ui.notifications.warn(`You must have one selected target.`);
@@ -465,7 +464,6 @@ export function missileAttack(itemName = null, noDialog = false, myToken = null)
         missile = combat.getItem(itemName, 'missilegear', combatant.actor);
     }
 
-    console.log(missile);
     return combat.missileAttack(combatant.token, targetToken, missile);
 }
 
