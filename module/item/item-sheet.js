@@ -35,7 +35,7 @@ export class HarnMasterItemSheet extends ItemSheet {
     data.containers = {'On Person': 'on-person'};
     this.actor.items.forEach(it => {
         if (it.type === 'containergear') {
-          if (!(this.item.data.type === 'containergear' && it.name === this.item.data.name)) {
+          if (!(this.item.data.type === 'containergear' && it.id === this.item.id)) {
             data.containers[it.name] = it.id;
           }
         }

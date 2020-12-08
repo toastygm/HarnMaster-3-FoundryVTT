@@ -26,7 +26,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     "data": {
                         "container": "on-person",
                         "capacity": {
-                            "max": -1,
+                            "max": 99999,
                             "value": data.data.totalGearWeight
                         }
                     }

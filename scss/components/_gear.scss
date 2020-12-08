@@ -157,7 +157,12 @@
         white-space: nowrap;
         overflow: hidden;
     }
-    
+
+    .overcapacity {
+        color: red;
+        font-weight: bold;
+    }
+
     .gear-notes {
         flex: 1 0 80px;
         padding-left: 10px;

@@ -572,7 +572,8 @@
     border-bottom: 3px solid #b5b3a4; }
   .hm3 .tabs .item.active {
     text-shadow: none;
-    border-bottom: 3px solid black; }
+    border-bottom: 3px solid black;
+    font-size: 25px; }
 
 .hm3 .sheet-body .tab {
   margin-right: 5px; }
@@ -1511,6 +1512,9 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden; }
+  .hm3 .gear-list .overcapacity {
+    color: red;
+    font-weight: bold; }
   .hm3 .gear-list .gear-notes {
     flex: 1 0 80px;
     padding-left: 10px;

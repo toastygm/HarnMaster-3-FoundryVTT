@@ -27,10 +27,10 @@
 
         {{!-- Properties Tab --}}
         <div class="tab properties" data-group="primary" data-tab="properties">
-            <div class="grid grid-3col">
+            <div class="grid grid-4col">
                 <div class="resource">
                     <label class="resource-label">Quantity</label>
-                    <input type="number" name="data.quantity" value="{{data.quantity}}" data-dtype="Number"/>
+                    <input type="number" name="data.quantity" value="{{data.quantity}}" readonly data-dtype="Number"/>
                 </div>
                 <div class="resource">
                     <label class="resource-label">Weight</label>
@@ -43,10 +43,6 @@
                 <div class="resource">
                     <label class="resource-label">Max Capacity</label>
                     <input type="number" name="data.capacity.max" value="{{data.capacity.max}}" data-dtype="Number"/>
-                </div>
-                <div class="resource">
-                </div>
-                <div class="resource">
                 </div>
             </div>
             <div class="resource">
