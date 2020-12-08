@@ -425,6 +425,11 @@ async function attackDialog(options) {
     });
 }
 
+/**
+ * Determine if the token is valid (must be either a 'creature' or 'character')
+ * 
+ * @param {Token} token 
+ */
 function isValidToken(token) {
     if (!token) {
         ui.notifications.warn('No token selected.');
@@ -472,6 +477,17 @@ function defaultMeleeWeapon(token) {
     }
 }
 
+/**
+ * Resume the attack with the defender performing the "Dodge" defense.  Note that this defense is only applicable to melee attacks.
+ * 
+ * @param {*} atkToken Token representing the attacker
+ * @param {*} defToken Token representing the defender
+ * @param {*} atkWeaponName Name of the weapon the attacker is using
+ * @param {*} atkEffAML The effective AML (Attack Mastery Level) of the attacker after modifiers applied
+ * @param {*} atkAim Attack aim ("High", "Mid", "Low")
+ * @param {*} atkAspect Weapon aspect ("Blunt", "Edged", "Piercing")
+ * @param {*} atkImpactMod Additional modifier to impact
+ */
 export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
     if (!defToken.owner) {
@@ -640,6 +656,18 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     return null;
 }
 
+/**
+ * Resume the attack with the defender performing the "Dodge" defense.
+ * 
+ * @param {*} atkToken Token representing the attacker
+ * @param {*} defToken Token representing the defender
+ * @param {*} type Type of attack: "melee" or "missile"
+ * @param {*} weaponName Name of the weapon the attacker is using
+ * @param {*} effAML The effective AML (Attack Mastery Level) of the attacker after modifiers applied
+ * @param {*} aim Attack aim ("High", "Mid", "Low")
+ * @param {*} aspect Weapon aspect ("Blunt", "Edged", "Piercing")
+ * @param {*} impactMod Additional modifier to impact
+ */
 export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
     if (!defToken.owner) {
@@ -744,6 +772,18 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
     return null;
 }
 
+/**
+ * Resume the attack with the defender performing the "Block" defense.
+ * 
+ * @param {*} atkToken Token representing the attacker
+ * @param {*} defToken Token representing the defender
+ * @param {*} type Type of attack: "melee" or "missile"
+ * @param {*} weaponName Name of the weapon the attacker is using
+ * @param {*} effAML The effective AML (Attack Mastery Level) of the attacker after modifiers applied
+ * @param {*} aim Attack aim ("High", "Mid", "Low")
+ * @param {*} aspect Weapon aspect ("Blunt", "Edged", "Piercing")
+ * @param {*} impactMod Additional modifier to impact
+ */
 export async function blockResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
     if (!defToken.owner) {
@@ -952,6 +992,18 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
     return null;
 }
 
+/**
+ * Resume the attack with the defender performing the "Ignore" defense.
+ * 
+ * @param {*} atkToken Token representing the attacker
+ * @param {*} defToken Token representing the defender
+ * @param {*} type Type of attack: "melee" or "missile"
+ * @param {*} weaponName Name of the weapon the attacker is using
+ * @param {*} effAML The effective AML (Attack Mastery Level) of the attacker after modifiers applied
+ * @param {*} aim Attack aim ("High", "Mid", "Low")
+ * @param {*} aspect Weapon aspect ("Blunt", "Edged", "Piercing")
+ * @param {*} impactMod Additional modifier to impact
+ */
 export async function ignoreResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
     if (!defToken.owner) {
@@ -1040,6 +1092,15 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
     return null;
 }
 
+/**
+ * Display the results of meele combat.
+ * 
+ * @param {String} atkResult The result from the attack, comprised of "cs", "cf", "ms", or "mf"
+ * @param {String} defResult The result from the defense, comprised of "cs", "cf", "ms", or "mf"
+ * @param {String} defense The type of defense: "ignore", "block", "counterstrike", or "dodge"
+ * @param {Number} atkAddlImpact Additional impact for the attacker
+ * @param {Number} defAddlImpact If counterstrike defense, the additional impact for the defender (counterstriker)
+ */
 export function meleeCombatResult(atkResult, defResult, defense, atkAddlImpact=0, defAddlImpact=0) {
     let outcome = null;
     let index = null;
@@ -1098,6 +1159,14 @@ export function meleeCombatResult(atkResult, defResult, defense, atkAddlImpact=0
     return result;
 }
 
+/**
+ * Calculate and display the results of the missile combat.
+ * 
+ * @param {String} atkResult The result from the attack, comprised of "cs", "cf", "ms", or "mf"
+ * @param {String} defResult The result from the defense, comprised of "cs", "cf", "ms", or "mf"
+ * @param {String} defense The type of defense: "ignore", "block", "counterstrike", or "dodge"
+ * @param {Number} atkAddlImpact Any additional impact
+ */
 export function missileCombatResult(atkResult, defResult, defense, atkAddlImpact=0) {
     let outcome = null;
     let index = null;
@@ -1128,6 +1197,12 @@ export function missileCombatResult(atkResult, defResult, defense, atkAddlImpact
     return result;
 }
 
+/**
+ * Return the dice formula meeting the specified parameters
+ * 
+ * @param {*} numDice  Number of 6-sided dice to include in the formula 
+ * @param {*} addlImpact Any additional impact to include in the formula
+ */
 function diceFormula (numDice, addlImpact) {
     if (numDice <= 0) {
         return 'no';
@@ -1178,6 +1253,13 @@ function calcWeaponAspect(weapon) {
     return result;
 }
 
+/**
+ * Finds an Item within the given actor.
+ * 
+ * @param {*} itemName Either an Item or a string formatted as "Item$<itemId>"
+ * @param {*} type The type of Item (e.g., "missilegear")
+ * @param {*} actor The actor containing the items to search
+ */
 export function getItem(itemName, type, actor) {
     if (!actor || typeof actor !== 'object') {
         ui.notifications.warn('No actor was selected. You must select an actor.');
@@ -1250,12 +1332,14 @@ export const displayChatActionButtons = function(message, html, data) {
                     btn.style.display = "none";
                 }
             } else if (btn.dataset.action === 'injury') {
+                // Show this button to any user that is an owner of the token
                 const token = btn.dataset.tokenId ? 
                     canvas.tokens.get(btn.dataset.tokenId) : null;
                 if (!token || !token.owner) {
                     btn.style.display = "none";
                 }
             } else if (['stumble','fumble','shock'].includes(btn.dataset.action)) {
+                // Show this button to anyone who owns the actor
                 let actor;
                 if (btn.dataset.tokenId) {
                     const token = btn.dataset.tokenId ? 
