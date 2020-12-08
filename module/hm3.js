@@ -93,7 +93,7 @@ Hooks.on('renderChatPopout', (app, html, data) => HarnMasterActor.chatListeners(
 Hooks.once("ready", function() {
   // Determine whether a system migration is required
   const currentVersion = game.settings.get("hm3", "systemMigrationVersion");
-  const NEEDS_MIGRATION_VERSION = "0.7.8";  // Anything older than this must be migrated
+  const NEEDS_MIGRATION_VERSION = "0.7.13";  // Anything older than this must be migrated
 
   let needMigration = currentVersion === null || (isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion));
   if ( needMigration && game.user.isGM ) {
@@ -120,4 +120,8 @@ Hooks.on('preCreateCombatant', (combat, combatant, options, id) => {
 /*-------------------------------------------------------*/
 Handlebars.registerHelper("multiply", function(op1, op2) {
   return op1 * op2;
+});
+
+Handlebars.registerHelper("endswith", function(op1, op2) {
+  return op1.endsWith(op2);
 });

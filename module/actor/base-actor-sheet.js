@@ -16,6 +16,39 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         const data = super.getData();
         data.config = CONFIG.HM3;
         data.dtypes = ["String", "Number", "Boolean"];
+
+        // Setup the fake container entry for "On Person" container
+        data.containers = {
+            'on-person': {
+                "data": {
+                    "name": "On Person",
+                    "type": "containergear",
+                    "data": {
+                        "container": "on-person",
+                        "capacity": {
+                            "max": -1,
+                            "value": data.data.totalGearWeight
+                        }
+                    }
+                }
+            }
+        };
+
+        this.actor.items.forEach(it => {
+            if (it.type === 'containergear') {
+                data.containers[it._id] = it;
+            }
+        });
+
+        data.gearTypes = {
+            'armorgear': 'Armor',
+            'weapongear': 'Meele Wpn',
+            'missilegear': 'Missile Wpn',
+            'miscgear': 'Misc. Gear',
+            'containergear': 'Container'
+        };
+
+        console.log(data);
         return data;
     }
 
@@ -179,7 +212,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     }
                 } else {
                     $(skill).show();
-                }    
+                }
             }
         });
 
@@ -420,29 +453,20 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Grab any data associated with this control.
         const dataset = duplicate(header.dataset);
 
+        let extraList = [];
+        let extraLabel = null;
 
+        // Ask type
         // Initialize a default name.
-        let name = 'New Item';
+        let name = "New Item";
         if (dataset.type === 'skill' && dataset.skilltype) {
             name = utility.createUniqueName(`New ${dataset.skilltype} Skill`, this.actor.itemTypes.skill);
+        } else if (dataset.type === 'gear') {
+            name = "New Gear";
+            extraList = ['Misc. Gear', 'Armor', 'Melee Weapon', 'Missile Weapon', 'Container'];
+            extraLabel = 'Gear Type';
         } else {
             switch (dataset.type) {
-                case "weapongear":
-                    name = utility.createUniqueName('New Weapon', this.actor.itemTypes.weapongear);
-                    break;
-
-                case "missilegear":
-                    name = utility.createUniqueName('New Missile', this.actor.itemTypes.missilegear);
-                    break;
-
-                case "armorgear":
-                    name = utility.createUniqueName('New Armor Item', this.actor.itemTypes.armorgear);
-                    break;
-
-                case "miscgear":
-                    name = utility.createUniqueName('New Item', this.actor.itemTypes.miscgear);
-                    break;
-
                 case "armorlocation":
                     name = utility.createUniqueName('New Location', this.actor.itemTypes.armorlocation);
                     break;
@@ -470,19 +494,14 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         }
 
-        // Item Data
-        const itemData = duplicate(game.system.model.Item[dataset.type]);
-        if (dataset.type === 'skill') itemData.type = dataset.skilltype;
-
         // Render modal dialog
         let dlgTemplate = "systems/hm3/templates/dialog/create-item.html";
         let dialogData = {
             type: dataset.type,
             title: name,
             placeholder: name,
-            extraList: [],
-            extraLabel: null,
-            data: itemData
+            extraList: extraList,
+            extraLabel: extraLabel,
         };
 
         const html = await renderTemplate(dlgTemplate, dialogData);
@@ -499,13 +518,22 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 let itemName = formdata.name;
                 let extraValue = formdata.extra_value;
 
-                if (dialogData.type === 'spell') {
-                    dialogData.data.convocation = extraValue;
-                } else if (dialogData.type === 'invocation') {
-                    dialogData.data.diety = extraValue;
+                if (dataset.type === 'gear') {
+                    if (extraValue === 'Container') dialogData.type = 'containergear';
+                    else if (extraValue === 'Armor') dialogData.type = 'armorgear';
+                    else if (extraValue === 'Melee Weapon') dialogData.type = 'weapongear';
+                    else if (extraValue === 'Missile Weapon') dialogData.type = 'missilegear';
+                    else dialogData.type = 'miscgear';
                 }
 
-                return this._createItem(itemName, dialogData.type, dialogData.data, DEFAULT_TOKEN);
+                // Item Data
+                const itemData = duplicate(game.system.model.Item[dialogData.type]);
+                if (dataset.type === 'skill') itemData.type = dataset.skilltype;
+                else if (dataset.type.endsWith('gear')) itemData.container = dataset.containerId;
+                else if (dataset.type === 'spell') itemData.convocation = extraValue;
+                else if (dataset.type === 'invocation') itemData.diety = extraValue;
+
+                return this._createItem(itemName, dialogData.type, itemData, DEFAULT_TOKEN);
             },
             options: { jQuery: false }
         });
@@ -560,7 +588,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 case 'psionic':
                     img = utility.getImagePath("psionics");
                     break;
-                    
+
                 case 'spell':
                     img = utility.getImagePath(data.convocation);
                     if (img === DEFAULT_TOKEN) {
@@ -672,7 +700,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
     _improveToggleDialog(item) {
         const html = '<p>Do you want to perform a Skill Development Roll (SDR), or just disable the flag?</p>'
-    
+
         // Create the dialog window
         return new Promise(resolve => {
             new Dialog({
@@ -696,6 +724,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 close: () => resolve(false)
             }).render(true)
         });
-    
+
     }
 }

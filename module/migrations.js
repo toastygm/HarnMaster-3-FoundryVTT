@@ -25,7 +25,7 @@ export async function migrateWorld() {
     // Migrate World Items
     for (let i of game.items.entities ) {
         try {
-            const updateData = await migrateItemData(i.data);
+            const updateData = migrateItemData(i.data);
             if (updateData) {
                 console.log(`HM3 | Migrating Item ${i.name}`);
                 console.log('HM3 | Changes: ' + JSON.stringify(updateData));
@@ -58,16 +58,13 @@ export async function migrateWorld() {
             case 'ritualskill':
                 await convertToNewSkill(i, null, 'Ritual');
                 break;
-            case 'psionic':
-                await convertToNewSkill(i, null, 'Psionic');
-                break;
         }
     }
 
     // Migrate Scene Actor Tokens
     for (let s of game.scenes.entities ) {
         try {
-            const updateData = migrateSceneData(s.data);
+            const updateData = await migrateSceneData(s.data);
             if (!isObjectEmpty(updateData)) {
                 console.log(`Migrating Scene ${s.name}`);
                 await s.update(updateData, {enforceTypes: false});
@@ -108,9 +105,9 @@ export const migrateCompendium = async function(pack) {
     for ( let ent of content ) {
       try {
         let updateData = null;
-        if (entity === "Item") updateData = migrateItemData(ent.data);
-        else if (entity === "Actor") updateData = migrateActorData(ent.data);
-        else if ( entity === "Scene" ) updateData = migrateSceneData(ent.data);
+        if (entity === "Item") updateData = migrateItemData(ent);
+        else if (entity === "Actor") updateData = await migrateActorData(ent);
+        else if ( entity === "Scene" ) updateData = await migrateSceneData(ent);
         if (!isObjectEmpty(updateData)) {
           expandObject(updateData);
           updateData["_id"] = ent._id;
@@ -130,10 +127,10 @@ export const migrateCompendium = async function(pack) {
  * @param {Object} scene  The Scene data to Update
  * @return {Object}       The updateData to apply
  */
-export const migrateSceneData = function(scene) {
+export async function migrateSceneData(scene) {
     const tokens = duplicate(scene.tokens);
     return {
-      tokens: tokens.map(t => {
+      tokens: await tokens.map(async t => {
         if (!t.actorId || t.actorLink || !t.actorData.data) {
           t.actorData = {};
           return t;
@@ -143,8 +140,8 @@ export const migrateSceneData = function(scene) {
           t.actorId = null;
           t.actorData = {};
         } else if ( !t.actorLink ) {
-          const updateData = migrateActorData(token.data.actorData);
-          t.actorData = mergeObject(token.data.actorData, updateData);
+          const updateData = await migrateActorData(token.data.actorData);
+          t.actorData = await mergeObject(token.data.actorData, updateData);
         }
         return t;
       })
@@ -163,6 +160,7 @@ export async function migrateActorData(actor) {
                 try {
                     await i.update(migrateData);
                 } catch (err) {
+                    console.log(migrateData);
                     console.error(err);
                 }
             }
@@ -189,9 +187,6 @@ export async function migrateActorData(actor) {
                 case 'ritualskill':
                     await convertToNewSkill(i, actor, 'Ritual');
                     break;
-                // case 'psionic':
-                //     await convertToNewSkill(i, actor, 'Psionic');
-                //     break;
                 case 'skill':
                     if (i.data.data.type === 'Psionic') {
                         const updateData = {
@@ -321,8 +316,10 @@ export function migrateItemData(itemData) {
     const data = itemData.data;
     const updateData = {};
 
+    if (!itemData.data) console.log(itemData);
+
     // The next two blocks are essentially renaming the "note" object to "notes"
-    if (typeof data.note != 'undefined') {
+    if (typeof data.note !== 'undefined') {
         updateData['data.notes'] = data.note || "";
         updateData['data.-=note'] = null;  // delete the note object;
     }
@@ -358,6 +355,9 @@ export function migrateItemData(itemData) {
             updateData['data.arcane.isAttuned'] = false;
             updateData['data.arcane.charges'] = -1;
             updateData['data.arcane.ego'] = 0;
+        }
+        if (typeof data.container === 'undefined') {
+            updateData['data.container'] = 'on-person';
         }
 
         if (itemData.type === 'weapongear') {

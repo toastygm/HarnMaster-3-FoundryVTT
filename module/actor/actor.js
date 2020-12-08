@@ -439,6 +439,16 @@ export class HarnMasterActor extends Actor {
                 if (!it.data.isCarried) {
                     it.data.isEquipped = false;
                 }
+
+                if (it.data.container && it.data.container != 'on-person') {
+                    // Anything in a container is unequipped automatically
+                    it.data.isEquipped = false;
+
+                    // If an item is in a container, its "isCarried" flag must be the
+                    // same as the container.
+                    const container = this.items.get(it.data.container);
+                    if (container) it.data.isCarried = container.data.data.isCarried;
+                }
             }
         });
     }
@@ -551,7 +561,11 @@ export class HarnMasterActor extends Actor {
         data.totalArmorWeight = 0;
         data.totalMiscGearWeight = 0;
 
-        let tempWeight;
+        let tempWeight = 0;
+
+        this.itemTypes.containergear.forEach(it => {
+            it.data.data.capacity.value = 0;
+        });
 
         this.data.items.forEach(it => {
             switch (it.type) {
@@ -582,6 +596,14 @@ export class HarnMasterActor extends Actor {
                     if (tempWeight < 0) tempWeight = 0;
                     data.totalMiscGearWeight += tempWeight;
                     break;
+            }
+
+            if (it.type.endsWith('gear')) {
+                const cid = it.data.container;
+                if (cid && cid != 'on-person') {
+                    const container = this.items.get(cid);
+                    container.data.data.capacity.value = Math.round((container.data.data.capacity.value + tempWeight + Number.EPSILON)*100)/100;
+                }
             }
         });
 

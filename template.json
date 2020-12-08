@@ -95,7 +95,7 @@
     }
   },
   "Item": {
-    "types": ["skill", "spell", "invocation", "psionic", "weapongear", 
+    "types": ["skill", "spell", "invocation", "psionic", "weapongear", "containergear",
       "missilegear", "armorgear", "miscgear", "injury", "armorlocation"],
     "templates": {
       "base": {
@@ -110,6 +110,7 @@
         "weight": 0,
         "isCarried": true,
         "isEquipped": true,
+        "container": "on-person",
         "arcane": {
           "isArtifact": false,
           "isAttuned": false,
@@ -204,6 +205,13 @@
     },
     "miscgear": {
       "templates": ["base", "gear"]
+    },
+    "containergear": {
+      "templates": ["base", "gear"],
+      "capacity": {
+        "max": 1,
+        "value": 0
+      }
     },
     "injury": {
       "templates": ["base"],

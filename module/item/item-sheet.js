@@ -32,6 +32,15 @@ export class HarnMasterItemSheet extends ItemSheet {
     data.hasRitualSkills = false;
     data.hasMagicSkills = false;
 
+    data.containers = {'On Person': 'on-person'};
+    this.actor.items.forEach(it => {
+        if (it.type === 'containergear') {
+          if (!(this.item.data.type === 'containergear' && it.name === this.item.data.name)) {
+            data.containers[it.name] = it.id;
+          }
+        }
+    });
+
     // Fill appropriate lists for individual item sheets
     if (this.item.data.type === 'spell') {
       // Spells need a list of convocations

@@ -129,6 +129,11 @@
         overflow: hidden;
     }
 
+    .gear-type {
+        flex: 0 0 80px;
+        text-align: center;
+    }
+
     .gear-qty {
         flex: 0 0 40px;
         text-align: center;
@@ -144,8 +149,17 @@
         text-align: center;
     }
 
+    .gear-capacity {
+        flex: 0 0 125px;
+        text-align: right;
+        padding-right: 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+    
     .gear-notes {
-        flex: 1 0 150px;
+        flex: 1 0 80px;
         padding-left: 10px;
         text-overflow: ellipsis;
         white-space: nowrap;
