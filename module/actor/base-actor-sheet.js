@@ -370,20 +370,46 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         const type = header.dataset.type;
         const data = duplicate(header.dataset);
         const li = $(header).parents(".item");
+        const itemId=li.data("itemId");
+        if (itemId) {
+            const item = this.actor.items.get(itemId);
+            if (!item) {
+                console.error(`HM3 | Delete aborted, item ${itemId} in actor ${this.actor.name} was not found.`);
+                return;
+            }
 
-        const title = `Delete ${data.label}`;
+            const title = `Delete ${data.label}`;
+            if (item.data.type === 'containergear') {
+                content = '<p>WARNING: All items in this container will be deleted as well!</p><p>Are you sure?</p>';
+            } else {
+                content = '<p>Are you sure?</p>';
+            }
 
-        // Create the dialog window
-        let agree = false;
-        await Dialog.confirm({
-            title: title,
-            content: '<p>Are you sure?</p>',
-            yes: () => agree = true
-        });
+            // Create the dialog window
+            let agree = false;
+            await Dialog.confirm({
+                title: title,
+                content: '<p>Are you sure?</p>',
+                yes: () => agree = true
+            });
 
-        if (agree) {
-            this.actor.deleteOwnedItem(li.data("itemId"));
-            li.slideUp(200, () => this.render(false));
+            if (agree) {
+                const deleteItems = [];
+
+                // Add all items in the container to the delete list
+                if (item.data.type === 'containeritem') {
+                    this.actor.items.forEach(it => {
+                        if (it.data.data.container === itemId) deleteItems.push(it.id);
+                    });
+                }
+                
+                deleteItems.push(itemId);  // ensure we delete the container last
+
+                deleteItems.forEach(it => {
+                    this.actor.deleteOwnedItem(itemId);
+                    li.slideUp(200, () => this.render(false));    
+                })
+            }
         }
     }
 
