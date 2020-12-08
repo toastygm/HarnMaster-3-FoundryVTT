@@ -634,6 +634,10 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     img = utility.getImagePath("miscgear")
                     break;
 
+                case 'containergear':
+                    img = utility.getImagePath("sack");
+                    break;
+
                 case 'weapongear':
                 case 'missilegear':
                     img = utility.getImagePath(data.assocSkill)
