@@ -48,7 +48,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             'containergear': 'Container'
         };
 
-        console.log(data);
         return data;
     }
 
@@ -65,6 +64,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // and it is some sort of "gear". Go ahead and process the drop, but
         // track the result.
 
+        // Containers are a special case, and they need to be processed specially
+        if (data.data.type === 'containergear') return await this._moveContainer(event, data);
+
         const quantity = data.data.data.quantity;
 
         // Source quantity really should never be 0 or negative; if so, just decline
@@ -77,6 +79,51 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         } else {
             return await this._moveItems(data, 1);
         }
+    }
+
+    async _moveContainer(event, data) {
+        // create new container
+        const item = await Item.fromDropData(data);
+        let itemData = duplicate(item.data);
+        const containerResult = await this.actor.createOwnedItem(itemData);
+        if (!containerResult) {
+            ui.notifications.warn(`Error while moving container, move aborted`);
+            return null;
+        }
+
+        // Get source actor
+        const sourceActor = await game.actors.get(data.actorId);
+        if (!sourceActor) {
+            ui.notifications.warn(`Error accessing actor where container is coming from, move aborted`);
+            await this.actor.deleteOwnedItem(containerResult._id);
+            return null;
+        }
+
+        // move all items into new container
+        let failure = false;
+        for (let it of sourceActor.items.values()) {
+            if (!failure && it.data.data.container === item.id) {
+                itemData = duplicate(it.data);
+                itemData.data.container = containerResult._id;
+                const result = await this.actor.createOwnedItem(itemData);
+
+                if (result) {
+                    await sourceActor.deleteOwnedItem(it.id);
+                } else {
+                    failure = true;
+                }
+            }
+        }
+
+        if (failure) {
+            ui.notifications.error(`Error duing move of items from source to destination, container has been only partially moved!`);
+            return null;
+        }
+
+        // delete old container
+        await sourceActor.deleteOwnedItem(data.data._id);
+
+        return containerResult;
     }
 
     async _moveQtyDialog(event, data) {
@@ -297,7 +344,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             }
             const li = $(ev.currentTarget).parents(".item");
             const itemId = li.data('itemId');
-            console.log(`ItemId=${itemId}`);
             macros.missileAttack(`Item$${itemId}`, false, this.actor.token);
         });
 
@@ -379,6 +425,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             }
 
             const title = `Delete ${data.label}`;
+            let content;
             if (item.data.type === 'containergear') {
                 content = '<p>WARNING: All items in this container will be deleted as well!</p><p>Are you sure?</p>';
             } else {
