@@ -51,11 +51,27 @@ export class HarnMasterActor extends Actor {
                 },
                 default: 'yes'
             }).render(true);
-        } else if (data.type == 'creature') {
+        } else if (data.type === 'creature') {
             
             // Create Creature Default Skills
             this._createDefaultCreatureSkills(data).then(result => {
                 super.create(data, options); // Follow through the the rest of the Actor creation process upstream
+            });
+        } else if (data.type === 'container') {
+            const html = await renderTemplate("systems/hm3/templates/dialog/container-size.html", {});
+            Dialog.prompt({
+                title: 'Container Size',
+                content: html,
+                label: 'OK',
+                callback: async (html) => {
+                    const form = html[0].querySelector("form");
+                    const fd = new FormDataExtended(form);
+                    const formdata = fd.toObject();
+                    const maxCapacity = parseInt(formdata.maxCapacity);
+                    console.log(data);
+                    const actor = await super.create(data, options); // Follow through the the rest of the Actor creation process upstream
+                    return actor.update({"data.capacity.max": maxCapacity});
+                }
             });
         } else {
             super.create(data, options); // Follow through the the rest of the Actor creation process upstream

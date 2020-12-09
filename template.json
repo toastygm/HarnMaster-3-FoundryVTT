@@ -91,7 +91,11 @@
       "templates": ["base"]
     },
     "container": {
-      "templates": []
+      "templates": [],
+      "capacity": {
+        "max": 0,
+        "value": 0
+      }
     }
   },
   "Item": {

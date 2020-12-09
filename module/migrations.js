@@ -124,6 +124,9 @@ export const migrateWorld = async function() {
         if (typeof actorData.data.macros === 'undefined') {
             updateData['data.macros'] = {}
         }
+    } else if (actorData.type === 'container') {
+      updateData['data.capacity.max'] = 0;
+      updateData['data.capacity.value'] = 0;
     }
 
     // Remove deprecated fields

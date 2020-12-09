@@ -17,6 +17,16 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         data.config = CONFIG.HM3;
         data.dtypes = ["String", "Number", "Boolean"];
 
+        let capacityMax = 0;
+        let capacityVal = 0;
+        if ((this.actor.data.type === 'creature') || (this.actor.data.type === 'character')) {
+            capacityMax = data.data.endurance * 10;
+            capacityVal = data.data.totalGearWeight;
+        } else if (this.actor.data.type === 'container') {
+            capacityMax = data.data.capacity.max;
+            capacityVal = data.data.capacity.value;
+        }
+
         // Setup the fake container entry for "On Person" container
         data.containers = {
             'on-person': {
@@ -26,8 +36,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     "data": {
                         "container": "on-person",
                         "capacity": {
-                            "max": data.data.endurance*10,
-                            "value": data.data.totalGearWeight
+                            "max": capacityMax,
+                            "value": capacityVal
                         }
                     }
                 }
@@ -221,6 +231,11 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         //const item = await Item.fromDropData(data);
 
         if (!data.type.endsWith("gear")) {
+            if (actor.data.type === 'container') {
+                ui.notifications.warn(`You may only place physical objects in a container; drop of ${data.name} refused.`);
+                return false;
+            }
+            
             for (let it of actor.items.values()) {
                 // Generally, if the items have the same type and name,
                 // then merge the dropped item onto the existing item.
@@ -548,7 +563,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         let name = "New Item";
         if (dataset.type === 'skill' && dataset.skilltype) {
             name = utility.createUniqueName(`New ${dataset.skilltype} Skill`, this.actor.itemTypes.skill);
-        } else if (dataset.type === 'gear') {
+        } else if (dataset.type.endsWith('gear')) {
             name = "New Gear";
             extraList = ['Misc. Gear', 'Armor', 'Melee Weapon', 'Missile Weapon', 'Container'];
             extraLabel = 'Gear Type';
@@ -575,7 +590,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     break;
 
                 default:
-                    console.error(`HM3 | Can't create item: unknown item type '${type}'`);
+                    console.error(`HM3 | Can't create item: unknown item type '${dataset.type}'`);
                     return null;
             }
 

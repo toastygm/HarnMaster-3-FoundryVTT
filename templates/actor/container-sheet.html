@@ -15,207 +15,50 @@
     {{!-- Sheet Body --}}
     <section class="sheet-body">
 
-        {{!-- Combat Tab --}}
-        <div class="combat items" data-group="primary" data-tab="combat">
-            <!-- Weapons -->
-            <ol class="items-list weapons-list">
-                <li class="items-header weapon flexrow">
-                    <h3 class="item-name weapon-name-inv">Melee Weapons</h3>
-                    <div class="item-detail weapon-qty-inv">Qty</div>
-                    <div class="item-detail weapon-weight-inv">Wt</div>
-                    <div class="item-detail weapon-value">Value</div>
-                    <div class="item-detail weapon-quality">WQ</div>
-                    <div class="item-detail weapon-atkdef">A/D</div>
-                    <div class="item-detail weapon-atkmod">Mod</div>
-                    <div class="item-detail weapon-blunt">B</div>
-                    <div class="item-detail weapon-edged">E</div>
-                    <div class="item-detail weapon-piercing">P</div>
-                    <div class="item-detail weapon-notes">Notes</div>
-                    <div class="item-controls">
-                        <a class="item-control item-create active" title="Add Weapon" data-type="weapongear"><i
-                                class="fas fa-plus"></i> Add</a>
-                    </div>
-                </li>
-                <ol class="item-list weapon-list">
-                    {{#each actor.items as |item id|}}
-                        {{#if (eq item.type "weapongear")}}
-                            <li class="item weapon flexrow" data-item-id="{{item._id}}">
-                                <div class="item-name weapon-name-inv flexrow">
-                                    <div class="item-image" style="background-image: url('{{item.img}}')"></div>
-                                    <h4>{{item.name}}</h4>
-                                </div>
-                                <div class="item-detail weapon-qty-inv">{{data.quantity}}</div>
-                                <div class="item-detail weapon-weight-inv">{{data.weight}}</div>
-                                <div class="item-detail weapon-value">{{data.value}}</div>
-                                <div class="item-detail weapon-quality">{{data.weaponQuality}}</div>
-                                <div class="item-detail weapon-atkdef">{{data.attack}}/{{data.defense}}</div>
-                                {{#if (lt data.attackModifier 0)}}
-                                <div class="item-detail weapon-atkmod"><i class="fas fa-times"></i></div>
-                                {{else}}
-                                <div class="item-detail weapon-atkmod">{{data.attackModifier}}</div>
-                                {{/if}}
-                                {{#if (lt data.blunt 0)}}
-                                <div class="item-detail weapon-blunt"><i class="fas fa-times"></i></div>
-                                {{else}}
-                                <div class="item-detail weapon-blunt">{{data.blunt}}</div>
-                                {{/if}}
-                                {{#if (lt data.edged 0)}}
-                                <div class="item-detail weapon-edged"><i class="fas fa-times"></i></div>
-                                {{else}}
-                                <div class="item-detail weapon-edged">{{data.edged}}</div>
-                                {{/if}}
-                                {{#if (lt data.piercing 0)}}
-                                <div class="item-detail weapon-piercing"><i class="fas fa-times"></i></div>
-                                {{else}}
-                                <div class="item-detail weapon-piercing">{{data.piercing}}</div>
-                                {{/if}}
-                                <div class="item-detail weapon-notes">{{data.notes}}</div>
-                                <div class="item-controls-inv">
-                                    <a class="item-control item-edit" title="Edit Weapon"><i class="active fas fa-edit"></i></a>
-                                    <a class="item-control item-delete" title="Delete Weapon" data-label="Weapon"><i class="active fas fa-trash"></i></a>
-                                </div>
-                            </li>
-                        {{/if}}
-                    {{/each}}
+        <div class="inventory items">
+            <!-- Gear -->
+            {{#each containers as |citem cid|}}
+                <ol class="items-list gear-list">
+                    <li class="items-header gear flexrow">
+                        <h3 class="item-name gear-name">{{citem.data.name}}</h3>
+                        <div class="item-detail gear-type">Type</div>
+                        <div class="item-detail gear-qty">Qty</div>
+                        <div class="item-detail gear-weight">Weight</div>
+                        <div class="item-detail gear-notes">Notes</div>
+                        <div class="item detail gear-capacity {{#if (gt citem.data.data.capacity.value citem.data.data.capacity.max)}}overcapacity{{/if}}">Capacity: {{citem.data.data.capacity.value}}/{{citem.data.data.capacity.max}}</div>
+                        <div class="item-controls">
+                            <a class="item-control item-create active" title="Add Gear" data-type="gear" data-container-id="{{cid}}" data-container-name="{{citem.data.name}}"><i
+                                    class="fas fa-plus"></i> Add</a>
+                        </div>
+                    </li>
+                    <ol class="item-list gear-list">
+                        {{#each ../actor.items as |item id|}}
+                             {{#if (and (endswith item.type "gear") (eq item.data.container cid))}}
+                                <li class="item gear {{#unless data.isCarried}}nocarry{{/unless}} flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
+                                    <div class="item-name gear-name flexrow">
+                                        <div class="item-image" style="background-image: url('{{item.img}}')"></div>
+                                        <h4>{{item.name}}</h4>
+                                    </div>
+                                    <div class="item-detail gear-type">{{lookup ../../gearTypes item.type}}</div>
+                                    <div class="item-detail gear-qty">{{data.quantity}}</div>
+                                    <div class="item-detail gear-weight">{{data.weight}}</div>
+                                    <div class="item-detail gear-notes">{{data.notes}}</div>
+                                    <div class="item-controls-wide">
+                                        {{#if (eq cid "on-person")}}
+                                        {{#unless (or (eq item.type "containergear") (eq item.type "miscgear"))}}
+                                        <a class="item-control item-equip" title="Equip"><i class="{{#if data.isEquipped}}active{{/if}} fas fa-shield-alt"></i></a>
+                                        {{/unless}}
+                                        <a class="item-control item-carry" title="Carry"><i class="{{#if data.isCarried}}active{{/if}} fas fa-suitcase"></i></a>
+                                        {{/if}}
+                                        <a class="item-control item-edit" title="Edit"><i class="active fas fa-edit"></i></a>
+                                        <a class="item-control item-delete" title="Delete" data-label="Miscellaneous Gear"><i class="active fas fa-trash"></i></a>
+                                    </div>
+                                </li>
+                            {{/if}}
+                        {{/each}}
+                    </ol>
                 </ol>
-            </ol>
-
-            <!-- Missiles -->
-            <ol class="items-list missiles-list">
-                <li class="items-header missile flexrow">
-                    <h3 class="item-name missile-name-inv">Missile Weapons</h3>
-                    <div class="item-detail missile-qty-inv">Qty</div>
-                    <div class="item-detail missile-weight-inv">Wt</div>
-                    <div class="item-detail missile-value">Value</div>
-                    <div class="item-detail missile-short">Short</div>
-                    <div class="item-detail missile-medium">Med</div>
-                    <div class="item-detail missile-long">Long</div>
-                    <div class="item-detail missile-extreme">Ext</div>
-                    <div class="item-detail missile-notes">Notes</div>
-                    <div class="item-controls">
-                        <a class="item-control item-create active" title="Create Missile" data-type="missilegear"><i
-                                class="fas fa-plus"></i> Add</a>
-                    </div>
-                </li>
-                <ol class="item-list missile-list">
-                    {{#each actor.items as |item id|}}
-                        {{#if (eq item.type "missilegear")}}
-                            <li class="item missile flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
-                                <div class="item-name missile-name-inv flexrow"
-                                    data-missile="{{item.name}}" data-aspect="{{data.weaponAspect}}" 
-                                    data-impact-short="{{data.impact.short}}" data-impact-medium="{{data.impact.medium}}"
-                                    data-impact-long="{{data.impact.long}}" data-impact-extreme="{{data.impact.extreme}}">
-                                    <div class="item-image" style="background-image: url('{{item.img}}')"></div>
-                                    <h4>{{item.name}}</h4>
-                                </div>
-                                <div class="item-detail missile-qty-inv">{{data.quantity}}</div>
-                                <div class="item-detail missile-weight-inv">{{data.weight}}</div>
-                                <div class="item-detail missile-value">{{data.value}}</div>
-                                {{#if (lt data.range.short 0)}}
-                                <div class="item-detail missile-short"><i class="fas fa-times"></i></div>
-                                {{else}}
-                                <div class="item-detail missile-short">{{data.range.short}}/{{data.impact.short}}</div>
-                                {{/if}}
-                                {{#if (lt data.range.medium 0)}}
-                                <div class="item-detail missile-medium"><i class="fas fa-times"></i></div>
-                                {{else}}
-                                <div class="item-detail missile-medium">{{data.range.medium}}/{{data.impact.medium}}</div>
-                                {{/if}}
-                                {{#if (lt data.range.long 0)}}
-                                <div class="item-detail missile-long"><i class="fas fa-times"></i></div>
-                                {{else}}
-                                <div class="item-detail missile-long">{{data.range.long}}/{{data.impact.long}}</div>
-                                {{/if}}
-                                {{#if (lt data.range.extreme 0)}}
-                                <div class="item-detail missile-extreme"><i class="fas fa-times"></i></div>
-                                {{else}}
-                                <div class="item-detail missile-extreme">{{data.range.extreme}}/{{data.impact.extreme}}</div>
-                                {{/if}}
-                                <div class="item-detail missile-notes">{{data.notes}}</div>
-                                <div class="item-controls-inv">
-                                    <a class="item-control item-edit" title="Edit Missile"><i class="active fas fa-edit"></i></a>
-                                    <a class="item-control item-delete" title="Delete Missile" data-label="Missile"><i class="active fas fa-trash"></i></a>
-                                </div>
-                            </li>
-                        {{/if}}
-                    {{/each}}
-                </ol>
-            </ol>
-        </div>
-        <div class="combat items" data-group="primary" data-tab="combat">
-                <!-- Armor / Clothing -->
-            <ol class="items-list armor-list">
-                <li class="items-header armor flexrow">
-                    <h3 class="item-name armor-name-inv">Armor / Clothing</h3>
-                    <div class="item-detail armor-qty">Qty</div>
-                    <div class="item-detail armor-weight">Wt</div>
-                    <div class="item-detail armor-value">Value</div>
-                    <div class="item-detail armor-material">Material</div>
-                    <div class="item-detail armor-quality">AQ</div>
-                    <div class="item-detail armor-notes">Notes</div>
-                    <div class="item-controls">
-                        <a class="item-control item-create" title="Add Armor/Clothing" data-type="armorgear"><i
-                                class="active fas fa-plus"></i> Add</a>
-                    </div>
-                </li>
-                <ol class="item-list armor-list">
-                    {{#each actor.items as |item id|}}
-                        {{#if (eq item.type "armorgear")}}
-                            <li class="item armor flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
-                                <div class="item-name armor-name-inv flexrow">
-                                    <div class="item-image" style="background-image: url('{{item.img}}')"></div>
-                                    <h4>{{item.name}}</h4>
-                                </div>
-                                <div class="item-detail armor-qty">{{data.quantity}}</div>
-                                <div class="item-detail armor-weight">{{data.weight}}</div>
-                                <div class="item-detail armor-value">{{data.value}}</div>
-                                <div class="item-detail armor-material">{{data.material}}</div>
-                                <div class="item-detail armor-quality">{{data.armorQuality}}</div>
-                                <div class="item-detail armor-notes">{{data.notes}}</div>
-                                    <div class="item-controls">
-                                    <a class="item-control item-edit" title="Edit Armor/Clothing"><i class="active fas fa-edit"></i></a>
-                                    <a class="item-control item-delete" title="Delete Armor/Clothing" data-label="Armor/Clothing"><i class="active fas fa-trash"></i></a>
-                                </div>
-                            </li>
-                        {{/if}}
-                    {{/each}}
-                </ol>
-            </ol>
-
-            <!-- Misc Gear -->
-            <ol class="items-list gear-list">
-                <li class="items-header gear flexrow">
-                    <h3 class="item-name gear-name-inv">Miscellaneous Gear</h3>
-                    <div class="item-detail gear-qty">Qty</div>
-                    <div class="item-detail gear-weight">Wt</div>
-                    <div class="item-detail gear-value">Value</div>
-                    <div class="item-detail gear-notes">Notes</div>
-                    <div class="item-controls">
-                        <a class="item-control item-create" title="Add Misc. Gear" data-type="miscgear"><i
-                                class="active fas fa-plus"></i> Add</a>
-                    </div>
-                </li>
-                <ol class="item-list gear-list">
-                    {{#each actor.items as |item id|}}
-                        {{#if (eq item.type "miscgear")}}
-                            <li class="item gear flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
-                                <div class="item-name gear-name-inv flexrow">
-                                    <div class="item-image" style="background-image: url('{{item.img}}')"></div>
-                                    <h4>{{item.name}}</h4>
-                                </div>
-                                <div class="item-detail gear-qty">{{data.quantity}}</div>
-                                <div class="item-detail gear-weight">{{data.weight}}</div>
-                                <div class="item-detail gear-value">{{data.value}}</div>
-                                <div class="item-detail gear-notes">{{data.notes}}</div>
-                                <div class="item-controls">
-                                    <a class="item-control item-edit" title="Edit Misc. Gear"><i class="active fas fa-edit"></i></a>
-                                    <a class="item-control item-delete" title="Delete Misc. Gear" data-label="Miscellaneous Gear"><i class="active fas fa-trash"></i></a>
-                                </div>
-                            </li>
-                        {{/if}}
-                    {{/each}}
-                </ol>
-            </ol>
+            {{/each}}
         </div>
     </section>
 
