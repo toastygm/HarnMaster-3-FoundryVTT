@@ -12,6 +12,8 @@ HM3.ASCII = `_   _ ___  ___ _____
 // When the system is fully ready, set this to true
 HM3.ready = false;
 
+HM3.allowedActorFlags = [];
+
 HM3.skillTypes = ["Craft", "Physical", "Communication", "Combat", "Magic", "Ritual"];
 
 HM3.injuryLocations = {
