@@ -1,99 +1,70 @@
 /**
- * Perform a system migration for the entire World
- * @return {Promise}
+ * Perform a system migration for the entire World, applying migrations for Actors, Items, and Compendium packs
+ * @return {Promise}      A Promise which resolves once the migration is completed
  */
-export async function migrateWorld() {
+export const migrateWorld = async function() {
     ui.notifications.info(`Applying HM3 System Migration for version ${game.system.data.version}. Please be patient and do not close your game or shut down your server.`, {permanent: true});
-    console.log(`HM3 | Beginning Migration to version ${game.system.data.version}`);
-
+  
     // Migrate World Actors
-    for (let a of game.actors.entities ) {
-        try {
-            const updateData = await migrateActorData(a)
-            if (updateData) {
-                console.log(`HM3 | Migrating Actor ${a.name}`);
-                console.log('HM3 | Changes: ' + JSON.stringify(updateData));
-                // await i.update(updateData, {enforceTypes: false});
-                await a.update(updateData);                
-            }
-        } catch(err) {
-            console.error(err);
+    for ( let a of game.actors.entities ) {
+      try {
+        const updateData = migrateActorData(a.data);
+        if ( !isObjectEmpty(updateData) ) {
+          console.log(`Migrating Actor entity ${a.name}`);
+          await a.update(updateData, {enforceTypes: false});
         }
-
+      } catch(err) {
+        console.error(err);
+      }
     }
-
+  
     // Migrate World Items
-    for (let i of game.items.entities ) {
-        try {
-            const updateData = migrateItemData(i.data);
-            if (updateData) {
-                console.log(`HM3 | Migrating Item ${i.name}`);
-                console.log('HM3 | Changes: ' + JSON.stringify(updateData));
-                // await i.update(updateData, {enforceTypes: false});
-                await i.update(updateData);                
-            }
-        } catch(err) {
-            console.error(err);
+    for ( let i of game.items.entities ) {
+      try {
+        const updateData = migrateItemData(i.data);
+        if ( !isObjectEmpty(updateData) ) {
+          console.log(`Migrating Item entity ${i.name}`);
+          await i.update(updateData, {enforceTypes: false});
         }
-
-        // Check if we need to convert skills from old
-        // format to new format.
-
-        switch(i.data.type) {
-            case 'physicalskill':
-                await convertToNewSkill(i, null, 'Physical');
-                break;
-            case 'commskill':
-                await convertToNewSkill(i, null, 'Communication');
-                break;
-            case 'combatskill':
-                await convertToNewSkill(i, null, 'Combat');
-                break;
-            case 'craftskill':
-                await convertToNewSkill(i, null, 'Craft');
-                break;
-            case 'magicskill':
-                await convertToNewSkill(i, null, 'Magic');
-                break;
-            case 'ritualskill':
-                await convertToNewSkill(i, null, 'Ritual');
-                break;
-        }
+      } catch(err) {
+        console.error(err);
+      }
     }
-
-    // Migrate Scene Actor Tokens
-    for (let s of game.scenes.entities ) {
-        try {
-            const updateData = await migrateSceneData(s.data);
-            if (!isObjectEmpty(updateData)) {
-                console.log(`Migrating Scene ${s.name}`);
-                await s.update(updateData, {enforceTypes: false});
-            }
-        } catch(err) {
-            console.error(err);
+  
+    // Migrate Actor Override Tokens
+    for ( let s of game.scenes.entities ) {
+      try {
+        const updateData = migrateSceneData(s.data);
+        if ( !isObjectEmpty(updateData) ) {
+          console.log(`Migrating Scene entity ${s.name}`);
+          await s.update(updateData, {enforceTypes: false});
         }
+      } catch(err) {
+        console.error(err);
+      }
     }
-
+  
     // Migrate World Compendium Packs
     const packs = game.packs.filter(p => {
-        return (p.metadata.package === 'world') && ['Actor', 'Item', 'Scene'].includes(p.metadata.entity);
+      return (p.metadata.package === "world") && ["Actor", "Item", "Scene"].includes(p.metadata.entity)
     });
-    for (let p of packs) {
-        await migrateCompendium(p);
+    for ( let p of packs ) {
+      await migrateCompendium(p);
     }
-
-    // Set migration as complete
-    game.settings.set('hm3', 'systemMigrationVersion', game.system.data.version);
-    console.log(`HM3 | Completed migration to version ${game.system.data.version}`);
-    ui.notifications.info(`HM3 System Migration to version ${game.system.data.version} completed!`, {permanent: true});  
-};
-
-/**
- * Apply migration rules to all Entities within a single Compendium pack
- * @param pack
- * @return {Promise}
- */
-export const migrateCompendium = async function(pack) {
+  
+    // Set the migration as complete
+    game.settings.set("hm3", "systemMigrationVersion", game.system.data.version);
+    ui.notifications.info(`HM3 System Migration to version ${game.system.data.version} completed!`, {permanent: true});
+  };
+  
+  /* -------------------------------------------- */
+  
+  /**
+   * Apply migration rules to all Entities within a single Compendium pack
+   * @param pack
+   * @return {Promise}
+   */
+  export const migrateCompendium = async function(pack) {
     const entity = pack.metadata.entity;
     if ( !["Actor", "Item", "Scene"].includes(entity) ) return;
   
@@ -105,9 +76,9 @@ export const migrateCompendium = async function(pack) {
     for ( let ent of content ) {
       try {
         let updateData = null;
-        if (entity === "Item") updateData = migrateItemData(ent);
-        else if (entity === "Actor") updateData = await migrateActorData(ent);
-        else if ( entity === "Scene" ) updateData = await migrateSceneData(ent);
+        if (entity === "Item") updateData = migrateItemData(ent.data);
+        else if (entity === "Actor") updateData = migrateActorData(ent.data);
+        else if ( entity === "Scene" ) updateData = migrateSceneData(ent.data);
         if (!isObjectEmpty(updateData)) {
           expandObject(updateData);
           updateData["_id"] = ent._id;
@@ -121,148 +92,27 @@ export const migrateCompendium = async function(pack) {
     console.log(`Migrated all ${entity} entities from Compendium ${pack.collection}`);
   };
   
-/**
- * Migrate a single Scene entity to incorporate changes to the data model of it's actor data overrides
- * Return an Object of updateData to be applied
- * @param {Object} scene  The Scene data to Update
- * @return {Object}       The updateData to apply
- */
-export async function migrateSceneData(scene) {
-    const tokens = duplicate(scene.tokens);
-    return {
-      tokens: await tokens.map(async t => {
-        if (!t.actorId || t.actorLink || !t.actorData.data) {
-          t.actorData = {};
-          return t;
-        }
-        const token = new Token(t);
-        if ( !token.actor ) {
-          t.actorId = null;
-          t.actorData = {};
-        } else if ( !t.actorLink ) {
-          const updateData = await migrateActorData(token.data.actorData);
-          t.actorData = await mergeObject(token.data.actorData, updateData);
-        }
-        return t;
-      })
-    };
-  };
+  /* -------------------------------------------- */
+  /*  Entity Type Migration Helpers               */
+  /* -------------------------------------------- */
   
-export async function migrateActorData(actor) {
-    const actorData = actor.data;
-
-    if (actor.items) {
-        // process items
-        for (let i of actor.items) {
-            let migrateData = migrateItemData(i.data);
-            if (migrateData) {
-                console.log(`HM3 | Migrated Actor ${actor.data.name}, Item ${i.data.name}`);
-                try {
-                    await i.update(migrateData);
-                } catch (err) {
-                    console.log(migrateData);
-                    console.error(err);
-                }
-            }
-
-            // Check if we need to convert skills from old
-            // format to new format.
-
-            switch(i.data.type) {
-                case 'physicalskill':
-                    await convertToNewSkill(i, actor, 'Physical');
-                    break;
-                case 'commskill':
-                    await convertToNewSkill(i, actor, 'Communication');
-                    break;
-                case 'combatskill':
-                    await convertToNewSkill(i, actor, 'Combat');
-                    break;
-                case 'craftskill':
-                    await convertToNewSkill(i, actor, 'Craft');
-                    break;
-                case 'magicskill':
-                    await convertToNewSkill(i, actor, 'Magic');
-                    break;
-                case 'ritualskill':
-                    await convertToNewSkill(i, actor, 'Ritual');
-                    break;
-                case 'skill':
-                    if (i.data.data.type === 'Psionic') {
-                        const updateData = {
-                            "data.notes": i.data.data.notes,
-                            "data.description": i.data.data.description,
-                            "data.source": i.data.data.source,
-                            "data.skillBase.value": i.data.data.skillBase.value,
-                            "data.skillBase.formula": i.data.data.skillbase.formula,
-                            "data.skillBase.isFormulaValid": i.data.data.skillbase.isFormulaValid,
-                            "data.masteryLevel": i.data.data.masteryLevel,
-                            "data.effectiveMasteryLevel": i.data.data.effectiveMasteryLevel,
-                            "data.improveFlag": false,
-                            "data.fatigue": i.data.data.psionic.fatigue,
-                            "data.macros": {}        
-                        };
-
-                        await actor.createOwnedItem({type: "psionic", name: i.data.name, data: updateData});
-                        await actor.deleteOwnedItem(i.data._id);
-                    }
-                    break;
-            }
-        }
-    }
-
+  /**
+   * Migrate a single Actor entity to incorporate latest data model changes
+   * Return an Object of updateData to be applied
+   * @param {Actor} actor   The actor to Update
+   * @return {Object}       The updateData to apply
+   */
+  export const migrateActorData = function(actor) {
     const updateData = {};
+    const actorData = actor.data;
+  
+    // Actor Data Updates
+    /*
+    * -------- ACTOR UPDATES GO HERE -------------
+    */
 
-    // In version 0.5.3 we converted from abilities being
-    // numbers to objects containing base and effective
-    // Guard against re-implementing the upgrade here
+    //_migrateActorBonuses(actor, updateData);
     if ((actorData.type === 'character' || actorData.type === 'creature')) {
-        if (typeof actorData.data.abilities.strength != 'object') {
-            updateData['data.abilities.strength.base'] = actorData.data.abilities.strength;
-            updateData['data.abilities.stamina.base'] = actorData.data.abilities.stamina;
-            updateData['data.abilities.dexterity.base'] = actorData.data.abilities.dexterity;
-            updateData['data.abilities.agility.base'] = actorData.data.abilities.agility;
-            updateData['data.abilities.intelligence.base'] = actorData.data.abilities.intelligence;
-            updateData['data.abilities.aura.base'] = actorData.data.abilities.aura;
-            updateData['data.abilities.will.base'] = actorData.data.abilities.will;
-            updateData['data.abilities.eyesight.base'] = actorData.data.abilities.eyesight;
-            updateData['data.abilities.hearing.base'] = actorData.data.abilities.hearing;
-            updateData['data.abilities.smell.base'] = actorData.data.abilities.smell;
-            updateData['data.abilities.voice.base'] = actorData.data.abilities.voice;
-            updateData['data.abilities.comliness.base'] = actorData.data.abilities.comliness;
-            updateData['data.abilities.morality.base'] = actorData.data.abilities.morality;
-
-            updateData['data.abilities.strength.effective'] = 0;
-            updateData['data.abilities.stamina.effective'] = 0;
-            updateData['data.abilities.dexterity.effective'] = 0;
-            updateData['data.abilities.agility.effective'] = 0;
-            updateData['data.abilities.intelligence.effective'] = 0;
-            updateData['data.abilities.aura.effective'] = 0;
-            updateData['data.abilities.will.effective'] = 0;
-            updateData['data.abilities.eyesight.effective'] = 0;
-            updateData['data.abilities.hearing.effective'] = 0;
-            updateData['data.abilities.smell.effective'] = 0;
-            updateData['data.abilities.voice.effective'] = 0;
-            updateData['data.abilities.comliness.effective'] = 0;
-            updateData['data.abilities.morality.effective'] = 0;
-        }
-
-        if (typeof actorData.data.bioImage === 'undefined') {
-            updateData['data.bioImage'] = 'systems/hm3/images/svg/knight-silhouette.svg';
-        }
-
-        if (typeof actorData.data.sunsign === 'undefined') {
-            updateData['data.sunsign'] = '';
-        }
-
-        if (typeof actorData.data.species === 'undefined') {
-            updateData['data.species'] = '';
-        }
-
-        if (typeof actorData.data.biography === 'undefined') {
-            updateData['data.biography'] = '';
-        }
-
         if (typeof actorData.data.shockIndex === 'undefined') {
             updateData['data.shockIndex'] = {'value': 100, 'max': 100};
         }
@@ -275,65 +125,79 @@ export async function migrateActorData(actor) {
             updateData['data.macros'] = {}
         }
     }
-    
+
+    // Remove deprecated fields
+    _migrateRemoveDeprecated(actor, updateData);
+  
+    // Migrate Owned Items
+    if ( !actor.items ) return updateData;
+    let hasItemUpdates = false;
+    const items = actor.items.map(i => {
+  
+      // Migrate the Owned Item
+      let itemUpdate = migrateItemData(i);
+  
+      // Prepared, Equipped, and Proficient for NPC actors (5e)
+    //   if ( actor.type === "npc" ) {
+    //     if (getProperty(i.data, "preparation.prepared") === false) itemUpdate["data.preparation.prepared"] = true;
+    //     if (getProperty(i.data, "equipped") === false) itemUpdate["data.equipped"] = true;
+    //     if (getProperty(i.data, "proficient") === false) itemUpdate["data.proficient"] = true;
+    //   }
+  
+      // Update the Owned Item
+      if ( !isObjectEmpty(itemUpdate) ) {
+        hasItemUpdates = true;
+        return mergeObject(i, itemUpdate, {enforceTypes: false, inplace: false});
+      } else return i;
+    });
+    if ( hasItemUpdates ) updateData.items = items;
     return updateData;
-}
-
-async function convertToNewSkill(i, actor, newType) {
-    const oldData = i.data.data;
-
-    const updateData = {
-        "data.notes": oldData.notes,
-        "data.description": oldData.description,
-        "data.source": oldData.source,
-        "data.type": newType,
-        "data.skillBase.value": oldData.skillBase.value,
-        "data.skillBase.formula": oldData.skillBase.formula,
-        "data.skillBase.isFormulaValid": oldData.isFormulaValid,
-        "data.masteryLevel": oldData.masteryLevel,
-        "data.effectiveMasteryLevel": oldData.effectiveMasteryLevel,
-        "data.ritual.piety": oldData.piety || 0,
-        "data.macros": {},          // in 0.7.8, we support macros on all actors
-        "data.improveFlag": false
-    };
-
-    // Create the new skill
-    if (actor) {
-        await actor.createOwnedItem({type: "skill", name: i.data.name, data: updateData});
-    } else {
-        await Item.create({type: "skill", name: i.data.name, data: updateData});
+  };
+  
+  /* -------------------------------------------- */
+  
+  
+  /**
+   * Scrub an Actor's system data, removing all keys which are not explicitly defined in the system template
+   * @param {Object} actorData    The data object for an Actor
+   * @return {Object}             The scrubbed Actor data
+   */
+  function cleanActorData(actorData) {
+  
+    // Scrub system data
+    const model = game.system.model.Actor[actorData.type];
+    actorData.data = filterObject(actorData.data, model);
+  
+    // Scrub system flags
+    const allowedFlags = CONFIG.HM3.allowedActorFlags.reduce((obj, f) => {
+      obj[f] = null;
+      return obj;
+    }, {});
+    if ( actorData.flags.hm3 ) {
+      actorData.flags.hm3 = filterObject(actorData.flags.hm3, allowedFlags);
     }
-
-    // Delete the old skill
-    if (actor) {
-        await actor.deleteOwnedItem(i.data._id);
-    } else {
-        await Item.delete(i.data._id);
-    }
-}
-
-export function migrateItemData(itemData) {
-    const data = itemData.data;
+  
+    // Return the scrubbed data
+    return actorData;
+  }
+  
+  
+  /* -------------------------------------------- */
+  
+  /**
+   * Migrate a single Item entity to incorporate latest data model changes
+   * @param item
+   */
+  export const migrateItemData = function(item) {
     const updateData = {};
-
-    if (!itemData.data) console.log(itemData);
-
-    // The next two blocks are essentially renaming the "note" object to "notes"
-    if (typeof data.note !== 'undefined') {
-        updateData['data.notes'] = data.note || "";
-        updateData['data.-=note'] = null;  // delete the note object;
-    }
-
-    if (typeof data.description === 'undefined') {
-        updateData['data.description'] = "";
-    }
-    if (typeof data.source === 'undefined') {
-        updateData['data.source'] = "";
-    }
-
-    // In 0.7.8, we now support macros on all items
-    if (typeof data.macro !== 'undefined') {
-        updateData['data.-=macro'] = null
+    const data = item.data;
+    const itemData = item;
+  
+    /*
+    * -------- ITEM UPDATES GO HERE -------------
+    */
+   if (typeof data.macro !== 'undefined') {
+    updateData['data.macro._deprecated'] = true;
     }
 
     if (typeof data.macros === 'undefined') {
@@ -356,6 +220,7 @@ export function migrateItemData(itemData) {
             updateData['data.arcane.charges'] = -1;
             updateData['data.arcane.ego'] = 0;
         }
+
         if (typeof data.container === 'undefined') {
             updateData['data.container'] = 'on-person';
         }
@@ -367,7 +232,7 @@ export function migrateItemData(itemData) {
 
             if (typeof data.attackModifier === 'undefined') {
                 updateData['data.attackModifier'] = data.handMode;
-                updateData['data.-=handMode'] = null;  // delete the handMode object;
+                updateData['data.handMode._deprecated'] = true;  // delete the handMode object;
             }
         } else if (itemData.type === 'missilegear') {
             if (typeof data.weaponQuality === 'undefined') {
@@ -386,7 +251,7 @@ export function migrateItemData(itemData) {
             }
         }
     }
-    
+
     if (itemData.type === 'armorlocation') {
         if (typeof data.protection === 'undefined') {
             updateData['data.protection.blunt'] = 0;
@@ -398,15 +263,15 @@ export function migrateItemData(itemData) {
     }
 
     if (itemData.type === 'skill' || itemData.type === 'psionic') {
-        if (typeof data.skillBase != 'object') {
+        if (typeof data.skillBase !== 'object') {
             const value = data.skillBase;
             updateData['data.skillBase.value'] = value;
             updateData['data.skillBase.formula'] = '';
             updateData['data.skillBase.isFormulaValid'] = true;
         }
 
-        if (typeof data.psionic != 'undefined') {
-            updateData['data.-=psionic'] = null;
+        if (typeof data.psionic !== 'undefined') {
+            updateData['data.psionic._deprecated'] = true;
         }
 
         if (typeof data.improveFlag === 'undefined') {
@@ -414,5 +279,110 @@ export function migrateItemData(itemData) {
         }
     }
 
+    // Remove deprecated fields
+    _migrateRemoveDeprecated(item, updateData);
+  
+    // Return the migrated update data
     return updateData;
-}
+  };
+  
+  /* -------------------------------------------- */
+  
+  /**
+   * Migrate a single Scene entity to incorporate changes to the data model of it's actor data overrides
+   * Return an Object of updateData to be applied
+   * @param {Object} scene  The Scene data to Update
+   * @return {Object}       The updateData to apply
+   */
+  export const migrateSceneData = function(scene) {
+    const tokens = duplicate(scene.tokens);
+    return {
+      tokens: tokens.map(t => {
+        if (!t.actorId || t.actorLink || !t.actorData.data) {
+          t.actorData = {};
+          return t;
+        }
+        const token = new Token(t);
+        if ( !token.actor ) {
+          t.actorId = null;
+          t.actorData = {};
+        } else if ( !t.actorLink ) {
+          const updateData = migrateActorData(token.data.actorData);
+          t.actorData = mergeObject(token.data.actorData, updateData);
+        }
+        return t;
+      })
+    };
+  };
+  
+  /* -------------------------------------------- */
+  /*  Low level migration utilities
+  /* -------------------------------------------- */
+  
+  /**
+   * Migrate the actor bonuses object
+   * @private
+   */
+//   function _migrateActorBonuses(actor, updateData) {
+//     const b = game.system.model.Actor.character.bonuses;
+//     for ( let k of Object.keys(actor.data.bonuses || {}) ) {
+//       if ( k in b ) updateData[`data.bonuses.${k}`] = b[k];
+//       else updateData[`data.bonuses.-=${k}`] = null;
+//     }
+//   }
+  
+  
+  /* -------------------------------------------- */
+  
+  
+  /**
+   * A general migration to remove all fields from the data model which are flagged with a _deprecated tag
+   * @private
+   */
+  const _migrateRemoveDeprecated = function(ent, updateData) {
+    const flat = flattenObject(ent.data);
+  
+    // Identify objects to deprecate
+    const toDeprecate = Object.entries(flat).filter(e => e[0].endsWith("_deprecated") && (e[1] === true)).map(e => {
+      let parent = e[0].split(".");
+      parent.pop();
+      return parent.join(".");
+    });
+  
+    // Remove them
+    for ( let k of toDeprecate ) {
+      let parts = k.split(".");
+      parts[parts.length-1] = "-=" + parts[parts.length-1];
+      updateData[`data.${parts.join(".")}`] = null;
+    }
+  };
+  
+  
+  /* -------------------------------------------- */
+  
+  
+  /**
+   * A general tool to purge flags from all entities in a Compendium pack.
+   * @param {Compendium} pack   The compendium pack to clean
+   * @private
+   */
+  export async function purgeFlags(pack) {
+    const cleanFlags = (flags) => {
+      const flagshm3 = flags.hm3 || null;
+      return flagshm3 ? {hm3: flagshm3} : {};
+    };
+    await pack.configure({locked: false});
+    const content = await pack.getContent();
+    for ( let entity of content ) {
+      const update = {_id: entity.id, flags: cleanFlags(entity.data.flags)};
+      if ( pack.entity === "Actor" ) {
+        update.items = entity.data.items.map(i => {
+          i.flags = cleanFlags(i.flags);
+          return i;
+        })
+      }
+      await pack.updateEntity(update, {recursive: false});
+      console.log(`Purged flags from ${entity.name}`);
+    }
+    await pack.configure({locked: true});
+  }
