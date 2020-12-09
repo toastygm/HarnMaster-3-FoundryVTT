@@ -897,7 +897,7 @@
                         <div class="item-detail gear-qty">Qty</div>
                         <div class="item-detail gear-weight">Weight</div>
                         <div class="item-detail gear-notes">Notes</div>
-                        <div class="item detail gear-capacity {{#if (gt citem.data.data.capacity.value citem.data.data.capacity.max)}}overcapacity{{/if}}">Capacity: {{citem.data.data.capacity.value}}/{{#if (gt citem.data.data.capacity.max 99998)}}<i class="fas fa-infinity"></i>{{else}}{{citem.data.data.capacity.max}}{{/if}}</div>
+                        <div class="item detail gear-capacity {{#if (gt citem.data.data.capacity.value citem.data.data.capacity.max)}}overcapacity{{/if}}">Capacity: {{citem.data.data.capacity.value}}/{{citem.data.data.capacity.max}}</div>
                         <div class="item-controls">
                             <a class="item-control item-create active" title="Add Gear" data-type="gear" data-container-id="{{cid}}" data-container-name="{{citem.data.name}}"><i
                                     class="fas fa-plus"></i> Add</a>
