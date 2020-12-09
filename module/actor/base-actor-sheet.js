@@ -56,7 +56,20 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // NOTE: when an item comes from the item list or a compendium, its type is
         // "Item" but it does not have a "data" element.  So we have to check for that in
         // the following conditional; "data.data.type" may not exist!
-        if (data.actorId === this.actor._id || !data.data || !data.data.type.endsWith("gear")) {
+        if (data.actorId === this.actor._id) {
+            // We are dropping from the same actor
+            if (data.data.type.endsWith("gear")) {
+                /*
+                 * For now, I am simply disabling the abillity to perform drag/drop on same form for gear.
+                 */
+                return null;
+            } else {
+                return super._onDropItem(event, data);
+            }
+        }
+            
+        // Skills, spells, etc. (non-gear) coming from a item list or compendium
+        if (!data.data || !data.data.type.endsWith("gear")) {
             return super._onDropItem(event, data);
         }
 
@@ -169,9 +182,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Look for a similar item locally
         let result = null;
         for (let it of this.actor.items.values()) {
-            if (it.data.type === sourceType && it.data.name === sourceName) {
+            if (it.data.type === sourceType && it.data.name === sourceName && it.data.data.container === 'on-person') {
                 result = it;
-                break;
+                break;    
             }
         }
 
@@ -184,6 +197,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             const item = await Item.fromDropData(data);
             const itemData = duplicate(item.data);
             itemData.data.quantity = moveQuantity;
+            itemData.data.container = 'on-person';
             result = await this.actor.createOwnedItem(itemData);
         }
 
