@@ -7,15 +7,37 @@
             <div class="flexcol header-fields">
                 <div class="flexrow name-attribute">
                     <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
+                    <div class="header-stat-block">
+                        <div class="penalties flexrow">
+                            <div class="capacity-label">Max Capacity</div>
+                            <input class="capacity-value" type="number" name="data.capacity.max" value="{{data.capacity.max}}" data-dtype="Number"/>
+                        </div>
+                        <div class="endurance flexrow">
+                            <span class="label">Capacity: {{data.capacity.value}}</span>
+                        </div>
+                        <div class="endbar">
+                            <span class="bar" style="width: {{data.capacity.pct}}%"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-attributes">
+                    <textarea class="description" id="data.description" name="data.description" placeholder="Description">{{data.description}}</textarea>
                 </div>
             </div>
         </div>
     </header>
 
+    {{!-- Sheet Tab Navigation --}}
+    <nav class="sheet-tabs tabs" data-group="primary">
+        <a class="item" data-tab="inventory">Gear</a>
+        <a class="item" data-tab="secrets">Private Details</a>
+    </nav>
+
     {{!-- Sheet Body --}}
     <section class="sheet-body">
 
-        <div class="inventory items">
+        {{!-- Profile Tab --}}
+        <div class="tab inventory items" data-group="primary" data-tab="inventory">
             <!-- Gear -->
             {{#each containers as |citem cid|}}
                 <ol class="items-list gear-list">
@@ -59,6 +81,16 @@
                     </ol>
                 </ol>
             {{/each}}
+        </div>
+
+        {{!-- Biography Tab --}}
+        <div class="tab biography" data-group="primary" data-tab="secrets">
+            <div class="flexrow">
+                <img class="bio-image" src="{{data.bioImage}}" data-edit="data.bioImage" title="{{actor.name}}" height="300" width="200" />
+                <div class="bio-text">
+                    {{editor content=data.biography target="data.biography" button=true owner=owner editable=editable}}
+                </div>
+            </div>
         </div>
     </section>
 

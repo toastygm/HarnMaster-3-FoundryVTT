@@ -70,7 +70,11 @@ export class HarnMasterActor extends Actor {
                     const maxCapacity = parseInt(formdata.maxCapacity);
                     console.log(data);
                     const actor = await super.create(data, options); // Follow through the the rest of the Actor creation process upstream
-                    return actor.update({"data.capacity.max": maxCapacity});
+                    return actor.update({
+                        "img": "systems/hm3/images/icons/svg/chest.svg",
+                        "bioImage": "systems/hm3/images/icons/svg/chest.svg",
+                        "data.capacity.max": maxCapacity
+                    });
                 }
             });
         } else {
@@ -263,6 +267,12 @@ export class HarnMasterActor extends Actor {
             data.description = '';
             data.biography = '';
         }
+
+        // Calculate container current capacity utilized
+        const tempData = {};
+        this._calcGearWeightTotals(tempData);
+        data.capacity.value = tempData.totalGearWeight;
+        data.capacity.pct = Math.round((Math.max(data.capacity.max - data.capacity.value, 0) / data.capacity.max) * 100);
     }
 
     /**

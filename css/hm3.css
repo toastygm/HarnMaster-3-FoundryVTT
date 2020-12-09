@@ -425,7 +425,14 @@
     .hm3 .sheet .sheet-header-character .header-fields .header-stat-block .penalties {
       padding: 0 0 5px;
       font-size: 12px;
-      font-weight: bold; }
+      font-weight: bold;
+      align-items: center; }
+      .hm3 .sheet .sheet-header-character .header-fields .header-stat-block .penalties .capacity-value {
+        font-size: 14px; }
+      .hm3 .sheet .sheet-header-character .header-fields .header-stat-block .penalties .capacity-label {
+        text-transform: uppercase;
+        font-size: 14px;
+        flex: 0 0 100px; }
       .hm3 .sheet .sheet-header-character .header-fields .header-stat-block .penalties .stat {
         text-align: center;
         text-transform: uppercase;
@@ -458,6 +465,12 @@
         border-radius: 2px; }
   .hm3 .sheet .sheet-header-character .header-fields .header-attributes {
     font-size: 10px; }
+    .hm3 .sheet .sheet-header-character .header-fields .header-attributes textarea.description {
+      resize: none;
+      font-family: "Signika", sans-serif;
+      font-size: 13px;
+      border: none;
+      background: transparent; }
     .hm3 .sheet .sheet-header-character .header-fields .header-attributes .attribute {
       min-height: 40px;
       margin: 2px; }
@@ -1121,6 +1134,12 @@
     flex: 0 0 18px;
     font-weight: bold;
     text-transform: uppercase; }
+  .hm3 .sheet-body .profile-desc textarea.description {
+    resize: none;
+    font-family: "Signika", sans-serif;
+    font-size: 14px;
+    border: none;
+    background: transparent; }
 
 .hm3 .sheet-body .profile img.bio-image {
   flex: 0 0 200px;

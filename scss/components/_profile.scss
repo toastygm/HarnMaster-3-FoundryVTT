@@ -80,7 +80,15 @@
       font-weight: bold;
       text-transform: uppercase;  
     }
-  }
+
+    textarea.description {
+      resize: none;
+      font-family: "Signika", sans-serif;
+      font-size: 14px;
+      border: none;
+      background: transparent;
+    }
+}
 
   .profile {
     img.bio-image {
