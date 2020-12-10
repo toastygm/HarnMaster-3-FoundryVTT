@@ -852,7 +852,8 @@ function getTokenInCombat(token=null) {
         return null;
     }
 
-    return { token: combatant.token, actor: combatant.actor};
+    token = canvas.tokens.get(combatant.token._id);
+    return { token: token, actor: combatant.actor};
 }
 
 function getSingleTarget() {
