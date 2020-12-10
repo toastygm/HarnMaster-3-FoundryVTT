@@ -124,6 +124,18 @@ export class HarnMasterItemSheet extends ItemSheet {
 
     // Roll handlers, click handlers, etc. go here.
 
+    html.on("click", "input[type='text']", ev => {
+      ev.currentTarget.select();
+    });
+
+    html.on("keypress", ".properties", ev => {
+      var keycode = (ev.keyCode ? ev.keyCode : ev.which);
+      if (keycode == '13') {
+          super.close();
+      }
+    });
+  
+
     // Add Inventory Item
     html.find('.armorgear-location-add').click(this._armorgearLocationAdd.bind(this));
 
