@@ -831,7 +831,12 @@ export function setSkillDevelopmentFlag(skillName, myActor = null) {
  * @param {Token} token 
  */
 function getTokenInCombat(token=null) {
+    if (token) {
+        token = canvas.tokens.get(token._id);
+    }
+
     if (token && game.user.isGM) {
+
         return { token: token, actor: token.actor };
     }
     
