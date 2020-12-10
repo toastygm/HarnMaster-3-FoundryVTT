@@ -97,14 +97,32 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     
     /** @override */
     async _onDropItem(event, data) {
+        if ( !this.actor.owner ) return false;
+
+        // Destination containerid: set to 'on-person' if a containerid can't be found
+        const closestContainer = event.target.closest('[data-container-id]');
+        const destContainer = closestContainer && closestContainer.dataset && closestContainer.dataset.containerId ? closestContainer.dataset.containerId : 'on-person';  
+
+        if (data.actorId === this.actor._id) {
+            // We are dropping from the same actor
+
+            // If the item is some type of gear (other than containergear), then
+            // make sure we set the container to the same as the dropped location
+            // (this allows people to move items into containers easily)
+            const item = await Item.fromDropData(data);
+            if (item.data.type.endsWith('gear') && item.data.type !== 'containergear') {
+                if (item.data.data.container != destContainer) {
+                    this.actor.updateOwnedItem({'_id': item.data._id, 'data.container': destContainer});
+                }
+            }
+
+            return super._onDropItem(event, data);
+        }
+            
         // NOTE: when an item comes from the item list or a compendium, its type is
         // "Item" but it does not have a "data" element.  So we have to check for that in
         // the following conditional; "data.data.type" may not exist!
-        if (data.actorId === this.actor._id) {
-            // We are dropping from the same actor
-                return super._onDropItem(event, data);
-        }
-            
+
         // Skills, spells, etc. (non-gear) coming from a item list or compendium
         if (!data.data || !data.data.type.endsWith("gear")) {
             return super._onDropItem(event, data);
@@ -116,6 +134,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         // Containers are a special case, and they need to be processed specially
         if (data.data.type === 'containergear') return await this._moveContainer(event, data);
+
+        // Set the destination container to the closest drop containerid
+        data.data.data.container = destContainer;
 
         const quantity = data.data.data.quantity;
 
@@ -132,20 +153,28 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     }
 
     async _moveContainer(event, data) {
+        console.log(data);
         // create new container
         const item = await Item.fromDropData(data);
         let itemData = duplicate(item.data);
-        const containerResult = await this.actor.createOwnedItem(itemData);
-        if (!containerResult) {
-            ui.notifications.warn(`Error while moving container, move aborted`);
+
+        // Get source actor
+        let sourceActor = null;
+        if (data.tokenId) {
+            const token = await canvas.tokens.get(data.tokenId);
+            sourceActor = token.actor;
+        } else {
+            sourceActor = await game.actors.get(data.actorId);
+        }
+        
+        if (!sourceActor) {
+            ui.notifications.warn(`Error accessing actor where container is coming from, move aborted`);
             return null;
         }
 
-        // Get source actor
-        const sourceActor = await game.actors.get(data.actorId);
-        if (!sourceActor) {
-            ui.notifications.warn(`Error accessing actor where container is coming from, move aborted`);
-            await this.actor.deleteOwnedItem(containerResult._id);
+        const containerResult = await this.actor.createOwnedItem(itemData);
+        if (!containerResult) {
+            ui.notifications.warn(`Error while moving container, move aborted`);
             return null;
         }
 
@@ -177,7 +206,19 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     }
 
     async _moveQtyDialog(event, data) {
-        const sourceActor = await game.actors.get(data.actorId);
+        // Get source actor
+        let sourceActor = null;
+        if (data.tokenId) {
+            const token = await canvas.tokens.get(data.tokenId);
+            sourceActor = token.actor;
+        } else {
+            sourceActor = await game.actors.get(data.actorId);
+        }
+        
+        if (!sourceActor) {
+            ui.notifications.warn(`Error accessing actor where container is coming from, move aborted`);
+            return null;
+        }
 
         // Render modal dialog
         let dlgTemplate = "systems/hm3/templates/dialog/item-qty.html";
@@ -216,10 +257,24 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         const sourceType = data.data.type;
         const sourceQuantity = data.data.data.quantity;
 
+        // Get source actor
+        let sourceActor = null;
+        if (data.tokenId) {
+            const token = await canvas.tokens.get(data.tokenId);
+            sourceActor = token.actor;
+        } else {
+            sourceActor = await game.actors.get(data.actorId);
+        }
+        
+        if (!sourceActor) {
+            ui.notifications.warn(`Error accessing actor where container is coming from, move aborted`);
+            return null;
+        }
+
         // Look for a similar item locally
         let result = null;
         for (let it of this.actor.items.values()) {
-            if (it.data.type === sourceType && it.data.name === sourceName && it.data.data.container === 'on-person') {
+            if (it.data.type === sourceType && it.data.name === sourceName) {
                 result = it;
                 break;    
             }
@@ -239,7 +294,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         }
 
         if (result) {
-            const sourceActor = await game.actors.get(data.actorId);
             if (moveQuantity >= data.data.data.quantity) {
                 await sourceActor.deleteOwnedItem(data.data._id);
             } else {
