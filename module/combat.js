@@ -1116,44 +1116,46 @@ export function meleeCombatResult(atkResult, defResult, defense, atkAddlImpact=0
 
     if (!outcome) return null;
 
-    const result = { outcome: outcome, desc: 'No result' };
+    const result = { outcome: outcome, desc: 'Attack missed.', csDesc: 'Counterstrike missed.'};
     
-    if (outcome.atkDice && !outcome.defDice) {
+    if (outcome.atkDice) {
         result.desc = `Attacker strikes for ${diceFormula(outcome.atkDice, atkAddlImpact)} impact.`;
-        result.csDesc = `Counterstriker Misses`;
-    } else if (outcome.defDice && !outcome.atkDice) {
-        result.csDesc = `Counterstriker strikes for ${diceFormula(outcome.defDice, defAddlImpact)} impact.`;
-        result.desc = `Attacker Misses`;
-    } else if (outcome.atkDice && outcome.defDice) {
-        result.desc = `Attacker strikes for ${diceFormula(outcome.atkDice, atkAddlImpact)} impact.`
-        result.csDesc = `Counterstriker strikes for ${diceFormula(outcome.defDice, defAddlImpact)} impact.`;
+    } else if (outcome.atkFumble & outcome.defFumble) {
+        result.desc = 'Both Attacker and Defender Fumble';
     } else if (outcome.atkFumble && !outcome.defFumble) {
         result.desc = `Attacker fumbles.`;
-        result.csDesc = `Counterstriker misses.`
-    } else if (outcome.defFumble && !outcome.atkFumble) {
-        result.desc = `Attacker misses.`;
-        result.csDesc = `Counterstriker fumbles`;
-    } else if (outcome.atkFumble && outcome.defFumble) {
-        result.desc = `Attacker fumbles.`;
-        result.csDesc = `Counterstriker fumbles.`;
+    } else if (outcome.defStumble && outcome.atkStumble) {
+        result.desc = `Both attacker and defender stumble.`;
     } else if (outcome.atkStumble && !outcome.defStumble) {
         result.desc = `Attacker stumbles.`;
-        result.csDesc = `Counterstriker misses.`;
-    } else if (outcome.defStumble && !outcome.atkStumble) {
-        result.desc = `Attacker misses.`;
-        result.csDesc = `Counterstriker stumbles.`;
-    } else if (outcome.defStumble && outcome.atkStumble) {
-        result.desc = `Attacker stumbles.`;
-        result.csDesc = `Counterstriker stumbles.`;
     } else if (outcome.block) {
         result.desc = `Attacker blocked.`;
-        result.csDesc = `Counterstriker blocked.`;
-    } else if (outcome.miss) {
-        result.desc = `Attack missed.`;
-        result.csDesc = `Counterstrike missed.`;
     } else if (outcome.dta) {
         result.desc = `Defender gains Tactical Advantage.`;
-        result.csDesc = `Counterstriker achieves Tactical Advantage!`
+    } else {
+        result.desc = `Attack missed.`;
+    }
+
+    if (defense === 'counterstrike') {
+        if (outcome.defDice) {
+            result.csDesc = `Counterstriker strikes for ${diceFormula(outcome.defDice, defAddlImpact)} impact.`;
+        } else if (outcome.atkFumble && outcome.defFumble) {
+            result.desc = 'Attacker fumbles.';
+            result.csDesc = 'Counterstriker fumbles.';
+        } else if (outcome.defFumble) {
+            result.csDesc = 'Counterstriker fumbles.';
+        } else if (outcome.atkStumble && outcome.defStumble) {
+            result.desc = 'Attacker stumbles.';
+            result.csDesc = 'Counterstriker stumbles.';
+        } else if (outcome.defStumble) {
+            result.csDesc = 'Counterstriker stumbles';
+        } else if (outcome.block) {
+            result.csDesc = `Counterstriker blocked.`;
+        } else if (outcome.dta) {
+            result.csDesc = `Counterstriker achieves Tactical Advantage!`
+        } else if (outcome.miss) {
+            result.csDesc = `Counterstrike missed.`;
+        }
     }
 
     return result;
