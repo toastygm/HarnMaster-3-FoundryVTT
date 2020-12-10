@@ -72,4 +72,13 @@ export const registerSystemSettings = function () {
             "grid": "Grid Units (e.g. hexes or squares)"
         }
     });
+
+    game.settings.register("hm3", "missileTracking", {
+        name: "Track Missile Quantity",
+        hint: "Enable tracking of missile quantity, reduce missile quantity by 1 when used, and disallow missile attack when quantity is zero.",
+        scope: "world",
+        config: true,
+        default: false,
+        type: Boolean
+    });
 };

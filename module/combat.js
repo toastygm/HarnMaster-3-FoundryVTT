@@ -73,6 +73,15 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
         missileItem = dialogResult.weapon;
     }
 
+    if (game.settings.get('hm3', 'missileTracking') && attackToken.actor) {
+        if (missileItem.data.data.quantity <= 0) {
+            ui.notification.warn(`No more ${missileItem.name} left, attack denied.`);
+            return null;
+        }
+
+        attackToken.actor.updateOwnedItem({'_id': missileItem.data._id, 'data.quantity': missileItem.data.data.quantity - 1});
+    }
+    
     const effAML = dialogResult.weapon.data.data.attackMasteryLevel + dialogResult.addlModifier;
 
     // Prepare for Chat Message
