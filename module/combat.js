@@ -47,7 +47,8 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
 
     const options = {
         distance: range,
-        type: 'Attack'
+        type: 'Attack',
+        attackerName: attackToken.name
     };
 
     // If a weapon was provided, don't ask for it.
@@ -169,7 +170,8 @@ export async function meleeAttack(attackToken, defendToken, weaponItem=null) {
 
     // display dialog, get aspect, aim, and addl damage
     const options = {
-        type: 'Attack'
+        type: 'Attack',
+        attackerName: attackToken.name
     }
 
     // If a weapon was provided, don't ask for it.
@@ -379,7 +381,7 @@ async function attackDialog(options) {
         return null;
     }
 
-    dialogOptions.title = `${options.type} with ${options.weapon.name}`;
+    dialogOptions.title = `${options.attackerName} ${options.type}s with ${options.weapon.name}`;
 
     const attackDialog = "systems/hm3/templates/dialog/attack-dialog.html";
     const html = await renderTemplate(attackDialog, dialogOptions);
@@ -506,6 +508,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     }
 
     options.type = 'Counterstrike';
+    options.attackerName = defToken.name;
     const csDialogResult = await attackDialog(options);
     if (!csDialogResult) return null;
 
