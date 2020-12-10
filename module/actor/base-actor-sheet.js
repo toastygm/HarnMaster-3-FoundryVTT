@@ -62,20 +62,47 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     }
 
     /** @override */
+    _onSortItem(event, itemData) {
+
+        // TODO - for now, don't allow sorting for Token Actor overrides
+        if (this.actor.isToken) return;
+    
+        if (!itemData.type.endsWith('gear')) return super._onSortItem(event, itemData);
+
+        // Get the drag source and its siblings
+        const source = this.actor.getOwnedItem(itemData._id);
+        const siblings = this.actor.items.filter(i => {
+          return (i.data.type.endsWith('gear') && (i.data._id !== source.data._id));
+        });
+    
+        // Get the drop target
+        const dropTarget = event.target.closest(".item");
+        const targetId = dropTarget ? dropTarget.dataset.itemId : null;
+        const target = siblings.find(s => s.data._id === targetId);
+    
+        // Ensure we are only sorting like-types
+        if (target && !target.data.type.endsWith('gear')) return;
+    
+        // Perform the sort
+        const sortUpdates = SortingHelpers.performIntegerSort(source, {target: target, siblings});
+        const updateData = sortUpdates.map(u => {
+          const update = u.update;
+          update._id = u.target.data._id;
+          return update;
+        });
+    
+        // Perform the update
+        return this.actor.updateEmbeddedEntity("OwnedItem", updateData);
+    }
+    
+    /** @override */
     async _onDropItem(event, data) {
         // NOTE: when an item comes from the item list or a compendium, its type is
         // "Item" but it does not have a "data" element.  So we have to check for that in
         // the following conditional; "data.data.type" may not exist!
         if (data.actorId === this.actor._id) {
             // We are dropping from the same actor
-            if (data.data.type.endsWith("gear")) {
-                /*
-                 * For now, I am simply disabling the abillity to perform drag/drop on same form for gear.
-                 */
-                return null;
-            } else {
                 return super._onDropItem(event, data);
-            }
         }
             
         // Skills, spells, etc. (non-gear) coming from a item list or compendium
@@ -288,6 +315,25 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     }
                 } else {
                     $(skill).show();
+                }
+            }
+        });
+
+        html.on("keyup", ".gear-name-filter", ev => {
+            const data = this.getData();
+            this.gearNameFilter = $(ev.currentTarget).val();
+            const lcGearNameFilter = this.gearNameFilter.toLowerCase();
+            let gearItems = html.find('.gear-item');
+            for (let gear of gearItems) {
+                const gearName = gear.getAttribute('data-item-name');
+                if (lcGearNameFilter) {
+                    if (gearName.toLowerCase().startsWith(lcGearNameFilter)) {
+                        $(gear).show()
+                    } else {
+                        $(gear).hide()
+                    }
+                } else {
+                    $(gear).show();
                 }
             }
         });

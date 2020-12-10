@@ -241,6 +241,10 @@
 
         {{!-- Skills Tab --}}
         <div class="tab skills items" data-group="primary" data-tab="skills">
+            <div class="flexrow">
+                <input class="skill-name-filter" type="text" name="data.skillNameFilter" placeholder="Filter skills by name..." data-dtype="String" />
+            </div>
+
             <!-- Physical Skills -->
             <ol class="items-list skills-list">
                 <li class="items-header skill flexrow">
@@ -670,6 +674,9 @@
         <div class="tab inventory items" data-group="primary" data-tab="inventory">
 
             <!-- Gear -->
+            <div class="flexrow">
+                <input class="gear-name-filter" type="text" name="data.gearNameFilter" placeholder="Filter gear by name..." data-dtype="String" />
+            </div>
             {{#each containers as |citem cid|}}
                 <ol class="items-list gear-list">
                     <li class="items-header gear flexrow">

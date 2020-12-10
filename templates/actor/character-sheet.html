@@ -889,6 +889,9 @@
             </div>
 
             <!-- Gear -->
+            <div class="flexrow">
+                <input class="gear-name-filter" type="text" name="data.gearNameFilter" placeholder="Filter gear by name..." data-dtype="String" />
+            </div>
             {{#each containers as |citem cid|}}
                 <ol class="items-list gear-list">
                     <li class="items-header gear flexrow">
@@ -906,7 +909,7 @@
                     <ol class="item-list gear-list">
                         {{#each ../actor.items as |item id|}}
                              {{#if (and (endswith item.type "gear") (eq item.data.container cid))}}
-                                <li class="item gear {{#unless data.isCarried}}nocarry{{/unless}} flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
+                                <li class="item gear-item {{#unless data.isCarried}}nocarry{{/unless}} flexrow" data-item-id="{{item._id}}" data-item-name="{{item.name}}">
                                     <div class="item-name gear-name flexrow">
                                         <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                                         <h4>{{item.name}}</h4>
