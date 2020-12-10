@@ -354,6 +354,10 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Delete Inventory Item
         html.find('.item-delete').click(this._onItemDelete.bind(this));
 
+        html.on("click", "input[type='text']", ev => {
+                ev.currentTarget.select();
+        });
+      
         html.on("keyup", ".skill-name-filter", ev => {
             const data = this.getData();
             this.skillNameFilter = $(ev.currentTarget).val();
