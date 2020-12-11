@@ -1136,24 +1136,26 @@ export function meleeCombatResult(atkResult, defResult, defense, atkAddlImpact=0
 
     if (!outcome) return null;
 
-    const result = { outcome: outcome, desc: 'Attack missed.', csDesc: 'Counterstrike missed.'};
+    const result = { outcome: outcome, desc: 'Attack misses.', csDesc: 'Counterstrike misses.'};
     
     if (outcome.atkDice) {
         result.desc = `Attacker strikes for ${diceFormula(outcome.atkDice, atkAddlImpact)} impact.`;
     } else if (outcome.atkFumble & outcome.defFumble) {
         result.desc = 'Both Attacker and Defender Fumble';
-    } else if (outcome.atkFumble && !outcome.defFumble) {
+    } else if (outcome.atkFumble) {
         result.desc = `Attacker fumbles.`;
+    } else if (outcome.defFumble) {
+        result.desc = `Defender fumbles.`;
     } else if (outcome.defStumble && outcome.atkStumble) {
         result.desc = `Both attacker and defender stumble.`;
-    } else if (outcome.atkStumble && !outcome.defStumble) {
+    } else if (outcome.atkStumble) {
         result.desc = `Attacker stumbles.`;
+    } else if (outcome.defStumble) {
+        result.desc = `Defender stumbles.`;
     } else if (outcome.block) {
-        result.desc = `Attacker blocked.`;
+        result.desc = `Attack blocked.`;
     } else if (outcome.dta) {
         result.desc = `Defender gains Tactical Advantage.`;
-    } else {
-        result.desc = `Attack missed.`;
     }
 
     if (defense === 'counterstrike') {
@@ -1168,16 +1170,15 @@ export function meleeCombatResult(atkResult, defResult, defense, atkAddlImpact=0
             result.desc = 'Attacker stumbles.';
             result.csDesc = 'Counterstriker stumbles.';
         } else if (outcome.defStumble) {
-            result.csDesc = 'Counterstriker stumbles';
+            result.csDesc = 'Counterstriker stumbles.';
         } else if (outcome.block) {
             result.csDesc = `Counterstriker blocked.`;
         } else if (outcome.dta) {
             result.csDesc = `Counterstriker achieves Tactical Advantage!`
         } else if (outcome.miss) {
-            result.csDesc = `Counterstrike missed.`;
+            result.csDesc = `Counterstrike misses.`;
         }
     }
-
     return result;
 }
 
