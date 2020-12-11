@@ -550,7 +550,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         aRoll.dice[0].options.colorset = "glitterparty";
         await game.dice3d.showForRoll(aRoll);
 
-        const cRoll = atkRoll.rollObj;
+        const cRoll = csRoll.rollObj;
         cRoll.dice[0].options.colorset = "bloodmoon";
         await game.dice3d.showForRoll(cRoll);
     }
