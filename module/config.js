@@ -314,8 +314,8 @@ HM3.meleeCombatTable = {
         'ms:mf': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 2, defDice: 0 },
         'cs:mf': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 3, defDice: 0 },
 
-        'cf:ms': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 0, defDice: 1 },
-        'mf:ms': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 0, defDice: 2 },
+        'cf:ms': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 0, defDice: 2 },
+        'mf:ms': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 0, defDice: 1 },
         'ms:ms': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 1, defDice: 1 },
         'cs:ms': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 1, defDice: 0 },
 
