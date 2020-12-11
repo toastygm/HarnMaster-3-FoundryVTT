@@ -283,7 +283,7 @@
 
 .hm3 .sheet .window-content .tab {
   height: 100%;
-  overflow-y: auto;
+  overflow-y: hidden;
   align-content: flex-start; }
 
 .hm3 .sheet input[type="text"],
@@ -611,7 +611,7 @@
   list-style: none;
   margin: 7px 0;
   padding: 0;
-  overflow-y: auto; }
+  overflow-y: hidden; }
   .hm3 .items .items-list .items-header {
     margin: 2px 0;
     padding: 0;
@@ -738,7 +738,8 @@
   padding: 5px; }
 
 .hm3 .combat .combat-stats {
-  gap: 2px; }
+  gap: 2px;
+  overflow: hidden; }
   .hm3 .combat .combat-stats .combat-stat {
     align-items: center; }
     .hm3 .combat .combat-stats .combat-stat .combat-stat-label {
@@ -1153,7 +1154,7 @@
   list-style: none;
   margin: 7px 0;
   padding: 0;
-  overflow-y: auto; }
+  overflow-y: hidden; }
   .hm3 .injuries-list .injury-header {
     font-weight: bold; }
   .hm3 .injuries-list .injury {
@@ -1222,7 +1223,7 @@
   list-style: none;
   margin: 7px 0;
   padding: 0;
-  overflow-y: auto; }
+  overflow-y: hidden; }
   .hm3.actor .skills .skills-list .skill .skill-name {
     flex: 0 0 200px; }
   .hm3.actor .skills .skills-list .skill .skill-notes {
@@ -1279,7 +1280,7 @@
   list-style: none;
   margin: 7px 0;
   padding: 0;
-  overflow-y: auto; }
+  overflow-y: hidden; }
   .hm3 .esoteric .spells-list .spell-header {
     font-weight: bold; }
   .hm3 .esoteric .spells-list .spell {
@@ -1326,7 +1327,7 @@
   list-style: none;
   margin: 7px 0;
   padding: 0;
-  overflow-y: auto; }
+  overflow-y: hidden; }
   .hm3 .esoteric .psionics-list .psionic-header {
     font-weight: bold; }
   .hm3 .esoteric .psionics-list .psionic {
@@ -1431,7 +1432,7 @@
   list-style: none;
   margin: 7px 0;
   padding: 0;
-  overflow-y: auto; }
+  overflow-y: hidden; }
   .hm3 .armor-list .armor-header {
     font-weight: bold; }
   .hm3 .armor-list .armor {
@@ -1500,7 +1501,7 @@
   list-style: none;
   margin: 7px 0;
   padding: 0;
-  overflow-y: auto; }
+  overflow-y: hidden; }
   .hm3 .gear-list .gear-header {
     font-weight: bold; }
   .hm3 .gear-list .gear {
