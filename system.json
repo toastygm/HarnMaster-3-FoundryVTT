@@ -2,7 +2,7 @@
   "name": "hm3",
   "title": "HarnMaster 3",
   "description": "The HarnMaster 3 system for FoundryVTT!",
-  "version": "0.7.19",
+  "version": "0.7.20",
   "minimumCoreVersion": "0.7.1",
   "compatibleCoreVersion": "0.7.8",
   "templateVersion": 2,
@@ -89,6 +89,6 @@
   "secondaryTokenAttribute": null,
   "url": "https://github.com/toastygm/HarnMaster-3-FoundryVTT/",
   "manifest": "https://raw.githubusercontent.com/toastygm/HarnMaster-3-FoundryVTT/tom/system.json",
-  "download": "https://github.com/toastygm/HarnMaster-3-FoundryVTT/archive/v0.7.19.zip",
+  "download": "https://github.com/toastygm/HarnMaster-3-FoundryVTT/archive/v0.7.20.zip",
   "license": "LICENSE.txt"
 }
