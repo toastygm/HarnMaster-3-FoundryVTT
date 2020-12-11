@@ -270,3 +270,10 @@ The following images were taken from [The Noun Project](https://thenounproject.c
 * bullseye by Creative Stall
 * blowgun by Peter Selinger
 * chest by Toli
+
+A number of icons were also produced by:
+
+* delapouite
+* lorc
+* skol
+* willdabeast
