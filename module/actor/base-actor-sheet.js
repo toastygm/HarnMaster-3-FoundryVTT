@@ -460,24 +460,46 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         // Melee Weapon Attack
         html.find('.melee-weapon-attack').click(ev => {
-            if (!this.actor.token) {
-                ui.notifications.warn(`You may only perform this action from a token's actor sheet; double-click on a specific token on the canvas.`)
-                return null;
+            // If we are a synthetic actor, token will be set
+            let token = this.actor.token;
+            if (!token) {
+                // We are not a synthetic actor, so see if there is exactly one linked actor on the canvas
+                const tokens = this.actor.getActiveTokens(true);
+                if (tokens.length == 0) {
+                    ui.notifications.warn(`There are no tokens linked to this actor on the canvas, double-click on a specific token on the canvas.`);
+                    return null;
+                } else if (tokens.length > 1) {
+                    ui.notifications.warn(`There are ${tokens.length} tokens linked to this actor on the canvas, so the attacking token can't be identified.`);
+                    return null;
+                }
+                token = tokens[0];
             }
+
             const li = $(ev.currentTarget).parents(".item");
             const itemId = li.data('itemId');
-            macros.weaponAttack(`Item$${itemId}`, false, this.actor.token);
+            macros.weaponAttack(`Item$${itemId}`, false, token);
         });
 
         // Missile Weapon Attack
         html.find('.missile-weapon-attack').click(ev => {
-            if (!this.actor.token) {
-                ui.notifications.warn(`You may only perform this action from a token's actor sheet; double-click on a specific token on the canvas.`)
-                return null;
+            // If we are a synthetic actor, token will be set
+            let token = this.actor.token;
+            if (!token) {
+                // We are not a synthetic actor, so see if there is exactly one linked actor on the canvas
+                const tokens = this.actor.getActiveTokens(true);
+                if (tokens.length == 0) {
+                    ui.notifications.warn(`There are no tokens linked to this actor on the canvas, double-click on a specific token on the canvas.`);
+                    return null;
+                } else if (tokens.length > 1) {
+                    ui.notifications.warn(`There are ${tokens.length} tokens linked to this actor on the canvas, so the attacking token can't be identified.`);
+                    return null;
+                }
+                token = tokens[0];
             }
+
             const li = $(ev.currentTarget).parents(".item");
             const itemId = li.data('itemId');
-            macros.missileAttack(`Item$${itemId}`, false, this.actor.token);
+            macros.missileAttack(`Item$${itemId}`, false, token);
         });
 
         // Weapon Attack Roll
