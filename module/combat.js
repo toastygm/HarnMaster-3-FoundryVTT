@@ -48,7 +48,8 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
     const options = {
         distance: range,
         type: 'Attack',
-        attackerName: attackToken.name
+        attackerName: attackToken.name,
+        defenderName: defendToken.name
     };
 
     // If a weapon was provided, don't ask for it.
@@ -81,7 +82,7 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
 
         attackToken.actor.updateOwnedItem({'_id': missileItem.data._id, 'data.quantity': missileItem.data.data.quantity - 1});
     }
-    
+
     const effAML = dialogResult.weapon.data.data.attackMasteryLevel + dialogResult.addlModifier;
 
     // Prepare for Chat Message
@@ -180,7 +181,8 @@ export async function meleeAttack(attackToken, defendToken, weaponItem=null) {
     // display dialog, get aspect, aim, and addl damage
     const options = {
         type: 'Attack',
-        attackerName: attackToken.name
+        attackerName: attackToken.name,
+        defenderName: defendToken.name
     }
 
     // If a weapon was provided, don't ask for it.
@@ -300,6 +302,8 @@ async function selectWeaponDialog(options) {
  * Queries for the weapon to use, and additional weapon parameters (aim, aspect, range).
  * 
  * options should include:
+ * attackerName (String): The name of the attacker
+ * defenderName (String): The name of the defender
  * weapons (Array<Item>): a list of Items, available weapons to choose from
  * defaultWeapon (string): default choice (Item name) from weapon list
  * weapon (Item): if provided, this weapon Item will be used and no weapon query performed
@@ -319,7 +323,7 @@ async function selectWeaponDialog(options) {
  */
 async function attackDialog(options) {
     if (options.weapons) {
-        const equippedWeapons = options.weapons.filter(w => isEquipped);
+        const equippedWeapons = options.weapons.filter(w => w.data.data.isEquipped);
         options.weapons = equippedWeapons;
     }
 
@@ -390,7 +394,7 @@ async function attackDialog(options) {
         return null;
     }
 
-    dialogOptions.title = `${options.attackerName} ${options.type}s with ${options.weapon.name}`;
+    dialogOptions.title = `${options.attackerName} vs. ${options.defenderName} ${options.type} with ${options.weapon.name}`;
 
     const attackDialog = "systems/hm3/templates/dialog/attack-dialog.html";
     const html = await renderTemplate(attackDialog, dialogOptions);
@@ -518,6 +522,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
 
     options.type = 'Counterstrike';
     options.attackerName = defToken.name;
+    options.defenderName = atkToken.name;
     const csDialogResult = await attackDialog(options);
     if (!csDialogResult) return null;
 
