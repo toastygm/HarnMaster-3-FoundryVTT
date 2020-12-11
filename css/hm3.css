@@ -1547,7 +1547,7 @@
     color: red;
     font-weight: bold; }
   .hm3 .gear-list .gear-notes {
-    flex: 1 0 80px;
+    flex: 1 0 60px;
     padding-left: 10px;
     text-overflow: ellipsis;
     white-space: nowrap;
