@@ -675,7 +675,7 @@
             </div>
             {{#each containers as |citem cid|}}
                 <ol class="items-list gear-list">
-                    <li class="items-header gear flexrow" data-container-id="{{cid}}" data-container-name="{{citem.data.name}}>
+                    <li class="items-header gear flexrow" data-container-id="{{cid}}" data-container-name="{{citem.data.name}}">
                         <h3 class="item-name gear-name">{{citem.data.name}}</h3>
                         <div class="item-detail gear-type">Type</div>
                         <div class="item-detail gear-qty">Qty</div>
@@ -690,7 +690,7 @@
                     <ol class="item-list gear-list">
                         {{#each ../actor.items as |item id|}}
                              {{#if (and (endswith item.type "gear") (eq item.data.container cid))}}
-                                <li class="item gear-item {{#unless data.isCarried}}nocarry{{/unless}} flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}" data-container-id="{{cid}}" data-container-name="{{citem.data.name}}>
+                                <li class="item gear-item {{#unless data.isCarried}}nocarry{{/unless}} flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}" data-container-id="{{cid}}" data-container-name="{{citem.data.name}}">
                                     <div class="item-name gear-name flexrow">
                                         <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                                         <h4>{{item.name}}</h4>
