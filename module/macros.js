@@ -560,7 +560,10 @@ export function weaponDefendRoll(itemName, noDialog = false, myActor = null) {
 
 export function missileAttackRoll(itemName, myActor = null) {
     const actor = getActor(myActor);
-    if (!actor) return null;
+    if (!actor) {
+        ui.notifications.warn(`No actor for this action could be determined.`);
+        return;
+    }
 
     const speaker = ChatMessage.getSpeaker({actor: actor});
 
@@ -806,13 +809,18 @@ export function changeMissileQuanity(missileName, newValue, myActor = null) {
 export function setSkillDevelopmentFlag(skillName, myActor = null) {
     const speaker = myActor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
+    if (!actor) {
+        ui.notifications.warn(`No actor for this action could be determined.`);
+        return null;
+    }
+    
     if (!actor.owner) {
         ui.notifications.warn(`You are not an owner of ${actor.name}, so you may not set the skill development flag.`);
         return null;
     }
 
     const skill = combat.getItem(skillName, 'skill', actor);
-    if (!missile) {
+    if (!skill) {
         ui.notifications.warn(`${actor.name} does not have a skill named ${skillName}.`);
         return null;
     }
@@ -821,6 +829,8 @@ export function setSkillDevelopmentFlag(skillName, myActor = null) {
         const updateData = { 'data.improveFlag': true };
         skill.update(updateData);
     }
+
+    return true;
 }
 
 /**
@@ -886,7 +896,10 @@ function getActor(actor, speaker) {
         if (!actor) {
             // If actor was null, lets try to figure it out from the Speaker
             if (!speaker) speaker = ChatMessage.getSpeaker();
-            if (speaker.token) resultActor = game.actors.tokens[speaker.token];
+            if (speaker.token) {
+                const token = canvas.tokens.get(speaker.token)
+                resultActor = token.actor;
+            }
             if (!resultActor) resultActor = game.actors.get(speaker.actor);
             if (!resultActor) {
                 ui.notifications.warn(`No actor selected, roll ignored.`);
