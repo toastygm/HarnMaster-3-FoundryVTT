@@ -617,7 +617,7 @@ export class HarnMasterActor extends Actor {
                     break;
 
                 case 'miscgear':
-                case 'containergear'
+                case 'containergear':
                     if (!it.data.isCarried) break;
                     tempWeight = it.data.weight * it.data.quantity;
                     if (tempWeight < 0) tempWeight = 0;
