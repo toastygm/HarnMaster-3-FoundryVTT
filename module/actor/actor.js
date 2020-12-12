@@ -68,7 +68,6 @@ export class HarnMasterActor extends Actor {
                     const fd = new FormDataExtended(form);
                     const formdata = fd.toObject();
                     const maxCapacity = parseInt(formdata.maxCapacity);
-                    console.log(data);
                     const actor = await super.create(data, options); // Follow through the the rest of the Actor creation process upstream
                     return actor.update({
                         "img": "systems/hm3/images/icons/svg/chest.svg",
@@ -994,7 +993,7 @@ export class HarnMasterActor extends Actor {
                 break;
 
             case 'dta-attack':
-                macros.weaponAttack(null,false, atkToken);
+                macros.weaponAttack(null,false, atkToken, true);
                 break;
 
             case 'dodge':

@@ -425,9 +425,9 @@ export function missileDamageRoll(itemName, range=null, myActor = null) {
     return DiceHM3.missileDamageRoll(rollData);
 }
 
-export function weaponAttack(itemName = null, noDialog = false, myToken = null) {
+export function weaponAttack(itemName = null, noDialog = false, myToken = null, forceAllow=false) {
     const speaker = myToken ? ChatMessage.getSpeaker({token: myToken}) : ChatMessage.getSpeaker();
-    const combatant = getTokenInCombat(myToken);
+    const combatant = getTokenInCombat(myToken, forceAllow);
     if (!combatant) return null;
 
     const targets = game.user.targets;
@@ -446,9 +446,9 @@ export function weaponAttack(itemName = null, noDialog = false, myToken = null) 
     return combat.meleeAttack(combatant.token, targetToken, weapon);
 }
 
-export function missileAttack(itemName = null, noDialog = false, myToken = null) {
+export function missileAttack(itemName = null, noDialog = false, myToken = null, forceAllow=false) {
     const speaker = myToken ? ChatMessage.getSpeaker({token: myToken}) : ChatMessage.getSpeaker();
-    const combatant = getTokenInCombat(myToken);
+    const combatant = getTokenInCombat(myToken, forceAllow);
     if (!combatant) return null;
     
     const targets = game.user.targets;
@@ -840,14 +840,10 @@ export function setSkillDevelopmentFlag(skillName, myActor = null) {
  *   
  * @param {Token} token 
  */
-function getTokenInCombat(token=null) {
-    if (token) {
-        token = canvas.tokens.get(token._id);
-    }
-
-    if (token && game.user.isGM) {
-
-        return { token: token, actor: token.actor };
+function getTokenInCombat(token=null, forceAllow=false) {
+    if (token && (game.user.isGM || forceAllow)) {
+        const result = {token: token, actor: token.actor };
+        return result;
     }
     
     if (game.combats.size === 0 || game.combats.active.data.combatants.length === 0) {
