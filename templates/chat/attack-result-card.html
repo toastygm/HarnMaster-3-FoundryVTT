@@ -91,16 +91,34 @@
         </div>
     </div>
     {{/if}}
-
-    <div class="card-buttons">
-        <button data-action="injury" data-visible-actor-id="{{visibleActorId}}" data-token-id="{{defTokenId}}" data-aim="{{atkAim}}" data-aspect="{{atkAspect}}"
-        data-impact="{{totalImpact}}">Calculate {{defender}} Injury</button>
-    </div>
     {{/if}}
 
-    {{#if dta}}
+    {{#if (or hasAttackHit dta isAtkFumbleRoll isAtkStumbleRoll isDefFumbleRoll isDefStumbleRoll)}}
     <div class="card-buttons">
-        <button data-action="dta-attack"  data-visible-actor-id="{{visibleActorId}}" data-atk-token-id="{{defTokenId}}" data-def-token-id="{{atkTokenId}}">Initiate DTA Attack</button>
+        {{#if hasAttackHit}}
+            <button data-action="injury" data-visible-actor-id="{{visibleDefActorId}}" data-token-id="{{defTokenId}}" data-aim="{{atkAim}}" data-aspect="{{atkAspect}}"
+            data-impact="{{totalImpact}}">Calculate {{defender}} Injury</button>
+        {{/if}}
+
+        {{#if dta}}
+        <button data-action="dta-attack"  data-visible-actor-id="{{visibleDefActorId}}" data-atk-token-id="{{defTokenId}}" data-def-token-id="{{atkTokenId}}">Initiate DTA Attack</button>
+        {{/if}}
+
+        {{#if isAtkFumbleRoll}}
+        <button data-action="fumble" data-visible-actor-id="{{visibleAtkActorId}}" {{#if tokenId}}data-token-id="{{atkTokenId}}"{{else}}data-actor-id="{{visibleAtkActorId}}"{{/if}}>Fumble Roll</button>
+        {{/if}}
+
+        {{#if isDefFumbleRoll}}
+        <button data-action="fumble" data-visible-actor-id="{{visibleDefActorId}}" {{#if tokenId}}data-token-id="{{defTokenId}}"{{else}}data-actor-id="{{visibleDefActorId}}"{{/if}}>Fumble Roll</button>
+        {{/if}}
+
+        {{#if isAtkStumbleRoll}}
+        <button data-action="stumble" data-visible-actor-id="{{visibleAtkActorId}}" {{#if tokenId}}data-token-id="{{atkTokenId}}"{{else}}data-actor-id="{{visibleAtkActorId}}"{{/if}}>Stumble Roll</button>
+        {{/if}}
+
+        {{#if isDefStumbleRoll}}
+        <button data-action="stumble" data-visible-actor-id="{{visibleDefActorId}}" {{#if tokenId}}data-token-id="{{defTokenId}}"{{else}}data-actor-id="{{visibleDefActorId}}"{{/if}}>Stumble Roll</button>
+        {{/if}}
     </div>
     {{/if}}
 </div>

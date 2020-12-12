@@ -598,7 +598,12 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         totalImpact: atkImpactRoll ? atkImpactRoll.total + parseInt(atkImpactMod) : 0,
         atkAim: atkAim,
         atkAspect: atkAspect,
-        visibleActorId: defToken.actor.id
+        isAtkStumbleRoll: combatResult.outcome.atkStumble,
+        isAtkFumbleRoll: combatResult.outcome.atkFumble,
+        isDefStumbleRoll: combatResult.outcome.defStumble,
+        isDefFumbleRoll: combatResult.outcome.defFumble,
+        visibleAtkActorId: atkToken.actor.id,
+        visibleDefActorId: defToken.actor.id
     } 
 
     const csChatData = {
@@ -628,8 +633,13 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         atkAim: csDialogResult.aim,
         atkAspect: csDialogResult.aspect,
         dta: combatResult.outcome.dta,
-        visibleActorId: atkToken.actor.id
-    } 
+        isAtkStumbleRoll: combatResult.outcome.defStumble,
+        isAtkFumbleRoll: combatResult.outcome.defFumble,
+        isDefStumbleRoll: combatResult.outcome.atkStumble,
+        isDefFumbleRoll: combatResult.outcome.atkFumble,
+        visibleAtkActorId: defToken.actor.id,
+        visibleDefActorId: atkToken.actor.id
+    }
 
     let chatTemplate = "systems/hm3/templates/chat/attack-result-card.html";
 
@@ -766,7 +776,12 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         atkAim: aim,
         atkAspect: aspect,
         dta: combatResult.outcome.dta,
-        visibleActorId: defToken.actor.id
+        isAtkStumbleRoll: combatResult.outcome.atkStumble,
+        isAtkFumbleRoll: combatResult.outcome.atkFumble,
+        isDefStumbleRoll: combatResult.outcome.defStumble,
+        isDefFumbleRoll: combatResult.outcome.defFumble,
+        visibleAtkActorId: atkToken.actor.id,
+        visibleDefActorId: defToken.actor.id
     } 
 
     let chatTemplate = "systems/hm3/templates/chat/attack-result-card.html";
@@ -989,7 +1004,12 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         dta: combatResult.outcome.dta,
         atkWeaponBroke: atkWeaponBroke,
         defWeaponBroke: defWeaponBroke,
-        visibleActorId: defToken.actor.id
+        isAtkStumbleRoll: combatResult.outcome.atkStumble,
+        isAtkFumbleRoll: combatResult.outcome.atkFumble,
+        isDefStumbleRoll: combatResult.outcome.defStumble,
+        isDefFumbleRoll: combatResult.outcome.defFumble,
+        visibleAtkActorId: atkToken.actor.id,
+        visibleDefActorId: defToken.actor.id
     } 
 
     let chatTemplate = "systems/hm3/templates/chat/attack-result-card.html";
@@ -1094,7 +1114,12 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
         atkAim: aim,
         atkAspect: aspect,
         dta: combatResult.outcome.dta,
-        visibleActorId: defToken.actor.id
+        isAtkStumbleRoll: combatResult.outcome.atkStumble,
+        isAtkFumbleRoll: combatResult.outcome.atkFumble,
+        isDefStumbleRoll: combatResult.outcome.defStumble,
+        isDefFumbleRoll: combatResult.outcome.defFumble,
+        visibleAtkActorId: atkToken.actor.id,
+        visibleDefActorId: defToken.actor.id
     } 
 
     let chatTemplate = "systems/hm3/templates/chat/attack-result-card.html";
