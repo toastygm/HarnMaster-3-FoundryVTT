@@ -32,6 +32,18 @@ export class HarnMasterItemSheet extends ItemSheet {
     data.hasRitualSkills = false;
     data.hasMagicSkills = false;
 
+    data.containers = {'On Person': 'on-person'};
+    // Containers are not allowed in other containers.  So if this item is a container,
+    // don't show any other containers.
+
+    if (this.actor && this.item.data.type !== 'containergear') {
+      this.actor.items.forEach(it => {
+          if (it.type === 'containergear') {
+              data.containers[it.name] = it.id;
+          }
+      });
+    }
+
     // Fill appropriate lists for individual item sheets
     if (this.item.data.type === 'spell') {
       // Spells need a list of convocations
@@ -111,6 +123,18 @@ export class HarnMasterItemSheet extends ItemSheet {
     if (!this.options.editable) return;
 
     // Roll handlers, click handlers, etc. go here.
+
+    html.on("click", "input[type='text']", ev => {
+      ev.currentTarget.select();
+    });
+
+    html.on("keypress", ".properties", ev => {
+      var keycode = (ev.keyCode ? ev.keyCode : ev.which);
+      if (keycode == '13') {
+          super.close();
+      }
+    });
+  
 
     // Add Inventory Item
     html.find('.armorgear-location-add').click(this._armorgearLocationAdd.bind(this));

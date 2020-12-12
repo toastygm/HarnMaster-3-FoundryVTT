@@ -2,6 +2,9 @@
 
 This is a game system definition of the H&acirc;rnMaster 3 RPG for [Foundry Virtual Tabletop](http://foundryvtt.com/).
 
+# Pages Site
+If you are looking for the offical documentation, please see the [HarnMaster 3 FoundryVTT System Site](https://toastygm.github.io/HarnMaster-3-FoundryVTT/).
+
 ### H&acirc;rnMaster Copyright Notice
 
 This is an unofficial H&acirc;rnFanon work. It is a derivative work from material created by N. Robin Crossby and is released for free distribution and personal use without the permission or endorsement of N. Robin Crossby or his estate.
@@ -116,11 +119,17 @@ Function                                       | Description
 **missileAttackRoll**(itemName)                | missile attack roll, using attributes froma particular missile weapon
 **injuryRoll**()                               | injury roll
 **healingRoll**(itemName, _noDialog_)          | healing roll for the specific injury specified
-**dodgeRoll**(noDialog)                        | dodge roll
-**shockRoll**(noDialog)                        | shock roll
-**stumbleRoll**(noDialog)                      | stumble roll
-**fumbleRoll**(noDialog)                       | fumble roll
+**dodgeRoll**(_noDialog_)                        | dodge roll
+**shockRoll**(_noDialog_)                        | shock roll
+**stumbleRoll**(_noDialog_)                      | stumble roll
+**fumbleRoll**(_noDialog_)                       | fumble roll
 **genericDamageRoll**()                        | damage roll not specific to any weapon (you must enter details of the attack)
+**changeMissileQuanity**(missileName, newQty)  | Change missile quantity: +XX to increase, -XX to decrease, XX to change to exact value
+**changeFatigue**(newValue)                    | Change fatigue value: +XX to increase, -XX to decrease, XX to change to exact value
+**setSkillDevelopmentFlag**(skillName)         | Set the flag for a Skill Development Roll (only set, **not** unset)
+**weaponAttack**(weaponName)                   | Initiate melee attack from current combatant against selected token with weapon
+**missileAttack**(missileName)                 | Initiate missile attack from current combatant against selected token with missile
+**weaponAttackResume**(atkTokenId, defTokenId, action, attackAML, attackAim, attackWpnAspect, attackImpactModification)  | Continue attack with defender. "action" can be one of "dodge", "block", "counterstrike", or "ignore".
 
 _itemName_ = name (or id) of the item to affect
 
@@ -259,4 +268,12 @@ The following images were taken from [The Noun Project](https://thenounproject.c
 * armor by Postcat Studio
 * Man Fainted by Gan Khoon Lay
 * bullseye by Creative Stall
+* blowgun by Peter Selinger
+* chest by Toli
 
+A number of icons were also produced by:
+
+* delapouite
+* lorc
+* skol
+* willdabeast

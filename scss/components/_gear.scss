@@ -2,7 +2,7 @@
     list-style: none;
     margin: 7px 0;
     padding: 0;
-    overflow-y: auto;
+    overflow-y: hidden;
 
     .armor-header {
         font-weight: bold;
@@ -78,22 +78,34 @@
         .item-equip {
             color: #b5b3a4;
         }
-      
+
         .item-carry {
             color: #b5b3a4;
         }
-      
+
         .active {
             color: #4b4a44;
         }
     }
 }
 
+input[type="text"].gear-name-filter {
+    background-image: url("../images/png/searchicon.png");
+    background-size: contain;
+    background-position: 5px -1px;
+    background-repeat: no-repeat;
+    width: 100%;
+    font-size: 15px;
+    padding: 5px 0px 5px 40px;
+    border: 2px groove #eeede0;
+    margin-top: 5px;
+}
+
 .gear-list {
     list-style: none;
     margin: 7px 0;
     padding: 0;
-    overflow-y: auto;
+    overflow-y: hidden;
 
     .gear-header {
         font-weight: bold;
@@ -129,6 +141,11 @@
         overflow: hidden;
     }
 
+    .gear-type {
+        flex: 0 0 80px;
+        text-align: center;
+    }
+
     .gear-qty {
         flex: 0 0 40px;
         text-align: center;
@@ -144,8 +161,22 @@
         text-align: center;
     }
 
+    .gear-capacity {
+        flex: 0 0 140px;
+        text-align: right;
+        padding-right: 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .overcapacity {
+        color: red;
+        font-weight: bold;
+    }
+
     .gear-notes {
-        flex: 1 0 150px;
+        flex: 1 0 60px;
         padding-left: 10px;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -158,11 +189,11 @@
         .item-equip {
             color: #b5b3a4;
         }
-      
+
         .item-carry {
             color: #b5b3a4;
         }
-      
+
         .active {
             color: #4b4a44;
         }

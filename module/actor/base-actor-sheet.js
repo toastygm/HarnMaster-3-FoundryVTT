@@ -16,21 +16,127 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         const data = super.getData();
         data.config = CONFIG.HM3;
         data.dtypes = ["String", "Number", "Boolean"];
+
+        let capacityMax = 0;
+        let capacityVal = 0;
+        if ((this.actor.data.type === 'creature') || (this.actor.data.type === 'character')) {
+            capacityMax = data.data.endurance * 10;
+            capacityVal = data.data.totalGearWeight;
+        } else if (this.actor.data.type === 'container') {
+            capacityMax = data.data.capacity.max;
+            capacityVal = data.data.capacity.value;
+        }
+
+        // Setup the fake container entry for "On Person" container
+        data.containers = {
+            'on-person': {
+                "data": {
+                    "name": "On Person",
+                    "type": "containergear",
+                    "data": {
+                        "container": "on-person",
+                        "capacity": {
+                            "max": capacityMax,
+                            "value": capacityVal
+                        }
+                    }
+                }
+            }
+        };
+
+        this.actor.items.forEach(it => {
+            if (it.type === 'containergear') {
+                data.containers[it._id] = it;
+            }
+        });
+
+        data.gearTypes = {
+            'armorgear': 'Armor',
+            'weapongear': 'Meele Wpn',
+            'missilegear': 'Missile Wpn',
+            'miscgear': 'Misc. Gear',
+            'containergear': 'Container'
+        };
+
         return data;
     }
 
     /** @override */
+    _onSortItem(event, itemData) {
+
+        // TODO - for now, don't allow sorting for Token Actor overrides
+        if (this.actor.isToken) return;
+    
+        if (!itemData.type.endsWith('gear')) return super._onSortItem(event, itemData);
+
+        // Get the drag source and its siblings
+        const source = this.actor.getOwnedItem(itemData._id);
+        const siblings = this.actor.items.filter(i => {
+          return (i.data.type.endsWith('gear') && (i.data._id !== source.data._id));
+        });
+    
+        // Get the drop target
+        const dropTarget = event.target.closest(".item");
+        const targetId = dropTarget ? dropTarget.dataset.itemId : null;
+        const target = siblings.find(s => s.data._id === targetId);
+    
+        // Ensure we are only sorting like-types
+        if (target && !target.data.type.endsWith('gear')) return;
+    
+        // Perform the sort
+        const sortUpdates = SortingHelpers.performIntegerSort(source, {target: target, siblings});
+        const updateData = sortUpdates.map(u => {
+          const update = u.update;
+          update._id = u.target.data._id;
+          return update;
+        });
+    
+        // Perform the update
+        return this.actor.updateEmbeddedEntity("OwnedItem", updateData);
+    }
+    
+    /** @override */
     async _onDropItem(event, data) {
+        if ( !this.actor.owner ) return false;
+
+        // Destination containerid: set to 'on-person' if a containerid can't be found
+        const closestContainer = event.target.closest('[data-container-id]');
+        const destContainer = closestContainer && closestContainer.dataset && closestContainer.dataset.containerId ? closestContainer.dataset.containerId : 'on-person';  
+
+        if (data.actorId === this.actor._id) {
+            // We are dropping from the same actor
+
+            // If the item is some type of gear (other than containergear), then
+            // make sure we set the container to the same as the dropped location
+            // (this allows people to move items into containers easily)
+            const item = await Item.fromDropData(data);
+            if (item.data.type.endsWith('gear') && item.data.type !== 'containergear') {
+                if (item.data.data.container != destContainer) {
+                    this.actor.updateOwnedItem({'_id': item.data._id, 'data.container': destContainer});
+                }
+            }
+
+            return super._onDropItem(event, data);
+        }
+            
         // NOTE: when an item comes from the item list or a compendium, its type is
         // "Item" but it does not have a "data" element.  So we have to check for that in
         // the following conditional; "data.data.type" may not exist!
-        if (data.actorId === this.actor._id || !data.data || !data.data.type.endsWith("gear")) {
+
+        // Skills, spells, etc. (non-gear) coming from a item list or compendium
+        if (!data.data || !data.data.type.endsWith("gear")) {
             return super._onDropItem(event, data);
         }
 
         // At this point we know this dropped item comes from another actor,
         // and it is some sort of "gear". Go ahead and process the drop, but
         // track the result.
+
+        // Containers are a special case, and they need to be processed specially
+        if (data.data.type === 'containergear') return await this._moveContainer(event, data);
+
+        // Set the destination container to the closest drop containerid
+        data.data.data.container = destContainer;
 
         const quantity = data.data.data.quantity;
 
@@ -46,8 +152,73 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         }
     }
 
+    async _moveContainer(event, data) {
+        console.log(data);
+        // create new container
+        const item = await Item.fromDropData(data);
+        let itemData = duplicate(item.data);
+
+        // Get source actor
+        let sourceActor = null;
+        if (data.tokenId) {
+            const token = await canvas.tokens.get(data.tokenId);
+            sourceActor = token.actor;
+        } else {
+            sourceActor = await game.actors.get(data.actorId);
+        }
+        
+        if (!sourceActor) {
+            ui.notifications.warn(`Error accessing actor where container is coming from, move aborted`);
+            return null;
+        }
+
+        const containerResult = await this.actor.createOwnedItem(itemData);
+        if (!containerResult) {
+            ui.notifications.warn(`Error while moving container, move aborted`);
+            return null;
+        }
+
+        // move all items into new container
+        let failure = false;
+        for (let it of sourceActor.items.values()) {
+            if (!failure && it.data.data.container === item.id) {
+                itemData = duplicate(it.data);
+                itemData.data.container = containerResult._id;
+                const result = await this.actor.createOwnedItem(itemData);
+
+                if (result) {
+                    await sourceActor.deleteOwnedItem(it.id);
+                } else {
+                    failure = true;
+                }
+            }
+        }
+
+        if (failure) {
+            ui.notifications.error(`Error duing move of items from source to destination, container has been only partially moved!`);
+            return null;
+        }
+
+        // delete old container
+        await sourceActor.deleteOwnedItem(data.data._id);
+
+        return containerResult;
+    }
+
     async _moveQtyDialog(event, data) {
-        const sourceActor = await game.actors.get(data.actorId);
+        // Get source actor
+        let sourceActor = null;
+        if (data.tokenId) {
+            const token = await canvas.tokens.get(data.tokenId);
+            sourceActor = token.actor;
+        } else {
+            sourceActor = await game.actors.get(data.actorId);
+        }
+        
+        if (!sourceActor) {
+            ui.notifications.warn(`Error accessing actor where container is coming from, move aborted`);
+            return null;
+        }
 
         // Render modal dialog
         let dlgTemplate = "systems/hm3/templates/dialog/item-qty.html";
@@ -86,12 +257,26 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         const sourceType = data.data.type;
         const sourceQuantity = data.data.data.quantity;
 
+        // Get source actor
+        let sourceActor = null;
+        if (data.tokenId) {
+            const token = await canvas.tokens.get(data.tokenId);
+            sourceActor = token.actor;
+        } else {
+            sourceActor = await game.actors.get(data.actorId);
+        }
+        
+        if (!sourceActor) {
+            ui.notifications.warn(`Error accessing actor where container is coming from, move aborted`);
+            return null;
+        }
+
         // Look for a similar item locally
         let result = null;
         for (let it of this.actor.items.values()) {
             if (it.data.type === sourceType && it.data.name === sourceName) {
                 result = it;
-                break;
+                break;    
             }
         }
 
@@ -104,11 +289,11 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             const item = await Item.fromDropData(data);
             const itemData = duplicate(item.data);
             itemData.data.quantity = moveQuantity;
+            itemData.data.container = 'on-person';
             result = await this.actor.createOwnedItem(itemData);
         }
 
         if (result) {
-            const sourceActor = await game.actors.get(data.actorId);
             if (moveQuantity >= data.data.data.quantity) {
                 await sourceActor.deleteOwnedItem(data.data._id);
             } else {
@@ -127,6 +312,11 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         //const item = await Item.fromDropData(data);
 
         if (!data.type.endsWith("gear")) {
+            if (actor.data.type === 'container') {
+                ui.notifications.warn(`You may only place physical objects in a container; drop of ${data.name} refused.`);
+                return false;
+            }
+            
             for (let it of actor.items.values()) {
                 // Generally, if the items have the same type and name,
                 // then merge the dropped item onto the existing item.
@@ -164,6 +354,10 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Delete Inventory Item
         html.find('.item-delete').click(this._onItemDelete.bind(this));
 
+        html.on("click", "input[type='text']", ev => {
+                ev.currentTarget.select();
+        });
+      
         html.on("keyup", ".skill-name-filter", ev => {
             const data = this.getData();
             this.skillNameFilter = $(ev.currentTarget).val();
@@ -179,7 +373,26 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     }
                 } else {
                     $(skill).show();
-                }    
+                }
+            }
+        });
+
+        html.on("keyup", ".gear-name-filter", ev => {
+            const data = this.getData();
+            this.gearNameFilter = $(ev.currentTarget).val();
+            const lcGearNameFilter = this.gearNameFilter.toLowerCase();
+            let gearItems = html.find('.gear-item');
+            for (let gear of gearItems) {
+                const gearName = gear.getAttribute('data-item-name');
+                if (lcGearNameFilter) {
+                    if (gearName.toLowerCase().startsWith(lcGearNameFilter)) {
+                        $(gear).show()
+                    } else {
+                        $(gear).hide()
+                    }
+                } else {
+                    $(gear).show();
+                }
             }
         });
 
@@ -233,14 +446,60 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         html.find('.weapon-damage-roll').click(ev => {
             const li = $(ev.currentTarget).parents(".item");
             const itemId = li.data('itemId');
-            macros.weaponDamageRoll(`Item$${itemId}`, this.actor);
+            const aspect = ev.currentTarget.dataset.aspect;
+            macros.weaponDamageRoll(`Item$${itemId}`, aspect, this.actor);
         });
 
         // Missile Damage Roll
         html.find('.missile-damage-roll').click(ev => {
             const li = $(ev.currentTarget).parents(".item");
             const itemId = li.data('itemId');
-            macros.missileDamageRoll(`Item$${itemId}`, this.actor);
+            const range = ev.currentTarget.dataset.range;
+            macros.missileDamageRoll(`Item$${itemId}`, range, this.actor);
+        });
+
+        // Melee Weapon Attack
+        html.find('.melee-weapon-attack').click(ev => {
+            // If we are a synthetic actor, token will be set
+            let token = this.actor.token;
+            if (!token) {
+                // We are not a synthetic actor, so see if there is exactly one linked actor on the canvas
+                const tokens = this.actor.getActiveTokens(true);
+                if (tokens.length == 0) {
+                    ui.notifications.warn(`There are no tokens linked to this actor on the canvas, double-click on a specific token on the canvas.`);
+                    return null;
+                } else if (tokens.length > 1) {
+                    ui.notifications.warn(`There are ${tokens.length} tokens linked to this actor on the canvas, so the attacking token can't be identified.`);
+                    return null;
+                }
+                token = tokens[0];
+            }
+
+            const li = $(ev.currentTarget).parents(".item");
+            const itemId = li.data('itemId');
+            macros.weaponAttack(`Item$${itemId}`, false, token);
+        });
+
+        // Missile Weapon Attack
+        html.find('.missile-weapon-attack').click(ev => {
+            // If we are a synthetic actor, token will be set
+            let token = this.actor.token;
+            if (!token) {
+                // We are not a synthetic actor, so see if there is exactly one linked actor on the canvas
+                const tokens = this.actor.getActiveTokens(true);
+                if (tokens.length == 0) {
+                    ui.notifications.warn(`There are no tokens linked to this actor on the canvas, double-click on a specific token on the canvas.`);
+                    return null;
+                } else if (tokens.length > 1) {
+                    ui.notifications.warn(`There are ${tokens.length} tokens linked to this actor on the canvas, so the attacking token can't be identified.`);
+                    return null;
+                }
+                token = tokens[0];
+            }
+
+            const li = $(ev.currentTarget).parents(".item");
+            const itemId = li.data('itemId');
+            macros.missileAttack(`Item$${itemId}`, false, token);
         });
 
         // Weapon Attack Roll
@@ -312,20 +571,47 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         const type = header.dataset.type;
         const data = duplicate(header.dataset);
         const li = $(header).parents(".item");
+        const itemId=li.data("itemId");
+        if (itemId) {
+            const item = this.actor.items.get(itemId);
+            if (!item) {
+                console.error(`HM3 | Delete aborted, item ${itemId} in actor ${this.actor.name} was not found.`);
+                return;
+            }
 
-        const title = `Delete ${data.label}`;
+            const title = `Delete ${data.label}`;
+            let content;
+            if (item.data.type === 'containergear') {
+                content = '<p>WARNING: All items in this container will be deleted as well!</p><p>Are you sure?</p>';
+            } else {
+                content = '<p>Are you sure?</p>';
+            }
 
-        // Create the dialog window
-        let agree = false;
-        await Dialog.confirm({
-            title: title,
-            content: '<p>Are you sure?</p>',
-            yes: () => agree = true
-        });
+            // Create the dialog window
+            let agree = false;
+            await Dialog.confirm({
+                title: title,
+                content: '<p>Are you sure?</p>',
+                yes: () => agree = true
+            });
 
-        if (agree) {
-            this.actor.deleteOwnedItem(li.data("itemId"));
-            li.slideUp(200, () => this.render(false));
+            if (agree) {
+                const deleteItems = [];
+
+                // Add all items in the container to the delete list
+                if (item.data.type === 'containeritem') {
+                    this.actor.items.forEach(it => {
+                        if (it.data.data.container === itemId) deleteItems.push(it.id);
+                    });
+                }
+                
+                deleteItems.push(itemId);  // ensure we delete the container last
+
+                deleteItems.forEach(it => {
+                    this.actor.deleteOwnedItem(itemId);
+                    li.slideUp(200, () => this.render(false));    
+                })
+            }
         }
     }
 
@@ -383,8 +669,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         }
 
         if (updateData) {
-            console.log('Changes:');
-            console.log(updateData);
             await item.update(updateData);
         }
 
@@ -397,29 +681,20 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Grab any data associated with this control.
         const dataset = duplicate(header.dataset);
 
+        let extraList = [];
+        let extraLabel = null;
 
+        // Ask type
         // Initialize a default name.
-        let name = 'New Item';
+        let name = "New Item";
         if (dataset.type === 'skill' && dataset.skilltype) {
             name = utility.createUniqueName(`New ${dataset.skilltype} Skill`, this.actor.itemTypes.skill);
+        } else if (dataset.type.endsWith('gear')) {
+            name = "New Gear";
+            extraList = ['Misc. Gear', 'Armor', 'Melee Weapon', 'Missile Weapon', 'Container'];
+            extraLabel = 'Gear Type';
         } else {
             switch (dataset.type) {
-                case "weapongear":
-                    name = utility.createUniqueName('New Weapon', this.actor.itemTypes.weapongear);
-                    break;
-
-                case "missilegear":
-                    name = utility.createUniqueName('New Missile', this.actor.itemTypes.missilegear);
-                    break;
-
-                case "armorgear":
-                    name = utility.createUniqueName('New Armor Item', this.actor.itemTypes.armorgear);
-                    break;
-
-                case "miscgear":
-                    name = utility.createUniqueName('New Item', this.actor.itemTypes.miscgear);
-                    break;
-
                 case "armorlocation":
                     name = utility.createUniqueName('New Location', this.actor.itemTypes.armorlocation);
                     break;
@@ -441,15 +716,11 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     break;
 
                 default:
-                    console.error(`HM3 | Can't create item: unknown item type '${type}'`);
+                    console.error(`HM3 | Can't create item: unknown item type '${dataset.type}'`);
                     return null;
             }
 
         }
-
-        // Item Data
-        const itemData = duplicate(game.system.model.Item[dataset.type]);
-        if (dataset.type === 'skill') itemData.type = dataset.skilltype;
 
         // Render modal dialog
         let dlgTemplate = "systems/hm3/templates/dialog/create-item.html";
@@ -457,9 +728,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             type: dataset.type,
             title: name,
             placeholder: name,
-            extraList: [],
-            extraLabel: null,
-            data: itemData
+            extraList: extraList,
+            extraLabel: extraLabel,
         };
 
         const html = await renderTemplate(dlgTemplate, dialogData);
@@ -476,13 +746,22 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 let itemName = formdata.name;
                 let extraValue = formdata.extra_value;
 
-                if (dialogData.type === 'spell') {
-                    dialogData.data.convocation = extraValue;
-                } else if (dialogData.type === 'invocation') {
-                    dialogData.data.diety = extraValue;
+                if (dataset.type === 'gear') {
+                    if (extraValue === 'Container') dialogData.type = 'containergear';
+                    else if (extraValue === 'Armor') dialogData.type = 'armorgear';
+                    else if (extraValue === 'Melee Weapon') dialogData.type = 'weapongear';
+                    else if (extraValue === 'Missile Weapon') dialogData.type = 'missilegear';
+                    else dialogData.type = 'miscgear';
                 }
 
-                return this._createItem(itemName, dialogData.type, dialogData.data, DEFAULT_TOKEN);
+                // Item Data
+                const itemData = duplicate(game.system.model.Item[dialogData.type]);
+                if (dataset.type === 'skill') itemData.type = dataset.skilltype;
+                else if (dataset.type.endsWith('gear')) itemData.container = dataset.containerId;
+                else if (dataset.type === 'spell') itemData.convocation = extraValue;
+                else if (dataset.type === 'invocation') itemData.diety = extraValue;
+
+                return this._createItem(itemName, dialogData.type, itemData, DEFAULT_TOKEN);
             },
             options: { jQuery: false }
         });
@@ -537,7 +816,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 case 'psionic':
                     img = utility.getImagePath("psionics");
                     break;
-                    
+
                 case 'spell':
                     img = utility.getImagePath(data.convocation);
                     if (img === DEFAULT_TOKEN) {
@@ -555,6 +834,10 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
                 case 'miscgear':
                     img = utility.getImagePath("miscgear")
+                    break;
+
+                case 'containergear':
+                    img = utility.getImagePath("sack");
                     break;
 
                 case 'weapongear':
@@ -649,7 +932,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
     _improveToggleDialog(item) {
         const html = '<p>Do you want to perform a Skill Development Roll (SDR), or just disable the flag?</p>'
-    
+
         // Create the dialog window
         return new Promise(resolve => {
             new Dialog({
@@ -673,6 +956,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 close: () => resolve(false)
             }).render(true)
         });
-    
+
     }
 }

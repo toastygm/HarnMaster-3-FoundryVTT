@@ -12,6 +12,8 @@ HM3.ASCII = `_   _ ___  ___ _____
 // When the system is fully ready, set this to true
 HM3.ready = false;
 
+HM3.allowedActorFlags = [];
+
 HM3.skillTypes = ["Craft", "Physical", "Communication", "Combat", "Magic", "Ritual"];
 
 HM3.injuryLocations = {
@@ -278,3 +280,126 @@ HM3.defaultItemIcons = new Map(
     .concat(HM3.magicIcons)
     .concat(HM3.psionicTalentIcons)
 );
+
+HM3.meleeCombatTable = {
+    'block': {
+        'cf:cf': { atkFumble: true, defFumble: true, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 0, defDice: 0 },
+        'mf:cf': { atkFumble: false, defFumble: true, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 0, defDice: 0 },
+        'ms:cf': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 2, defDice: 0 },
+        'cs:cf': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 3, defDice: 0 },
+
+        'cf:mf': { atkFumble: true, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 0, defDice: 0 },
+        'mf:mf': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: true, atkDice: 0, defDice: 0 },
+        'ms:mf': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 1, defDice: 0 },
+        'cs:mf': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 2, defDice: 0 },
+
+        'cf:ms': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: true, block: false, miss: false, atkDice: 0, defDice: 0 },
+        'mf:ms': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: true, block: false, miss: false, atkDice: 0, defDice: 0 },
+        'ms:ms': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: true, atkDice: 0, defDice: 0 },
+        'cs:ms': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 1, defDice: 0 },
+
+        'cf:cs': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: true, block: false, miss: false, atkDice: 0, defDice: 0 },
+        'mf:cs': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: true, block: false, miss: false, atkDice: 0, defDice: 0 },
+        'ms:cs': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: true, block: false, miss: false, atkDice: 0, defDice: 0 },
+        'cs:cs': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: true, atkDice: 0, defDice: 0 }
+    },
+    'counterstrike': {
+        'cf:cf': { atkFumble: true, defFumble: true, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 0, defDice: 0 },
+        'mf:cf': { atkFumble: false, defFumble: true, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 0, defDice: 0 },
+        'ms:cf': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 3, defDice: 0 },
+        'cs:cf': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 4, defDice: 0 },
+
+        'cf:mf': { atkFumble: true, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 0, defDice: 0 },
+        'mf:mf': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: true, atkDice: 0, defDice: 0 },
+        'ms:mf': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 2, defDice: 0 },
+        'cs:mf': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 3, defDice: 0 },
+
+        'cf:ms': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 0, defDice: 2 },
+        'mf:ms': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 0, defDice: 1 },
+        'ms:ms': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 1, defDice: 1 },
+        'cs:ms': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 1, defDice: 0 },
+
+        'cf:cs': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 0, defDice: 3 },
+        'mf:cs': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 0, defDice: 2 },
+        'ms:cs': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 0, defDice: 1 },
+        'cs:cs': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 2, defDice: 2 }
+    },
+    'dodge': {
+        'cf:cf': { atkFumble: false, defFumble: false, atkStumble: true, defStumble: true, dta: false, block: false, miss: false, atkDice: 0, defDice: 0 },
+        'mf:cf': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: true, dta: false, block: false, miss: false, atkDice: 0, defDice: 0 },
+        'ms:cf': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 2, defDice: 0 },
+        'cs:cf': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 3, defDice: 0 },
+
+        'cf:mf': { atkFumble: false, defFumble: false, atkStumble: true, defStumble: false, dta: false, block: false, miss: false, atkDice: 0, defDice: 0 },
+        'mf:mf': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: true, atkDice: 0, defDice: 0 },
+        'ms:mf': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 1, defDice: 0 },
+        'cs:mf': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 2, defDice: 0 },
+
+        'cf:ms': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: true, block: false, miss: false, atkDice: 0, defDice: 0 },
+        'mf:ms': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: true, atkDice: 0, defDice: 0 },
+        'ms:ms': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: true, atkDice: 0, defDice: 0 },
+        'cs:ms': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 1, defDice: 0 },
+
+        'cf:cs': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: true, block: false, miss: false, atkDice: 0, defDice: 0 },
+        'mf:cs': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: true, block: false, miss: false, atkDice: 0, defDice: 0 },
+        'ms:cs': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: true, atkDice: 0, defDice: 0 },
+        'cs:cs': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: true, atkDice: 0, defDice: 0 }
+    },
+    'ignore': {
+        'cf': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: true, block: false, miss: false, atkDice: 0, defDice: 0 },
+        'mf': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 1, defDice: 0 },
+        'ms': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 3, defDice: 0 },
+        'cs': { atkFumble: false, defFumble: false, atkStumble: false, defStumble: false, dta: false, block: false, miss: false, atkDice: 4, defDice: 0 }
+    }
+};
+
+HM3.missileCombatTable = {
+    'block': {
+        'cf:cf': { wild: true, block: false, miss: false, atkDice: 0 },
+        'mf:cf': { wild: false, block: false, miss: true, atkDice: 0 },
+        'ms:cf': { wild: false, block: false, miss: false, atkDice: 2 },
+        'cs:cf': { wild: false, block: false, miss: false, atkDice: 3 },
+
+        'cf:mf': { wild: true, block: false, miss: false, atkDice: 0 },
+        'mf:mf': { wild: false, block: false, miss: true, atkDice: 0 },
+        'ms:mf': { wild: false, block: false, miss: false, atkDice: 1 },
+        'cs:mf': { wild: false, block: false, miss: false, atkDice: 2 },
+
+        'cf:ms': { wild: true, block: false, miss: false, atkDice: 0 },
+        'mf:ms': { wild: false, block: false, miss: true, atkDice: 0 },
+        'ms:ms': { wild: false, block: true, miss: false, atkDice: 0 },
+        'cs:ms': { wild: false, block: false, miss: false, atkDice: 1 },
+
+        'cf:cs': { wild: true, block: false, miss: false, atkDice: 0 },
+        'mf:cs': { wild: false, block: false, miss: true, atkDice: 0 },
+        'ms:cs': { wild: false, block: true, miss: false, atkDice: 0 },
+        'cs:cs': { wild: false, block: true, miss: false, atkDice: 0 }
+    },
+    'dodge': {
+        'cf:cf': { wild: true, block: false, miss: false, atkDice: 0 },
+        'mf:cf': { wild: false, block: false, miss: true, atkDice: 0 },
+        'ms:cf': { wild: false, block: false, miss: false, atkDice: 2 },
+        'cs:cf': { wild: false, block: false, miss: false, atkDice: 3 },
+
+        'cf:mf': { wild: true, block: false, miss: false, atkDice: 0 },
+        'mf:mf': { wild: false, block: false, miss: true, atkDice: 0 },
+        'ms:mf': { wild: false, block: false, miss: false, atkDice: 1 },
+        'cs:mf': { wild: false, block: false, miss: false, atkDice: 2 },
+
+        'cf:ms': { wild: true, block: false, miss: false, atkDice: 0 },
+        'mf:ms': { wild: false, block: false, miss: true, atkDice: 0 },
+        'ms:ms': { wild: false, block: false, miss: true, atkDice: 0 },
+        'cs:ms': { wild: false, block: false, miss: false, atkDice: 1 },
+
+        'cf:cs': { wild: true, block: false, miss: false, atkDice: 0 },
+        'mf:cs': { wild: false, block: false, miss: true, atkDice: 0 },
+        'ms:cs': { wild: false, block: false, miss: true, atkDice: 0 },
+        'cs:cs': { wild: false, block: false, miss: true, atkDice: 0 }
+    },
+    'ignore': {
+        'cf': { wild: true, block: false, miss: false, atkDice: 0 },
+        'mf': { wild: false, block: false, miss: true, atkDice: 0 },
+        'ms': { wild: false, block: false, miss: false, atkDice: 2 },
+        'cs': { wild: false, block: false, miss: false, atkDice: 3 },
+    }
+}

@@ -9,30 +9,40 @@
     </div>
     {{/if}}
 
-    <div class="card-content">
-        <span class="label">Num. Damage Dice:</span>
-        <span class="value">{{damageDice}}</span>
-    </div>
+    <div class="grid grid-2col">
+        <div class="card-content center">
+            <div class="flexrow">
+                <span class="label"># Dice:</span>
+                <span class="value">{{damageDice}}</span>
+            </div>
+        </div>
 
-    <div class="card-content">
-        <span class="label">Aspect:</span>
-        <span class="value">{{weaponAspect}} (base={{weaponImpact}})</span>
+        <div class="card-content center">
+            <div class="flexrow">
+                <span class="label">Aspect:</span>
+                <span class="value">{{weaponAspect}}</span>
+            </div>
+        </div>
     </div>
-
+    
     {{#if (ne addlWeaponImpact 0)}}
-    <div class="card-content">
-        <span class="label">Additional Damage:</span>
+    <div class="card-content center">
+        <span class="label">Addl Weapon Impact:</span>
         <span class="value">{{addlWeaponImpact}}</span>
     </div>
 
     <div class="card-content">
-        <span class="label">Impact (Base + Addl + Roll):</span>
-        <span class="value">{{weaponImpact}} + {{addlWeaponImpact}} + ({{rollResult}}) = <strong>{{totalImpact}}</strong></span>
+        <div class="flexcol flex-center">
+            <span class="label">Total Impact (Base + Addl + Roll):</span>
+            <span class="value">{{weaponImpact}} + {{addlWeaponImpact}} + ({{impactRoll}}) = <strong>{{totalImpact}}</strong></span>    
+        </div>
     </div>
     {{else}}
     <div class="card-content">
-        <span class="label">Impact (Base + Roll):</span>
-        <span class="value">{{weaponImpact}} + ({{rollResult}}) = <strong>{{totalImpact}}</strong></span>
+        <div class="flexcol flex-center">
+            <span class="label">Total Impact (Base + Roll):</span>
+            <span class="value">{{weaponImpact}} + ({{impactRoll}}) = <strong>{{totalImpact}}</strong></span>    
+        </div>
     </div>
     {{/if}}
 </div>

@@ -17,7 +17,7 @@
       list-style: none;
       margin: 7px 0;
       padding: 0;
-      overflow-y: auto;
+      overflow-y: hidden;
     
       .spell-header {
         font-weight: bold;
@@ -93,7 +93,7 @@
     list-style: none;
     margin: 7px 0;
     padding: 0;
-    overflow-y: auto;
+    overflow-y: hidden;
 
     .psionic-header {
       font-weight: bold;

@@ -62,9 +62,7 @@
 .flex-group-right {
   justify-content: center;
   align-items: center;
-  text-align: center;
-  padding: 5px;
-  border: 1px solid #999; }
+  text-align: center; }
 
 .flex-group-left {
   justify-content: flex-start;
@@ -95,14 +93,36 @@
     .chat-card .card-header h3 {
       flex: 1;
       margin: 0;
-      line-height: 36px;
+      line-height: 25px;
       font-family: "Modesto Condensed", "Palatino Linotype", serif;
       font-size: 20px;
+      font-weight: 700;
+      color: #4b4a44; }
+    .chat-card .card-header h4 {
+      flex: 1;
+      margin: 0;
+      line-height: 20px;
+      font-family: "Modesto Condensed", "Palatino Linotype", serif;
+      font-size: 16px;
       font-weight: 700;
       color: #4b4a44; }
     .chat-card .card-header h3:hover {
       color: #111;
       text-shadow: 0 0 10px red; }
+  .chat-card .mingap {
+    gap: 3px; }
+  .chat-card .header {
+    text-align: center;
+    font-weight: bold; }
+  .chat-card .center {
+    text-align: center; }
+  .chat-card .result-desc {
+    color: blue;
+    font-weight: bold; }
+  .chat-card .weapon-broke {
+    text-align: center;
+    color: red;
+    font-weight: bold; }
   .chat-card .card-content {
     margin: 5px 0; }
     .chat-card .card-content h3 {
@@ -110,7 +130,11 @@
       margin: 0;
       font-weight: bold; }
     .chat-card .card-content .label {
-      font-weight: bold; }
+      font-weight: bold;
+      padding-right: 5px;
+      text-align: right; }
+    .chat-card .card-content .value {
+      text-align: left; }
   .chat-card .card-footer {
     padding: 3px 0 0;
     border-top: 2px groove #FFF;
@@ -259,7 +283,7 @@
 
 .hm3 .sheet .window-content .tab {
   height: 100%;
-  overflow-y: auto;
+  overflow-y: hidden;
   align-content: flex-start; }
 
 .hm3 .sheet input[type="text"],
@@ -401,7 +425,14 @@
     .hm3 .sheet .sheet-header-character .header-fields .header-stat-block .penalties {
       padding: 0 0 5px;
       font-size: 12px;
-      font-weight: bold; }
+      font-weight: bold;
+      align-items: center; }
+      .hm3 .sheet .sheet-header-character .header-fields .header-stat-block .penalties .capacity-value {
+        font-size: 14px; }
+      .hm3 .sheet .sheet-header-character .header-fields .header-stat-block .penalties .capacity-label {
+        text-transform: uppercase;
+        font-size: 14px;
+        flex: 0 0 100px; }
       .hm3 .sheet .sheet-header-character .header-fields .header-stat-block .penalties .stat {
         text-align: center;
         text-transform: uppercase;
@@ -434,6 +465,12 @@
         border-radius: 2px; }
   .hm3 .sheet .sheet-header-character .header-fields .header-attributes {
     font-size: 10px; }
+    .hm3 .sheet .sheet-header-character .header-fields .header-attributes textarea.description {
+      resize: none;
+      font-family: "Signika", sans-serif;
+      font-size: 13px;
+      border: none;
+      background: transparent; }
     .hm3 .sheet .sheet-header-character .header-fields .header-attributes .attribute {
       min-height: 40px;
       margin: 2px; }
@@ -547,8 +584,9 @@
     margin: 0 24px;
     border-bottom: 3px solid #b5b3a4; }
   .hm3 .tabs .item.active {
-    text-decoration: underline;
-    text-shadow: none; }
+    text-shadow: none;
+    border-bottom: 3px solid black;
+    font-size: 25px; }
 
 .hm3 .sheet-body .tab {
   margin-right: 5px; }
@@ -573,7 +611,7 @@
   list-style: none;
   margin: 7px 0;
   padding: 0;
-  overflow-y: auto; }
+  overflow-y: hidden; }
   .hm3 .items .items-list .items-header {
     margin: 2px 0;
     padding: 0;
@@ -700,7 +738,8 @@
   padding: 5px; }
 
 .hm3 .combat .combat-stats {
-  gap: 2px; }
+  gap: 2px;
+  overflow: hidden; }
   .hm3 .combat .combat-stats .combat-stat {
     align-items: center; }
     .hm3 .combat .combat-stats .combat-stat .combat-stat-label {
@@ -726,9 +765,13 @@
   .hm3 .combat .weapons-list .weapon {
     border-bottom: 1px solid #bbb; }
     .hm3 .combat .weapons-list .weapon .item-name.damage-roll:hover .item-image {
-      background-image: url("../../../icons/svg/d20-grey.svg") !important; }
+      background-image: url("../../../icons/svg/d20-grey.svg") !important;
+      background-repeat: no-repeat;
+      background-position: center; }
     .hm3 .combat .weapons-list .weapon .item-name.damage-roll .item-image:hover {
-      background-image: url("../../../icons/svg/d20-black.svg") !important; }
+      background-image: url("../../../icons/svg/d20-black.svg") !important;
+      background-repeat: no-repeat;
+      background-position: center; }
     .hm3 .combat .weapons-list .weapon .weapon-image {
       flex: 0 0 24px;
       margin-right: 5px; }
@@ -775,12 +818,30 @@
     .hm3 .combat .weapons-list .weapon .weapon-blunt {
       flex: 0 0 25px;
       text-align: center; }
+      .hm3 .combat .weapons-list .weapon .weapon-blunt.active:hover {
+        background-image: url("../../../icons/svg/d20-grey.svg") !important;
+        background-size: 27px;
+        background-repeat: no-repeat;
+        background-position: center;
+        color: black; }
     .hm3 .combat .weapons-list .weapon .weapon-edged {
       flex: 0 0 25px;
       text-align: center; }
+      .hm3 .combat .weapons-list .weapon .weapon-edged.active:hover {
+        background-image: url("../../../icons/svg/d20-grey.svg") !important;
+        background-size: 27px;
+        background-repeat: no-repeat;
+        background-position: center;
+        color: black; }
     .hm3 .combat .weapons-list .weapon .weapon-piercing {
       flex: 0 0 25px;
       text-align: center; }
+      .hm3 .combat .weapons-list .weapon .weapon-piercing.active:hover {
+        background-image: url("../../../icons/svg/d20-grey.svg") !important;
+        background-size: 27px;
+        background-repeat: no-repeat;
+        background-position: center;
+        color: black; }
     .hm3 .combat .weapons-list .weapon .weapon-value {
       flex: 0 0 40px;
       text-align: center; }
@@ -790,6 +851,8 @@
       .hm3 .combat .weapons-list .weapon .weapon-attack.active:hover {
         background-image: url("../../../icons/svg/d20-grey.svg") !important;
         background-size: 27px;
+        background-repeat: no-repeat;
+        background-position: center;
         color: black; }
     .hm3 .combat .weapons-list .weapon .weapon-defense {
       flex: 0 0 30px;
@@ -797,6 +860,8 @@
       .hm3 .combat .weapons-list .weapon .weapon-defense.active:hover {
         background-image: url("../../../icons/svg/d20-grey.svg") !important;
         background-size: 27px;
+        background-repeat: no-repeat;
+        background-position: center;
         color: black; }
     .hm3 .combat .weapons-list .weapon .weapon-notes {
       flex: 1 0 75px;
@@ -830,9 +895,13 @@
     padding: 3px 0;
     border-bottom: 1px solid #bbb; }
     .hm3 .combat .missiles-list .missile .item-name.missile-damage-roll:hover .item-image {
-      background-image: url("../../../icons/svg/d20-grey.svg") !important; }
+      background-image: url("../../../icons/svg/d20-grey.svg") !important;
+      background-repeat: no-repeat;
+      background-position: center; }
     .hm3 .combat .missiles-list .missile .item-name.missile-damage-roll .item-image:hover {
-      background-image: url("../../../icons/svg/d20-black.svg") !important; }
+      background-image: url("../../../icons/svg/d20-black.svg") !important;
+      background-repeat: no-repeat;
+      background-position: center; }
     .hm3 .combat .missiles-list .missile .missile-image {
       flex: 0 0 24px;
       margin-right: 5px; }
@@ -877,15 +946,39 @@
     .hm3 .combat .missiles-list .missile .missile-short {
       flex: 0 0 45px;
       text-align: center; }
+      .hm3 .combat .missiles-list .missile .missile-short.active:hover {
+        background-image: url("../../../icons/svg/d20-grey.svg") !important;
+        background-size: 27px;
+        background-repeat: no-repeat;
+        background-position: center;
+        color: black; }
     .hm3 .combat .missiles-list .missile .missile-medium {
       flex: 0 0 45px;
       text-align: center; }
+      .hm3 .combat .missiles-list .missile .missile-medium.active:hover {
+        background-image: url("../../../icons/svg/d20-grey.svg") !important;
+        background-size: 27px;
+        background-repeat: no-repeat;
+        background-position: center;
+        color: black; }
     .hm3 .combat .missiles-list .missile .missile-long {
       flex: 0 0 45px;
       text-align: center; }
+      .hm3 .combat .missiles-list .missile .missile-long.active:hover {
+        background-image: url("../../../icons/svg/d20-grey.svg") !important;
+        background-size: 27px;
+        background-repeat: no-repeat;
+        background-position: center;
+        color: black; }
     .hm3 .combat .missiles-list .missile .missile-extreme {
       flex: 0 0 45px;
       text-align: center; }
+      .hm3 .combat .missiles-list .missile .missile-extreme.active:hover {
+        background-image: url("../../../icons/svg/d20-grey.svg") !important;
+        background-size: 27px;
+        background-repeat: no-repeat;
+        background-position: center;
+        color: black; }
     .hm3 .combat .missiles-list .missile .missile-value {
       flex: 0 0 40px;
       text-align: center; }
@@ -895,6 +988,8 @@
       .hm3 .combat .missiles-list .missile .missile-attack.active:hover {
         background-image: url("../../../icons/svg/d20-grey.svg") !important;
         background-size: 27px;
+        background-repeat: no-repeat;
+        background-position: center;
         color: black; }
     .hm3 .combat .missiles-list .missile .missile-notes {
       flex: 1 0 50px;
@@ -1040,6 +1135,12 @@
     flex: 0 0 18px;
     font-weight: bold;
     text-transform: uppercase; }
+  .hm3 .sheet-body .profile-desc textarea.description {
+    resize: none;
+    font-family: "Signika", sans-serif;
+    font-size: 14px;
+    border: none;
+    background: transparent; }
 
 .hm3 .sheet-body .profile img.bio-image {
   flex: 0 0 200px;
@@ -1053,7 +1154,7 @@
   list-style: none;
   margin: 7px 0;
   padding: 0;
-  overflow-y: auto; }
+  overflow-y: hidden; }
   .hm3 .injuries-list .injury-header {
     font-weight: bold; }
   .hm3 .injuries-list .injury {
@@ -1122,7 +1223,7 @@
   list-style: none;
   margin: 7px 0;
   padding: 0;
-  overflow-y: auto; }
+  overflow-y: hidden; }
   .hm3.actor .skills .skills-list .skill .skill-name {
     flex: 0 0 200px; }
   .hm3.actor .skills .skills-list .skill .skill-notes {
@@ -1179,7 +1280,7 @@
   list-style: none;
   margin: 7px 0;
   padding: 0;
-  overflow-y: auto; }
+  overflow-y: hidden; }
   .hm3 .esoteric .spells-list .spell-header {
     font-weight: bold; }
   .hm3 .esoteric .spells-list .spell {
@@ -1226,7 +1327,7 @@
   list-style: none;
   margin: 7px 0;
   padding: 0;
-  overflow-y: auto; }
+  overflow-y: hidden; }
   .hm3 .esoteric .psionics-list .psionic-header {
     font-weight: bold; }
   .hm3 .esoteric .psionics-list .psionic {
@@ -1331,7 +1432,7 @@
   list-style: none;
   margin: 7px 0;
   padding: 0;
-  overflow-y: auto; }
+  overflow-y: hidden; }
   .hm3 .armor-list .armor-header {
     font-weight: bold; }
   .hm3 .armor-list .armor {
@@ -1385,11 +1486,22 @@
     .hm3 .armor-list .item-controls .active {
       color: #4b4a44; }
 
+.hm3 input[type="text"].gear-name-filter {
+  background-image: url("../images/png/searchicon.png");
+  background-size: contain;
+  background-position: 5px -1px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 15px;
+  padding: 5px 0px 5px 40px;
+  border: 2px groove #eeede0;
+  margin-top: 5px; }
+
 .hm3 .gear-list {
   list-style: none;
   margin: 7px 0;
   padding: 0;
-  overflow-y: auto; }
+  overflow-y: hidden; }
   .hm3 .gear-list .gear-header {
     font-weight: bold; }
   .hm3 .gear-list .gear {
@@ -1412,6 +1524,9 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden; }
+  .hm3 .gear-list .gear-type {
+    flex: 0 0 80px;
+    text-align: center; }
   .hm3 .gear-list .gear-qty {
     flex: 0 0 40px;
     text-align: center; }
@@ -1421,8 +1536,18 @@
   .hm3 .gear-list .gear-value {
     flex: 0 0 40px;
     text-align: center; }
+  .hm3 .gear-list .gear-capacity {
+    flex: 0 0 140px;
+    text-align: right;
+    padding-right: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden; }
+  .hm3 .gear-list .overcapacity {
+    color: red;
+    font-weight: bold; }
   .hm3 .gear-list .gear-notes {
-    flex: 1 0 150px;
+    flex: 1 0 60px;
     padding-left: 10px;
     text-overflow: ellipsis;
     white-space: nowrap;

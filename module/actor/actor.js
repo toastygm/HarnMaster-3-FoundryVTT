@@ -1,5 +1,8 @@
 import { HM3 } from '../config.js';
 import { DiceHM3 } from '../dice-hm3.js';
+import * as combat from '../combat.js';
+import * as macros from '../macros.js';
+import { HarnMasterBaseActorSheet } from './base-actor-sheet.js';
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
@@ -48,11 +51,30 @@ export class HarnMasterActor extends Actor {
                 },
                 default: 'yes'
             }).render(true);
-        } else if (data.type == 'creature') {
+        } else if (data.type === 'creature') {
             
             // Create Creature Default Skills
             this._createDefaultCreatureSkills(data).then(result => {
                 super.create(data, options); // Follow through the the rest of the Actor creation process upstream
+            });
+        } else if (data.type === 'container') {
+            const html = await renderTemplate("systems/hm3/templates/dialog/container-size.html", {});
+            Dialog.prompt({
+                title: 'Container Size',
+                content: html,
+                label: 'OK',
+                callback: async (html) => {
+                    const form = html[0].querySelector("form");
+                    const fd = new FormDataExtended(form);
+                    const formdata = fd.toObject();
+                    const maxCapacity = parseInt(formdata.maxCapacity);
+                    const actor = await super.create(data, options); // Follow through the the rest of the Actor creation process upstream
+                    return actor.update({
+                        "img": "systems/hm3/images/icons/svg/chest.svg",
+                        "bioImage": "systems/hm3/images/icons/svg/chest.svg",
+                        "data.capacity.max": maxCapacity
+                    });
+                }
             });
         } else {
             super.create(data, options); // Follow through the the rest of the Actor creation process upstream
@@ -244,6 +266,12 @@ export class HarnMasterActor extends Actor {
             data.description = '';
             data.biography = '';
         }
+
+        // Calculate container current capacity utilized
+        const tempData = {};
+        this._calcGearWeightTotals(tempData);
+        data.capacity.value = tempData.totalGearWeight;
+        data.capacity.pct = Math.round((Math.max(data.capacity.max - data.capacity.value, 0) / data.capacity.max) * 100);
     }
 
     /**
@@ -436,6 +464,16 @@ export class HarnMasterActor extends Actor {
                 if (!it.data.isCarried) {
                     it.data.isEquipped = false;
                 }
+
+                if (it.data.container && it.data.container != 'on-person') {
+                    // Anything in a container is unequipped automatically
+                    it.data.isEquipped = false;
+
+                    // If an item is in a container, its "isCarried" flag must be the
+                    // same as the container.
+                    const container = this.items.get(it.data.container);
+                    if (container) it.data.isCarried = container.data.data.isCarried;
+                }
             }
         });
     }
@@ -548,7 +586,11 @@ export class HarnMasterActor extends Actor {
         data.totalArmorWeight = 0;
         data.totalMiscGearWeight = 0;
 
-        let tempWeight;
+        let tempWeight = 0;
+
+        this.itemTypes.containergear.forEach(it => {
+            it.data.data.capacity.value = 0;
+        });
 
         this.data.items.forEach(it => {
             switch (it.type) {
@@ -574,11 +616,20 @@ export class HarnMasterActor extends Actor {
                     break;
 
                 case 'miscgear':
+                case 'containergear':
                     if (!it.data.isCarried) break;
                     tempWeight = it.data.weight * it.data.quantity;
                     if (tempWeight < 0) tempWeight = 0;
                     data.totalMiscGearWeight += tempWeight;
                     break;
+            }
+
+            if (it.type.endsWith('gear')) {
+                const cid = it.data.container;
+                if (cid && cid != 'on-person') {
+                    const container = this.items.get(cid);
+                    container.data.data.capacity.value = Math.round((container.data.data.capacity.value + tempWeight + Number.EPSILON)*100)/100;
+                }
             }
         });
 
@@ -873,6 +924,116 @@ export class HarnMasterActor extends Actor {
         } else {
             return item.update({ "data.improveFlag": false });
         }
+    }
+
+    static chatListeners(html) {
+        html.on('click', '.card-buttons button', this._onChatCardAction.bind(this));
+    }
+
+    static async _onChatCardAction(event) {
+        event.preventDefault();
+        const button = event.currentTarget;
+        button.disabled = true;
+        const action = button.dataset.action;
+        const weaponType = button.dataset.weaponType;
+
+        let actor = null;
+        if (button.dataset.actorId) {
+            actor = game.actors.get(button.dataset.actorId);
+            if (!actor) {
+                console.warn(`HM3 | Action=${action}; Cannot find actor ${button.dataset.actorId}`);
+                button.disabled = false;
+                return null;
+            }
+        }
+        let token = null;
+        if (button.dataset.tokenId) {
+            token = canvas.tokens.get(button.dataset.tokenId);
+            if (!token) {
+                console.warn(`HM3 | Action=${action}; Cannot find token ${button.dataset.tokenId}`);
+                button.disabled = false;
+                return null;
+            }
+        }
+
+        if (!actor && token) {
+            actor = token.actor;
+        }
+
+        let atkToken = null;
+        if (button.dataset.atkTokenId) {
+            atkToken = canvas.tokens.get(button.dataset.atkTokenId);
+            if (!atkToken) {
+                console.warn(`HM3 | Action=${action}; Cannot find attack token ${button.dataset.atkTokenId}`)
+                button.disabled = false;
+                return null;
+            }
+        }
+
+        let defToken = null;
+        if (button.dataset.defTokenId) {
+            defToken = canvas.tokens.get(button.dataset.defTokenId);
+            if (!defToken) {
+                console.warn(`HM3 | Action=${action}; Cannot find defense token ${button.dataset.defTokenId}`)
+                button.disabled = false;
+                return null;
+            }
+        }
+        switch (action) {
+            case 'injury':
+                DiceHM3.injuryRoll({
+                    items: token.actor.items,
+                    name: token.name,
+                    actor: token.actor,
+                    impact: button.dataset.impact,
+                    aspect: button.dataset.aspect,
+                    aim: button.dataset.aim,
+                    tokenId: token.id
+                });
+                break;
+
+            case 'dta-attack':
+                macros.weaponAttack(null,false, atkToken, true);
+                break;
+
+            case 'dodge':
+                combat.dodgeResume(atkToken, defToken, button.dataset.weaponType, button.dataset.weapon, 
+                    button.dataset.effAml, button.dataset.aim, 
+                    button.dataset.aspect, button.dataset.impactMod)
+                break;
+
+            case 'ignore':
+                combat.ignoreResume(atkToken, defToken, button.dataset.weaponType, button.dataset.weapon, 
+                    button.dataset.effAml, button.dataset.aim, 
+                    button.dataset.aspect, button.dataset.impactMod)
+                break;
+
+            case 'block':
+                combat.blockResume(atkToken, defToken, button.dataset.weaponType, button.dataset.weapon, 
+                    button.dataset.effAml, button.dataset.aim, 
+                    button.dataset.aspect, button.dataset.impactMod)
+                break;
+
+            case 'counterstrike':
+                combat.meleeCounterstrikeResume(atkToken, defToken, button.dataset.weapon, 
+                    button.dataset.effAml, button.dataset.aim, 
+                    button.dataset.aspect, button.dataset.impactMod)
+                break;
+
+            case 'shock':
+                macros.shockRoll(false, actor);
+                break;
+
+            case 'stumble':
+                macros.stumbleRoll(false, actor);
+                break;
+
+            case 'fumble':
+                macros.fumbleRoll(false, actor);
+                break;
+        }
+
+        button.disabled = false;
     }
 }
 

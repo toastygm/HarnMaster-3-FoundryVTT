@@ -12,6 +12,7 @@ export class HarnMasterContainerSheet extends HarnMasterBaseActorSheet {
       classes: ["hm3", "sheet", "actor", "container"],
       width: 660,
       height: 640,
+      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "gear" }]
     });
   }
 
@@ -23,6 +24,10 @@ export class HarnMasterContainerSheet extends HarnMasterBaseActorSheet {
    */
   get template()
   {
-    return "systems/hm3/templates/actor/container-sheet.html";
+    if (!game.user.isGM && this.actor.limited) {
+      return "systems/hm3/templates/actor/container-limited.html";
+    } else {
+      return "systems/hm3/templates/actor/container-sheet.html";
+    }
   }
 }

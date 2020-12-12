@@ -8,8 +8,9 @@ import { HarnMasterItemSheet } from "./item/item-sheet.js";
 import { HM3 } from "./config.js";
 import { DiceHM3 } from "./dice-hm3.js";
 import { registerSystemSettings } from "./settings.js";
-import * as migrations from "./migrations.js"
-import * as macros from "./macros.js"
+import * as migrations from "./migrations.js";
+import * as macros from "./macros.js";
+import * as combat from "./combat.js";
 
 Hooks.once('init', async function() {
 
@@ -78,6 +79,13 @@ Hooks.once('init', async function() {
   });
 });
 
+Hooks.on("renderChatMessage", (app, html, data) => {
+  // Display action buttons
+  combat.displayChatActionButtons(app, html, data);
+});
+Hooks.on('renderChatLog', (app, html, data) => HarnMasterActor.chatListeners(html));
+Hooks.on('renderChatPopout', (app, html, data) => HarnMasterActor.chatListeners(html));
+
 /**
  * Once the entire VTT framework is initialized, check to see if
  * we should perform a data migration.
@@ -85,7 +93,7 @@ Hooks.once('init', async function() {
 Hooks.once("ready", function() {
   // Determine whether a system migration is required
   const currentVersion = game.settings.get("hm3", "systemMigrationVersion");
-  const NEEDS_MIGRATION_VERSION = "0.7.8";  // Anything older than this must be migrated
+  const NEEDS_MIGRATION_VERSION = "0.7.14";  // Anything older than this must be migrated
 
   let needMigration = currentVersion === null || (isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion));
   if ( needMigration && game.user.isGM ) {
@@ -112,4 +120,8 @@ Hooks.on('preCreateCombatant', (combat, combatant, options, id) => {
 /*-------------------------------------------------------*/
 Handlebars.registerHelper("multiply", function(op1, op2) {
   return op1 * op2;
+});
+
+Handlebars.registerHelper("endswith", function(op1, op2) {
+  return op1.endsWith(op2);
 });

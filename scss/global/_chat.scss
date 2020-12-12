@@ -13,9 +13,20 @@
         h3 {
             flex: 1;
             margin: 0;
-            line-height: 36px;
+            line-height: 25px;
             font-family: "Modesto Condensed", "Palatino Linotype", serif;
             font-size: 20px;
+            font-weight: 700;
+            color: #4b4a44;
+        }
+
+        h4
+         {
+            flex: 1;
+            margin: 0;
+            line-height: 20px;
+            font-family: "Modesto Condensed", "Palatino Linotype", serif;
+            font-size: 16px;
             font-weight: 700;
             color: #4b4a44;
         }
@@ -24,6 +35,30 @@
             color: #111;
             text-shadow: 0 0 10px red;
         }
+    }
+
+    .mingap {
+        gap: 3px;
+    }
+    
+    .header {
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .result-desc {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .weapon-broke {
+        text-align: center;
+        color: red;
+        font-weight: bold;
     }
 
     .card-content {
@@ -36,7 +71,13 @@
         }
 
         .label {
-            font-weight: bold
+            font-weight: bold;
+            padding-right: 5px;
+            text-align: right;
+        }
+
+        .value {
+            text-align: left;
         }
     }
 

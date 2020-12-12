@@ -112,7 +112,7 @@ export class DiceHM3 {
     static async d100StdDialog(dialogOptions) {
     
         // Render modal dialog
-        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/chat/standard-test-dialog.html";
+        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/dialog/standard-test-dialog.html";
         let dialogData = {
             target: dialogOptions.target,
             modifier: dialogOptions.modifier
@@ -249,7 +249,7 @@ export class DiceHM3 {
     static async d6Dialog(dialogOptions) {
     
         // Render modal dialog
-        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/chat/standard-test-dialog.html";
+        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/dialog/standard-test-dialog.html";
         let dialogData = {
             target: dialogOptions.target,
             modifier: dialogOptions.modifier
@@ -348,20 +348,28 @@ export class DiceHM3 {
     static async injuryRoll (rollData) {
         const speaker = rollData.speaker || ChatMessage.getSpeaker();
 
-        let hitLocations = DiceHM3._getHitLocations(rollData.actor.items);
+        let result = null;
+        if (typeof rollData.impact == 'undefined') {
+            let hitLocations = DiceHM3._getHitLocations(rollData.actor.items);
 
-        const dialogOptions = {
-            hitLocations: hitLocations,
-            data: rollData.actor.data,
-            items: rollData.actor.items,
-            name: rollData.actor.name
-        };
-
-        // Create the Roll instance
-        const result = await DiceHM3.injuryDialog(dialogOptions);
+            const dialogOptions = {
+                hitLocations: hitLocations,
+                data: rollData.actor.data,
+                items: rollData.actor.items,
+                name: rollData.actor.token ? rollData.actor.token.name : rollData.actor.name
+            };
+    
+            // Create the Roll instance
+            result = await DiceHM3.injuryDialog(dialogOptions);
+        } else {
+            result = DiceHM3._calcInjury('Random', rollData.impact, rollData.aspect,
+                game.settings.get('hm3', 'addInjuryToActorSheet') !== 'disable', rollData.aim, rollData);
+        }
 
         // If user cancelled the roll, then return immediately
         if (!result) return null;
+
+        if (result && rollData.tokenId) result.tokenId = rollData.tokenId;
 
         if (result.addToCharSheet) {
             DiceHM3.createInjury(rollData.actor, result);
@@ -370,7 +378,10 @@ export class DiceHM3 {
         // Prepare for Chat Message
         const chatTemplate = 'systems/hm3/templates/chat/injury-card.html';
 
-        const chatTemplateData = mergeObject({title: `${rollData.name} Injury`}, result);
+        const chatTemplateData = mergeObject({
+            title: `${rollData.actor.token ? rollData.actor.token.name : rollData.actor.name} Injury`,
+            visibleActorId: rollData.actor.id
+        }, result);
 
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
@@ -388,7 +399,9 @@ export class DiceHM3 {
 
         // Create a chat message
         await ChatMessage.create(messageData, messageOptions);
-    
+        if (game.settings.get("hm3", "combatAudio")) {
+            AudioHelper.play({src: "systems/hm3/audio/grunt1.ogg", autoplay: true, loop: false}, true);
+        }
         return result;
     }
     
@@ -461,14 +474,16 @@ export class DiceHM3 {
      */
     static async injuryDialog(dialogOptions) {
     
+        const recordInjury = game.settings.get("hm3", "addInjuryToActorSheet");
+
         // Render modal dialog
-        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/chat/injury-dialog.html";
+        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/dialog/injury-dialog.html";
         let dialogData = {
             aim: 'mid',
             location: 'Random',
             impact: 0,
             aspect: 'Blunt',
-            addToCharSheet: true,
+            askRecordInjury:  recordInjury === 'ask',
             hitLocations: dialogOptions.hitLocations
         };
 
@@ -488,7 +503,8 @@ export class DiceHM3 {
                             const formImpact = form.impact.value;
                             const formAspect = form.aspect.value;
                             const formAim = form.aim.value;
-                            const formAddToCharSheet = form.addToCharSheet.checked;
+                            const formAddToCharSheet = dialogData.askRecordInjury ?
+                                form.addToCharSheet.checked : recordInjury === 'enable';
                             resolve(DiceHM3._calcInjury(formLocation, formImpact, formAspect, 
                                 formAddToCharSheet, formAim, dialogOptions));
                         }
@@ -512,6 +528,9 @@ export class DiceHM3 {
      * @param {Object} dialogOptions 
      */
     static _calcInjury(location, impact, aspect, addToCharSheet, aim, dialogOptions) {
+        const enableAmputate = game.settings.get('hm3', 'amputation');
+        const enableBloodloss = game.settings.get('hm3', 'bloodloss');
+
         const result = {
             isRandom: location === 'Random',
             name: dialogOptions.name,
@@ -584,29 +603,29 @@ export class DiceHM3 {
                 break;
 
             case 'S3':
-                result .injuryLevel = 3;
+                result.injuryLevel = 3;
                 break;
 
             case 'G4':
                 result.injuryLevel = 4;
-                result.isAmputate = armorLocation.data.isAmputate && (aspect === 'Edged');
+                result.isAmputate = enableAmputate && armorLocation.data.isAmputate && (aspect === 'Edged');
                 break;
 
             case 'K4':
                 result.injuryLevel = 4;
                 result.isKillShot = true;
-                result.isAmputate = armorLocation.data.isAmputate && (aspect === 'Edged');
+                result.isAmputate = enableAmputate && armorLocation.data.isAmputate && (aspect === 'Edged');
                 break;
 
             case 'G5':
                 result.injuryLevel = 5;
-                result.isAmputate = armorLocation.data.isAmputate && (aspect === 'Edged');
+                result.isAmputate = enableAmputate && armorLocation.data.isAmputate && (aspect === 'Edged');
                 break;
 
             case 'K5':
                 result.injuryLevel = 5;
                 result.isKillShot = true;
-                result.isAmputate = armorLocation.data.isAmputate && (aspect === 'Edged');
+                result.isAmputate = enableAmputate && armorLocation.data.isAmputate && (aspect === 'Edged');
                 break;
 
             case 'NA':
@@ -621,7 +640,7 @@ export class DiceHM3 {
             return result;
         }
 
-        result.isBleeder = result.injuryLevel >= 4 && result.aspect != 'Fire';
+        result.isBleeder = enableBloodloss && result.injuryLevel >= 4 && result.aspect != 'Fire';
 
         if (armorLocation.data.isFumble) {
             result.isFumble = result.injuryLevel >= 4;
@@ -723,7 +742,7 @@ export class DiceHM3 {
 
         const dialogOptions = {
             weapon: rollData.weapon,
-            weaponAspect: weapon.defaultAspect,
+            weaponAspect: rollData.aspect ? rollData.aspect : weapon.defaultAspect,
             weaponAspects: weapon.aspects,
             data: rollData.actorData
         };
@@ -762,7 +781,7 @@ export class DiceHM3 {
             weaponImpact: weapon.aspects[roll.chosenAspect],
             addlWeaponImpact: roll.addlWeaponImpact,
             totalImpact: totalImpact,
-            rollResult: roll.rollObj.dice[0].values.join(" + "),
+            impactRoll: roll.rollObj.dice[0].values.join(" + "),
             rollValue: roll.rollObj.total,
             notes: renderedNotes
         };
@@ -846,7 +865,7 @@ export class DiceHM3 {
     static async damageDialog(dialogOptions) {
     
         // Render modal dialog
-        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/chat/damage-dialog.html";
+        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/dialog/damage-dialog.html";
         let dialogData = {
             weapon: dialogOptions.weapon,
             damageDice: 1,
@@ -964,14 +983,35 @@ export class DiceHM3 {
     static async missileAttackDialog(dialogOptions) {
     
         // Render modal dialog
-        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/chat/missile-attack-dialog.html";
+        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/dialog/missile-attack-dialog.html";
+
         let dialogData = {
-            rangeShort: dialogOptions.rangeShort,
-            rangeMedium: dialogOptions.rangeMedium,
-            rangeLong: dialogOptions.rangeLong,
-            rangeExtreme: dialogOptions.rangeExtreme,
-            target: dialogOptions.target
+            targetRange: dialogOptions.range,
+            ranges: {
+                short: `Short (${dialogOptions.rangeShort})`,
+                medium: `Medium (${dialogOptions.rangeMedium})`,
+                long: `Long (${dialogOptions.rangeLong})`,
+                extreme: `Extreme (${dialogOptions.rangeExtreme})`
+            },
+            target: dialogOptions.target,
+            rangeExceedsExtreme: false
         };
+
+        if (typeof dialogOptions.range !== 'undefined') {
+            if (dialogOptions.range <= dialogOptions.rangeShort) {
+                dialogData.defaultRange = 'short';
+            } else if (dialogOptions.range <= dialogOptions.rangeMedium) {
+                dialogData.defaultRange = 'medium';
+            } else if (dialogOptions.range <= dialogOptions.rangeLong) {
+                dialogData.defaultRange = 'long';
+            } else if (dialogOptions.range <= dialogOptions.rangeExtreme) {
+                dialogData.defaultRange = 'extreme';
+            } else {
+                dialogData.defaultRange = 'extreme';
+                dialogData.rangeExceedsExtreme = true;
+            }
+        }
+
         const html = await renderTemplate(dlgTemplate, dialogData);
         const title = `${dialogOptions.name} Attack`;
 
@@ -1034,10 +1074,13 @@ export class DiceHM3 {
 
         const dialogOptions = {
             name: rollData.name,
-            impactShort: rollData.impactShort,
-            impactMedium: rollData.impactMedium,
-            impactLong: rollData.impactLong,
-            impactExtreme: rollData.impactExtreme,
+            ranges: {
+                "Short": rollData.impactShort,
+                "Medium": rollData.impactMedium,
+                "Long": rollData.impactLong,
+                "Extreme": rollData.impactExtreme
+            },
+            defaultRange: rollData.defaultRange ? rollData.defaultRange : "Extreme",
             data: rollData.data
         };
 
@@ -1113,13 +1156,11 @@ export class DiceHM3 {
     static async missileDamageDialog(dialogOptions) {
     
         // Render modal dialog
-        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/chat/missile-damage-dialog.html";
+        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/dialog/missile-damage-dialog.html";
         let dialogData = {
             name: dialogOptions.name,
-            impactShort: dialogOptions.impactShort,
-            impactMedium: dialogOptions.impactMedium,
-            impactLong: dialogOptions.impactLong,
-            impactExtreme: dialogOptions.impactExtreme
+            ranges: dialogOptions.ranges,
+            defaultRange: dialogOptions.defaultRange
         };
         const html = await renderTemplate(dlgTemplate, dialogData);
         

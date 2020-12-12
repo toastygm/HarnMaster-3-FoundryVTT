@@ -1,0 +1,38 @@
+<form class="{{cssClass}} sheet flexcol" autocomplete="off">
+
+    {{!-- Sheet Header --}}
+    <header class="sheet-header sheet-header-character">
+        <div class="flexrow">
+            <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100" />
+            <div class="flexcol header-fields">
+                <div class="flexrow name-attribute">
+                    <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
+                    <div class="header-stat-block">
+                        <div class="penalties flexrow">
+                            <div class="capacity-label">Max Capacity</div>
+                            <input class="capacity-value" type="number" name="data.capacity.max" value="{{data.capacity.max}}" data-dtype="Number"/>
+                        </div>
+                        <div class="endurance flexrow">
+                            <span class="label">Capacity: {{data.capacity.value}}</span>
+                        </div>
+                        <div class="endbar">
+                            <span class="bar" style="width: {{data.capacity.pct}}%"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+        <div class="profile flexrow" data-group="primary">
+            <img class="bio-image" src="{{data.bioImage}}" title="{{actor.name}}" height="300" width="200" />
+            <div class="profile-desc flexcol">
+                <label class="label">Description</label>
+                <textarea class="description" id="data.description" name="data.description" placeholder="Description">{{data.description}}</textarea>
+            </div>        
+        </div>
+    </section>
+
+</form>

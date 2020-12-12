@@ -32,8 +32,9 @@
   }
 
   .item.active {
-    text-decoration: underline;
     text-shadow: none;
+    border-bottom: 3px solid black;
+    font-size: 25px;
   }
 }
 
