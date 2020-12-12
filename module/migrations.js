@@ -10,7 +10,7 @@ export const migrateWorld = async function() {
       try {
         const updateData = migrateActorData(a.data);
         if ( !isObjectEmpty(updateData) ) {
-          console.log(`Migrating Actor entity ${a.name}`);
+          console.log(`HM3 | Migrating Actor entity ${a.name}`);
           await a.update(updateData, {enforceTypes: false});
         }
       } catch(err) {
@@ -23,7 +23,7 @@ export const migrateWorld = async function() {
       try {
         const updateData = migrateItemData(i.data);
         if ( !isObjectEmpty(updateData) ) {
-          console.log(`Migrating Item entity ${i.name}`);
+          console.log(`HM3 | Migrating Item entity ${i.name}`);
           await i.update(updateData, {enforceTypes: false});
         }
       } catch(err) {
@@ -36,7 +36,7 @@ export const migrateWorld = async function() {
       try {
         const updateData = migrateSceneData(s.data);
         if ( !isObjectEmpty(updateData) ) {
-          console.log(`Migrating Scene entity ${s.name}`);
+          console.log(`HM3 | Migrating Scene entity ${s.name}`);
           await s.update(updateData, {enforceTypes: false});
         }
       } catch(err) {
@@ -83,13 +83,13 @@ export const migrateWorld = async function() {
           expandObject(updateData);
           updateData["_id"] = ent._id;
           await pack.updateEntity(updateData);
-          console.log(`Migrated ${entity} entity ${ent.name} in Compendium ${pack.collection}`);
+          console.log(`HM3 | Migrated ${entity} entity ${ent.name} in Compendium ${pack.collection}`);
         }
       } catch(err) {
         console.error(err);
       }
     }
-    console.log(`Migrated all ${entity} entities from Compendium ${pack.collection}`);
+    console.log(`HM3 | Migrated all ${entity} entities from Compendium ${pack.collection}`);
   };
   
   /* -------------------------------------------- */
@@ -385,7 +385,7 @@ export const migrateWorld = async function() {
         })
       }
       await pack.updateEntity(update, {recursive: false});
-      console.log(`Purged flags from ${entity.name}`);
+      console.log(`HM3 | Purged flags from ${entity.name}`);
     }
     await pack.configure({locked: true});
   }
