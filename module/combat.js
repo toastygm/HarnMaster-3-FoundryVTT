@@ -552,11 +552,11 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     if (game.dice3d) {
         const aRoll = atkRoll.rollObj;
         aRoll.dice[0].options.colorset = "glitterparty";
-        await game.dice3d.showForRoll(aRoll);
+        await game.dice3d.showForRoll(aRoll, game.user, true);
 
         const cRoll = csRoll.rollObj;
         cRoll.dice[0].options.colorset = "bloodmoon";
-        await game.dice3d.showForRoll(cRoll);
+        await game.dice3d.showForRoll(cRoll, game.user, true);
     }
 
     const atkResult = `${atkRoll.isCritical?'c':'m'}${atkRoll.isSuccess?'s':'f'}`;
@@ -732,11 +732,11 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
     if (game.dice3d) {
         const aRoll = atkRoll.rollObj;
         aRoll.dice[0].options.colorset = "glitterparty";
-        await game.dice3d.showForRoll(aRoll);
+        await game.dice3d.showForRoll(aRoll, game.user, true);
 
         const dRoll = defRoll.rollObj;
         dRoll.dice[0].options.colorset = "bloodmoon";
-        await game.dice3d.showForRoll(dRoll);
+        await game.dice3d.showForRoll(dRoll, game.user, true);
     }
 
     const atkResult = `${atkRoll.isCritical?'c':'m'}${atkRoll.isSuccess?'s':'f'}`;
@@ -924,11 +924,11 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
     if (game.dice3d) {
         const aRoll = atkRoll.rollObj;
         aRoll.dice[0].options.colorset = "glitterparty";
-        await game.dice3d.showForRoll(aRoll);
+        await game.dice3d.showForRoll(aRoll, game.user, true);
 
         const dRoll = defRoll.rollObj;
         dRoll.dice[0].options.colorset = "bloodmoon";
-        await game.dice3d.showForRoll(dRoll);
+        await game.dice3d.showForRoll(dRoll, game.user, true);
     }
 
     const atkResult = `${atkRoll.isCritical?'c':'m'}${atkRoll.isSuccess?'s':'f'}`;
@@ -1074,7 +1074,7 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
     if (game.dice3d) {
         const aRoll = atkRoll.rollObj;
         aRoll.dice[0].options.colorset = "glitterparty";
-        await game.dice3d.showForRoll(aRoll);
+        await game.dice3d.showForRoll(aRoll, game.user, true);
     }
 
     const atkResult = `${atkRoll.isCritical?'c':'m'}${atkRoll.isSuccess?'s':'f'}`;
