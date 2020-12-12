@@ -93,14 +93,14 @@
     {{/if}}
 
     <div class="card-buttons">
-        <button data-action="injury" data-token-id="{{defTokenId}}" data-aim="{{atkAim}}" data-aspect="{{atkAspect}}"
+        <button data-action="injury" data-visible-actor-id="{{visibleActorId}}" data-token-id="{{defTokenId}}" data-aim="{{atkAim}}" data-aspect="{{atkAspect}}"
         data-impact="{{totalImpact}}">Calculate {{defender}} Injury</button>
     </div>
     {{/if}}
 
     {{#if dta}}
     <div class="card-buttons">
-        <button data-action="dta-attack" data-atk-token-id="{{defTokenId}}"" data-def-token-id="{{atkTokenId}}">Initiate DTA Attack</button>
+        <button data-action="dta-attack"  data-visible-actor-id="{{visibleActorId}}" data-atk-token-id="{{defTokenId}}" data-def-token-id="{{atkTokenId}}">Initiate DTA Attack</button>
     </div>
     {{/if}}
 </div>

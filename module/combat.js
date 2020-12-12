@@ -109,7 +109,8 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
         hasDodge: true,
         hasBlock: true,
         hasCounterstrike: false,
-        hasIgnore: true
+        hasIgnore: true,
+        visibleActorId: defendToken.actor.id
     };
 
     const html = await renderTemplate(chatTemplate, chatTemplateData);
@@ -235,7 +236,8 @@ export async function meleeAttack(attackToken, defendToken, weaponItem=null) {
         hasDodge: true,
         hasBlock: true,
         hasCounterstrike: true,
-        hasIgnore: true
+        hasIgnore: true,
+        visibleActorId: defendToken.actor.id
     };
 
     const html = await renderTemplate(chatTemplate, chatTemplateData);
@@ -261,6 +263,7 @@ export async function meleeAttack(attackToken, defendToken, weaponItem=null) {
  * Displays a dialog asking user to choose a weapon (and optionally a modifier).
  * 
  * Options:
+ * name (String): name of actor to select the weapon
  * weapons (Array<Item>) a list of items (weapongear or missilegear)
  * defaultWeapon (Item) the default item choice
  * modifierType (string) A word to put between "Additional ??? Modifier"
@@ -271,7 +274,7 @@ async function selectWeaponDialog(options) {
     let queryWeaponDialog = "systems/hm3/templates/dialog/query-weapon-dialog.html";
 
     const dialogOptions = {
-        title: 'Select Weapon'
+        title: `${options.name} Select Weapon`
     };
     dialogOptions.weapons = options.weapons.map(w => w.name);
     dialogOptions.defaultWeapon = options.defaultWeapon;
@@ -328,6 +331,7 @@ async function attackDialog(options) {
     }
 
     if (!options.weapon && options.weapons && options.weapons.length) {
+        options.name = options.attackerName;
         const result = await selectWeaponDialog(options);
 
         if (result) options.weapon = options.weapons.find(w => result.weapon === w.name);
@@ -593,7 +597,8 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         impactRoll: atkImpactRoll ? atkImpactRoll.dice[0].values.join(" + ") : null,
         totalImpact: atkImpactRoll ? atkImpactRoll.total + parseInt(atkImpactMod) : 0,
         atkAim: atkAim,
-        atkAspect: atkAspect
+        atkAspect: atkAspect,
+        visibleActorId: defToken.actor.id
     } 
 
     const csChatData = {
@@ -622,7 +627,8 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         totalImpact: csImpactRoll ? csImpactRoll.total + parseInt(csDialogResult.impactMod) : 0,
         atkAim: csDialogResult.aim,
         atkAspect: csDialogResult.aspect,
-        dta: combatResult.outcome.dta
+        dta: combatResult.outcome.dta,
+        visibleActorId: atkToken.actor.id
     } 
 
     let chatTemplate = "systems/hm3/templates/chat/attack-result-card.html";
@@ -759,7 +765,8 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         totalImpact: atkImpactRoll ? atkImpactRoll.total + parseInt(impactMod) : 0,
         atkAim: aim,
         atkAspect: aspect,
-        dta: combatResult.outcome.dta
+        dta: combatResult.outcome.dta,
+        visibleActorId: defToken.actor.id
     } 
 
     let chatTemplate = "systems/hm3/templates/chat/attack-result-card.html";
@@ -865,6 +872,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
     }
     
     const options = {
+        name: defToken.name,
         prompt: prompt,
         weapons: weapons,
         defaultWeapon: defaultWeapon, 
@@ -980,7 +988,8 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         atkAspect: aspect,
         dta: combatResult.outcome.dta,
         atkWeaponBroke: atkWeaponBroke,
-        defWeaponBroke: defWeaponBroke
+        defWeaponBroke: defWeaponBroke,
+        visibleActorId: defToken.actor.id
     } 
 
     let chatTemplate = "systems/hm3/templates/chat/attack-result-card.html";
@@ -1084,7 +1093,8 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
         totalImpact: atkImpactRoll ? atkImpactRoll.total + parseInt(impactMod) : 0,
         atkAim: aim,
         atkAspect: aspect,
-        dta: combatResult.outcome.dta
+        dta: combatResult.outcome.dta,
+        visibleActorId: defToken.actor.id
     } 
 
     let chatTemplate = "systems/hm3/templates/chat/attack-result-card.html";
@@ -1347,33 +1357,9 @@ export const displayChatActionButtons = function(message, html, data) {
         // Otherwise conceal action buttons
         const buttons = chatCard.find("button[data-action]");
         buttons.each((i, btn) => {
-            if (['dodge','ignore','block','counterstrike', 'dta-attack'].includes(btn.dataset.action)) {
-                // Only show these buttons to the defender
-                const defToken = btn.dataset.defTokenId ? 
-                    canvas.tokens.get(btn.dataset.defTokenId) : null;
-                if (!defToken || !defToken.owner) {
-                    btn.style.display = "none";
-                }
-            } else if (btn.dataset.action === 'injury') {
-                // Show this button to any user that is an owner of the token
-                const token = btn.dataset.tokenId ? 
-                    canvas.tokens.get(btn.dataset.tokenId) : null;
-                if (!token || !token.owner) {
-                    btn.style.display = "none";
-                }
-            } else if (['stumble','fumble','shock'].includes(btn.dataset.action)) {
-                // Show this button to anyone who owns the actor
-                let actor;
-                if (btn.dataset.tokenId) {
-                    const token = btn.dataset.tokenId ? 
-                        canvas.tokens.get(btn.dataset.tokenId) : null;
-                    actor = token ? token.actor : null;
-                } else if (btn.dataset.actorId) {
-                    actor = game.actors.get(btn.dataset.actorId);
-                }
-                if (!actor || !actor.owner) {
-                    btn.style.display = "none";
-                }
+            const actor = btn.dataset.visibleActorId ? game.actors.get(btn.dataset.visibleActorId) : null;
+            if (!actor || !actor.owner) {
+                btn.style.display = "none";
             }
         });
     }

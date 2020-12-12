@@ -378,7 +378,10 @@ export class DiceHM3 {
         // Prepare for Chat Message
         const chatTemplate = 'systems/hm3/templates/chat/injury-card.html';
 
-        const chatTemplateData = mergeObject({title: `${rollData.actor.token ? rollData.actor.token.name : rollData.actor.name} Injury`}, result);
+        const chatTemplateData = mergeObject({
+            title: `${rollData.actor.token ? rollData.actor.token.name : rollData.actor.name} Injury`,
+            visibleActorId: rollData.actor.id
+        }, result);
 
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 

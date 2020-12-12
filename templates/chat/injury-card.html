@@ -116,15 +116,15 @@
         
         <div class="card-buttons">
             {{#if isFumbleRoll}}
-            <button data-action="fumble" {{#if tokenId}}data-token-id="{{tokenId}}"{{else}}data-actor-id="{{actorId}}"{{/if}}>Fumble Roll</button>
+            <button data-action="fumble" data-visible-actor-id="{{visibleActorId}}" {{#if tokenId}}data-token-id="{{tokenId}}"{{else}}data-actor-id="{{actorId}}"{{/if}}>Fumble Roll</button>
             {{/if}}
 
             {{#if isStumbleRoll}}
-            <button data-action="stumble" {{#if tokenId}}data-token-id="{{tokenId}}"{{else}}data-actor-id="{{actorId}}"{{/if}}>Stumble Roll</button>
+            <button data-action="stumble" data-visible-actor-id="{{visibleActorId}}" {{#if tokenId}}data-token-id="{{tokenId}}"{{else}}data-actor-id="{{actorId}}"{{/if}}>Stumble Roll</button>
             {{/if}}
 
             {{#if injuryLevel}}
-            <button data-action="shock" {{#if tokenId}}data-token-id="{{tokenId}}"{{else}}data-actor-id="{{actorId}}"{{/if}}>Shock Roll</button>
+            <button data-action="shock" data-visible-actor-id="{{visibleActorId}}" {{#if tokenId}}data-token-id="{{tokenId}}"{{else}}data-actor-id="{{actorId}}"{{/if}}>Shock Roll</button>
             {{/if}}
         </div>
     {{/unless}}
