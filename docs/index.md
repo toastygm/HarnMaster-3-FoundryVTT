@@ -2,7 +2,6 @@
 
 ### Clickable Fields
 
-
 Many parts of the character sheet consist of clickable fields that will perform a dice roll. Normally when a field is clicked a dialog will appear that asks for more information (e.g., modifiers). If you hold down either SHIFT, CTRL, or ALT when clicking, the roll will attempt to use defaults if possible; but if more information is needed, a dialog will still appear.
 
 All rolls appear in the chat window.  See the "Dice Rolls" section below for more details.
