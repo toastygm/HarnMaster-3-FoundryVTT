@@ -1,11 +1,11 @@
-.biography {
-    img.bio-image {
+.facade {
+    img.facade-image {
         flex: 0 0 200px;
         object-fit: contain;
         background: white;
     }
     
-    .bio-text {
+    .facade-description {
         margin-left: 5px;
     }
 }

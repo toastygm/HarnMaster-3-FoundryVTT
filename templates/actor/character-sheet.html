@@ -50,16 +50,26 @@
 
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
+        <a class="item" data-tab="facade">Fa&#231;ade</a>
         <a class="item" data-tab="profile">Profile</a>
         <a class="item" data-tab="skills">Skills</a>
         <a class="item" data-tab="combat">Combat</a>
         <a class="item" data-tab="esoteric">Esoterics</a>
         <a class="item" data-tab="inventory">Gear</a>
-        <a class="item" data-tab="biography">Biography</a>
     </nav>
 
     {{!-- Sheet Body --}}
     <section class="sheet-body">
+
+        {{!-- Facade Tab --}}
+        <div class="tab facade" data-group="primary" data-tab="facade">
+            <div class="flexrow">
+                <img class="facade-image" src="{{data.bioImage}}" data-edit="data.bioImage" title="{{actor.name}}" height="300" width="200" />
+                <div class="facade-description">
+                    {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+                </div>
+            </div>
+        </div>
 
         {{!-- Profile Tab --}}
         <div class="tab profile" data-group="primary" data-tab="profile">
@@ -277,8 +287,8 @@
                     </div>
                     <div class="profile-desc flexcol">
                         <label class="label">Description</label>
-                        <div class="profile-description">
-                            {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+                        <div class="description">
+                            {{editor content=data.biography target="data.biography" button=true owner=owner editable=editable}}
                         </div>
                     </div>
                 </div>
@@ -934,16 +944,6 @@
                     </ol>
                 </ol>
             {{/each}}
-        </div>
-
-        {{!-- Biography Tab --}}
-        <div class="tab biography" data-group="primary" data-tab="biography">
-            <div class="flexrow">
-                <img class="bio-image" src="{{data.bioImage}}" data-edit="data.bioImage" title="{{actor.name}}" height="300" width="200" />
-                <div class="bio-text">
-                    {{editor content=data.biography target="data.biography" button=true owner=owner editable=editable}}
-                </div>
-            </div>
         </div>
 
     </section>
