@@ -354,6 +354,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Delete Inventory Item
         html.find('.item-delete').click(this._onItemDelete.bind(this));
 
+        // Dump Esoteric Description to Chat
+        html.find('.item-dumpdesc').click(this._onDumpEsotericDescription.bind(this));
+
         html.on("click", "input[type='text']", ev => {
                 ev.currentTarget.select();
         });
@@ -366,7 +369,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             for (let skill of skills) {
                 const skillName = skill.getAttribute('data-item-name');
                 if (lcSkillNameFilter) {
-                    if (skillName.toLowerCase().startsWith(lcSkillNameFilter)) {
+                    if (skillName.toLowerCase().includes(lcSkillNameFilter)) {
                         $(skill).show()
                     } else {
                         $(skill).hide()
@@ -385,7 +388,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             for (let gear of gearItems) {
                 const gearName = gear.getAttribute('data-item-name');
                 if (lcGearNameFilter) {
-                    if (gearName.toLowerCase().startsWith(lcGearNameFilter)) {
+                    if (gearName.toLowerCase().includes(lcGearNameFilter)) {
                         $(gear).show()
                     } else {
                         $(gear).hide()
@@ -957,5 +960,57 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             }).render(true)
         });
 
+    }
+
+    async _onDumpEsotericDescription(event) {
+        event.preventDefault();
+        const header = event.currentTarget;
+        const type = header.dataset.type;
+        const data = duplicate(header.dataset);
+        const li = $(header).parents(".item");
+        const itemId=li.data("itemId");
+
+        if (itemId) {
+            const item = this.actor.items.get(itemId);
+            if (!item) {
+                return;
+            }
+
+            const data = item.data;
+
+            if (['spell', 'invocation', 'psionic'].includes(data.type)) {
+                const chatData = {
+                    name: data.name,
+                    desc: data.data.description,
+                    notes: data.data.notes || null,
+                    fatigue: data.type === 'psionic' ? data.data.fatigue : null
+                };
+
+                if (data.type === 'spell') {
+                    chatData.level = utility.romanize(data.data.level);
+                    chatData.title = `${data.data.convocation} Spell`;
+                } else if (data.type === 'invocation') {
+                    chatData.level = utility.romanize(data.data.circle);
+                    chatData.title = `${data.data.diety} Invocation`;
+                } else if (data.type === 'psionic') {
+                    chatData.level = `F${data.data.fatigue}`;
+                    chatData.title = `Psionic Talent`;
+                }
+
+                const chatTemplate = 'systems/hm3/templates/chat/esoteric-desc-card.html';
+
+                const html = await renderTemplate(chatTemplate, chatData);
+        
+                const messageData = {
+                    user: game.user._id,
+                    speaker: ChatMessage.getSpeaker(),
+                    content: html.trim(),
+                    type: CONST.CHAT_MESSAGE_TYPES.OTHER
+                };
+        
+                // Create a chat message
+                return ChatMessage.create(messageData);
+            }
+        }
     }
 }

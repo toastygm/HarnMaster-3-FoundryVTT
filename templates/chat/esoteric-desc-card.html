@@ -1,0 +1,24 @@
+<div class="hm3 chat-card item-card" data-actor-id="{{actorId}}">
+    <header class="card-header flexcol">
+        <h3 class="title">{{title}}</h3>
+        <h4 class="subtitle">{{name}} ({{level}})</h4>
+    </header>
+
+    {{#if notes}}
+    <div class="card-note">
+        <span class="label">Notes:</span>
+        <span class="value">{{notes}}</span>
+    </div>
+    {{/if}}
+
+    {{#if fatigue}}
+    <div class="card-content">
+        <span class="label">Fatigue:</span>
+        <span class="value">{{fatigue}}</span>
+    </div>
+    {{/if}}
+
+    <div class="card-content">
+        {{{desc}}}
+    </div>
+</div>
