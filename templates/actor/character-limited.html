@@ -40,14 +40,13 @@
 
     {{!-- Sheet Body --}}
     <section class="sheet-body">
-        <div class="profile flexrow" data-group="primary">
-            <img class="bio-image" src="{{data.bioImage}}" title="{{actor.name}}" height="300" width="200" />
-            <div class="profile-desc flexcol">
-                <label class="label">Description</label>
-                <div class="profile-description">
+        <div class="facade">
+            <div class="flexrow">
+                <img class="facade-image" src="{{data.bioImage}}" data-edit="data.bioImage" title="{{actor.name}}" height="300" width="200" />
+                <div class="facade-description">
                     {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
                 </div>
-            </div>        
+            </div>
         </div>
     </section>
 </form>

@@ -50,16 +50,26 @@
 
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
+        <a class="item" data-tab="facade">Fa&#231;ade</a>
         <a class="item" data-tab="profile">Profile</a>
         <a class="item" data-tab="skills">Skills</a>
         <a class="item" data-tab="combat">Combat</a>
         <a class="item" data-tab="esoteric">Esoterics</a>
         <a class="item" data-tab="inventory">Gear</a>
-        <a class="item" data-tab="biography">Biography</a>
     </nav>
 
     {{!-- Sheet Body --}}
     <section class="sheet-body">
+
+        {{!-- Facade Tab --}}
+        <div class="tab facade" data-group="primary" data-tab="facade">
+            <div class="flexrow">
+                <img class="facade-image" src="{{data.bioImage}}" data-edit="data.bioImage" title="{{actor.name}}" height="300" width="200" />
+                <div class="facade-description">
+                    {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+                </div>
+            </div>
+        </div>
 
         {{!-- Profile Tab --}}
         <div class="tab profile" data-group="primary" data-tab="profile">
@@ -272,13 +282,19 @@
                     <div class="profile-params">
                         <div class="flexrow profile-item">
                             <label class="label">Sunsign</label>
-                            <input class="value" type="text" name="data.sunsign" value="{{data.sunsign}}" data-dtype="String" />
+                            <select class="value" name="sunsign" data-dtype="String">
+                                {{#select data.sunsign}}
+                                {{#each config.sunsigns}}
+                                    <option value="{{this}}">{{this}}</option>
+                                {{/each}}
+                                {{/select}}
+                            </select>
                         </div>
                     </div>
                     <div class="profile-desc flexcol">
                         <label class="label">Description</label>
-                        <div class="profile-description">
-                            {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+                        <div class="description">
+                            {{editor content=data.biography target="data.biography" button=true owner=owner editable=editable}}
                         </div>
                     </div>
                 </div>
@@ -763,7 +779,7 @@
                     <div class="item-detail spell-level">Level</div>
                     <div class="item-detail spell-eml">EML</div>
                     <div class="item-detail spell-notes">Notes</div>
-                    <div class="item-controls">
+                    <div class="item-controls-wide">
                         <a class="item-control item-create active" title="Create Spell" data-type="spell"><i
                                 class="fas fa-plus"></i> Add</a>
                     </div>
@@ -780,7 +796,8 @@
                                 <div class="item-detail spell-level">{{data.level}}</div>
                                 <div class="item-detail spell-eml">{{data.effectiveMasteryLevel}}</div>
                                 <div class="item-detail spell-notes">{{data.notes}}</div>
-                                <div class="item-controls">
+                                <div class="item-controls-wide">
+                                    <a class="item-control item-dumpdesc" title="Post Spell Desc to Chat"><i class="active far fa-comment"></i></a>
                                     <a class="item-control item-edit" title="Edit Spell"><i class="active fas fa-edit"></i></a>
                                     <a class="item-control item-delete" title="Delete Spell" data-label="Spell"><i class="active fas fa-trash"></i></a>
                                 </div>
@@ -798,7 +815,7 @@
                     <div class="item-detail spell-level">Circle</div>
                     <div class="item-detail spell-eml">EML</div>
                     <div class="item-detail spell-notes">Notes</div>
-                    <div class="item-controls">
+                    <div class="item-controls-wide">
                         <a class="item-control item-create active" title="Create Invocation" data-type="invocation"><i
                                 class="fas fa-plus"></i> Add</a>
                     </div>
@@ -815,7 +832,8 @@
                                 <div class="item-detail spell-level">{{data.circle}}</div>
                                 <div class="item-detail spell-eml">{{data.effectiveMasteryLevel}}</div>
                                 <div class="item-detail spell-notes">{{data.notes}}</div>
-                                <div class="item-controls">
+                                <div class="item-controls-wide">
+                                    <a class="item-control item-dumpdesc" title="Post Invocation Desc to Chat"><i class="active far fa-comment"></i></a>
                                     <a class="item-control item-edit" title="Edit Invocation"><i class="active fas fa-edit"></i></a>
                                     <a class="item-control item-delete" title="Delete Invocation" data-label="Invocation"><i class="active fas fa-trash"></i></a>
                                 </div>
@@ -854,6 +872,7 @@
                                 <div class="item-detail psionic-notes">{{data.notes}}</div>
                                 <div class="item-controls-wide">
                                     <a class="item-control item-improve" title="Improve Skill">{{#if data.improveFlag}}<i class="active fas fa-star"></i>{{else}}<i class="far fa-star"></i>{{/if}}</a>
+                                    <a class="item-control item-dumpdesc" title="Post Psionic Desc to Chat"><i class="active far fa-comment"></i></a>
                                     <a class="item-control item-edit" title="Edit Psionic Talent"><i class="active fas fa-edit"></i></a>
                                     <a class="item-control item-delete" title="Delete Psionic Talent" data-label="Psionic Talent"><i class="active fas fa-trash"></i></a>
                                 </div>
@@ -934,16 +953,6 @@
                     </ol>
                 </ol>
             {{/each}}
-        </div>
-
-        {{!-- Biography Tab --}}
-        <div class="tab biography" data-group="primary" data-tab="biography">
-            <div class="flexrow">
-                <img class="bio-image" src="{{data.bioImage}}" data-edit="data.bioImage" title="{{actor.name}}" height="300" width="200" />
-                <div class="bio-text">
-                    {{editor content=data.biography target="data.biography" button=true owner=owner editable=editable}}
-                </div>
-            </div>
         </div>
 
     </section>

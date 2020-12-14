@@ -12,7 +12,7 @@ export class HarnMasterCharacterSheet extends HarnMasterBaseActorSheet {
             classes: ["hm3", "sheet", "actor", "character"],
             width: 660,
             height: 640,
-            tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "profile" }]
+            tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "facade" }]
         });
     }
 

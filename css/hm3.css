@@ -384,12 +384,12 @@
 .hm3 .sheet .sheet-navigation .item.active {
   border-bottom: 3px solid #44191A; }
 
-.hm3 .biography img.bio-image {
+.hm3 .facade img.facade-image {
   flex: 0 0 200px;
   object-fit: contain;
   background: white; }
 
-.hm3 .biography .bio-text {
+.hm3 .facade .facade-description {
   margin-left: 5px; }
 
 .hm3 .item-form {
@@ -1135,12 +1135,8 @@
     flex: 0 0 18px;
     font-weight: bold;
     text-transform: uppercase; }
-  .hm3 .sheet-body .profile-desc textarea.description {
-    resize: none;
-    font-family: "Signika", sans-serif;
-    font-size: 14px;
-    border: none;
-    background: transparent; }
+  .hm3 .sheet-body .profile-desc .description {
+    margin-left: 5px; }
 
 .hm3 .sheet-body .profile img.bio-image {
   flex: 0 0 200px;
