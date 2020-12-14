@@ -16,6 +16,11 @@ HM3.allowedActorFlags = [];
 
 HM3.skillTypes = ["Craft", "Physical", "Communication", "Combat", "Magic", "Ritual"];
 
+HM3.sunsigns = [ 'Ulandus', 'Ulandus-Aralius', 'Aralius', 'Aralius-Feniri', 'Feniri', 'Feniri-Ahnu',
+    'Ahnu', 'Ahnu-Angberelius', 'Angberelius', 'Angberelius-Nadai', 'Nadai', 'Nadai-Hirin',
+    'Hirin', 'Hirin-Tarael', 'Tarael', 'Tarael-Tai', 'Tai', 'Tai-Skorus', 'Skorus',
+    'Skorus-Masara', 'Masara', 'Masara-Lado', 'Lado', 'Lado-Ulandus' ];
+
 HM3.injuryLocations = {
     "Custom": {impactType: "custom", probWeight: {"high": 1, "mid": 1, "low": 1}, isStumble: false, isFumble: false, isAmputate: false, effectiveImpact: { ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "G5"}},
     "Skull": {impactType: "skull", probWeight: {"high": 150, "mid": 50, "low": 0}, isStumble: false, isFumble: false, isAmputate: false, effectiveImpact: { ei1: "M1", ei5: "S2", ei9: "S3", ei13: "K4", ei17: "K5"}},

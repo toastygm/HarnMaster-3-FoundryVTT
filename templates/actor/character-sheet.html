@@ -282,7 +282,13 @@
                     <div class="profile-params">
                         <div class="flexrow profile-item">
                             <label class="label">Sunsign</label>
-                            <input class="value" type="text" name="data.sunsign" value="{{data.sunsign}}" data-dtype="String" />
+                            <select class="value" name="sunsign" data-dtype="String">
+                                {{#select data.sunsign}}
+                                {{#each config.sunsigns}}
+                                    <option value="{{this}}">{{this}}</option>
+                                {{/each}}
+                                {{/select}}
+                            </select>
                         </div>
                     </div>
                     <div class="profile-desc flexcol">
