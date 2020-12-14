@@ -946,29 +946,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         atkImpactRoll = new Roll(`${combatResult.outcome.atkDice}d6`).roll();
     }
 
-    // Weapon Break Check
-    let atkWeaponBroke = false;
-    let defWeaponBroke = false;
-    if (type === "melee" && game.settings.get('hm3', 'weaponDamage') && combatResult.outcome.block && defWeapon) {
-        const atkWeapon = atkToken.actor.itemTypes.weapongear.find(w => w.name === weaponName);
-        if (atkWeapon) {
-            const atkWeaponQuality = atkWeapon.data.data.weaponQuality;
-            const defWeaponQuality = defWeapon.data.data.weaponQuality;
-
-            const atkBreakRoll = new Roll('3d6').roll();
-            const defBreakRoll = new Roll('3d6').roll();
-
-            if (atkWeaponQuality <= defWeaponQuality) {
-                // Check attacker first, then defender
-                atkWeaponBroke = atkBreakRoll.total > atkWeaponQuality;
-                defWeaponBroke = !atkWeaponBroke && defBreakRoll.total > defWeaponQuality;
-            } else {
-                // Check defender first, then attacker
-                defWeaponBroke = defBreakRoll.total > defWeaponQuality;
-                atkWeaponBroke = !defWeaponBroke && atkBreakRoll.total > atkWeaponQuality;
-            }
-        }
-    }
+    const weaponBroke = checkWeaponBreak(atkWeapon, defWeapon);
 
     const chatData = {
         title: `Attack Result`,
@@ -1002,8 +980,8 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         atkAim: aim,
         atkAspect: aspect,
         dta: combatResult.outcome.dta,
-        atkWeaponBroke: atkWeaponBroke,
-        defWeaponBroke: defWeaponBroke,
+        atkWeaponBroke: weaponBroke.attackWeaponBroke,
+        defWeaponBroke: weaponBroke.defendWeaponBroke,
         isAtkStumbleRoll: combatResult.outcome.atkStumble,
         isAtkFumbleRoll: combatResult.outcome.atkFumble,
         isDefStumbleRoll: combatResult.outcome.defStumble,
@@ -1039,6 +1017,45 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
 
     return null;
 }
+
+export function checkWeaponBreak(atkWeapon, defWeapon) {
+    // Weapon Break Check
+    let atkWeaponBroke = false;
+    let defWeaponBroke = false;
+    if (type === "melee" && game.settings.get('hm3', 'weaponDamage') && combatResult.outcome.block && defWeapon) {
+        const atkWeapon = atkToken.actor.itemTypes.weapongear.find(w => w.name === weaponName);
+        if (atkWeapon) {
+            const atkWeaponQuality = atkWeapon.data.data.weaponQuality;
+            const defWeaponQuality = defWeapon.data.data.weaponQuality;
+
+            const atkBreakRoll = new Roll('3d6').roll();
+            const defBreakRoll = new Roll('3d6').roll();
+
+            if (atkWeaponQuality <= defWeaponQuality) {
+                // Check attacker first, then defender
+                atkWeaponBroke = atkBreakRoll.total > atkWeaponQuality;
+                defWeaponBroke = !atkWeaponBroke && defBreakRoll.total > defWeaponQuality;
+            } else {
+                // Check defender first, then attacker
+                defWeaponBroke = defBreakRoll.total > defWeaponQuality;
+                atkWeaponBroke = !defWeaponBroke && atkBreakRoll.total > atkWeaponQuality;
+            }
+        }
+    }
+
+    if (atkWeaponBroke) {
+        // Unequip broken attack weapon
+        atkWeapon.data.data.isEquipped = false;
+    }
+
+    if (defWeaponBroke) {
+        // unequip broken defend weapon
+        defWeapon.data.data.isEquipped = false;
+    }
+
+    return {attackWeaponBroke: atkWeaponBroke, defendWeaponBroke: defWeaponBroke};
+}
+
 
 /**
  * Resume the attack with the defender performing the "Ignore" defense.
