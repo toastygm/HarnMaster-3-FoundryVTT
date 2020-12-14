@@ -530,6 +530,7 @@ export class DiceHM3 {
     static _calcInjury(location, impact, aspect, addToCharSheet, aim, dialogOptions) {
         const enableAmputate = game.settings.get('hm3', 'amputation');
         const enableBloodloss = game.settings.get('hm3', 'bloodloss');
+        const enableLimbInjury = game.settings.get('hm3', 'limbInjury');
 
         const result = {
             isRandom: location === 'Random',
@@ -640,16 +641,19 @@ export class DiceHM3 {
             return result;
         }
 
+        // Optional Rule - Bloodloss (Combat 14)
         result.isBleeder = enableBloodloss && result.injuryLevel >= 4 && result.aspect != 'Fire';
 
+        // Optional Rule - Limb Injuries (Combat 14)
         if (armorLocation.data.isFumble) {
-            result.isFumble = result.injuryLevel >= 4;
-            result.isFumbleRoll = !result.isFumble && result.injuryLevel >= 2;
+            result.isFumble = enableLimbInjury && result.injuryLevel >= 4;
+            result.isFumbleRoll = enableLimbInjury || (!result.isFumble && result.injuryLevel >= 2);
         }
 
+        // Optional Rule - Limb Injuries (Combat 14)
         if (armorLocation.data.isStumble) {
-            result.isStumble = result.injuryLevel >= 4;
-            result.isStumbleRoll = !result.isStumble && result.injuryLevel >= 2;
+            result.isStumble = enableLimbInjury && result.injuryLevel >= 4;
+            result.isStumbleRoll = enableLimbInjury || (!result.isStumble && result.injuryLevel >= 2);
         }
 
         return result;
