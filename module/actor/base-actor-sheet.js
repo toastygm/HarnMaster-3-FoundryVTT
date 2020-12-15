@@ -52,7 +52,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         data.gearTypes = {
             'armorgear': 'Armor',
-            'weapongear': 'Meele Wpn',
+            'weapongear': 'Melee Wpn',
             'missilegear': 'Missile Wpn',
             'miscgear': 'Misc. Gear',
             'containergear': 'Container'
