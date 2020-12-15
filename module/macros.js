@@ -853,7 +853,7 @@ function getTokenInCombat(token=null, forceAllow=false) {
 
     const combatant = game.combats.active.combatant;
 
-    if (token && token._id !== combatant.token._id) {
+    if (token && (token.id !== combatant.token._id)) {
         ui.notifications.warn(`${token.name} cannot perform that action at this time.`);
         return null;
     }
