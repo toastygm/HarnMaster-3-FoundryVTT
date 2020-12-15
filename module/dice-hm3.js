@@ -987,34 +987,25 @@ export class DiceHM3 {
     static async missileAttackDialog(dialogOptions) {
     
         // Render modal dialog
-        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/dialog/missile-attack-dialog.html";
+        let dlgTemplate = dialogOptions.template || "systems/hm3/templates/dialog/attack-dialog.html";
 
         let dialogData = {
-            targetRange: dialogOptions.range,
-            ranges: {
-                short: `Short (${dialogOptions.rangeShort})`,
-                medium: `Medium (${dialogOptions.rangeMedium})`,
-                long: `Long (${dialogOptions.rangeLong})`,
-                extreme: `Extreme (${dialogOptions.rangeExtreme})`
-            },
-            target: dialogOptions.target,
-            rangeExceedsExtreme: false
+            aimLocations: ['High', 'Mid', 'Low'],
+            defaultAim: 'Mid',
+            target: dialogOptions.target
         };
 
-        if (typeof dialogOptions.range !== 'undefined') {
-            if (dialogOptions.range <= dialogOptions.rangeShort) {
-                dialogData.defaultRange = 'short';
-            } else if (dialogOptions.range <= dialogOptions.rangeMedium) {
-                dialogData.defaultRange = 'medium';
-            } else if (dialogOptions.range <= dialogOptions.rangeLong) {
-                dialogData.defaultRange = 'long';
-            } else if (dialogOptions.range <= dialogOptions.rangeExtreme) {
-                dialogData.defaultRange = 'extreme';
-            } else {
-                dialogData.defaultRange = 'extreme';
-                dialogData.rangeExceedsExtreme = true;
-            }
-        }
+        const shortDesc = `Short (${dialogOptions.rangeShort})`;
+        const mediumDesc = `Medium (${dialogOptions.rangeMedium})`;
+        const longDesc = `Long (${dialogOptions.rangeLong})`;
+        const extremeDesc = `Extreme (${dialogOptions.rangeExtreme})`;
+        dialogData.ranges = {};
+        dialogData.ranges[shortDesc] = 'Short';
+        dialogData.ranges[mediumDesc] = 'Medium';
+        dialogData.ranges[longDesc] = 'Long';
+        dialogData.ranges[extremeDesc] = 'Extreme';
+        dialogData.rangeExceedsExtreme = false;
+        dialogData.defaultRange = extremeDesc;
 
         const html = await renderTemplate(dlgTemplate, dialogData);
         const title = `${dialogOptions.name} Attack`;
@@ -1030,14 +1021,20 @@ export class DiceHM3 {
                         callback: html => {
                             const form = html[0].querySelector("form");
                             const formAddlModifier = Number(form.addlModifier.value);
-                            const formRange = form.range.value;
-                            let rangeModifier = -80;
-                            if (formRange === 'short') {
+                            let formRange = form.range.value;
+                            let rangeModifier;
+                            if (formRange === shortDesc) {
                                 rangeModifier = 0;
-                            } else if (formRange === 'medium') {
+                                formRange = 'Short';
+                            } else if (formRange === mediumDesc) {
                                 rangeModifier = -20;
-                            } else if (formRange === 'long') {
+                                formRange = 'Medium';
+                            } else if (formRange === longDesc) {
                                 rangeModifier = -40;
+                                formRange = 'Long';
+                            } else {
+                                rangeModifier = -80;
+                                formRange = 'Extreme';
                             }
 
                             let roll = DiceHM3.rollTest({

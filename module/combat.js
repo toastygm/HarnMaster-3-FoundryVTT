@@ -83,7 +83,7 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
         attackToken.actor.updateOwnedItem({'_id': missileItem.data._id, 'data.quantity': missileItem.data.data.quantity - 1});
     }
 
-    const effAML = dialogResult.weapon.data.data.attackMasteryLevel + dialogResult.addlModifier;
+    const effAML = dialogResult.weapon.data.data.attackMasteryLevel + dialogResult.addlModifier + dialogResult.rangeMod;
 
     // Prepare for Chat Message
     const chatTemplate = 'systems/hm3/templates/chat/attack-card.html';
@@ -96,9 +96,11 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
         defTokenId: defendToken.id,
         weaponType: 'missile',
         weaponName: missileItem.name,
-        range: dialogResult.range,
+        rangeText: dialogResult.range,
         rangeExceedsExtreme: dialogResult.rangeExceedsExtreme,
-        distance: range,
+        rangeModSign: dialogResult.rangeMod<0 ? '-': '+',
+        rangeModifierAbs: Math.abs(dialogResult.rangeMod),
+        rangeDist: range,
         aim: dialogResult.aim,
         aspect: dialogResult.aspect,
         addlModifierAbs: Math.abs(dialogResult.addlModifier),
@@ -417,8 +419,8 @@ async function attackDialog(options) {
                 aspect: form.weaponAspect ? form.weaponAspect.value : null,
                 aim: form.aim ? form.aim.value : null,
                 addlModifier: form.addlModifier ? parseInt(form.addlModifier.value) : 0,
-                range: null,
-                rangeExceedsExtreme: false,
+                range: formRange,
+                rangeExceedsExtreme: dialogOptions.rangeExceedsExtreme,
                 impactMod: 0
             };
 
@@ -426,13 +428,16 @@ async function attackDialog(options) {
                 // Grab range and impact mod (from selected range) for missile weapon
                 if (formRange.startsWith('Short')) {
                     result.range = 'Short';
+                    result.rangeMod = 0;
                 } else if (formRange.startsWith('Medium')) {
                     result.range = 'Medium';
+                    result.rangeMod = -20;
                 } else if (formRange.startsWith('Long')) {
                     result.range = 'Long';
+                    result.rangeMod = -40;
                 } else {
                     result.range = 'Extreme';
-                    result.rangeExceedsExtreme = true
+                    result.rangeMod = -80;
                 }
                 result.impactMod = dialogOptions.ranges[formRange] || 0;
             } else {
@@ -1378,13 +1383,21 @@ export function getItem(itemName, type, actor) {
  */
 export function rangeToTarget(sourceToken, targetToken, gridUnits=false) {
     if (!sourceToken || !targetToken || !canvas.scene || !canvas.scene.data.grid) return 9999;
-    const dist = Math.sqrt(Math.pow(sourceToken.x - targetToken.x, 2) + Math.pow(sourceToken.y - targetToken.y, 2));
-    const gridRange = Math.round(dist/canvas.scene.data.grid);
-    if (!gridUnits && game.settings.get('hm3', 'distanceUnits') === 'grid') {
-        return Math.round(gridRange * canvas.scene.data.gridDistance);
+    const sToken = canvas.tokens.get(sourceToken.id);
+    const tToken = canvas.tokens.get(targetToken.id);
+    const snappedSource = canvas.grid.getSnappedPosition(sToken.x, sToken.y, 2);
+    const snappedDest = canvas.grid.getSnappedPosition(tToken.x, tToken.y, 2);
+    const ray = new Ray(snappedSource, snappedDest);
+
+    let distance = 0;
+    if (gridUnits || game.settings.get('hm3', 'distanceUnits') === 'grid') {
+        distance = Math.round(ray.distance / (canvas.dimensions.size || 1));
     } else {
-        return gridRange;
+        const ratio = (canvas.dimensions.size / (canvas.dimensions.distance || 1));
+        distance = Math.ceil(ray.distance / ratio);
     }
+    console.log(`Distance = ${distance}, gridUnits=${gridUnits}`);
+    return distance;
 }
 
 /**
