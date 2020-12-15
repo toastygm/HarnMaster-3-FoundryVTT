@@ -569,7 +569,7 @@ export function missileAttackRoll(itemName, myActor = null) {
 
     const targetToken = getSingleTarget();
 
-    const range = missileRange(combatant.token, targetToken);
+    const range = combat.rangeToTarget(actor.token, targetToken);
 
     const item = combat.getItem(itemName, 'missilegear', actor);
 
@@ -587,7 +587,7 @@ export function missileAttackRoll(itemName, myActor = null) {
             missileName: item.data.name
         },
         name: item.data.name,
-        attackerName: combatant.token.data.name,
+        attackerName: actor.token.data.name,
         defenderName: targetToken.data.name,
         target: item.data.data.attackMasteryLevel,
         aspect: item.data.data.weaponAspect,
