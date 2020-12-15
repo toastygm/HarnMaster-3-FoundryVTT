@@ -88,7 +88,10 @@
       "totalWeight": 0
     },
     "creature": {
-      "templates": ["base"]
+      "templates": ["base"],
+      "loadRating": 0,
+      "encumbrance": 0,
+      "totalWeight": 0
     },
     "container": {
       "templates": [],
