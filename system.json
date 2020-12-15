@@ -88,7 +88,7 @@
   "primaryTokenAttribute": "shockIndex",
   "secondaryTokenAttribute": null,
   "url": "https://github.com/toastygm/HarnMaster-3-FoundryVTT/",
-  "manifest": "https://raw.githubusercontent.com/toastygm/HarnMaster-3-FoundryVTT/tom/system.json",
+  "manifest": "https://raw.githubusercontent.com/toastygm/HarnMaster-3-FoundryVTT/master/system.json",
   "download": "https://github.com/toastygm/HarnMaster-3-FoundryVTT/archive/v1.0.2.zip",
   "license": "LICENSE.txt"
 }
