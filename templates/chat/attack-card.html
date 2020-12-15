@@ -27,10 +27,16 @@
     </div>
 
     {{#if rangeDist}}
-    <div class="card-content">
-        <span class="label">Distance (Range/Modifier):</span>
+    <div class="card-content flex-group-center">
+        <span class="label">Distance (Range/Mod):</span>
         <span class="value">{{rangeDist}} ({{rangeText}}/{{rangeModSign}}{{rangeModifierAbs}})</span>
     </div>
+
+    {{#if rangeExceedsExtreme}}
+    <div class="form-group flex-group-center">
+        <span class="value failure-text">WARNING: Distance exceeds the extreme range for this weapon.</span>
+    </div>
+    {{/if}}
     {{/if}}
 
 
@@ -53,7 +59,7 @@
 
     <div class="card-content flex-group-center">
         <span class="label">Effective AML:</span>
-        <span class="value">{{origAML}} {{#if rangeDist}}{{rangeModSign}} {{rangeModifier}} {{/if}}{{#if addlModifierAbs}}{{addlModifierSign}} {{addlModifierAbs}} {{/if}}= <strong>{{effAML}}</strong></span>
+        <span class="value">{{origAML}} {{#if rangeDist}}{{rangeModSign}} {{rangeModifierAbs}} {{/if}}{{#if addlModifierAbs}}{{addlModifierSign}} {{addlModifierAbs}} {{/if}}= <strong>{{effAML}}</strong></span>
     </div>
     {{else}}
     <div class="card-content flex-group-center">

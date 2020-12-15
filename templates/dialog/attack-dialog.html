@@ -1,4 +1,5 @@
 <form>
+    {{#if defaultAspect}}
     <div class="form-group">
         <label for="weaponAspect">Weapon Aspect:</label>
         <select name="weaponAspect">
@@ -9,13 +10,16 @@
             {{/select}}
         </select>
     </div>
+    {{/if}}
     
-    {{#if ranges}}
+    {{#if distance}}
     <div class="form-group">
         <label>Distance:</label>
         <span>{{distance}}</span>
     </div>
+    {{/if}}
 
+    {{#if ranges}}
     {{#if rangeExceedsExtreme}}
     <div class="form-group">
         <div>WARNING: Distance exceeds the extreme range for this weapon.<br/>

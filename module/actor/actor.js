@@ -360,11 +360,19 @@ export class HarnMasterActor extends Actor {
 
         this._calcInjuryTotal(data);
 
+        this._calcGearWeightTotals(data);
+
+        if (typeof data.loadRating === 'undefined') {
+            data.loadRating = 0;
+        }
+
+        data.encumbrance = Math.floor(Math.max(data.totalGearWeight - data.loadRating, 0) / data.endurance);
+
         // Universal Penalty and Physical Penalty are used to calculate many
         // things, including effectiveMasteryLevel for all skills,
         // move, etc.
         data.universalPenalty = data.totalInjuryLevels + data.fatigue;
-        data.physicalPenalty = data.universalPenalty;
+        data.physicalPenalty = data.universalPenalty + data.encumbrance;
 
         data.shockIndex.value = HarnMasterActor._normProb(data.endurance, data.universalPenalty * 3.5, data.universalPenalty);
         if (canvas) this.getActiveTokens().forEach(token => {
