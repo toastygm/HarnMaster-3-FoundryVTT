@@ -34,8 +34,10 @@
         <input type="text" name="impact" value="{{impact}}" />
     </div>
 
+    {{#if askRecordInjury}}
     <div class="form-group">
-        <input type="checkbox" name="addToCharSheet" value="{{addToCharSheet}}" data-dtype="Boolean" {{checked addToCharSheet}} />
+        <input type="checkbox" name="addToCharSheet" value="{{addToCharSheet}}" data-dtype="Boolean" checked />
         <label for="addToCharSheet">Add to Character Sheet</label>
     </div>
+    {{/if}}
 </form>

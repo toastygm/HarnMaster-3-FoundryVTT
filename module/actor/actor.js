@@ -81,203 +81,56 @@ export class HarnMasterActor extends Actor {
         }
     }
 
-    static async _createDefaultCharacterSkills(data) {
-        let itemData;
-
-        const physicalSkills = await game.packs.find(p => p.collection === `hm3.std-skills-physical`).getContent();
-        itemData = duplicate(physicalSkills.find(i => i.name === 'Climbing'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
-        itemData = duplicate(physicalSkills.find(i => i.name === 'Jumping'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
-        itemData = duplicate(physicalSkills.find(i => i.name === 'Stealth'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
-        itemData = duplicate(physicalSkills.find(i => i.name === 'Throwing'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
-
-        const commSkills = await game.packs.find(p => p.collection === `hm3.std-skills-communication`).getContent();
-        itemData = duplicate(commSkills.find(i => i.name === 'Awareness'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
-        itemData = duplicate(commSkills.find(i => i.name === 'Intrigue'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
-        itemData = duplicate(commSkills.find(i => i.name === 'Oratory'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
-        itemData = duplicate(commSkills.find(i => i.name === 'Rhetoric'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
-        itemData = duplicate(commSkills.find(i => i.name === 'Singing'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
-
-        const combatSkills = await game.packs.find(p => p.collection === `hm3.std-skills-combat`).getContent();
-        itemData = duplicate(combatSkills.find(i => i.name === 'Initiative'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
-        itemData = duplicate(combatSkills.find(i => i.name === 'Unarmed'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
-        itemData = duplicate(combatSkills.find(i => i.name === 'Dodge'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
-    }
-
-    static async _createDefaultCreatureSkills(data) {
-        let itemData;
-
-        const combatSkills = await game.packs.find(p => p.collection === `hm3.std-skills-combat`).getContent();
-        itemData = duplicate(combatSkills.find(i => i.name === 'Initiative'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
-        itemData = duplicate(combatSkills.find(i => i.name === 'Unarmed'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
-        itemData = duplicate(combatSkills.find(i => i.name === 'Dodge'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
-    }
-
-    static _createDefaultHumanoidLocations(data) {
-        let armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Skull'])
-        data.items.push((new Item({ name: 'Skull', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Face'])
-        data.items.push((new Item({ name: 'Face', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Neck'])
-        data.items.push((new Item({ name: 'Neck', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Shoulder'])
-        data.items.push((new Item({ name: 'Left Shoulder', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Shoulder'])
-        data.items.push((new Item({ name: 'Right Shoulder', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Upper Arm'])
-        data.items.push((new Item({ name: 'Left Upper Arm', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Upper Arm'])
-        data.items.push((new Item({ name: 'Right Upper Arm', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Elbow'])
-        data.items.push((new Item({ name: 'Left Elbow', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Elbow'])
-        data.items.push((new Item({ name: 'Right Elbow', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Forearm'])
-        data.items.push((new Item({ name: 'Left Forearm', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Forearm'])
-        data.items.push((new Item({ name: 'Right Forearm', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Hand'])
-        data.items.push((new Item({ name: 'Left Hand', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Hand'])
-        data.items.push((new Item({ name: 'Right Hand', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Thorax'])
-        data.items.push((new Item({ name: 'Thorax', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Abdomen'])
-        data.items.push((new Item({ name: 'Abdomen', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Groin'])
-        data.items.push((new Item({ name: 'Groin', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Hip'])
-        data.items.push((new Item({ name: 'Left Hip', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Hip'])
-        data.items.push((new Item({ name: 'Right Hip', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Thigh'])
-        data.items.push((new Item({ name: 'Left Thigh', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Thigh'])
-        data.items.push((new Item({ name: 'Right Thigh', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Knee'])
-        data.items.push((new Item({ name: 'Left Knee', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Knee'])
-        data.items.push((new Item({ name: 'Right Knee', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Calf'])
-        data.items.push((new Item({ name: 'Left Calf', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Calf'])
-        data.items.push((new Item({ name: 'Right Calf', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Foot'])
-        data.items.push((new Item({ name: 'Left Foot', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Foot'])
-        data.items.push((new Item({ name: 'Right Foot', type: 'armorlocation', data: armorLocationData })).data);
-    }
-
-    /**
-     * Augment the basic actor data with additional dynamic data.
-     */
-    prepareData() {
-        super.prepareData();
-
+    /** @override */
+    prepareBaseData() {
+        super.prepareBaseData();
         const actorData = this.data;
         const data = actorData.data;
-        const flags = actorData.flags;
-        const items = this.items;
+
+        // Reset all weights
+        data.totalArmorWeight = 0;
+        data.totalWeaponWeight = 0;
+        data.totalMissileWeight = 0;
+        data.totalMiscGearWeight = 0;
+        data.totalGearWeight = 0;
+        if (this.items) this.itemTypes.containergear.forEach(it => {
+            it.data.data.capacity.value = 0;
+        });
+        data.totalInjuryLevels = 0;
+
+        if (actorData.type === 'container') {
+            this._prepareBaseContainerData(actorData);
+            return;
+        }
+
+        data.meleeAMLMod = 0;
+        data.meleeDMLMod = 0;
+        data.missileAMLMod = 0;
+
+        // Calculate endurance, ensure it is never zero
+        data.endurance = Math.round((data.abilities.strength.base + data.abilities.stamina.base +
+            data.abilities.will.base) / 3);
+        data.hasCondition = false;
+        if (this.items) this.itemTypes.skill.forEach(it => {
+            if (it.data.name === 'Condition') {
+                data.endurance = Math.floor(it.data.data.masteryLevel / 5);
+                data.hasCondition = true;
+            }
+        });
+        data.endurance = data.endurance || 1;
 
         // Make separate methods for each Actor type (character, npc, etc.) to keep
         // things organized.
         if (actorData.type === 'character') {
-            this._prepareCharacterData(actorData);
+            this._prepareBaseCharacterData(actorData);
         } else if (actorData.type === 'creature') {
-            this._prepareCreatureData(actorData);
+            this._prepareBaseCreatureData(actorData);
         } else if (actorData.type === 'container') {
-            this._prepareContainerData(actorData);
+            this._prepareBaseContainerData(actorData);
         }
-
     }
 
-    /**
-     * Prepare Container type specific data
-     */
-    _prepareContainerData(actorData) {
-        const data = actorData.data;
-        if (data.description === '***INIT***') {
-            data.description = '';
-            data.biography = '';
-        }
-
-        // Calculate container current capacity utilized
-        const tempData = {};
-        this._calcGearWeightTotals(tempData);
-        data.capacity.value = tempData.totalGearWeight;
-        data.capacity.pct = Math.round((Math.max(data.capacity.max - data.capacity.value, 0) / data.capacity.max) * 100);
-    }
-
-    /**
-     * Prepare Character type specific data
-     */
-    _prepareCharacterData(actorData) {
+    _prepareBaseCharacterData(actorData) {
         const data = actorData.data;
 
         if (data.description === '***INIT***') {
@@ -285,18 +138,51 @@ export class HarnMasterActor extends Actor {
             data.description = '<table style=\"user-select: text; width: 95%; color: #191813; font-size: 13px;\" border=\"1\">\n<tbody style=\"box-sizing: border-box; user-select: text;\">\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Apparent Age</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Culture</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\"></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Social Class</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\"><span style=\"box-sizing: border-box; user-select: text;\"></span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Height</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Frame</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Weight</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Appearance/Comeliness</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Hair Color</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Eye Color</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Voice</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong>Obvious Medical Traits</strong><span style=\"box-sizing: border-box; user-select: text;\"><br style=\"box-sizing: border-box; user-select: text;\" /></span></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\"><span style=\"box-sizing: border-box; user-select: text;\">&nbsp;</span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong>Apparent Occupation</strong><span style=\"box-sizing: border-box; user-select: text;\"><br style=\"box-sizing: border-box; user-select: text;\" /></span></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\"><span style=\"box-sizing: border-box; user-select: text;\">&nbsp;</span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong>Apparent Wealth</strong><span style=\"box-sizing: border-box; user-select: text;\"><br style=\"box-sizing: border-box; user-select: text;\" /></span></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\"><span style=\"box-sizing: border-box; user-select: text;\">&nbsp;</span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong>Weapons</strong><span style=\"box-sizing: border-box; user-select: text;\"><br style=\"box-sizing: border-box; user-select: text;\" /></span></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\"><span style=\"box-sizing: border-box; user-select: text;\">&nbsp;</span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Armour</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Companions</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Other obvious features</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\">&nbsp;</td>\n</tr>\n</tbody>\n</table>\n<p>&nbsp;</p>\n<p>&nbsp;</p>';
             data.biography = '<h1>Data</h1>\n<table style=\"width: 95%;\" border=\"1\">\n<tbody>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Birthdate</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Birthplace</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Sibling Rank</strong></td>\n<td style=\"width: 432px;\">x of y</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Parent(s)</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Parent Occupation</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Estrangement</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Clanhead</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Medical Traits</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Psyche Traits</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n</tbody>\n</table>\n<h1>Life Story</h1>';
         }
+    }
 
-        this._calcEndurance(this.data.items, data);
+    _prepareBaseCreatureData(actorData) {
+        const data = actorData.data;
 
-        this._unequipUncarriedGear(data);
+        if (data.description === '***INIT***') {
+            // Setup default description and biography
+            data.description = '<table style=\"user-select: text; width: 95%; color: #191813; font-size: 13px;\" border=\"1\">\n<tbody style=\"box-sizing: border-box; user-select: text;\">\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Apparent Age</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Culture</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\"></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Social Class</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\"><span style=\"box-sizing: border-box; user-select: text;\"></span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Height</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Frame</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Weight</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Appearance/Comeliness</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Hair Color</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Eye Color</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Voice</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong>Obvious Medical Traits</strong><span style=\"box-sizing: border-box; user-select: text;\"><br style=\"box-sizing: border-box; user-select: text;\" /></span></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\"><span style=\"box-sizing: border-box; user-select: text;\">&nbsp;</span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong>Apparent Occupation</strong><span style=\"box-sizing: border-box; user-select: text;\"><br style=\"box-sizing: border-box; user-select: text;\" /></span></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\"><span style=\"box-sizing: border-box; user-select: text;\">&nbsp;</span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong>Apparent Wealth</strong><span style=\"box-sizing: border-box; user-select: text;\"><br style=\"box-sizing: border-box; user-select: text;\" /></span></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\"><span style=\"box-sizing: border-box; user-select: text;\">&nbsp;</span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong>Weapons</strong><span style=\"box-sizing: border-box; user-select: text;\"><br style=\"box-sizing: border-box; user-select: text;\" /></span></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\"><span style=\"box-sizing: border-box; user-select: text;\">&nbsp;</span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Armour</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Companions</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Other obvious features</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\">&nbsp;</td>\n</tr>\n</tbody>\n</table>\n<p>&nbsp;</p>\n<p>&nbsp;</p>';
+            data.biography = '<h1>Data</h1>\n<table style=\"width: 95%;\" border=\"1\">\n<tbody>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Birthdate</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Birthplace</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Sibling Rank</strong></td>\n<td style=\"width: 432px;\">x of y</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Parent(s)</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Parent Occupation</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Estrangement</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Clanhead</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Medical Traits</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Psyche Traits</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n</tbody>\n</table>\n<h1>Life Story</h1>';
+        }
+    }
+    
+    _prepareBaseContainerData(actorData) {
+        const data = actorData.data;
+        if (data.description === '***INIT***') {
+            // Setup default description and biography
+            data.description = '';
+            data.biography = '';
+       }
+    }
 
-        // Calculate weight and injury level totals, used to calculate
-        // universal penalty below.
-        this._calcInjuryTotal(data);
+    /** @override */
+    prepareDerivedData() {
+        super.prepareDerivedData();
+        const actorData = this.data;
+        const data = actorData.data;
 
+        // Complete handling item containers now that all items are available
         this._calcGearWeightTotals(data);
 
+        if (actorData.type === 'container') {
+            this._prepareDerivedContainerData(actorData);
+            return;
+        }
+
+        // All common character and creature derived data below here
+
         data.encumbrance = Math.floor(data.totalGearWeight / data.endurance);
+
+        // Injury Calculations First
+        this.data.items.forEach(it => {
+            if (it.type === 'injury') {
+                if (it.data.injuryLevel > 0) data.totalInjuryLevels += it.data.injuryLevel;
+            }
+        });
 
         // Universal Penalty and Physical Penalty are used to calculate many
         // things, including effectiveMasteryLevel for all skills,
@@ -309,14 +195,13 @@ export class HarnMasterActor extends Actor {
             if (token.bars) token._onUpdateBarAttributes(this.data, { "shockIndex.value": data.shockIndex.value });
         });
 
+        // Process all the final post activities
+        this.items.forEach(it => {
+            it.prepareDerivedData();
+        });
+
         // Setup effective abilities (accounting for UP and PP)
         this._setupEffectiveAbilities(data);
-
-        // Go through all skills calculating their EML
-        this._calcSkillEMLWithPenalties(this.data.items, data.universalPenalty, data.physicalPenalty);
-
-        // Some properties are calculated from skills.  Do that here.
-        this._setPropertiesFromSkills(this.data.items, data);
 
         // Calculate current Move speed.  Cannot go below 0
         data.move.effective = Math.max(data.move.base - data.physicalPenalty, 0);
@@ -325,268 +210,24 @@ export class HarnMasterActor extends Actor {
         data.stumbleTarget = Math.max(data.abilities.agility.base - data.physicalPenalty, 0);
         data.fumbleTarget = Math.max(data.abilities.dexterity.base - data.physicalPenalty, 0);
 
+        // Collect all combat skills into a map for use later
+        let combatSkills = {};
+        this.itemTypes.skill.forEach(it => {
+            if (it.data.data.type === 'Combat' || it.data.name.toLowerCase() === 'throwing') {
+                combatSkills[it.data.name] = {
+                    'name': it.data.name,
+                    'eml': it.data.data.effectiveMasteryLevel
+                }
+            }
+        });
+        
         // Calculate spell effective mastery level values
         this._refreshSpellsAndInvocations();
 
-        this._setupGearData(data);
-        this._setupInjuryTargets(data);
+        this._setupWeaponData(data, combatSkills);
         this._generateArmorLocationMap(data);
     }
 
-    /**
-     * Prepare Creature type specific data
-     */
-    _prepareCreatureData(actorData) {
-        const data = actorData.data;
-
-        if (data.description === '***INIT***') {
-            // Setup default description and biography
-            data.description = '';
-            data.biography = '<h1>Data</h1>\n<table style=\"width: 95%;\" border=\"1\">\n<tbody>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Habitat</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Height</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Weight</strong></td>\n<td style=\"width: 432px;\"></td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Diet</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Lifespan</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Group</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n</tbody>\n</table>\n<h1>Special Abilities</h1>\n<p>Describe any special abilities.</p>\n<h1>Attacks</h1>\n<p>Describe methods of attack.</p>\n<h1>Behavior</h1>\n<p>Describe behavioral aspects.</p>';
-        }
-
-        // Calc Endurance (never use condition with creatures)
-        data.endurance = Math.round((data.abilities.strength.base + data.abilities.stamina.base +
-            data.abilities.will.base) / 3);
-
-        this._unequipUncarriedGear(data);
-
-        if (data.description.startsWith('<p>Birthdate:</p>')) {
-            // Set default creature description instead
-            data.description = '<p>Habitat:</p>\n<p>Height:</p>\n<p>Weight:</p>\n' +
-                '<p>Diet:</p>\n<p>Lifespan:</p>\n<p>Group:</p>\n<p>Special Abilities:</p>\n' +
-                '<p>Attacks:</p>\n<p>&nbsp;</p>';
-        }
-
-        this._calcInjuryTotal(data);
-
-        this._calcGearWeightTotals(data);
-
-        if (typeof data.loadRating === 'undefined') {
-            data.loadRating = 0;
-        }
-
-        data.encumbrance = Math.floor(Math.max(data.totalGearWeight - data.loadRating, 0) / data.endurance);
-
-        // Universal Penalty and Physical Penalty are used to calculate many
-        // things, including effectiveMasteryLevel for all skills,
-        // move, etc.
-        data.universalPenalty = data.totalInjuryLevels + data.fatigue;
-        data.physicalPenalty = data.universalPenalty + data.encumbrance;
-
-        data.shockIndex.value = HarnMasterActor._normProb(data.endurance, data.universalPenalty * 3.5, data.universalPenalty);
-        if (canvas) this.getActiveTokens().forEach(token => {
-            if (token.bars) token._onUpdateBarAttributes(this.data, { "shockIndex.value": data.shockIndex.value });
-        });
-
-        // Setup effective abilities (accounting for UP and PP)
-        this._setupEffectiveAbilities(data);
-
-        // Go through all skills calculating their EML
-        this._calcSkillEMLWithPenalties(this.data.items, data.universalPenalty, data.physicalPenalty);
-
-        // Some properties are calculated from skills.  Do that here.
-        this._setPropertiesFromSkills(this.data.items, data);
-
-        // Calculate current Move speed.  Cannot go below 0
-        data.move.effective = Math.max(data.move.base - data.physicalPenalty, 0);
-
-        this._setupGearData(data);
-    }
-
-    _setupEffectiveAbilities(data) {
-        // Affected by physical penalty
-        data.abilities.strength.effective = Math.max(data.abilities.strength.base - data.physicalPenalty, 0);
-        data.abilities.stamina.effective = Math.max(data.abilities.stamina.base - data.physicalPenalty, 0);
-        data.abilities.agility.effective = Math.max(data.abilities.agility.base - data.physicalPenalty, 0);
-        data.abilities.dexterity.effective = Math.max(data.abilities.dexterity.base - data.physicalPenalty, 0);
-        data.abilities.eyesight.effective = Math.max(data.abilities.eyesight.base - data.physicalPenalty, 0);
-        data.abilities.hearing.effective = Math.max(data.abilities.hearing.base - data.physicalPenalty, 0);
-        data.abilities.smell.effective = Math.max(data.abilities.smell.base - data.physicalPenalty, 0);
-        data.abilities.voice.effective = Math.max(data.abilities.voice.base - data.physicalPenalty, 0);
-
-        // Affected by universal penalty
-        data.abilities.intelligence.effective = Math.max(data.abilities.intelligence.base - data.universalPenalty, 0);
-        data.abilities.aura.effective = Math.max(data.abilities.aura.base - data.universalPenalty, 0);
-        data.abilities.will.effective = Math.max(data.abilities.will.base - data.universalPenalty, 0);
-
-        // Not affected by any penalties
-        data.abilities.comliness.effective = Math.max(data.abilities.comliness.base, 0);
-        data.abilities.morality.effective = Math.max(data.abilities.morality.base, 0);
-    }
-
-    _setupInjuryTargets(data) {
-        this.data.items.forEach(it => {
-            if (it.type === 'injury') {
-                // Injury Roll = HR*End (unaffected by UP or PP)
-                it.data.targetHealRoll = it.data.healRate * data.endurance;
-            }
-        });
-    }
-
-    /**
-     * Endurance is composed of two parts: the maximum and the current value.
-     * This method calculates the max.  It tries to find if the "condition"
-     * skill is present, and if so uses that to calculate the max.  Otherwise
-     * it calculates it based on ability scores.
-     * 
-     * @param {Object} items 
-     * @param {Object} data 
-     */
-    _calcEndurance(items, data) {
-        let hasCondition = false;
-        let conditionLevel = 0;
-        items.forEach(it => {
-            if (it.type === 'skill' && it.name.toLowerCase() === 'condition') {
-                hasCondition = true;
-                conditionLevel = it.data.masteryLevel;
-            }
-        });
-
-        // If we found the condition skill, then use that value for endurance.
-        // Otherwise, calculate it.
-        if (hasCondition) {
-            data.hasCondition = true;
-            data.endurance = Math.floor(conditionLevel / 5);
-        } else {
-            data.hasCondition = false;
-            data.endurance = Math.round((data.abilities.strength.base + data.abilities.stamina.base +
-                data.abilities.will.base) / 3);
-        }
-
-        // Safety net: if endurance is ever <= 0, then set it to 1
-        // so a bunch of other stuff doesn't go to infinity
-        if (data.endurance <= 0) {
-            data.endurance = 1;
-        }
-    }
-
-    /**
-     * This is broken out into a separate method so we can invoke it very early.
-     * Lots of stuff will be dependent on whether gear is carried or equipped.
-     */
-    _unequipUncarriedGear(data) {
-        this.data.items.forEach(it => {
-            if (it.type.endsWith('gear')) {
-                // If you aren't carrying the gear, it can't be equipped
-                if (!it.data.isCarried) {
-                    it.data.isEquipped = false;
-                }
-
-                if (it.data.container && it.data.container != 'on-person') {
-                    // Anything in a container is unequipped automatically
-                    it.data.isEquipped = false;
-
-                    // If an item is in a container, its "isCarried" flag must be the
-                    // same as the container.
-                    const container = this.items.get(it.data.container);
-                    if (container) it.data.isCarried = container.data.data.isCarried;
-                }
-            }
-        });
-    }
-
-    /**
-     * Consolidated method to setup all gear, including misc gear, weapons,
-     * and missiles.  (not armor yet)
-     */
-    _setupGearData(data) {
-        this.data.items.forEach(it => {
-            if (it.type.endsWith('gear')) {
-
-                // Collect all combat skills into a map for use later
-                let combatSkills = {};
-                this.data.items.forEach(it => {
-                    if (it.type === 'skill' || it.name.toLowerCase() === 'throwing') {
-                        combatSkills[it.name] = {
-                            'name': it.name,
-                            'eml': it.data.effectiveMasteryLevel
-                        };
-                    }
-                });
-
-                if (it.type === 'missilegear') {
-                    // Reset mastery levels in case nothing matches
-                    it.data.attackMasteryLevel = 0;
-
-                    let missileName = it.name;
-
-                    // If the associated skill is in our combat skills list, get EML from there
-                    // and then calculate AML.
-                    let assocSkill = it.data.assocSkill;
-                    if (typeof combatSkills[assocSkill] != 'undefined') {
-                        let skillEml = combatSkills[assocSkill].eml;
-                        it.data.attackMasteryLevel = skillEml + it.data.attackModifier;
-                    }
-                } else if (it.type === 'weapongear') {
-                    // Reset mastery levels in case nothing matches
-                    it.data.attackMasteryLevel = 0;
-                    it.data.defenseMasteryLevel = 0;
-                    let weaponName = it.name;
-
-                    // If associated skill is 'None', see if there is a skill with the
-                    // same name as the weapon; if so, then set it to that skill.
-                    if (it.data.assocSkill === 'None') {
-                        // If no combat skill with this name exists, search for next weapon
-                        if (typeof combatSkills[weaponName] === 'undefined') return;
-
-                        // A matching skill was found, set associated Skill to that combat skill
-                        it.data.assocSkill = combatSkills[weaponName].name;
-                    }
-
-                    // At this point, we know the Associated Skill is not blank. If that
-                    // associated skill is in our combat skills list, get EML from there
-                    // and then calculate AML and DML.
-                    let assocSkill = it.data.assocSkill;
-                    if (typeof combatSkills[assocSkill] != 'undefined') {
-                        let skillEml = combatSkills[assocSkill].eml;
-                        it.data.attackMasteryLevel = skillEml + it.data.attack + it.data.attackModifier;
-                        it.data.defenseMasteryLevel = skillEml + it.data.defense;
-                    }
-                }
-            }
-        });
-    }
-
-    _setPropertiesFromSkills(items, data) {
-        data.hasCondition = false;
-
-        items.forEach(it => {
-            if (it.type === 'skill') {
-                switch (it.name.toLowerCase()) {
-                    case 'initiative':
-                        data.initiative = it.data.effectiveMasteryLevel;
-                        break;
-
-                    case 'dodge':
-                        data.dodge = it.data.effectiveMasteryLevel;
-                        break;
-                }
-            }
-        });
-    }
-
-    _calcSkillEMLWithPenalties(items, universalPenalty, physicalPenalty) {
-        const pctUnivPen = universalPenalty * 5;
-        const pctPhysPen = physicalPenalty * 5;
-
-        items.forEach(it => {
-            if (it.type === 'skill') {
-                switch (it.data.type) {
-                    case 'Combat':
-                    case 'Physical':
-                        it.data.effectiveMasteryLevel = Math.max(it.data.masteryLevel - pctPhysPen, 5);
-                        break;
-
-                    default:
-                        it.data.effectiveMasteryLevel = Math.max(it.data.masteryLevel - pctUnivPen, 5);
-
-                }
-            } else if (it.type === 'psionic') {
-                it.data.effectiveMasteryLevel = Math.max(it.data.masteryLevel - pctUnivPen, 5);
-            }
-        });
-    }
 
     _calcGearWeightTotals(data) {
         data.totalWeaponWeight = 0;
@@ -601,6 +242,13 @@ export class HarnMasterActor extends Actor {
         });
 
         this.data.items.forEach(it => {
+            if (it.type.endsWith('gear')) {
+                if (it.data.container && it.data.container !== 'on-person') {
+                    const container = this.items.get(it.data.container);
+                    it.data.isCarried = container.data.data.isCarried;
+                }
+            }
+
             switch (it.type) {
                 case 'weapongear':
                     if (!it.data.isCarried) break;
@@ -653,27 +301,95 @@ export class HarnMasterActor extends Actor {
         data.totalGearWeight = Math.round((data.totalGearWeight + Number.EPSILON) * 100) / 100;
     }
 
-    _calcInjuryTotal(data) {
-        let totalInjuryLevels = 0;
-        this.data.items.forEach(it => {
-            if (it.type === 'injury') {
-                // Just make sure if injuryLevel is negative, we set it to zero
-                if (it.data.injuryLevel < 0) it.data.injuryLevel = 0;
 
-                totalInjuryLevels += it.data.injuryLevel;
-                if (it.data.injuryLevel === 0) {
-                    it.data.severity = '';
-                } else if (it.data.injuryLevel == 1) {
-                    it.data.severity = 'M1';
-                } else if (it.data.injuryLevel <= 3) {
-                    it.data.severity = 'S' + it.data.injuryLevel;
-                } else {
-                    it.data.severity = 'G' + it.data.injuryLevel;
+    /**
+     * Prepare Container type specific data
+     */
+    _prepareBaseContainerData(actorData) {
+        const data = actorData.data;
+        if (data.description === '***INIT***') {
+            data.description = '';
+            data.biography = '';
+        }
+
+        // Calculate container current capacity utilized
+        const tempData = {};
+        // TODO! -- this._calcGearWeightTotals(tempData);
+        data.capacity.value = tempData.totalGearWeight;
+        data.capacity.max = data.capacity.max || 1;
+        data.capacity.pct = Math.round((Math.max(data.capacity.max - data.capacity.value, 0) / data.capacity.max) * 100);
+    }
+
+    _prepareDerivedContainerData(actorData) {
+
+    }
+
+    _setupEffectiveAbilities(data) {
+        // Affected by physical penalty
+        data.abilities.strength.effective = Math.max(data.abilities.strength.base - data.physicalPenalty, 0);
+        data.abilities.stamina.effective = Math.max(data.abilities.stamina.base - data.physicalPenalty, 0);
+        data.abilities.agility.effective = Math.max(data.abilities.agility.base - data.physicalPenalty, 0);
+        data.abilities.dexterity.effective = Math.max(data.abilities.dexterity.base - data.physicalPenalty, 0);
+        data.abilities.eyesight.effective = Math.max(data.abilities.eyesight.base - data.physicalPenalty, 0);
+        data.abilities.hearing.effective = Math.max(data.abilities.hearing.base - data.physicalPenalty, 0);
+        data.abilities.smell.effective = Math.max(data.abilities.smell.base - data.physicalPenalty, 0);
+        data.abilities.voice.effective = Math.max(data.abilities.voice.base - data.physicalPenalty, 0);
+
+        // Affected by universal penalty
+        data.abilities.intelligence.effective = Math.max(data.abilities.intelligence.base - data.universalPenalty, 0);
+        data.abilities.aura.effective = Math.max(data.abilities.aura.base - data.universalPenalty, 0);
+        data.abilities.will.effective = Math.max(data.abilities.will.base - data.universalPenalty, 0);
+
+        // Not affected by any penalties
+        data.abilities.comliness.effective = Math.max(data.abilities.comliness.base, 0);
+        data.abilities.morality.effective = Math.max(data.abilities.morality.base, 0);
+    }
+
+    /**
+     * Consolidated method to setup all gear, including misc gear, weapons,
+     * and missiles.  (not armor yet)
+     */
+    _setupWeaponData(data, combatSkills) {
+        this.data.items.forEach(it => {
+            const data = it.data;
+            if (it.type === 'missilegear') {
+                // Reset mastery levels in case nothing matches
+                data.attackMasteryLevel = 0;
+
+                // If the associated skill is in our combat skills list, get EML from there
+                // and then calculate AML.
+                let assocSkill = data.assocSkill;
+                if (typeof combatSkills[assocSkill] !== 'undefined') {
+                    let skillEml = combatSkills[assocSkill].eml;
+                    data.attackMasteryLevel = skillEml + data.attackModifier;
+                }
+            } else if (it.type === 'weapongear') {
+                // Reset mastery levels in case nothing matches
+                data.attackMasteryLevel = 0;
+                data.defenseMasteryLevel = 0;
+                let weaponName = it.name;
+
+                // If associated skill is 'None', see if there is a skill with the
+                // same name as the weapon; if so, then set it to that skill.
+                if (data.assocSkill === 'None') {
+                    // If no combat skill with this name exists, search for next weapon
+                    if (typeof combatSkills[weaponName] === 'undefined') return;
+
+                    // A matching skill was found, set associated Skill to that combat skill
+                    data.assocSkill = combatSkills[weaponName].name;
+                }
+
+                // At this point, we know the Associated Skill is not blank. If that
+                // associated skill is in our combat skills list, get EML from there
+                // and then calculate AML and DML.
+                let assocSkill = data.assocSkill;
+                if (typeof combatSkills[assocSkill] !== 'undefined') {
+                    let skillEml = combatSkills[assocSkill].eml;
+                    data.attackMasteryLevel = skillEml + data.attack + data.attackModifier;
+                    data.defenseMasteryLevel = skillEml + data.defense;
                 }
             }
         });
-
-        data.totalInjuryLevels = totalInjuryLevels;
     }
 
     _refreshSpellsAndInvocations() {
@@ -1042,6 +758,159 @@ export class HarnMasterActor extends Actor {
         }
 
         button.disabled = false;
+    }
+
+    static async _createDefaultCharacterSkills(data) {
+        let itemData;
+
+        const physicalSkills = await game.packs.find(p => p.collection === `hm3.std-skills-physical`).getContent();
+        itemData = duplicate(physicalSkills.find(i => i.name === 'Climbing'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        itemData = duplicate(physicalSkills.find(i => i.name === 'Jumping'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        itemData = duplicate(physicalSkills.find(i => i.name === 'Stealth'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        itemData = duplicate(physicalSkills.find(i => i.name === 'Throwing'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+
+        const commSkills = await game.packs.find(p => p.collection === `hm3.std-skills-communication`).getContent();
+        itemData = duplicate(commSkills.find(i => i.name === 'Awareness'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        itemData = duplicate(commSkills.find(i => i.name === 'Intrigue'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        itemData = duplicate(commSkills.find(i => i.name === 'Oratory'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        itemData = duplicate(commSkills.find(i => i.name === 'Rhetoric'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        itemData = duplicate(commSkills.find(i => i.name === 'Singing'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+
+        const combatSkills = await game.packs.find(p => p.collection === `hm3.std-skills-combat`).getContent();
+        itemData = duplicate(combatSkills.find(i => i.name === 'Initiative'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        itemData = duplicate(combatSkills.find(i => i.name === 'Unarmed'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        itemData = duplicate(combatSkills.find(i => i.name === 'Dodge'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+    }
+
+    static async _createDefaultCreatureSkills(data) {
+        let itemData;
+
+        const combatSkills = await game.packs.find(p => p.collection === `hm3.std-skills-combat`).getContent();
+        itemData = duplicate(combatSkills.find(i => i.name === 'Initiative'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        itemData = duplicate(combatSkills.find(i => i.name === 'Unarmed'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        itemData = duplicate(combatSkills.find(i => i.name === 'Dodge'));
+        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+    }
+
+    static _createDefaultHumanoidLocations(data) {
+        let armorLocationData = {};
+        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+        mergeObject(armorLocationData, HM3.injuryLocations['Skull'])
+        data.items.push((new Item({ name: 'Skull', type: 'armorlocation', data: armorLocationData })).data);
+        armorLocationData = {};
+        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+        mergeObject(armorLocationData, HM3.injuryLocations['Face'])
+        data.items.push((new Item({ name: 'Face', type: 'armorlocation', data: armorLocationData })).data);
+        armorLocationData = {};
+        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+        mergeObject(armorLocationData, HM3.injuryLocations['Neck'])
+        data.items.push((new Item({ name: 'Neck', type: 'armorlocation', data: armorLocationData })).data);
+        armorLocationData = {};
+        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+        mergeObject(armorLocationData, HM3.injuryLocations['Shoulder'])
+        data.items.push((new Item({ name: 'Left Shoulder', type: 'armorlocation', data: armorLocationData })).data);
+        armorLocationData = {};
+        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+        mergeObject(armorLocationData, HM3.injuryLocations['Shoulder'])
+        data.items.push((new Item({ name: 'Right Shoulder', type: 'armorlocation', data: armorLocationData })).data);
+        armorLocationData = {};
+        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+        mergeObject(armorLocationData, HM3.injuryLocations['Upper Arm'])
+        data.items.push((new Item({ name: 'Left Upper Arm', type: 'armorlocation', data: armorLocationData })).data);
+        armorLocationData = {};
+        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+        mergeObject(armorLocationData, HM3.injuryLocations['Upper Arm'])
+        data.items.push((new Item({ name: 'Right Upper Arm', type: 'armorlocation', data: armorLocationData })).data);
+        armorLocationData = {};
+        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+        mergeObject(armorLocationData, HM3.injuryLocations['Elbow'])
+        data.items.push((new Item({ name: 'Left Elbow', type: 'armorlocation', data: armorLocationData })).data);
+        armorLocationData = {};
+        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+        mergeObject(armorLocationData, HM3.injuryLocations['Elbow'])
+        data.items.push((new Item({ name: 'Right Elbow', type: 'armorlocation', data: armorLocationData })).data);
+        armorLocationData = {};
+        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+        mergeObject(armorLocationData, HM3.injuryLocations['Forearm'])
+        data.items.push((new Item({ name: 'Left Forearm', type: 'armorlocation', data: armorLocationData })).data);
+        armorLocationData = {};
+        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+        mergeObject(armorLocationData, HM3.injuryLocations['Forearm'])
+        data.items.push((new Item({ name: 'Right Forearm', type: 'armorlocation', data: armorLocationData })).data);
+        armorLocationData = {};
+        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+        mergeObject(armorLocationData, HM3.injuryLocations['Hand'])
+        data.items.push((new Item({ name: 'Left Hand', type: 'armorlocation', data: armorLocationData })).data);
+        armorLocationData = {};
+        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+        mergeObject(armorLocationData, HM3.injuryLocations['Hand'])
+        data.items.push((new Item({ name: 'Right Hand', type: 'armorlocation', data: armorLocationData })).data);
+        armorLocationData = {};
+        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+        mergeObject(armorLocationData, HM3.injuryLocations['Thorax'])
+        data.items.push((new Item({ name: 'Thorax', type: 'armorlocation', data: armorLocationData })).data);
+        armorLocationData = {};
+        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+        mergeObject(armorLocationData, HM3.injuryLocations['Abdomen'])
+        data.items.push((new Item({ name: 'Abdomen', type: 'armorlocation', data: armorLocationData })).data);
+        armorLocationData = {};
+        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+        mergeObject(armorLocationData, HM3.injuryLocations['Groin'])
+        data.items.push((new Item({ name: 'Groin', type: 'armorlocation', data: armorLocationData })).data);
+        armorLocationData = {};
+        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+        mergeObject(armorLocationData, HM3.injuryLocations['Hip'])
+        data.items.push((new Item({ name: 'Left Hip', type: 'armorlocation', data: armorLocationData })).data);
+        armorLocationData = {};
+        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+        mergeObject(armorLocationData, HM3.injuryLocations['Hip'])
+        data.items.push((new Item({ name: 'Right Hip', type: 'armorlocation', data: armorLocationData })).data);
+        armorLocationData = {};
+        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+        mergeObject(armorLocationData, HM3.injuryLocations['Thigh'])
+        data.items.push((new Item({ name: 'Left Thigh', type: 'armorlocation', data: armorLocationData })).data);
+        armorLocationData = {};
+        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+        mergeObject(armorLocationData, HM3.injuryLocations['Thigh'])
+        data.items.push((new Item({ name: 'Right Thigh', type: 'armorlocation', data: armorLocationData })).data);
+        armorLocationData = {};
+        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+        mergeObject(armorLocationData, HM3.injuryLocations['Knee'])
+        data.items.push((new Item({ name: 'Left Knee', type: 'armorlocation', data: armorLocationData })).data);
+        armorLocationData = {};
+        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+        mergeObject(armorLocationData, HM3.injuryLocations['Knee'])
+        data.items.push((new Item({ name: 'Right Knee', type: 'armorlocation', data: armorLocationData })).data);
+        armorLocationData = {};
+        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+        mergeObject(armorLocationData, HM3.injuryLocations['Calf'])
+        data.items.push((new Item({ name: 'Left Calf', type: 'armorlocation', data: armorLocationData })).data);
+        armorLocationData = {};
+        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+        mergeObject(armorLocationData, HM3.injuryLocations['Calf'])
+        data.items.push((new Item({ name: 'Right Calf', type: 'armorlocation', data: armorLocationData })).data);
+        armorLocationData = {};
+        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+        mergeObject(armorLocationData, HM3.injuryLocations['Foot'])
+        data.items.push((new Item({ name: 'Left Foot', type: 'armorlocation', data: armorLocationData })).data);
+        armorLocationData = {};
+        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
+        mergeObject(armorLocationData, HM3.injuryLocations['Foot'])
+        data.items.push((new Item({ name: 'Right Foot', type: 'armorlocation', data: armorLocationData })).data);
     }
 }
 

@@ -50,6 +50,8 @@ HM3.defaultMagicIconName = 'pentacle';
 HM3.defaultRitualIconName = 'circle';
 HM3.defaultMiscItemIconName = 'miscgear';
 HM3.defaultPsionicsIconName = 'psionics';
+HM3.defaultArmorGearIconName = 'armor';
+HM3.defaultContainerIconName = 'sack';
 
 HM3.magicIcons = [
     ['pentacle', 'systems/hm3/images/icons/svg/pentacle.svg'],
@@ -245,6 +247,10 @@ HM3.craftSkillIcons = [
     ['woodcraft', 'systems/hm3/images/icons/svg/woodcraft.svg']
 ];
 
+HM3.armorGearIcons = [
+    ['armorgear', 'systems/hm3/images/icons/svg/armor.svg'],
+];
+
 HM3.miscGearIcons = [
     ['miscgear', 'systems/hm3/images/icons/svg/miscgear.svg'],
     ['coin', 'systems/hm3/images/icons/svg/coins.svg'],
@@ -281,6 +287,7 @@ HM3.defaultItemIcons = new Map(
     .concat(HM3.weaponSkillIcons)
     .concat(HM3.craftSkillIcons)
     .concat(HM3.miscGearIcons)
+    .concat(HM3.armorGearIcons)
     .concat(HM3.ritualIcons)
     .concat(HM3.magicIcons)
     .concat(HM3.psionicTalentIcons)
