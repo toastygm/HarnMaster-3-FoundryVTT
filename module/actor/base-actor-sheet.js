@@ -16,7 +16,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         const data = super.getData();
         data.config = CONFIG.HM3;
         data.dtypes = ["String", "Number", "Boolean"];
-
         let capacityMax = 0;
         let capacityVal = 0;
         if ((this.actor.data.type === 'creature') || (this.actor.data.type === 'character')) {
@@ -882,9 +881,22 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     _onManageActiveEffect(event) {
         event.preventDefault();
         const a = event.currentTarget;
-        const li = a.closest(".effect");
-        const effect = this.actor.effects.get(li.dataset.effectId);
+        let effect = null;
+        if (a.dataset.action !== 'create') {
+            const li = a.closest(".effect");
+            console.log(li);
+            effect = this.actor.effects.get(li.dataset.effectId);
+            console.log(effect);
+        }
         switch (a.dataset.action) {
+            case "create":
+                effect = ActiveEffect.create({label: 'New Effect'}, this.actor);
+                effect.create().then((eff) => {
+                    const e = this.actor.effects.get(eff._id);
+                    console.log(e);
+                    return new ActiveEffectConfig(e).render(true);
+                });
+                return;
             case "edit":
                 return new ActiveEffectConfig(effect).render(true);
             case "delete":

@@ -1581,3 +1581,93 @@
   margin-top: 10px; }
   .hm3 .armor-locations-list .armor-location {
     display: block; }
+
+.hm3 .effects .effects-list {
+  list-style: none;
+  margin: 7px 0;
+  padding: 0;
+  overflow-y: hidden; }
+  .hm3 .effects .effects-list .effects-header {
+    margin: 2px 0;
+    padding: 0;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.05);
+    border: 2px groove #eeede0;
+    font-weight: bold;
+    line-height: 24px; }
+    .hm3 .effects .effects-list .effects-header h3 {
+      margin: 0;
+      padding-left: 5px;
+      font-family: "Modesto Condensed", "Palatino Linotype", serif;
+      font-size: 20px;
+      font-weight: 700;
+      font-size: 16px; }
+    .hm3 .effects .effects-list .effects-header .effect-name {
+      color: #191813;
+      border-right: 1px solid #c9c7b8; }
+    .hm3 .effects .effects-list .effects-header .effect-controls {
+      flex: 0 0 45px;
+      text-align: right;
+      padding-right: 5px; }
+      .hm3 .effects .effects-list .effects-header .effect-controls .active {
+        color: #4b4a44; }
+  .hm3 .effects .effects-list .effect-list {
+    list-style: none;
+    margin: 0;
+    padding: 0; }
+  .hm3 .effects .effects-list .effect {
+    line-height: 30px;
+    padding: 0 2px;
+    border-bottom: 1px solid #c9c7b8; }
+    .hm3 .effects .effects-list .effect .effect-image {
+      flex: 0 0 30px;
+      background-size: 30px;
+      margin-right: 5px; }
+    .hm3 .effects .effects-list .effect img {
+      display: block; }
+    .hm3 .effects .effects-list .effect .effect-name {
+      cursor: pointer;
+      max-height: 30px;
+      overflow: hidden;
+      border-right: 1px solid #c9c7b8; }
+      .hm3 .effects .effects-list .effect .effect-name h4 {
+        margin: 0;
+        white-space: nowrap;
+        overflow-x: hidden; }
+  .hm3 .effects .effects-list .effect:last-child {
+    border-bottom: none; }
+  .hm3 .effects .effects-list .effect-detail {
+    font-size: 12px;
+    border-right: 1px solid #c9c7b8;
+    word-break: break-word;
+    white-space: nowrap;
+    overflow: hidden; }
+  .hm3 .effects .effects-list .effect-ele {
+    flex: 0 0 40px;
+    text-align: center;
+    border-left: 1px solid #c9c7b8;
+    border-right: 1px solid #c9c7b8; }
+  .hm3 .effects .effects-list .effect-controls {
+    flex: 0 0 45px;
+    text-align: right; }
+    .hm3 .effects .effects-list .effect-controls .effect-control {
+      flex: 0 0 22px;
+      font-size: 12px;
+      text-align: right;
+      color: #9a998f; }
+    .hm3 .effects .effects-list .effect-controls .effect-equip {
+      color: #9a998f; }
+    .hm3 .effects .effects-list .effect-controls .active {
+      color: #4b4a44; }
+  .hm3 .effects .effects-list .effect-controls-wide {
+    flex: 0 0 65px;
+    text-align: right; }
+    .hm3 .effects .effects-list .effect-controls-wide .effect-control {
+      flex: 0 0 22px;
+      font-size: 12px;
+      text-align: right;
+      color: #9a998f; }
+    .hm3 .effects .effects-list .effect-controls-wide .effect-equip {
+      color: #9a998f; }
+    .hm3 .effects .effects-list .effect-controls-wide .active {
+      color: #4b4a44; }

@@ -56,6 +56,7 @@
         <a class="item" data-tab="combat">Combat</a>
         <a class="item" data-tab="esoteric">Esoterics</a>
         <a class="item" data-tab="inventory">Gear</a>
+        <a class="item" data-tab="effects">Effects</a>
     </nav>
 
     {{!-- Sheet Body --}}
@@ -953,6 +954,35 @@
             {{/each}}
         </div>
 
+        {{!-- Effects Tab --}}
+        <div class="tab effects" data-group="primary" data-tab="effects">
+            <ol class="effects-list">
+                <li class="effects-header flexrow">
+                    <h3 class="effect-name flexrow">Effect</h3>
+                    <div class="effect-source">Source</div>
+                    <div class="effect-source">Duration</div>
+                    <a class="effect-controls effect-control" title="Add Effect" data-action="create"><i
+                        class="fas fa-plus"></i> Add</a>
+                </li>
+            
+                <ol class="effect-list item-list">
+                {{#each actor.effects as |effect id|}}
+                    <li class="effect flexrow" data-effect-id="{{effect._id}}">
+                        <div class="effect-name flexrow">
+                            <img class="effect-icon" src="{{data.icon}}"/>
+                            <h4>{{effect.data}}</h4>
+                        </div>
+                        <div class="effect-source">{{effect.sourceName}}</div>
+                        <div class="effect-duration">{{effect.duration.label}}</div>
+                        <div class="effect-controls">
+                            <a class="effect-control" data-action="toggle"><i class="fas fa-circle-notch"></i></a>
+                            <a class="effect-control" data-action="edit"><i class="fas fa-edit"></i></a>
+                            <a class="effect-control" data-action="delete"><i class="fas fa-trash"></i></a>
+                        </div>
+                    </li>
+                {{/each}}
+                </ol>
+            </ol>
+        </div>
     </section>
-
 </form>
