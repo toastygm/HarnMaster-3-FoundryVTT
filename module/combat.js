@@ -853,10 +853,12 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
     let defAvailWeapons = defToken.actor.itemTypes.weapongear;
     const shields = defAvailWeapons.filter(w => w.data.data.isEquipped && /shield|\bbuckler\b/i.test(w.name));
 
+    let atkWeapon = null;
     // Missile Pre-processing.  If attacker is using a high-velocity weapon, then defender
     // can only block with a shield.  If attacker is using a low-velocity weapon, then defender
     // can either block with a shield (at full DML) or with a melee weapon (at 1/2 DML).
     if (type === 'missile') {
+        atkWeapon = atkToken.actor.itemTypes.missilegear.find(w => w.name === weaponName);
         const highVelocityMissile = /\bbow\b|shortbow|longbow|crossbow|\bsling\b|\barrow\b|\bbolt\b|\bbullet\b/i.test(weaponName);
     
         if (highVelocityMissile) {
@@ -870,6 +872,8 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         } else {
             prompt = `${weaponName} is a low-velocity missile, and can be blocked either by a shield (at full DML) or by a melee weapon (at &#189; DML). Choose wisely.`;
         }
+    } else {
+        atkWeapon = atkToken.actor.itemTypes.weapongear.find(w => w.name === weaponName);
     }
 
     // pop up dialog asking for which weapon to use for blocking
@@ -951,7 +955,11 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         atkImpactRoll = new Roll(`${combatResult.outcome.atkDice}d6`).roll();
     }
 
-    const weaponBroke = checkWeaponBreak(atkWeapon, defWeapon);
+    // If there was a block, check whether a weapon broke
+    let weaponBroke = {attackWeaponBroke: false, defendWeaponBroke: false};
+    if (combatResult.outcome.block) {
+        weaponBroke = checkWeaponBreak(atkWeapon, defWeapon);
+    }
 
     const chatData = {
         title: `Attack Result`,
@@ -1024,10 +1032,18 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
 }
 
 export function checkWeaponBreak(atkWeapon, defWeapon) {
+    if (!atkWeapon) {
+        console.warn(`Defend weapon is not specified`);
+    }
+
+    if (!defWeapon) {
+        console.warn(`Attack weapon is not specified`);
+    }
+
     // Weapon Break Check
     let atkWeaponBroke = false;
     let defWeaponBroke = false;
-    if (type === "melee" && game.settings.get('hm3', 'weaponDamage') && combatResult.outcome.block && defWeapon) {
+    if (game.settings.get('hm3', 'weaponDamage')) {
         const atkWeapon = atkToken.actor.itemTypes.weapongear.find(w => w.name === weaponName);
         if (atkWeapon) {
             const atkWeaponQuality = atkWeapon.data.data.weaponQuality;
@@ -1195,40 +1211,43 @@ export function meleeCombatResult(atkResult, defResult, defense, atkAddlImpact=0
 
     const result = { outcome: outcome, desc: 'Attack misses.', csDesc: 'Counterstrike misses.'};
     
-    if (outcome.atkDice) {
-        result.desc = `Attacker strikes for ${diceFormula(outcome.atkDice, atkAddlImpact)} impact.`;
-    } else if (outcome.atkFumble & outcome.defFumble) {
-        result.desc = 'Both Attacker and Defender Fumble';
-    } else if (outcome.atkFumble) {
-        result.desc = `Attacker fumbles.`;
-    } else if (outcome.defFumble) {
-        result.desc = `Defender fumbles.`;
-    } else if (outcome.defStumble && outcome.atkStumble) {
-        result.desc = `Both attacker and defender stumble.`;
-    } else if (outcome.atkStumble) {
-        result.desc = `Attacker stumbles.`;
-    } else if (outcome.defStumble) {
-        result.desc = `Defender stumbles.`;
-    } else if (outcome.block) {
-        result.desc = `Attack blocked.`;
-    } else if (outcome.dta) {
-        result.desc = `Defender gains Tactical Advantage.`;
-    }
+    if (defense !== 'counterstrike') {
+        if (outcome.atkDice) {
+            result.desc = `Attacker strikes for ${diceFormula(outcome.atkDice, atkAddlImpact)} impact.`;
+        } else if (outcome.atkFumble & outcome.defFumble) {
+            result.desc = 'Both Attacker and Defender Fumble';
+        } else if (outcome.atkFumble) {
+            result.desc = `Attacker fumbles.`;
+        } else if (outcome.defFumble) {
+            result.desc = `Defender fumbles.`;
+        } else if (outcome.defStumble && outcome.atkStumble) {
+            result.desc = `Both attacker and defender stumble.`;
+        } else if (outcome.atkStumble) {
+            result.desc = `Attacker stumbles.`;
+        } else if (outcome.defStumble) {
+            result.desc = `Defender stumbles.`;
+        } else if (outcome.block) {
+            result.desc = `Attack blocked.`;
+        } else if (outcome.dta) {
+            result.desc = `Defender gains Tactical Advantage.`;
+        }
+    } else {
+        if (outcome.atkDice) {
+            result.desc = `Attacker strikes for ${diceFormula(outcome.atkDice, atkAddlImpact)} impact.`;
+        } else if (outcome.atkFumble) {
+            result.desc = `Attacker fumbles.`;
+        } else if (outcome.atkStumble) {
+            result.desc = `Attacker stumbles.`;
+        }
 
-    if (defense === 'counterstrike') {
         if (outcome.defDice) {
             result.csDesc = `Counterstriker strikes for ${diceFormula(outcome.defDice, defAddlImpact)} impact.`;
-        } else if (outcome.atkFumble && outcome.defFumble) {
-            result.desc = 'Attacker fumbles.';
-            result.csDesc = 'Counterstriker fumbles.';
         } else if (outcome.defFumble) {
             result.csDesc = 'Counterstriker fumbles.';
-        } else if (outcome.atkStumble && outcome.defStumble) {
-            result.desc = 'Attacker stumbles.';
-            result.csDesc = 'Counterstriker stumbles.';
         } else if (outcome.defStumble) {
             result.csDesc = 'Counterstriker stumbles.';
         } else if (outcome.block) {
+            result.desc = 'Attacker blocked.';
             result.csDesc = `Counterstriker blocked.`;
         } else if (outcome.dta) {
             result.csDesc = `Counterstriker achieves Tactical Advantage!`
@@ -1236,6 +1255,7 @@ export function meleeCombatResult(atkResult, defResult, defense, atkAddlImpact=0
             result.csDesc = `Counterstrike misses.`;
         }
     }
+
     return result;
 }
 
