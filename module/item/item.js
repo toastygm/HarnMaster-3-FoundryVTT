@@ -18,7 +18,6 @@ export class HarnMasterItem extends Item {
         const data = itemData.data;
 
         let img = null;
-        let container = null;
         let tempWeight = 0;
 
         // Handle marking gear as equipped or carried
@@ -30,17 +29,8 @@ export class HarnMasterItem extends Item {
 
             // Check if the item is in a container
             if (data.container && data.container !== 'on-person') {
-                // Grab the container item
-                if (this.actor && this.actor.items) {
-                    container = this.actor.items.get(data.container);
-                }
-
                 // Anything in a container is unequipped automatically
                 data.isEquipped = false;
-
-                // If an item is in a container, its "isCarried" flag must be the
-                // same as the container.
-                if (container) data.isCarried = container.data.data.isCarried;
             }
         }
 

@@ -236,6 +236,13 @@ export class HarnMasterActor extends Actor {
         });
 
         this.data.items.forEach(it => {
+            if (it.type.endsWith('gear')) {
+                if (it.data.container && it.data.container !== 'on-person') {
+                    const container = this.items.get(it.data.container);
+                    it.data.isCarried = container.data.data.isCarried;
+                }
+            }
+
             switch (it.type) {
                 case 'weapongear':
                     if (!it.data.isCarried) break;
