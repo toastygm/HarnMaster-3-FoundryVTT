@@ -88,20 +88,24 @@ export class HarnMasterActor extends Actor {
         const data = actorData.data;
 
         // Reset all weights
-        actorData.data.totalArmorWeight = 0;
-        actorData.data.totalWeaponWeight = 0;
-        actorData.data.totalMissileWeight = 0;
-        actorData.data.totalMiscGearWeight = 0;
-        actorData.data.totalGearWeight = 0;
+        data.totalArmorWeight = 0;
+        data.totalWeaponWeight = 0;
+        data.totalMissileWeight = 0;
+        data.totalMiscGearWeight = 0;
+        data.totalGearWeight = 0;
         if (this.items) this.itemTypes.containergear.forEach(it => {
             it.data.data.capacity.value = 0;
         });
-        actorData.data.totalInjuryLevels = 0;
+        data.totalInjuryLevels = 0;
 
         if (actorData.type === 'container') {
             this._prepareBaseContainerData(actorData);
             return;
         }
+
+        data.meleeAMLMod = 0;
+        data.meleeDMLMod = 0;
+        data.missileAMLMod = 0;
 
         // Calculate endurance, ensure it is never zero
         data.endurance = Math.round((data.abilities.strength.base + data.abilities.stamina.base +
@@ -171,12 +175,14 @@ export class HarnMasterActor extends Actor {
 
         // All common character and creature derived data below here
 
-        data.meleeAMLMod = 0;
-        data.meleeDMLMod = 0;
-        data.missileAMLMod = 0;
-        data.totalInjuryLevels = 0;
-
         data.encumbrance = Math.floor(data.totalGearWeight / data.endurance);
+
+        // Injury Calculations First
+        this.data.items.forEach(it => {
+            if (it.type === 'injury') {
+                if (it.data.injuryLevel > 0) data.totalInjuryLevels += it.data.injuryLevel;
+            }
+        });
 
         // Universal Penalty and Physical Penalty are used to calculate many
         // things, including effectiveMasteryLevel for all skills,

@@ -191,7 +191,6 @@ export class HarnMasterItem extends Item {
             // Just make sure if injuryLevel is negative, we set it to zero
             if (data.injuryLevel < 0) data.injuryLevel = 0;
 
-            if (this.actor) actorData.data.totalInjuryLevels += data.injuryLevel;
             if (data.injuryLevel === 0) {
                 data.severity = '';
             } else if (data.injuryLevel == 1) {
