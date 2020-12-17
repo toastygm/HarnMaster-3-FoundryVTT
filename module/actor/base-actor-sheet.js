@@ -564,6 +564,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         // Toggle improve state
         html.find('.item-improve').click(this._onToggleImprove.bind(this));
+
+        // More Info
+        html.find('.more-info').click(this._onMoreInfo.bind(this));
     }
 
     /* -------------------------------------------- */
@@ -930,6 +933,18 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             }
         }
 
+        return null;
+    }
+
+    async _onMoreInfo(event) {
+        event.preventDefault();
+        const journalEntry = event.currentTarget.dataset.journalEntry;
+
+        //const helpJournal = await game.packs.find(p => p.collection === `hm3.hm3-system-help`).getContent();
+        //const article = helpJournal.find(i => i.name === journalEntry);
+        //article.sheet.render(true, {editable: false});
+        const article = game.journal.getName(journalEntry);
+        article.sheet.render(true);
         return null;
     }
 
