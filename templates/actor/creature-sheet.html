@@ -240,10 +240,18 @@
                         <li class="ability"></li>
                     </ul>
                 </div>
-                <div class="profile-desc flexcol">
-                    <label class="label">Description</label>
-                    <div class="description">
-                        {{editor content=data.biography target="data.biography" button=true owner=owner editable=editable}}
+                <div class="flexcol">
+                    <div class="profile-params">
+                        <div class="flexrow profile-item">
+                            <label class="label">Load Rating</label>
+                            <input type="text" class="value" name="data.loadRating" value="{{data.loadRating}}" data-dtype="Number">
+                        </div>
+                    </div>
+                    <div class="profile-desc flexcol">
+                        <label class="label">Description</label>
+                        <div class="description">
+                            {{editor content=data.biography target="data.biography" button=true owner=owner editable=editable}}
+                        </div>
                     </div>
                 </div>
             </div>
