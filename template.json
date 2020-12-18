@@ -95,6 +95,9 @@
     },
     "container": {
       "templates": [],
+      "bioImage": "systems/hm3/images/icons/svg/chest.svg",
+      "description": "",
+      "macros": {},
       "capacity": {
         "max": 0,
         "value": 0
