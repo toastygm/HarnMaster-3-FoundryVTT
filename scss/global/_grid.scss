@@ -3,10 +3,13 @@
   display: grid;
   grid-column: span 2 / span 2;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-rows: 25px 5px;
   gap: 10px;
   margin: 10px 0;
   padding: 0;
+}
+
+.grid-fixed-row {
+  grid-template-rows: 25px 5px;
 }
 
 .grid-3col {
