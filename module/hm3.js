@@ -102,6 +102,12 @@ Hooks.once("ready", function() {
 
   Hooks.on("hotbarDrop", (bar, data, slot) => macros.createHM3Macro(data, slot));
   HM3.ready = true;
+  if (game.settings.get("hm3", "showWelcomeDialog")) {
+    welcomeDialog().then(showAgain => {
+
+      game.settings.set("hm3", "showWelcomeDialog", showAgain);
+    });
+  }
 });
 
 // Since HM3 does not have the concept of rolling for initiative,
@@ -114,6 +120,24 @@ Hooks.on('preCreateCombatant', (combat, combatant, options, id) => {
   }
 });
 
+async function welcomeDialog() {
+  const dlgTemplate = 'systems/hm3/templates/dialog/welcome.html';
+  const html = await renderTemplate(dlgTemplate, {});
+
+  // Create the dialog window
+  return Dialog.prompt({
+    title: 'Welcome!',
+    content: html,
+    label: 'OK',
+    callback: html => {
+        const form = html.querySelector("#welcome");
+        const fd = new FormDataExtended(form);
+        const data = fd.toObject();
+        return data.showOnStartup;
+      },
+    options: { jQuery: false }
+  });
+}
 
 /*-------------------------------------------------------*/
 /*            Handlebars FUNCTIONS                       */

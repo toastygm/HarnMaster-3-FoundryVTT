@@ -9,6 +9,16 @@ export const registerSystemSettings = function () {
         default: 0
     });
 
+    game.settings.register("hm3", "showWelcomeDialog", {
+        name: "Show Welcome Dialog On Start",
+        hint: "Display the welcome dialog box when the user logs in.",
+        scope: "client",
+        config: true,
+        type: Boolean,
+        default: true
+
+    });
+
     game.settings.register("hm3", "weaponDamage", {
         name: "Weapon Damage",
         hint: "Enable optional combat rule that allows weapons to be damaged or destroyed on successful block (Combat 12)",
