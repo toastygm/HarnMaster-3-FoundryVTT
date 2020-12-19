@@ -21,7 +21,6 @@
                     </div>
                 </div>
                 <div class="header-attributes">
-                    <textarea class="description" id="data.description" name="data.description" placeholder="Description">{{data.description}}</textarea>
                 </div>
             </div>
         </div>
@@ -30,7 +29,6 @@
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
         <a class="item" data-tab="facade">Fa&#231;ade</a>
-        <a class="item" data-tab="profile">Profile</a>
         <a class="item" data-tab="inventory">Contents</a>
     </nav>
 
@@ -43,16 +41,6 @@
                 <img class="facade-image" src="{{data.bioImage}}" data-edit="data.bioImage" title="{{actor.name}}" height="300" width="200" />
                 <div class="facade-description">
                     {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
-                </div>
-            </div>
-        </div>
-
-        {{!-- Profile Tab --}}
-        <div class="tab profile" data-group="primary" data-tab="profile">
-            <div class="profile-desc flexcol">
-                <label class="label">Description</label>
-                <div class="description">
-                    {{editor content=data.biography target="data.biography" button=true owner=owner editable=editable}}
                 </div>
             </div>
         </div>
