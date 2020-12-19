@@ -10,6 +10,7 @@
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="properties">Properties</a>
     <a class="item" data-tab="description">Description</a>
+    <a class="item" data-tab="effects">effects</a>
   </nav>
 
   {{!-- Sheet Body --}}
@@ -41,5 +42,36 @@
     <div class="tab description" data-group="primary" data-tab="description">
         {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
     </div>
-  </section>
+
+    {{!-- Effects Tab --}}
+    <div class="tab effects" data-group="primary" data-tab="effects">
+        <ol class="effects-list">
+            <li class="effects-header flexrow">
+                <h3 class="effect-name flexrow">Effect</h3>
+                <div class="effect-source">Source</div>
+                <div class="effect-source">Duration</div>
+                <a class="effect-controls effect-control" title="Add Effect" data-action="create"><i
+                    class="fas fa-plus"></i> Add</a>
+            </li>
+        
+            <ol class="effect-list item-list">
+            {{#each actor.effects as |effect id|}}
+                <li class="effect {{#if effect.disabled}}disabled{{/if}} flexrow" data-effect-id="{{effect._id}}">
+                    <div class="effect-name flexrow">
+                        <div class="effect-image" style="background-image: url('{{effect.icon}}')"></div>
+                        <h4>{{effect.label}}</h4>
+                    </div>
+                    <div class="effect-source">{{effect.sourceName}}</div>
+                    <div class="effect-duration">{{lookup ../effectDuration effect._id}}</div>
+                    <div class="effect-controls">
+                        <a class="effect-control" data-action="toggle"><i class="{{#unless effect.disabled}}active{{/unless}} fas fa-circle-notch"></i></a>
+                        <a class="effect-control" data-action="edit"><i class="active fas fa-edit"></i></a>
+                        <a class="effect-control" data-action="delete"><i class="active fas fa-trash"></i></a>
+                    </div>
+                </li>
+            {{/each}}
+            </ol>
+        </ol>
+    </div>
+</section>
 </form>

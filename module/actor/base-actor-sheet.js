@@ -4,6 +4,7 @@ import { HM3 } from "../config.js";
 //import { ImportFFF } from "../import-char.js";
 import * as utility from '../utility.js';
 import * as macros from '../macros.js';
+import { onManageActiveEffect } from '../effect.js';
 
 /**
  * Extend the basic ActorSheet with some common capabilities
@@ -56,6 +57,18 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             'miscgear': 'Misc. Gear',
             'containergear': 'Container'
         };
+
+        // get active effects.
+        data.effects = {};
+        this.actor.effects.forEach(effect => {
+            data.effects[effect.id] = {
+                id: effect.id,
+                duration: effect.duration,
+                name: effect.data.label,
+                source: effect.source,
+                data: effect.data
+            };
+        });
 
         return data;
     }
@@ -357,7 +370,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         html.find('.item-dumpdesc').click(this._onDumpEsotericDescription.bind(this));
 
         // Active Effect management
-        html.find(".effect-control").click(this._onManageActiveEffect.bind(this));
+        html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.entity));
 
         // Ensure all text is selected when entering text input field
         html.on("click", "input[type='text']", ev => {
@@ -882,34 +895,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         item.sheet.render(true);
 
         return result;
-    }
-
-    _onManageActiveEffect(event) {
-        event.preventDefault();
-        const a = event.currentTarget;
-        let effect = null;
-        if (a.dataset.action !== 'create') {
-            const li = a.closest(".effect");
-            console.log(li);
-            effect = this.actor.effects.get(li.dataset.effectId);
-            console.log(effect);
-        }
-        switch (a.dataset.action) {
-            case "create":
-                effect = ActiveEffect.create({label: 'New Effect'}, this.actor);
-                effect.create().then((eff) => {
-                    const e = this.actor.effects.get(eff._id);
-                    console.log(e);
-                    return new ActiveEffectConfig(e).render(true);
-                });
-                return;
-            case "edit":
-                return new ActiveEffectConfig(effect).render(true);
-            case "delete":
-                return effect.delete();
-            case "toggle":
-                return effect.update({ disabled: !effect.data.disabled });
-        }
     }
 
     /**

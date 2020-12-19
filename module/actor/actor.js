@@ -52,7 +52,7 @@ export class HarnMasterActor extends Actor {
                 default: 'yes'
             }).render(true);
         } else if (data.type === 'creature') {
-            
+
             // Create Creature Default Skills
             this._createDefaultCreatureSkills(data).then(result => {
                 super.create(data, options); // Follow through the the rest of the Actor creation process upstream
@@ -96,16 +96,25 @@ export class HarnMasterActor extends Actor {
         if (this.items) this.itemTypes.containergear.forEach(it => {
             it.data.data.capacity.value = 0;
         });
-        data.totalInjuryLevels = 0;
+
+        // Calculate weight of gear
+        if (this.items) this._calcGearWeightTotals(data);
+
 
         if (actorData.type === 'container') {
             this._prepareBaseContainerData(actorData);
             return;
         }
 
-        data.meleeAMLMod = 0;
-        data.meleeDMLMod = 0;
-        data.missileAMLMod = 0;
+        data.encumbrance = Math.floor(data.totalGearWeight / data.endurance);
+
+        // Injury Calculations
+        data.totalInjuryLevels = 0;
+        this.data.items.forEach(it => {
+            if (it.type === 'injury') {
+                if (it.data.injuryLevel > 0) data.totalInjuryLevels += it.data.injuryLevel;
+            }
+        });
 
         // Calculate endurance, ensure it is never zero
         data.endurance = Math.round((data.abilities.strength.base + data.abilities.stamina.base +
@@ -118,6 +127,26 @@ export class HarnMasterActor extends Actor {
             }
         });
         data.endurance = data.endurance || 1;
+
+        // Setup temporary work values masking the base values
+        data.move.work = data.move.base;
+        data.abilities.strength.work = data.abilities.strength.base;
+        data.abilities.stamina.work = data.abilities.stamina.base;
+        data.abilities.dexterity.work = data.abilities.dexterity.base;
+        data.abilities.agility.work = data.abilities.agility.base;
+        data.abilities.eyesight.work = data.abilities.eyesight.base;
+        data.abilities.hearing.work = data.abilities.hearing.base;
+        data.abilities.smell.work = data.abilities.smell.base;
+        data.abilities.voice.work = data.abilities.voice.base;
+        data.abilities.intelligence.work = data.abilities.intelligence.base;
+        data.abilities.will.work = data.abilities.will.base;
+        data.abilities.aura.work = data.abilities.aura.base;
+        data.abilities.morality.work = data.abilities.morality.base;
+        data.abilities.comliness.work = data.abilities.comliness.base;
+    
+        data.meleeAMLMod = 0;
+        data.meleeDMLMod = 0;
+        data.missileAMLMod = 0;
 
         // Make separate methods for each Actor type (character, npc, etc.) to keep
         // things organized.
@@ -151,7 +180,7 @@ export class HarnMasterActor extends Actor {
             data.bioImage = 'systems/hm3/images/svg/monster-silhouette.svg';
         }
     }
-    
+
     _prepareBaseContainerData(actorData) {
         const data = actorData.data;
         if (data.description === '***INIT***') {
@@ -159,7 +188,7 @@ export class HarnMasterActor extends Actor {
             data.description = '';
             data.bioImage = 'systems/hm3/images/icons/svg/chest.svg';
             actorData.img = 'systems/hm3/images/icons/svg/chest.svg';
-       }
+        }
     }
 
     /** @override */
@@ -168,8 +197,11 @@ export class HarnMasterActor extends Actor {
         const actorData = this.data;
         const data = actorData.data;
 
-        // Complete handling item containers now that all items are available
-        this._calcGearWeightTotals(data);
+        data.fatigue = Math.round(data.fatigue + Number.EPSILON);
+        data.encumbrance = Math.round(data.encumbrance + Number.EPSILON);
+        data.endurance = Math.round(data.endurance + Number.EPSILON);
+        data.totalInjuryLevels = Math.round(data.totalInjuryLevels + Number.EPSILON);
+        data.move.effective = Math.round(data.move.work + Number.EPSILON);
 
         if (actorData.type === 'container') {
             this._prepareDerivedContainerData(actorData);
@@ -177,15 +209,6 @@ export class HarnMasterActor extends Actor {
         }
 
         // All common character and creature derived data below here
-
-        data.encumbrance = Math.floor(data.totalGearWeight / data.endurance);
-
-        // Injury Calculations First
-        this.data.items.forEach(it => {
-            if (it.type === 'injury') {
-                if (it.data.injuryLevel > 0) data.totalInjuryLevels += it.data.injuryLevel;
-            }
-        });
 
         // Universal Penalty and Physical Penalty are used to calculate many
         // things, including effectiveMasteryLevel for all skills,
@@ -207,11 +230,11 @@ export class HarnMasterActor extends Actor {
         this._setupEffectiveAbilities(data);
 
         // Calculate current Move speed.  Cannot go below 0
-        data.move.effective = Math.max(data.move.base - data.physicalPenalty, 0);
+        data.move.effective = Math.max(data.move.effective - data.physicalPenalty, 0);
 
         // Calculate Important Roll Targets
-        data.stumbleTarget = Math.max(data.abilities.agility.base - data.physicalPenalty, 0);
-        data.fumbleTarget = Math.max(data.abilities.dexterity.base - data.physicalPenalty, 0);
+        data.stumbleTarget = Math.max(data.abilities.agility.effective - data.physicalPenalty, 0);
+        data.fumbleTarget = Math.max(data.abilities.dexterity.effective - data.physicalPenalty, 0);
 
         // Collect all combat skills into a map for use later
         let combatSkills = {};
@@ -223,7 +246,7 @@ export class HarnMasterActor extends Actor {
                 }
             }
         });
-        
+
         // Calculate spell effective mastery level values
         this._refreshSpellsAndInvocations();
 
@@ -287,7 +310,7 @@ export class HarnMasterActor extends Actor {
                 const cid = it.data.container;
                 if (cid && cid != 'on-person') {
                     const container = this.items.get(cid);
-                    container.data.data.capacity.value = Math.round((container.data.data.capacity.value + tempWeight + Number.EPSILON)*100)/100;
+                    container.data.data.capacity.value = Math.round((container.data.data.capacity.value + tempWeight + Number.EPSILON) * 100) / 100;
                 }
             }
         });
@@ -329,23 +352,23 @@ export class HarnMasterActor extends Actor {
 
     _setupEffectiveAbilities(data) {
         // Affected by physical penalty
-        data.abilities.strength.effective = Math.max(data.abilities.strength.base - data.physicalPenalty, 0);
-        data.abilities.stamina.effective = Math.max(data.abilities.stamina.base - data.physicalPenalty, 0);
-        data.abilities.agility.effective = Math.max(data.abilities.agility.base - data.physicalPenalty, 0);
-        data.abilities.dexterity.effective = Math.max(data.abilities.dexterity.base - data.physicalPenalty, 0);
-        data.abilities.eyesight.effective = Math.max(data.abilities.eyesight.base - data.physicalPenalty, 0);
-        data.abilities.hearing.effective = Math.max(data.abilities.hearing.base - data.physicalPenalty, 0);
-        data.abilities.smell.effective = Math.max(data.abilities.smell.base - data.physicalPenalty, 0);
-        data.abilities.voice.effective = Math.max(data.abilities.voice.base - data.physicalPenalty, 0);
+        data.abilities.strength.effective = Math.max(Math.round(data.abilities.strength.work + Number.EPSILON) - data.physicalPenalty, 0);
+        data.abilities.stamina.effective = Math.max(Math.round(data.abilities.stamina.work + Number.EPSILON) - data.physicalPenalty, 0);
+        data.abilities.agility.effective = Math.max(Math.round(data.abilities.agility.work + Number.EPSILON) - data.physicalPenalty, 0);
+        data.abilities.dexterity.effective = Math.max(Math.round(data.abilities.dexterity.work + Number.EPSILON) - data.physicalPenalty, 0);
+        data.abilities.eyesight.effective = Math.max(Math.round(data.abilities.eyesight.work + Number.EPSILON) - data.physicalPenalty, 0);
+        data.abilities.hearing.effective = Math.max(Math.round(data.abilities.hearing.work + Number.EPSILON) - data.physicalPenalty, 0);
+        data.abilities.smell.effective = Math.max(Math.round(data.abilities.smell.work + Number.EPSILON) - data.physicalPenalty, 0);
+        data.abilities.voice.effective = Math.max(Math.round(data.abilities.voice.work + Number.EPSILON) - data.physicalPenalty, 0);
 
         // Affected by universal penalty
-        data.abilities.intelligence.effective = Math.max(data.abilities.intelligence.base - data.universalPenalty, 0);
-        data.abilities.aura.effective = Math.max(data.abilities.aura.base - data.universalPenalty, 0);
-        data.abilities.will.effective = Math.max(data.abilities.will.base - data.universalPenalty, 0);
+        data.abilities.intelligence.effective = Math.max(Math.round(data.abilities.intelligence.work + Number.EPSILON) - data.universalPenalty, 0);
+        data.abilities.aura.effective = Math.max(Math.round(data.abilities.aura.work + Number.EPSILON) - data.universalPenalty, 0);
+        data.abilities.will.effective = Math.max(Math.round(data.abilities.will.work + Number.EPSILON) - data.universalPenalty, 0);
 
         // Not affected by any penalties
-        data.abilities.comliness.effective = Math.max(data.abilities.comliness.base, 0);
-        data.abilities.morality.effective = Math.max(data.abilities.morality.base, 0);
+        data.abilities.comliness.effective = Math.max(Math.round(data.abilities.comliness.work + Number.EPSILON), 0);
+        data.abilities.morality.effective = Math.max(Math.round(data.abilities.morality.work + Number.EPSILON), 0);
     }
 
     /**
@@ -424,7 +447,7 @@ export class HarnMasterActor extends Actor {
         this.data.items.forEach(it => {
             if (it.type === 'spell' && it.data.convocation && it.data.convocation.toLowerCase() === lcConvocation) {
                 it.data.effectiveMasteryLevel = Math.max(eml - (it.data.level * 5), 5);
-                it.data.skillIndex = Math.floor(ml/10);
+                it.data.skillIndex = Math.floor(ml / 10);
                 it.data.masteryLevel = ml;
                 it.data.skillBase = sb;
             }
@@ -438,7 +461,7 @@ export class HarnMasterActor extends Actor {
         this.data.items.forEach(it => {
             if (it.type === 'invocation' && it.data.diety && it.data.diety.toLowerCase() === lcDiety) {
                 it.data.effectiveMasteryLevel = Math.max(eml - (it.data.circle * 5), 5);
-                it.data.skillIndex = Math.floor(ml/10);
+                it.data.skillIndex = Math.floor(ml / 10);
                 it.data.masteryLevel = ml;
                 it.data.skillBase = sb;
             }
@@ -619,27 +642,27 @@ export class HarnMasterActor extends Actor {
         }
     }
 
-    static _normalcdf(x){
-        var t=1/(1+.2316419*Math.abs(x));
-        var d=.3989423*Math.exp(-x*x/2);
-        var prob=d*t*(.3193815+t*(-.3565638+t*(1.781478+t*(-1.821256+t*1.330274))));
-        if (x>0) {
-            prob=1-prob
+    static _normalcdf(x) {
+        var t = 1 / (1 + .2316419 * Math.abs(x));
+        var d = .3989423 * Math.exp(-x * x / 2);
+        var prob = d * t * (.3193815 + t * (-.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+        if (x > 0) {
+            prob = 1 - prob
         }
         return prob
-    }   
-    
+    }
+
     static _normProb(z, mean, sd) {
         let prob;
-        if (sd==0) {
-            prob = z<mean ? 0 : 100;
+        if (sd == 0) {
+            prob = z < mean ? 0 : 100;
         } else {
-            prob=Math.round(this._normalcdf((z-mean)/sd)*100);
+            prob = Math.round(this._normalcdf((z - mean) / sd) * 100);
         }
-        
+
         return prob;
     }
-    
+
     async skillDevRoll(item) {
         const result = await DiceHM3.sdrRoll(item.data);
 
@@ -720,30 +743,30 @@ export class HarnMasterActor extends Actor {
                 break;
 
             case 'dta-attack':
-                macros.weaponAttack(null,false, atkToken, true);
+                macros.weaponAttack(null, false, atkToken, true);
                 break;
 
             case 'dodge':
-                combat.dodgeResume(atkToken, defToken, button.dataset.weaponType, button.dataset.weapon, 
-                    button.dataset.effAml, button.dataset.aim, 
+                combat.dodgeResume(atkToken, defToken, button.dataset.weaponType, button.dataset.weapon,
+                    button.dataset.effAml, button.dataset.aim,
                     button.dataset.aspect, button.dataset.impactMod)
                 break;
 
             case 'ignore':
-                combat.ignoreResume(atkToken, defToken, button.dataset.weaponType, button.dataset.weapon, 
-                    button.dataset.effAml, button.dataset.aim, 
+                combat.ignoreResume(atkToken, defToken, button.dataset.weaponType, button.dataset.weapon,
+                    button.dataset.effAml, button.dataset.aim,
                     button.dataset.aspect, button.dataset.impactMod)
                 break;
 
             case 'block':
-                combat.blockResume(atkToken, defToken, button.dataset.weaponType, button.dataset.weapon, 
-                    button.dataset.effAml, button.dataset.aim, 
+                combat.blockResume(atkToken, defToken, button.dataset.weaponType, button.dataset.weapon,
+                    button.dataset.effAml, button.dataset.aim,
                     button.dataset.aspect, button.dataset.impactMod)
                 break;
 
             case 'counterstrike':
-                combat.meleeCounterstrikeResume(atkToken, defToken, button.dataset.weapon, 
-                    button.dataset.effAml, button.dataset.aim, 
+                combat.meleeCounterstrikeResume(atkToken, defToken, button.dataset.weapon,
+                    button.dataset.effAml, button.dataset.aim,
                     button.dataset.aspect, button.dataset.impactMod)
                 break;
 
@@ -768,33 +791,33 @@ export class HarnMasterActor extends Actor {
 
         const physicalSkills = await game.packs.find(p => p.collection === `hm3.std-skills-physical`).getContent();
         itemData = duplicate(physicalSkills.find(i => i.name === 'Climbing'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
         itemData = duplicate(physicalSkills.find(i => i.name === 'Jumping'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
         itemData = duplicate(physicalSkills.find(i => i.name === 'Stealth'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
         itemData = duplicate(physicalSkills.find(i => i.name === 'Throwing'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
 
         const commSkills = await game.packs.find(p => p.collection === `hm3.std-skills-communication`).getContent();
         itemData = duplicate(commSkills.find(i => i.name === 'Awareness'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
         itemData = duplicate(commSkills.find(i => i.name === 'Intrigue'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
         itemData = duplicate(commSkills.find(i => i.name === 'Oratory'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
         itemData = duplicate(commSkills.find(i => i.name === 'Rhetoric'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
         itemData = duplicate(commSkills.find(i => i.name === 'Singing'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
 
         const combatSkills = await game.packs.find(p => p.collection === `hm3.std-skills-combat`).getContent();
         itemData = duplicate(combatSkills.find(i => i.name === 'Initiative'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
         itemData = duplicate(combatSkills.find(i => i.name === 'Unarmed'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
         itemData = duplicate(combatSkills.find(i => i.name === 'Dodge'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
     }
 
     static async _createDefaultCreatureSkills(data) {
@@ -802,11 +825,11 @@ export class HarnMasterActor extends Actor {
 
         const combatSkills = await game.packs.find(p => p.collection === `hm3.std-skills-combat`).getContent();
         itemData = duplicate(combatSkills.find(i => i.name === 'Initiative'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
         itemData = duplicate(combatSkills.find(i => i.name === 'Unarmed'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
         itemData = duplicate(combatSkills.find(i => i.name === 'Dodge'));
-        data.items.push(new Item({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data}).data);
+        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
     }
 
     static _createDefaultHumanoidLocations(data) {

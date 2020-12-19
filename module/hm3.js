@@ -5,6 +5,7 @@ import { HarnMasterCreatureSheet } from "./actor/creature-sheet.js"
 import { HarnMasterContainerSheet } from "./actor/container-sheet.js"
 import { HarnMasterItem } from "./item/item.js";
 import { HarnMasterItemSheet } from "./item/item-sheet.js";
+import { HM3ActiveEffectConfig } from "./hm3-active-effect-config.js";
 import { HM3 } from "./config.js";
 import { DiceHM3 } from "./dice-hm3.js";
 import { registerSystemSettings } from "./settings.js";
@@ -34,7 +35,9 @@ Hooks.once('init', async function() {
   };
 
   CONFIG.HM3 = HM3;
-  
+//  CONFIG.ActiveEffect.entityClass = HM3ActiveEffect;
+  CONFIG.ActiveEffect.sheetClass = HM3ActiveEffectConfig;
+
   // Register system settings
   registerSystemSettings();
 

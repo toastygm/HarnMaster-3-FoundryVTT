@@ -1,3 +1,5 @@
+import { onManageActiveEffect } from '../effect.js';
+
 /**
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
@@ -32,15 +34,15 @@ export class HarnMasterItemSheet extends ItemSheet {
     data.hasRitualSkills = false;
     data.hasMagicSkills = false;
 
-    data.containers = {'On Person': 'on-person'};
+    data.containers = { 'On Person': 'on-person' };
     // Containers are not allowed in other containers.  So if this item is a container,
     // don't show any other containers.
 
     if (this.actor && this.item.data.type !== 'containergear') {
       this.actor.items.forEach(it => {
-          if (it.type === 'containergear') {
-              data.containers[it.name] = it.id;
-          }
+        if (it.type === 'containergear') {
+          data.containers[it.name] = it.id;
+        }
       });
     }
 
@@ -50,10 +52,10 @@ export class HarnMasterItemSheet extends ItemSheet {
       data.convocations = [];
       if (this.actor) {
         this.actor.itemTypes.skill.forEach(it => {
-            if (it.data.data.type === 'Magic') {
-                data.convocations.push(it.data.name);
-                data.hasMagicSkills = true;
-            }
+          if (it.data.data.type === 'Magic') {
+            data.convocations.push(it.data.name);
+            data.hasMagicSkills = true;
+          }
         });
       }
     } else if (this.item.data.type === 'invocation') {
@@ -61,15 +63,15 @@ export class HarnMasterItemSheet extends ItemSheet {
       data.dieties = [];
       if (this.actor) {
         this.actor.itemTypes.skill.forEach(it => {
-            if (it.data.data.type === 'Ritual') {
-                data.dieties.push(it.data.name);
-                data.hasRitualSkills = true;
-            }
+          if (it.data.data.type === 'Ritual') {
+            data.dieties.push(it.data.name);
+            data.hasRitualSkills = true;
+          }
         });
       }
     } else if (this.item.data.type === 'weapongear' ||
-              this.item.data.type === 'missilegear') {
-      
+      this.item.data.type === 'missilegear') {
+
       // Weapons need a list of combat skills
       data.combatSkills = [];
 
@@ -87,17 +89,29 @@ export class HarnMasterItemSheet extends ItemSheet {
 
         this.actor.itemTypes.skill.forEach(it => {
           if (it.data.data.type === 'Combat') {
-              const lcName = it.data.name.toLowerCase();
-              // Ignore the 'Dodge' and 'Initiative' skills,
-              // since you never want a weapon based on those skills.
-              if (!(lcName === 'initiative' || lcName === 'dodge')) {
-                  data.combatSkills.push(it.data.name);
-                  data.hasCombatSkills = true;
-              }
+            const lcName = it.data.name.toLowerCase();
+            // Ignore the 'Dodge' and 'Initiative' skills,
+            // since you never want a weapon based on those skills.
+            if (!(lcName === 'initiative' || lcName === 'dodge')) {
+              data.combatSkills.push(it.data.name);
+              data.hasCombatSkills = true;
+            }
           }
         });
       }
     }
+
+    // get active effects.
+    data.effects = {};
+    this.item.effects.forEach(effect => {
+      data.effects[effect.id] = {
+        id: effect.id,
+        duration: effect.duration,
+        name: effect.data.label,
+        source: effect.source,
+        data: effect.data
+      };
+    });
 
     return data;
   }
@@ -131,10 +145,14 @@ export class HarnMasterItemSheet extends ItemSheet {
     html.on("keypress", ".properties", ev => {
       var keycode = (ev.keyCode ? ev.keyCode : ev.which);
       if (keycode == '13') {
-          super.close();
+        super.close();
       }
     });
-  
+
+    html.find(".effect-control").click(ev => {
+      if ( this.item.isOwned ) return ui.notifications.warn("Managing Active Effects within an Owned Item is not supported.")
+      onManageActiveEffect(ev, this.item)
+    });
 
     // Add Inventory Item
     html.find('.armorgear-location-add').click(this._armorgearLocationAdd.bind(this));
@@ -146,7 +164,7 @@ export class HarnMasterItemSheet extends ItemSheet {
   async _armorgearLocationAdd(event) {
     const dataset = event.currentTarget.dataset;
     const data = this.item.data.data;
-    
+
     await this._onSubmit(event);  // Submit any unsaved changes
 
     // Clone the existing locations list if it exists, otherwise set to empty array
@@ -161,13 +179,13 @@ export class HarnMasterItemSheet extends ItemSheet {
     }
 
     // Update the list on the server
-    return this.item.update({"data.locations": locations});
+    return this.item.update({ "data.locations": locations });
   }
 
   async _armorgearLocationDelete(event) {
     const dataset = event.currentTarget.dataset;
     const data = this.item.data.data;
-    
+
     await this._onSubmit(event);   // Submit any unsaved changes
 
     // Clone the location list (we don't want to touch the actual list)
@@ -180,6 +198,6 @@ export class HarnMasterItemSheet extends ItemSheet {
     }
 
     // Update the list on the server
-    return this.item.update({"data.locations": locations});
+    return this.item.update({ "data.locations": locations });
   }
 }

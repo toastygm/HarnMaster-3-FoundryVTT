@@ -1212,17 +1212,17 @@
             
                 <ol class="effect-list item-list">
                 {{#each actor.effects as |effect id|}}
-                    <li class="effect flexrow" data-effect-id="{{effect._id}}">
+                    <li class="effect {{#if effect.disabled}}disabled{{/if}} flexrow" data-effect-id="{{effect._id}}">
                         <div class="effect-name flexrow">
-                            <img class="effect-icon" src="{{data.icon}}"/>
-                            <h4>{{effect.data}}</h4>
+                            <div class="effect-image" style="background-image: url('{{effect.icon}}')"></div>
+                            <h4>{{effect.label}}</h4>
                         </div>
                         <div class="effect-source">{{effect.sourceName}}</div>
-                        <div class="effect-duration">{{effect.duration.label}}</div>
+                        <div class="effect-duration">{{lookup ../effectDuration effect._id}}</div>
                         <div class="effect-controls">
-                            <a class="effect-control" data-action="toggle"><i class="fas fa-circle-notch"></i></a>
-                            <a class="effect-control" data-action="edit"><i class="fas fa-edit"></i></a>
-                            <a class="effect-control" data-action="delete"><i class="fas fa-trash"></i></a>
+                            <a class="effect-control" data-action="toggle"><i class="{{#unless effect.disabled}}active{{/unless}} fas fa-circle-notch"></i></a>
+                            <a class="effect-control" data-action="edit"><i class="active fas fa-edit"></i></a>
+                            <a class="effect-control" data-action="delete"><i class="active fas fa-trash"></i></a>
                         </div>
                     </li>
                 {{/each}}

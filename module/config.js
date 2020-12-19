@@ -48,6 +48,30 @@ HM3.injuryLocations = {
 
 HM3.injuryLevels = ["NA", "M1", "S2", "S3", "G4", "G5", "K4", "K5"];
 
+HM3.activeEffectKey = {
+    'data.meleeAMLMod': 'Melee Attack',
+    'data.meleeDMLMod': 'Melee Defence',
+    'data.missileAMLMod': 'Missile Attack',
+    'data.fatigue': 'Fatigue',
+    'data.encumbrance': 'Encumbrance',
+    'data.endurance': 'Endurance',
+    'data.totalInjuryLevels': 'Injury Level',
+    'data.move.work': 'Move',
+    'data.abilities.strength.work': 'Strength',
+    'data.abilities.stamina.work': 'Stamina',
+    'data.abilities.dexterity.work': 'Dexterity',
+    'data.abilities.agility.work': 'Agility',
+    'data.abilities.eyesight.work': 'Eyesight',
+    'data.abilities.hearing.work': 'Hearing',
+    'data.abilities.smell.work': 'Smell',
+    'data.abilities.voice.work': 'Voice',
+    'data.abilities.intelligence.work': 'Intelligence',
+    'data.abilities.will.work': 'Will',
+    'data.abilities.aura.work': 'Aura',
+    'data.abilities.morality.work': 'Morality',
+    'data.abilities.comliness.work': 'Comeliness'
+};
+
 HM3.defaultMagicIconName = 'pentacle';
 HM3.defaultRitualIconName = 'circle';
 HM3.defaultMiscItemIconName = 'miscgear';
