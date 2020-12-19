@@ -27,7 +27,7 @@
 
         {{!-- Properties Tab --}}
         <div class="tab properties" data-group="primary" data-tab="properties">
-            <div class="grid grid-4col">
+            <div class="grid grid-fixed-row grid-4col">
                 <div class="resource">
                     <label class="resource-label">Quantity</label>
                     <input type="number" name="data.quantity" value="{{data.quantity}}" readonly data-dtype="Number"/>
@@ -60,7 +60,7 @@
             {{#if data.arcane.isArtifact}}
             <fieldset>
                 <legend>Artifact Properties</legend>
-                <div class="grid grid-3col">
+                <div class="grid grid-fixed-row grid-3col">
                     <div class="resource">
                         <input type="checkbox" name="data.arcane.isAttuned" value="{{data.arcane.isAttuned}}" data-dtype="Boolean" {{checked data.arcane.isAttuned}} />
                         <label class="resource-label">Attuned</label>

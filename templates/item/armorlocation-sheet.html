@@ -10,7 +10,7 @@
     <section class="armorlocation properties sheet-body">
         <fieldset>
             <legend>Basic Armor Settings</legend>
-            <div class="grid grid-2col">
+            <div class="grid grid-fixed-row grid-2col">
                 <div class="basic-setting">
                     <label class="label">Layers</label>
                     <input class="value" type="text" name="data.layers" value="{{data.layers}}" data-dtype="String"/>
@@ -24,7 +24,7 @@
                 <label class="resource-label">Note</label>
                 <input type="text" name="data.notes" value="{{data.notes}}" data-dtype="String"/>
             </div>
-            <div class="grid grid-4col">
+            <div class="grid grid-fixed-row grid-4col">
                 <div class="protection">
                     <label class="label">Blunt</label>
                     <input class="value" type="number" name="data.blunt" value="{{data.blunt}}" data-dtype="Number"/>
@@ -45,7 +45,7 @@
         </fieldset>
         <fieldset>
             <legend>Hit Probability Weights</legend>
-            <div class="weight grid grid-3col">
+            <div class="weight grid grid-fixed-row grid-3col">
                 <div class="prob-weight">
                     <label class="label">High Aim</label>
                     <input class="value" type="number" name="data.probWeight.high" value="{{data.probWeight.high}}" data-dtype="Number"/>

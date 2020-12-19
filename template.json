@@ -95,6 +95,9 @@
     },
     "container": {
       "templates": [],
+      "bioImage": "systems/hm3/images/icons/svg/chest.svg",
+      "description": "",
+      "macros": {},
       "capacity": {
         "max": 0,
         "value": 0
@@ -103,7 +106,7 @@
   },
   "Item": {
     "types": ["skill", "spell", "invocation", "psionic", "weapongear", "containergear",
-      "missilegear", "armorgear", "miscgear", "injury", "armorlocation"],
+      "missilegear", "armorgear", "miscgear", "injury", "armorlocation", "trait"],
     "templates": {
       "base": {
         "notes": "",
@@ -250,6 +253,10 @@
         "mid": 1,
         "low": 1
       }
+    },
+    "trait": {
+      "templates": ["base"],
+      "type": "Physical"
     }
   }
 }
