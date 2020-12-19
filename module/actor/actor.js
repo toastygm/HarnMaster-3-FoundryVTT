@@ -197,18 +197,18 @@ export class HarnMasterActor extends Actor {
         const actorData = this.data;
         const data = actorData.data;
 
-        data.fatigue = Math.round(data.fatigue + Number.EPSILON);
-        data.encumbrance = Math.round(data.encumbrance + Number.EPSILON);
-        data.endurance = Math.round(data.endurance + Number.EPSILON);
-        data.totalInjuryLevels = Math.round(data.totalInjuryLevels + Number.EPSILON);
-        data.move.effective = Math.round(data.move.work + Number.EPSILON);
-
         if (actorData.type === 'container') {
             this._prepareDerivedContainerData(actorData);
             return;
         }
 
         // All common character and creature derived data below here
+
+        data.fatigue = Math.round(data.fatigue + Number.EPSILON);
+        data.encumbrance = Math.round(data.encumbrance + Number.EPSILON);
+        data.endurance = Math.round(data.endurance + Number.EPSILON);
+        data.totalInjuryLevels = Math.round(data.totalInjuryLevels + Number.EPSILON);
+        data.move.effective = Math.round(data.move.work + Number.EPSILON);
 
         // Universal Penalty and Physical Penalty are used to calculate many
         // things, including effectiveMasteryLevel for all skills,
