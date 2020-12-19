@@ -16,6 +16,8 @@ HM3.allowedActorFlags = [];
 
 HM3.skillTypes = ["Craft", "Physical", "Communication", "Combat", "Magic", "Ritual"];
 
+HM3.traitTypes = ["Physical", "Psyche"];
+
 HM3.sunsigns = [ 'Ulandus', 'Ulandus-Aralius', 'Aralius', 'Aralius-Feniri', 'Feniri', 'Feniri-Ahnu',
     'Ahnu', 'Ahnu-Angberelius', 'Angberelius', 'Angberelius-Nadai', 'Nadai', 'Nadai-Hirin',
     'Hirin', 'Hirin-Tarael', 'Tarael', 'Tarael-Tai', 'Tai', 'Tai-Skorus', 'Skorus',

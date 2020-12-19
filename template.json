@@ -106,7 +106,7 @@
   },
   "Item": {
     "types": ["skill", "spell", "invocation", "psionic", "weapongear", "containergear",
-      "missilegear", "armorgear", "miscgear", "injury", "armorlocation"],
+      "missilegear", "armorgear", "miscgear", "injury", "armorlocation", "trait"],
     "templates": {
       "base": {
         "notes": "",
@@ -253,6 +253,10 @@
         "mid": 1,
         "low": 1
       }
+    },
+    "trait": {
+      "templates": ["base"],
+      "type": "Physical"
     }
   }
 }

@@ -695,6 +695,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         let name = "New Item";
         if (dataset.type === 'skill' && dataset.skilltype) {
             name = utility.createUniqueName(`New ${dataset.skilltype} Skill`, this.actor.itemTypes.skill);
+        } else if (dataset.type == 'trait' && dataset.traittype) {
+            name = utility.createUniqueName(`New ${dataset.traittype} Trait`, this.actor.itemTypes.trait);
         } else if (dataset.type.endsWith('gear')) {
             name = "New Gear";
             extraList = ['Misc. Gear', 'Armor', 'Melee Weapon', 'Missile Weapon', 'Container'];
@@ -763,6 +765,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 // Item Data
                 const itemData = duplicate(game.system.model.Item[dialogData.type]);
                 if (dataset.type === 'skill') itemData.type = dataset.skilltype;
+                else if (dataset.type === 'trait') itemData.type = dataset.traittype;
                 else if (dataset.type.endsWith('gear')) itemData.container = dataset.containerId;
                 else if (dataset.type === 'spell') itemData.convocation = extraValue;
                 else if (dataset.type === 'invocation') itemData.diety = extraValue;
