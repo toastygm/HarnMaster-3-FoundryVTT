@@ -106,8 +106,6 @@ export class HarnMasterActor extends Actor {
             return;
         }
 
-        data.encumbrance = Math.floor(data.totalGearWeight / data.endurance);
-
         // Injury Calculations
         data.totalInjuryLevels = 0;
         this.data.items.forEach(it => {
@@ -127,6 +125,8 @@ export class HarnMasterActor extends Actor {
             }
         });
         data.endurance = data.endurance || 1;
+
+        data.encumbrance = Math.floor(data.totalGearWeight / data.endurance);
 
         // Setup temporary work values masking the base values
         data.move.work = data.move.base;
@@ -201,7 +201,7 @@ export class HarnMasterActor extends Actor {
             this._prepareDerivedContainerData(actorData);
             return;
         }
-
+        
         // All common character and creature derived data below here
 
         data.fatigue = Math.round(data.fatigue + Number.EPSILON);
