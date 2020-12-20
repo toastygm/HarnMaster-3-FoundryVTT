@@ -789,7 +789,12 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 else if (dataset.type === 'spell') itemData.convocation = extraValue;
                 else if (dataset.type === 'invocation') itemData.diety = extraValue;
 
-                return this._createItem(itemName, dialogData.type, itemData, DEFAULT_TOKEN);
+                return this._createItem({
+                    name: itemName,
+                    type: dialogData.type,
+                    data: itemData,
+                    img: DEFAULT_TOKEN
+                });
             },
             options: { jQuery: false }
         });
