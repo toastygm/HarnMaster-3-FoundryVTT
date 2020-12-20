@@ -49,13 +49,7 @@ export async function onManageActiveEffect(event, owner) {
                         aeData['duration.rounds'] = 1;
                         aeData['duration.turns'] = 0;
                     }
-
-                    console.log(aeData);
-                    return ActiveEffect.create(aeData, owner).create().then(ae => {
-                        console.log(ae);
-                        const e = owner.effects.get(ae._id);
-                        return e.sheet.render(true);
-                    })
+                    return ActiveEffect.create(aeData, owner).create();
                 },
                 options: { jQuery: false }
             });

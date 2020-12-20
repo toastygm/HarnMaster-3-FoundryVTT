@@ -101,16 +101,15 @@ export class HarnMasterItemSheet extends ItemSheet {
       }
     }
 
-    // get active effects.
     data.effects = {};
     this.item.effects.forEach(effect => {
-      data.effects[effect.id] = {
-        id: effect.id,
-        duration: effect.duration,
-        name: effect.data.label,
-        source: effect.source,
-        data: effect.data
-      };
+      effect._getSourceName().then(()=> {
+        data.effects[effect.id] = {
+          'source': effect.sourceName,
+          'duration': effect.duration,
+          'data': effect.data
+        }
+      })
     });
 
     return data;
@@ -150,7 +149,7 @@ export class HarnMasterItemSheet extends ItemSheet {
     });
 
     html.find(".effect-control").click(ev => {
-      if ( this.item.isOwned ) return ui.notifications.warn("Managing Active Effects within an Owned Item is not supported.")
+      if ( this.item.isOwned ) return ui.notifications.warn("You cannot change an Item's Effects after it is associated with an Actor. To modify this Effect, go to the Actor's Effects tab.")
       onManageActiveEffect(ev, this.item)
     });
 

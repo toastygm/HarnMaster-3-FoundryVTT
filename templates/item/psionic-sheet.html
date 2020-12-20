@@ -1,8 +1,8 @@
 <form class="{{cssClass}}" autocomplete="off">
     <header class="sheet-header">
-        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
         <div class="header-fields">
-            <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
+            <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name" /></h1>
         </div>
     </header>
 
@@ -21,8 +21,8 @@
             <div class="grid grid-fixed-row grid-3col">
                 <div class="resource">
                     <label class="resource-label">Skill Base (SB)</label>
-                    <input type="text" name="data.skillBase.value" value="{{data.skillBase.value}}"
-                        data-dtype="Number" {{#if data.skillBase.formula}}readonly{{/if}} />
+                    <input type="text" name="data.skillBase.value" value="{{data.skillBase.value}}" data-dtype="Number"
+                        {{#if data.skillBase.formula}}readonly{{/if}} />
                 </div>
                 <div class="resource">
                     <label class="resource-label">Mastery Level (ML)</label>
@@ -30,26 +30,30 @@
                 </div>
                 <div class="resource">
                     <label class="resource-label">Fatigue</label>
-                    <input type="number" name="data.fatigue" value="{{data.fatigue}}" data-dtype="Number"/>
+                    <input type="number" name="data.fatigue" value="{{data.fatigue}}" data-dtype="Number" />
                 </div>
             </div>
             <div class="resource">
-                <label class="resource-label tooltip">Skill Base Formula<span class="tooltiptext">Enter a formula to automatically calculate skill base.  For example:
-                    "@str, @sta, @wil, Ulandus, Aralius:2". This will average strength, stamina, and will; if Ulandus sunsign, add 1; if Aralius sunsign, add 2.
-                    There must always be exactly three attributes.
-                    Valid attributes are: @str, @sta, @dex, @agl, @int, @aur, @wil, @eye, @hrg, @sml, @voi, @cml, @mor</span></label>
-                <input type="text" name="data.skillBase.formula" value="{{data.skillBase.formula}}" data-dtype="String"/>
+                <label class="resource-label tooltip">Skill Base Formula<span class="tooltiptext">Enter a formula to
+                        automatically calculate skill base. For example:
+                        "@str, @sta, @wil, Ulandus, Aralius:2". This will average strength, stamina, and will; if
+                        Ulandus sunsign, add 1; if Aralius sunsign, add 2.
+                        There must always be exactly three attributes.
+                        Valid attributes are: @str, @sta, @dex, @agl, @int, @aur, @wil, @eye, @hrg, @sml, @voi, @cml,
+                        @mor</span></label>
+                <input type="text" name="data.skillBase.formula" value="{{data.skillBase.formula}}"
+                    data-dtype="String" />
                 {{#unless data.skillBase.isFormulaValid}}
-                <div class="error">Error: Invalid SkillBase Formula!</div>
+                    <div class="error">Error: Invalid SkillBase Formula!</div>
                 {{/unless}}
             </div>
             <div class="resource">
                 <label class="resource-label">Source</label>
-                <input type="text" name="data.source" value="{{data.source}}" data-dtype="String"/>
+                <input type="text" name="data.source" value="{{data.source}}" data-dtype="String" />
             </div>
             <div class="resource">
                 <label class="resource-label">Note</label>
-                <input type="text" name="data.notes" value="{{data.notes}}" data-dtype="String"/>
+                <input type="text" name="data.notes" value="{{data.notes}}" data-dtype="String" />
             </div>
         </div>
 
@@ -63,27 +67,32 @@
                 <li class="effects-header flexrow">
                     <h3 class="effect-name flexrow">Effect</h3>
                     <div class="effect-source">Source</div>
-                    <div class="effect-source">Duration</div>
-                    <a class="effect-controls effect-control" title="Add Effect" data-action="create"><i
-                        class="fas fa-plus"></i> Add</a>
+                    <div class="effect-duration">Duration</div>
+                    <a class="effect-controls effect-control" title="Add Effect"
+                        data-action="{{#unless hasActor}}create{{/unless}}"><span
+                            class="{{#unless hasActor}}active{{/unless}}"><i class="fas fa-plus"></i> Add</span></a>
                 </li>
-            
+
                 <ol class="effect-list item-list">
-                {{#each actor.effects as |effect id|}}
-                    <li class="effect {{#if effect.disabled}}disabled{{/if}} flexrow" data-effect-id="{{effect._id}}">
-                        <div class="effect-name flexrow">
-                            <div class="effect-image" style="background-image: url('{{effect.icon}}')"></div>
-                            <h4>{{effect.label}}</h4>
-                        </div>
-                        <div class="effect-source">{{effect.sourceName}}</div>
-                        <div class="effect-duration">{{lookup ../effectDuration effect._id}}</div>
-                        <div class="effect-controls">
-                            <a class="effect-control" data-action="toggle"><i class="{{#unless effect.disabled}}active{{/unless}} fas fa-circle-notch"></i></a>
-                            <a class="effect-control" data-action="edit"><i class="active fas fa-edit"></i></a>
-                            <a class="effect-control" data-action="delete"><i class="active fas fa-trash"></i></a>
-                        </div>
-                    </li>
-                {{/each}}
+                    {{#each effects as |effect id|}}
+                        <li class="effect {{#if effect.data.disabled}}disabled{{/if}} flexrow"
+                            data-effect-id="{{effect.data._id}}">
+                            <div class="effect-name flexrow">
+                                <div class="effect-image" style="background-image: url('{{effect.data.icon}}')"></div>
+                                <h4>{{effect.data.label}}</h4>
+                            </div>
+                            <div class="effect-source">{{effect.source}}</div>
+                            <div class="effect-duration">{{effect.duration.label}}</div>
+                            <div class="effect-controls">
+                                <a class="effect-control" data-action="toggle"><i
+                                        class="{{#unless (or effect.data.disabled hasActor)}}active{{/unless}} fas fa-circle-notch"></i></a>
+                                <a class="effect-control" data-action="edit"><i
+                                        class="{{#unless hasActor}}active{{/unless}} fas fa-edit"></i></a>
+                                <a class="effect-control" data-action="delete"><i
+                                        class="{{#unless hasActor}}active{{/unless}} fas fa-trash"></i></a>
+                            </div>
+                        </li>
+                    {{/each}}
                 </ol>
             </ol>
         </div>

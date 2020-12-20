@@ -1659,7 +1659,8 @@
     .hm3 .effects .effects-list .effects-header .effect-controls {
       flex: 0 0 45px;
       text-align: right;
-      padding-right: 5px; }
+      padding-right: 5px;
+      color: #9a998f; }
       .hm3 .effects .effects-list .effects-header .effect-controls .active {
         color: #4b4a44; }
   .hm3 .effects .effects-list .effect-list {

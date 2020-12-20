@@ -61,15 +61,15 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // get active effects.
         data.effects = {};
         this.actor.effects.forEach(effect => {
+          effect._getSourceName().then(()=> {
             data.effects[effect.id] = {
-                id: effect.id,
-                duration: effect.duration,
-                name: effect.data.label,
-                source: effect.source,
-                data: effect.data
-            };
+              'source': effect.sourceName,
+              'duration': effect.duration,
+              'data': effect.data
+            }
+          })
         });
-
+    
         return data;
     }
 
