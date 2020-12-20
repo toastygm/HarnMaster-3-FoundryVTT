@@ -341,7 +341,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     return false;
                 }
             }
-            return this._createItem(data.name, data.type, data.data, data.img);
+            return this._createItem(data);
         }
 
         return super._onDropItemCreate(data);
@@ -795,19 +795,19 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         });
     }
 
-    async _createItem(name, type, data, itemImg) {
+    async _createItem(data) {
         // If a weapon or a missile, get the associated skill
-        if (type === 'weapongear' || type === 'missilegear') {
-            data.assocSkill = utility.getAssocSkill(name, this.actor.itemTypes.skill, 'None');
+        if (data.type === 'weapongear' || data.type === 'missilegear') {
+            data.data.assocSkill = utility.getAssocSkill(data.name, this.actor.itemTypes.skill, 'None');
         }
 
         // If it is a spell, initialize the convocation to the
         // first magic skill found; it is really unimportant what the
         // value is, so long as it is a valid skill for this character
-        if (type === 'spell') {
+        if (data.type === 'spell') {
             for (let skill of this.actor.itemTypes.skill.values()) {
                 if (skill.data.data.type === 'Magic') {
-                    data.convocation = skill.data.name;
+                    data.data.convocation = skill.data.name;
                     break;
                 }
             }
@@ -816,79 +816,71 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // If it is a invocation, initialize the diety to the
         // first ritual skill found; it is really unimportant what the
         // value is, so long as it is a valid skill for this character
-        if (type === 'invocation') {
+        if (data.type === 'invocation') {
             for (let skill of this.actor.itemTypes.skill.values()) {
                 if (skill.data.data.type === 'Ritual') {
-                    data.diety = skill.data.name;
+                    data.data.diety = skill.data.name;
                     break;
                 }
             }
         }
 
-        let img = itemImg;
-        if (img === DEFAULT_TOKEN) {
+        if (data.img === DEFAULT_TOKEN) {
             // Guess the icon from the name
-            img = utility.getImagePath(name);
+            data.img = utility.getImagePath(data.name);
         }
 
-        if (img === DEFAULT_TOKEN) {
-            switch (type) {
+        if (data.img === DEFAULT_TOKEN) {
+            switch (data.type) {
                 case 'skill':
                     if (data.type === 'Ritual') {
-                        img = utility.getImagePath('circle');
+                        data.img = utility.getImagePath('circle');
                     } else if (data.type === 'Magic') {
-                        img = utility.getImagePath('pentacle');
+                        data.img = utility.getImagePath('pentacle');
                     }
                     break;
 
                 case 'psionic':
-                    img = utility.getImagePath("psionics");
+                    data.img = utility.getImagePath("psionics");
                     break;
 
                 case 'spell':
-                    img = utility.getImagePath(data.convocation);
-                    if (img === DEFAULT_TOKEN) {
+                    data.img = utility.getImagePath(data.convocation);
+                    if (data.img === DEFAULT_TOKEN) {
 
-                        img = utility.getImagePath("pentacle");
+                        data.img = utility.getImagePath("pentacle");
                     }
                     break;
 
                 case 'invocation':
-                    img = utility.getImagePath(data.diety);
-                    if (img === DEFAULT_TOKEN) {
-                        img = utility.getImagePath("circle");
+                    data.img = utility.getImagePath(data.diety);
+                    if (data.img === DEFAULT_TOKEN) {
+                        data.img = utility.getImagePath("circle");
                     }
                     break;
 
                 case 'miscgear':
-                    img = utility.getImagePath("miscgear")
+                    data.img = utility.getImagePath("miscgear")
                     break;
 
                 case 'containergear':
-                    img = utility.getImagePath("sack");
+                    data.img = utility.getImagePath("sack");
                     break;
 
                 case 'weapongear':
                 case 'missilegear':
-                    img = utility.getImagePath(data.assocSkill)
+                    data.img = utility.getImagePath(data.data.assocSkill)
                     break;
             }
         }
 
-        // Prepare the item object.
-        const itemData = {
-            name: name,
-            type: type,
-            data: data,
-            img: img
-        };
-
         // Finally, create the item!
-        const result = await this.actor.createOwnedItem(itemData);
+        console.log(data);
+        const result = await this.actor.createOwnedItem(data);
 
+        console.log(result);
         if (!result) {
-            log.error(`HM3 | Error creating item '${name}' of type '${type}' on character '${this.actor.data.name}'`)
-            return null;
+            throw new Error(`Error creating item '${data.name}' of type '${data.type}' on character '${this.actor.data.name}'`);
         }
 
         // Bring up edit dialog to complete creating item
