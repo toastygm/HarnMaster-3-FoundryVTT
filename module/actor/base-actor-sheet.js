@@ -64,8 +64,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
           effect._getSourceName().then(()=> {
             data.effects[effect.id] = {
               'source': effect.sourceName,
-              'duration': effect.duration,
-              'data': effect.data
+              'duration': utility.aeDuration(effect),
+              'data': effect.data,
+              'changes': utility.aeChanges(effect)
             }
           })
         });

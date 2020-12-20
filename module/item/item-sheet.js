@@ -1,4 +1,5 @@
 import { onManageActiveEffect } from '../effect.js';
+import * as utility from '../utility.js';
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -106,8 +107,9 @@ export class HarnMasterItemSheet extends ItemSheet {
       effect._getSourceName().then(()=> {
         data.effects[effect.id] = {
           'source': effect.sourceName,
-          'duration': effect.duration,
-          'data': effect.data
+          'duration': utility.aeDuration(effect),
+          'data': effect.data,
+          'changes': utility.aeChanges(effect)
         }
       })
     });

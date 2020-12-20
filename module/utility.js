@@ -129,7 +129,7 @@ export function calcSkillBase(item) {
                         case 'mor':
                             sumAbilities += actorData.abilities.morality.base;
                             break;
-    
+
                         default:
                             sb.isFormulaValid = false;
                             return;
@@ -162,7 +162,7 @@ export function calcSkillBase(item) {
                     // specify the sunsign as a dual sunsign, in which case the two parts
                     // must be separated either by a dash or a forward slash
                     let actorSS = actorData.sunsign.trim().toLowerCase().split(/[-\/]/);
-                    
+
                     // Call 'trim' function on all strings in actorSS
                     actorSS.map(Function.prototype.call, String.prototype.trim);
 
@@ -261,7 +261,7 @@ export function getAssocSkill(name, skillsItemArray, defaultSkill) {
     if (!name || !skillsItemArray || !skillsItemArray.length) return defaultSkill;
 
     const skills = skillsItemArray.map(s => s.data.name);
-    
+
     const lcName = name.toLowerCase();
     const re = /\[([^\)]+)\]/i;
 
@@ -308,7 +308,7 @@ export function isStdIcon(iconPath, iconArray) {
 export function stringReplacer(template, values) {
     var keys = Object.keys(values);
     var func = Function(...keys, "return `" + template + "`;");
-  
+
     return func(...keys.map(k => values[k]));
 }
 
@@ -318,16 +318,127 @@ export function stringReplacer(template, values) {
  * 
  * @param {Integer} num 
  */
-export function romanize (num) {
+export function romanize(num) {
     if (isNaN(num))
         return NaN;
     var digits = String(+num).split(""),
-        key = ["","C","CC","CCC","CD","D","DC","DCC","DCCC","CM",
-               "","X","XX","XXX","XL","L","LX","LXX","LXXX","XC",
-               "","I","II","III","IV","V","VI","VII","VIII","IX"],
+        key = ["", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM",
+            "", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC",
+            "", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"],
         roman = "",
         i = 3;
     while (i--)
         roman = (key[+digits.pop() + (i * 10)] || "") + roman;
     return Array(+digits.join("") + 1).join("M") + roman;
+}
+
+export function aeDuration(effect) {
+    const d = effect.data.duration;
+
+    // Time-based duration
+    if (Number.isNumeric(d.seconds)) {
+        const start = (d.startTime || game.time.worldTime);
+        const elapsed = game.time.worldTime - start;
+        const remaining = d.seconds - elapsed;
+        //const normDuration = toNormTime(d.seconds);
+        const normRemaining = toNormTime(remaining);
+        return {
+            type: "seconds",
+            duration: d.seconds,
+            remaining: remaining,
+            label: normRemaining,
+            //normDuration: normDuration,
+            //normRemaining: normRemaining
+        };
+    }
+
+    // Turn-based duration
+    else if (d.rounds || d.turns) {
+
+        // Determine the current combat duration
+        const cbt = game.combat;
+        const c = { round: cbt?.round ?? 0, turn: cbt?.turn ?? 0, nTurns: cbt?.turns.length ?? 1 };
+
+        // Determine how many rounds and turns have elapsed
+        let elapsedRounds = Math.max(c.round - (d.startRound || 0), 0);
+        let elapsedTurns = c.turn - (d.startTurn || 0);
+        if (elapsedTurns < 0) {
+            elapsedRounds -= 1;
+            elapsedTurns += c.nTurns;
+        }
+
+        // Compute the number of rounds and turns that are remaining
+        let remainingRounds = (d.rounds || 0) - elapsedRounds;
+        let remainingTurns = (d.turns || 0) - elapsedTurns;
+        if (remainingTurns < 0) {
+            remainingRounds -= 1;
+            remainingTurns += c.nTurns;
+        } else if (remainingTurns > c.nTurns) {
+            remainingRounds += Math.floor(remainingTurns / c.nTurns);
+            remainingTurns %= c.nTurns;
+        }
+
+        // Total remaining duration
+        if (remainingRounds < 0) {
+            remainingRounds = 0;
+            remainingTurns = 0;
+        }
+        const duration = (c.rounds || 0) + ((c.turns || 0) / 100)
+        const remaining = remainingRounds + (remainingTurns / 100);
+
+        // Remaining label
+        const label = [
+            remainingRounds > 0 ? `${remainingRounds} Rounds` : null,
+            remainingTurns > 0 ? `${remainingTurns} Turns` : null,
+            (remainingRounds + remainingTurns) === 0 ? "None" : null
+        ].filterJoin(", ");
+        return {
+            type: "turns",
+            duration: duration,
+            remaining: remaining,
+            label: label
+        }
+    }
+
+    // No duration
+    else return {
+        type: "none",
+        duration: null,
+        remaining: null,
+        label: 'None'
+    }
+}
+
+export function aeChanges(effect) {
+    if (!effect.data.changes || !effect.data.changes.length) {
+        return 'No Changes';
+    }
+
+    return effect.data.changes.map(ch => {
+        const modes = CONST.ACTIVE_EFFECT_MODES;
+        const key = ch.key;
+        const val = ch.value;
+        switch ( ch.mode ) {
+            case modes.ADD:
+                return `${HM3.activeEffectKey[key]} ${val<0?'-':'+'} ${Math.abs(val)}`;
+            case modes.MULTIPLY:
+                return `${HM3.activeEffectKey[key]} x ${val}`;
+            case modes.OVERRIDE:
+                return `${HM3.activeEffectKey[key]} = ${val}`;
+            case modes.UPGRADE:
+                return `${HM3.activeEffectKey[key]} >= ${val}`;
+            case modes.DOWNGRADE:
+                return `${HM3.activeEffectKey[key]} <= ${val}`;
+            default:
+                return `${HM3.activeEffectKey[key]} custom`;
+        }     
+    }).join(', ');
+}
+
+function toNormTime(seconds) {
+    const normHours = Math.floor(seconds / 3600);
+    const remSeconds = seconds % 3600;
+    const normMinutes = Number(Math.floor(remSeconds / 60)).toString().padStart(2, '0');
+    const normSeconds = Number(remSeconds % 60).toString().padStart(2, '0');
+    return `${normHours}:${normMinutes}:${normSeconds}`;
 }

@@ -1696,10 +1696,23 @@
     white-space: nowrap;
     overflow: hidden; }
   .hm3 .effects .effects-list .effect-ele {
-    flex: 0 0 40px;
-    text-align: center;
-    border-left: 1px solid #c9c7b8;
+    padding-left: 5px;
     border-right: 1px solid #c9c7b8; }
+  .hm3 .effects .effects-list .effect-duration {
+    flex: 0 0 100px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden; }
+  .hm3 .effects .effects-list .effect-source {
+    flex: 0 0 100px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden; }
+  .hm3 .effects .effects-list .effect-changes {
+    flex: 1 0 60px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden; }
   .hm3 .effects .effects-list .effect-controls {
     flex: 0 0 45px;
     text-align: right; }

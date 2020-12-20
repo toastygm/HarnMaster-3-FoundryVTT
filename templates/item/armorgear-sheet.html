@@ -155,8 +155,8 @@
             <ol class="effects-list">
                 <li class="effects-header flexrow">
                     <h3 class="effect-name flexrow">Effect</h3>
-                    <div class="effect-source">Source</div>
                     <div class="effect-duration">Duration</div>
+                    <div class="effect-changes">Changes</div>
                     <a class="effect-controls effect-control" title="Add Effect"
                         data-action="{{#unless hasActor}}create{{/unless}}"><span
                             class="{{#unless hasActor}}active{{/unless}}"><i class="fas fa-plus"></i> Add</span></a>
@@ -165,13 +165,13 @@
                 <ol class="effect-list item-list">
                     {{#each effects as |effect id|}}
                         <li class="effect {{#if effect.data.disabled}}disabled{{/if}} flexrow"
-                            data-effect-id="{{effect.data._id}}">Í
+                            data-effect-id="{{effect.data._id}}">
                             <div class="effect-name flexrow">
                                 <div class="effect-image" style="background-image: url('{{effect.data.icon}}')"></div>
                                 <h4>{{effect.data.label}}</h4>
                             </div>
-                            <div class="effect-source">{{effect.source}}</div>
-                            <div class="effect-duration">{{effect.duration.label}}</div>
+                            <div class="effect-ele effect-duration">{{effect.duration.label}}</div>
+                            <div class="effect-ele effect-changes">{{effect.changes}}</div>
                             <div class="effect-controls">
                                 <a class="effect-control" data-action="toggle"><i
                                         class="{{#unless (or effect.data.disabled hasActor)}}active{{/unless}} fas fa-circle-notch"></i></a>
