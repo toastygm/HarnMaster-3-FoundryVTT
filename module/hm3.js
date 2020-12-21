@@ -121,10 +121,15 @@ function checkExpiredActiveEffects() {
 
 function disableExpiredAE(actor) {
     actor.effects.forEach(e => {
+        console.log(`name: ${e.data.label}, e.data.disabled=${e.data.disabled}`);
+        console.log(e);
         if (!e.data.disabled) {
             const duration = e.duration;
             if (duration.type !== 'none') {
-                e.data.disabled = duration.remaining <= 0;
+                if (duration.remaining <= 0) {
+                    const result = e.update({'disabled': true});
+                    console.log(result);
+                }
             }
         }
     });
