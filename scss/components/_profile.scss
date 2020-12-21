@@ -135,7 +135,12 @@
     .label {
       flex: 0 0 18px;
       font-weight: bold;
-      text-transform: uppercase;  
+      text-transform: uppercase;
+
+      i {
+        font-size: 12px;
+        padding-left: 5px;
+      }
     }
 
     .description {

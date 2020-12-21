@@ -1183,6 +1183,9 @@
     flex: 0 0 18px;
     font-weight: bold;
     text-transform: uppercase; }
+    .hm3 .sheet-body .profile-desc .label i {
+      font-size: 12px;
+      padding-left: 5px; }
   .hm3 .sheet-body .profile-desc .description {
     margin-left: 5px; }
 
@@ -1656,6 +1659,9 @@
     .hm3 .effects .effects-list .effects-header .effect-name {
       color: #191813;
       border-right: 1px solid #c9c7b8; }
+      .hm3 .effects .effects-list .effects-header .effect-name i {
+        font-size: 12px;
+        padding-left: 5px; }
     .hm3 .effects .effects-list .effects-header .effect-controls {
       flex: 0 0 45px;
       text-align: right;
