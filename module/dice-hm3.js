@@ -530,7 +530,7 @@ export class DiceHM3 {
     static _calcInjury(location, impact, aspect, addToCharSheet, aim, dialogOptions) {
         const enableAmputate = game.settings.get('hm3', 'amputation');
         const enableBloodloss = game.settings.get('hm3', 'bloodloss');
-        const enableLimbInjury = game.settings.get('hm3', 'limbInjury');
+        const enableLimbInjury = game.settings.get('hm3', 'limbInjuries');
 
         const result = {
             isRandom: location === 'Random',
