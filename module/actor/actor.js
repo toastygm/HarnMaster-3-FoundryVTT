@@ -92,18 +92,8 @@ export class HarnMasterActor extends Actor {
         if (!data.eph) data.eph = {};
         const eph = data.eph;
 
-        // Reset all weights
-        eph.totalArmorWeight = 0;
-        eph.totalWeaponWeight = 0;
-        eph.totalMissileWeight = 0;
-        eph.totalMiscGearWeight = 0;
-        eph.totalGearWeight = 0;
-        if (this.items) this.itemTypes.containergear.forEach(it => {
-            it.data.data.capacity.value = 0;
-        });
-
         // Calculate weight of gear
-        if (this.items) this._calcGearWeightTotals();
+        if (actorData.items) this._calcGearWeightTotals();
 
 
         if (actorData.type === 'container') {
@@ -113,9 +103,9 @@ export class HarnMasterActor extends Actor {
 
         // Injury Calculations
         eph.totalInjuryLevels = 0;
-        this.data.items.forEach(it => {
-            if (it.type === 'injury') {
-                if (it.data.injuryLevel > 0) eph.totalInjuryLevels += it.data.injuryLevel;
+        actorData.items.forEach(it => {
+            if (it.data.type === 'injury') {
+                if (it.data.data.injuryLevel > 0) eph.totalInjuryLevels += it.data.data.injuryLevel;
             }
         });
 
@@ -123,8 +113,8 @@ export class HarnMasterActor extends Actor {
         data.endurance = Math.round((data.abilities.strength.base + data.abilities.stamina.base +
             data.abilities.will.base) / 3);
         data.hasCondition = false;
-        if (this.items) this.itemTypes.skill.forEach(it => {
-            if (it.data.name === 'Condition') {
+        if (actorData.items) actorData.items.forEach(it => {
+            if (it.data.type === 'skill' && it.data.name === 'Condition') {
                 data.endurance = Math.floor(it.data.data.masteryLevel / 5);
                 data.hasCondition = true;
             }
@@ -245,8 +235,9 @@ export class HarnMasterActor extends Actor {
 
         // Collect all combat skills into a map for use later
         let combatSkills = {};
-        this.itemTypes.skill.forEach(it => {
-            if (it.data.data.type === 'Combat' || it.data.name.toLowerCase() === 'throwing') {
+        this.items.forEach(it => {
+            if (it.data.type === 'skill' &&
+                (it.data.data.type === 'Combat' || it.data.name.toLowerCase() === 'throwing')) {
                 combatSkills[it.data.name] = {
                     'name': it.data.name,
                     'eml': it.data.data.effectiveMasteryLevel
@@ -262,6 +253,13 @@ export class HarnMasterActor extends Actor {
     }
 
 
+    /**
+     * Calculate the weight of the gear. Note that since this method
+     * is called before the actor has been completely setup, actor.items
+     * will not be avaialble.  We specifically use actor.data.items array
+     * instead, which will be available.  This array is not an array of
+     * class HarnMasterItem, but an array of item data!
+     */
     _calcGearWeightTotals() {
         const eph = this.data.data.eph;
 
@@ -272,15 +270,17 @@ export class HarnMasterActor extends Actor {
 
         let tempWeight = 0;
 
-        this.itemTypes.containergear.forEach(it => {
-            it.data.data.capacity.value = 0;
+        this.data.items.forEach(it => {
+            if (it.type === 'containergear') it.data.capacity.value = 0;
         });
 
         this.data.items.forEach(it => {
             if (it.type.endsWith('gear')) {
+                // If the gear is inside of a container, then the "carried"
+                // flag is inherited from the container.
                 if (it.data.container && it.data.container !== 'on-person') {
-                    const container = this.items.get(it.data.container);
-                    it.data.isCarried = container.data.data.isCarried;
+                    const container = this.data.items.find(i => i._id === it.data.container);
+                    if (container) it.data.isCarried = container.data.isCarried;
                 }
             }
 
@@ -318,8 +318,9 @@ export class HarnMasterActor extends Actor {
             if (it.type.endsWith('gear')) {
                 const cid = it.data.container;
                 if (cid && cid != 'on-person') {
-                    const container = this.items.get(cid);
-                    container.data.data.capacity.value = Math.round((container.data.data.capacity.value + tempWeight + Number.EPSILON) * 100) / 100;
+                    const container = this.data.items.find(i => i._id === cid);
+                    if (container) container.data.capacity.value = 
+                        Math.round((container.data.capacity.value + tempWeight + Number.EPSILON) * 100) / 100;
                 }
             }
         });
