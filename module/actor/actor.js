@@ -87,18 +87,23 @@ export class HarnMasterActor extends Actor {
         const actorData = this.data;
         const data = actorData.data;
 
+        // Ephemeral data is kept together with other actor data,
+        // but it is not in the data model so it will not be saved.
+        if (!data.eph) data.eph = {};
+        const eph = data.eph;
+
         // Reset all weights
-        data.totalArmorWeight = 0;
-        data.totalWeaponWeight = 0;
-        data.totalMissileWeight = 0;
-        data.totalMiscGearWeight = 0;
-        data.totalGearWeight = 0;
+        eph.totalArmorWeight = 0;
+        eph.totalWeaponWeight = 0;
+        eph.totalMissileWeight = 0;
+        eph.totalMiscGearWeight = 0;
+        eph.totalGearWeight = 0;
         if (this.items) this.itemTypes.containergear.forEach(it => {
             it.data.data.capacity.value = 0;
         });
 
         // Calculate weight of gear
-        if (this.items) this._calcGearWeightTotals(data);
+        if (this.items) this._calcGearWeightTotals();
 
 
         if (actorData.type === 'container') {
@@ -107,10 +112,10 @@ export class HarnMasterActor extends Actor {
         }
 
         // Injury Calculations
-        data.totalInjuryLevels = 0;
+        eph.totalInjuryLevels = 0;
         this.data.items.forEach(it => {
             if (it.type === 'injury') {
-                if (it.data.injuryLevel > 0) data.totalInjuryLevels += it.data.injuryLevel;
+                if (it.data.injuryLevel > 0) eph.totalInjuryLevels += it.data.injuryLevel;
             }
         });
 
@@ -126,27 +131,27 @@ export class HarnMasterActor extends Actor {
         });
         data.endurance = data.endurance || 1;
 
-        data.encumbrance = Math.floor(data.totalGearWeight / data.endurance);
+        data.encumbrance = Math.floor(eph.totalGearWeight / data.endurance);
 
         // Setup temporary work values masking the base values
-        data.move.work = data.move.base;
-        data.abilities.strength.work = data.abilities.strength.base;
-        data.abilities.stamina.work = data.abilities.stamina.base;
-        data.abilities.dexterity.work = data.abilities.dexterity.base;
-        data.abilities.agility.work = data.abilities.agility.base;
-        data.abilities.eyesight.work = data.abilities.eyesight.base;
-        data.abilities.hearing.work = data.abilities.hearing.base;
-        data.abilities.smell.work = data.abilities.smell.base;
-        data.abilities.voice.work = data.abilities.voice.base;
-        data.abilities.intelligence.work = data.abilities.intelligence.base;
-        data.abilities.will.work = data.abilities.will.base;
-        data.abilities.aura.work = data.abilities.aura.base;
-        data.abilities.morality.work = data.abilities.morality.base;
-        data.abilities.comliness.work = data.abilities.comliness.base;
+        eph.move = data.move.base;
+        eph.strength = data.abilities.strength.base;
+        eph.stamina = data.abilities.stamina.base;
+        eph.dexterity = data.abilities.dexterity.base;
+        eph.agility = data.abilities.agility.base;
+        eph.eyesight = data.abilities.eyesight.base;
+        eph.hearing = data.abilities.hearing.base;
+        eph.smell = data.abilities.smell.base;
+        eph.voice = data.abilities.voice.base;
+        eph.intelligence = data.abilities.intelligence.base;
+        eph.will = data.abilities.will.base;
+        eph.aura = data.abilities.aura.base;
+        eph.morality = data.abilities.morality.base;
+        eph.comliness = data.abilities.comliness.base;
     
-        data.meleeAMLMod = 0;
-        data.meleeDMLMod = 0;
-        data.missileAMLMod = 0;
+        eph.meleeAMLMod = 0;
+        eph.meleeDMLMod = 0;
+        eph.missileAMLMod = 0;
 
         // Make separate methods for each Actor type (character, npc, etc.) to keep
         // things organized.
@@ -197,6 +202,8 @@ export class HarnMasterActor extends Actor {
         const actorData = this.data;
         const data = actorData.data;
 
+        const eph = data.eph;
+
         if (actorData.type === 'container') {
             this._prepareDerivedContainerData(actorData);
             return;
@@ -207,34 +214,34 @@ export class HarnMasterActor extends Actor {
         data.fatigue = Math.round(data.fatigue + Number.EPSILON);
         data.encumbrance = Math.round(data.encumbrance + Number.EPSILON);
         data.endurance = Math.round(data.endurance + Number.EPSILON);
-        data.totalInjuryLevels = Math.round(data.totalInjuryLevels + Number.EPSILON);
-        data.move.effective = Math.round(data.move.work + Number.EPSILON);
+        eph.totalInjuryLevels = Math.round(eph.totalInjuryLevels + Number.EPSILON);
+        data.move.effective = Math.round(eph.move + Number.EPSILON);
 
         // Universal Penalty and Physical Penalty are used to calculate many
         // things, including effectiveMasteryLevel for all skills,
         // endurance, move, etc.
-        data.universalPenalty = data.totalInjuryLevels + data.fatigue;
+        data.universalPenalty = eph.totalInjuryLevels + data.fatigue;
         data.physicalPenalty = data.universalPenalty + data.encumbrance;
-
-        data.shockIndex.value = HarnMasterActor._normProb(data.endurance, data.universalPenalty * 3.5, data.universalPenalty);
+        if (!eph.shockIndex) eph.shockIndex = {};
+        eph.shockIndex.value = HarnMasterActor._normProb(data.endurance, data.universalPenalty * 3.5, data.universalPenalty);
         if (canvas) this.getActiveTokens().forEach(token => {
-            if (token.bars) token._onUpdateBarAttributes(this.data, { "shockIndex.value": data.shockIndex.value });
-        });
-
-        // Process all the final post activities
-        this.items.forEach(it => {
-            it.prepareDerivedData();
+            if (token.bars) token._onUpdateBarAttributes(this.data, { "eph.shockIndex.value": eph.shockIndex.value });
         });
 
         // Setup effective abilities (accounting for UP and PP)
         this._setupEffectiveAbilities(data);
 
+        // Process all the final post activities for Items
+        this.items.forEach(it => {
+            it.prepareDerivedData();
+        });
+
         // Calculate current Move speed.  Cannot go below 0
-        data.move.effective = Math.max(data.move.effective - data.physicalPenalty, 0);
+        data.move.effective = Math.max(eph.move - data.physicalPenalty, 0);
 
         // Calculate Important Roll Targets
-        data.stumbleTarget = Math.max(data.abilities.agility.effective - data.physicalPenalty, 0);
-        data.fumbleTarget = Math.max(data.abilities.dexterity.effective - data.physicalPenalty, 0);
+        eph.stumbleTarget = Math.max(data.abilities.agility.effective - data.physicalPenalty, 0);
+        eph.fumbleTarget = Math.max(data.abilities.dexterity.effective - data.physicalPenalty, 0);
 
         // Collect all combat skills into a map for use later
         let combatSkills = {};
@@ -250,16 +257,18 @@ export class HarnMasterActor extends Actor {
         // Calculate spell effective mastery level values
         this._refreshSpellsAndInvocations();
 
-        this._setupWeaponData(data, combatSkills);
+        this._setupWeaponData(combatSkills);
         this._generateArmorLocationMap(data);
     }
 
 
-    _calcGearWeightTotals(data) {
-        data.totalWeaponWeight = 0;
-        data.totalMissileWeight = 0;
-        data.totalArmorWeight = 0;
-        data.totalMiscGearWeight = 0;
+    _calcGearWeightTotals() {
+        const eph = this.data.data.eph;
+
+        eph.totalWeaponWeight = 0;
+        eph.totalMissileWeight = 0;
+        eph.totalArmorWeight = 0;
+        eph.totalMiscGearWeight = 0;
 
         let tempWeight = 0;
 
@@ -280,21 +289,21 @@ export class HarnMasterActor extends Actor {
                     if (!it.data.isCarried) break;
                     tempWeight = it.data.weight * it.data.quantity;
                     if (tempWeight < 0) tempWeight = 0;
-                    data.totalWeaponWeight += tempWeight;
+                    eph.totalWeaponWeight += tempWeight;
                     break;
 
                 case 'missilegear':
                     if (!it.data.isCarried) break;
                     tempWeight = it.data.weight * it.data.quantity;
                     if (tempWeight < 0) tempWeight = 0;
-                    data.totalMissileWeight += tempWeight;
+                    eph.totalMissileWeight += tempWeight;
                     break;
 
                 case 'armorgear':
                     if (!it.data.isCarried) break;
                     tempWeight = it.data.weight * it.data.quantity;
                     if (tempWeight < 0) tempWeight = 0;
-                    data.totalArmorWeight += tempWeight;
+                    eph.totalArmorWeight += tempWeight;
                     break;
 
                 case 'miscgear':
@@ -302,7 +311,7 @@ export class HarnMasterActor extends Actor {
                     if (!it.data.isCarried) break;
                     tempWeight = it.data.weight * it.data.quantity;
                     if (tempWeight < 0) tempWeight = 0;
-                    data.totalMiscGearWeight += tempWeight;
+                    eph.totalMiscGearWeight += tempWeight;
                     break;
             }
 
@@ -318,13 +327,13 @@ export class HarnMasterActor extends Actor {
         // It seems whenever doing math on floating point numbers, very small
         // amounts get introduced creating very long decimal values.
         // Correct any math weirdness; keep to two decimal points
-        data.totalArmorWeight = Math.round((data.totalArmorWeight + Number.EPSILON) * 100) / 100;
-        data.totalWeaponWeight = Math.round((data.totalWeaponWeight + Number.EPSILON) * 100) / 100;
-        data.totalMissileWeight = Math.round((data.totalMissileWeight + Number.EPSILON) * 100) / 100;
-        data.totalMiscGearWeight = Math.round((data.totalMiscGearWeight + Number.EPSILON) * 100) / 100;
+        eph.totalArmorWeight = Math.round((eph.totalArmorWeight + Number.EPSILON) * 100) / 100;
+        eph.totalWeaponWeight = Math.round((eph.totalWeaponWeight + Number.EPSILON) * 100) / 100;
+        eph.totalMissileWeight = Math.round((eph.totalMissileWeight + Number.EPSILON) * 100) / 100;
+        eph.totalMiscGearWeight = Math.round((eph.totalMiscGearWeight + Number.EPSILON) * 100) / 100;
 
-        data.totalGearWeight = data.totalWeaponWeight + data.totalMissileWeight + data.totalArmorWeight + data.totalMiscGearWeight;
-        data.totalGearWeight = Math.round((data.totalGearWeight + Number.EPSILON) * 100) / 100;
+        eph.totalGearWeight = eph.totalWeaponWeight + eph.totalMissileWeight + eph.totalArmorWeight + eph.totalMiscGearWeight;
+        eph.totalGearWeight = Math.round((eph.totalGearWeight + Number.EPSILON) * 100) / 100;
     }
 
 
@@ -351,68 +360,72 @@ export class HarnMasterActor extends Actor {
     }
 
     _setupEffectiveAbilities(data) {
+        const eph = this.data.data.eph;
+
         // Affected by physical penalty
-        data.abilities.strength.effective = Math.max(Math.round(data.abilities.strength.work + Number.EPSILON) - data.physicalPenalty, 0);
-        data.abilities.stamina.effective = Math.max(Math.round(data.abilities.stamina.work + Number.EPSILON) - data.physicalPenalty, 0);
-        data.abilities.agility.effective = Math.max(Math.round(data.abilities.agility.work + Number.EPSILON) - data.physicalPenalty, 0);
-        data.abilities.dexterity.effective = Math.max(Math.round(data.abilities.dexterity.work + Number.EPSILON) - data.physicalPenalty, 0);
-        data.abilities.eyesight.effective = Math.max(Math.round(data.abilities.eyesight.work + Number.EPSILON) - data.physicalPenalty, 0);
-        data.abilities.hearing.effective = Math.max(Math.round(data.abilities.hearing.work + Number.EPSILON) - data.physicalPenalty, 0);
-        data.abilities.smell.effective = Math.max(Math.round(data.abilities.smell.work + Number.EPSILON) - data.physicalPenalty, 0);
-        data.abilities.voice.effective = Math.max(Math.round(data.abilities.voice.work + Number.EPSILON) - data.physicalPenalty, 0);
+        data.abilities.strength.effective = Math.max(Math.round(eph.strength + Number.EPSILON) - data.physicalPenalty, 0);
+        data.abilities.stamina.effective = Math.max(Math.round(eph.stamina + Number.EPSILON) - data.physicalPenalty, 0);
+        data.abilities.agility.effective = Math.max(Math.round(eph.agility + Number.EPSILON) - data.physicalPenalty, 0);
+        data.abilities.dexterity.effective = Math.max(Math.round(eph.dexterity + Number.EPSILON) - data.physicalPenalty, 0);
+        data.abilities.eyesight.effective = Math.max(Math.round(eph.eyesight + Number.EPSILON) - data.physicalPenalty, 0);
+        data.abilities.hearing.effective = Math.max(Math.round(eph.hearing + Number.EPSILON) - data.physicalPenalty, 0);
+        data.abilities.smell.effective = Math.max(Math.round(eph.smell + Number.EPSILON) - data.physicalPenalty, 0);
+        data.abilities.voice.effective = Math.max(Math.round(eph.voice + Number.EPSILON) - data.physicalPenalty, 0);
 
         // Affected by universal penalty
-        data.abilities.intelligence.effective = Math.max(Math.round(data.abilities.intelligence.work + Number.EPSILON) - data.universalPenalty, 0);
-        data.abilities.aura.effective = Math.max(Math.round(data.abilities.aura.work + Number.EPSILON) - data.universalPenalty, 0);
-        data.abilities.will.effective = Math.max(Math.round(data.abilities.will.work + Number.EPSILON) - data.universalPenalty, 0);
+        data.abilities.intelligence.effective = Math.max(Math.round(eph.intelligence + Number.EPSILON) - data.universalPenalty, 0);
+        data.abilities.aura.effective = Math.max(Math.round(eph.aura + Number.EPSILON) - data.universalPenalty, 0);
+        data.abilities.will.effective = Math.max(Math.round(eph.will + Number.EPSILON) - data.universalPenalty, 0);
 
         // Not affected by any penalties
-        data.abilities.comliness.effective = Math.max(Math.round(data.abilities.comliness.work + Number.EPSILON), 0);
-        data.abilities.morality.effective = Math.max(Math.round(data.abilities.morality.work + Number.EPSILON), 0);
+        data.abilities.comliness.effective = Math.max(Math.round(eph.comliness + Number.EPSILON), 0);
+        data.abilities.morality.effective = Math.max(Math.round(eph.morality + Number.EPSILON), 0);
     }
 
     /**
      * Consolidated method to setup all gear, including misc gear, weapons,
      * and missiles.  (not armor yet)
      */
-    _setupWeaponData(data, combatSkills) {
+    _setupWeaponData(combatSkills) {
+        const eph = this.data.data.eph;
+
         this.data.items.forEach(it => {
-            const data = it.data;
+            const itemData = it.data;
             if (it.type === 'missilegear') {
                 // Reset mastery levels in case nothing matches
-                data.attackMasteryLevel = 0;
+                itemData.attackMasteryLevel = eph.missileAMLMod;
 
                 // If the associated skill is in our combat skills list, get EML from there
                 // and then calculate AML.
-                let assocSkill = data.assocSkill;
+                let assocSkill = itemData.assocSkill;
                 if (typeof combatSkills[assocSkill] !== 'undefined') {
                     let skillEml = combatSkills[assocSkill].eml;
-                    data.attackMasteryLevel = skillEml + data.attackModifier;
+                    itemData.attackMasteryLevel = skillEml + itemData.attackModifier + eph.missileAMLMod;
                 }
             } else if (it.type === 'weapongear') {
                 // Reset mastery levels in case nothing matches
-                data.attackMasteryLevel = 0;
-                data.defenseMasteryLevel = 0;
+                itemData.attackMasteryLevel = eph.weaponAMLMod;
+                itemData.defenseMasteryLevel = eph.weaponDMLMod;
                 let weaponName = it.name;
 
                 // If associated skill is 'None', see if there is a skill with the
                 // same name as the weapon; if so, then set it to that skill.
-                if (data.assocSkill === 'None') {
+                if (itemData.assocSkill === 'None') {
                     // If no combat skill with this name exists, search for next weapon
                     if (typeof combatSkills[weaponName] === 'undefined') return;
 
                     // A matching skill was found, set associated Skill to that combat skill
-                    data.assocSkill = combatSkills[weaponName].name;
+                    itemData.assocSkill = combatSkills[weaponName].name;
                 }
 
                 // At this point, we know the Associated Skill is not blank. If that
                 // associated skill is in our combat skills list, get EML from there
                 // and then calculate AML and DML.
-                let assocSkill = data.assocSkill;
+                let assocSkill = itemData.assocSkill;
                 if (typeof combatSkills[assocSkill] !== 'undefined') {
                     let skillEml = combatSkills[assocSkill].eml;
-                    data.attackMasteryLevel = skillEml + data.attack + data.attackModifier;
-                    data.defenseMasteryLevel = skillEml + data.defense;
+                    itemData.attackMasteryLevel = skillEml + itemData.attack + itemData.attackModifier + eph.meleeAMLMod;
+                    itemData.defenseMasteryLevel = skillEml + itemData.defense + eph.meleeDMLMod;
                 }
             }
         });
