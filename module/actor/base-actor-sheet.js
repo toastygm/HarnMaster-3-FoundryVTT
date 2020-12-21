@@ -21,7 +21,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         let capacityVal = 0;
         if ((this.actor.data.type === 'creature') || (this.actor.data.type === 'character')) {
             capacityMax = data.data.endurance * 10;
-            capacityVal = data.data.totalGearWeight;
+            capacityVal = data.data.eph.totalGearWeight;
         } else if (this.actor.data.type === 'container') {
             capacityMax = data.data.capacity.max;
             capacityVal = data.data.capacity.value;
@@ -61,16 +61,17 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // get active effects.
         data.effects = {};
         this.actor.effects.forEach(effect => {
-          effect._getSourceName().then(()=> {
-            data.effects[effect.id] = {
-              'source': effect.sourceName,
-              'duration': utility.aeDuration(effect),
-              'data': effect.data,
-              'changes': utility.aeChanges(effect)
-            }
-          })
+            effect._getSourceName().then(() => {
+                data.effects[effect.id] = {
+                    'source': effect.sourceName,
+                    'duration': utility.aeDuration(effect),
+                    'data': effect.data,
+                    'changes': utility.aeChanges(effect)
+                }
+                data.effects[effect.id].data.disabled = effect.data.disabled;
+            });
         });
-    
+
         return data;
     }
 
