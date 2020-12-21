@@ -339,7 +339,7 @@ export function aeDuration(effect) {
     if (Number.isNumeric(d.seconds)) {
         const start = (d.startTime || game.time.worldTime);
         const elapsed = game.time.worldTime - start;
-        const remaining = d.seconds - elapsed;
+        const remaining = Math.max(d.seconds - elapsed, 0);
         //const normDuration = toNormTime(d.seconds);
         const normRemaining = toNormTime(remaining);
         return {
