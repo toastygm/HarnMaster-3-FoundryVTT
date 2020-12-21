@@ -289,7 +289,7 @@ export function getAssocSkill(name, skillsItemArray, defaultSkill) {
 export function isStdIcon(iconPath, iconArray) {
     if (!iconPath || !iconArray) return false;
 
-    if (iconPath === CONST.DEFAULT_TOKEN) return true;
+    if (iconPath === DEFAULT_TOKEN) return true;
 
     let result = false;
     iconArray.forEach(i => {
