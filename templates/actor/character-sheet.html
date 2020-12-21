@@ -14,10 +14,10 @@
                             <div class="statend">PP: {{data.physicalPenalty}}</div>
                         </div>
                         <div class="endurance flexrow">
-                            <span class="label">Shock Index: {{data.shockIndex.value}}</span>
+                            <span class="label">Shock Index: {{data.eph.shockIndex.value}}</span>
                         </div>
                         <div class="endbar">
-                            <span class="bar" style="width: {{data.shockIndex.value}}%"></span>
+                            <span class="bar" style="width: {{data.eph.shockIndex.value}}%"></span>
                         </div>
                     </div>
                 </div>
@@ -336,7 +336,9 @@
                 <div class="flexrow items traits">
                     <ol class="items-list traits-list">
                         <li class="items-header trait flexrow">
-                            <h3 class="item-name trait-name">Physical Traits</h3>
+                            <h3 class="item-name trait-name">Physical Traits<a class="more-info"
+                                data-journal-entry="Character - Profile Tab - Physical Traits"><i
+                                    class="far fa-question-circle"></i></a></h3>
                             <div class="trait-notes item-detail">Notes</div>
                             <div class="item-controls">
                                 <a class="item-control item-create active" title="Create Physical Trait"
@@ -366,7 +368,9 @@
                     </ol>
                     <ol class="items-list traits-list">
                         <li class="items-header trait flexrow">
-                            <h3 class="item-name trait-name">Psyche Traits</h3>
+                            <h3 class="item-name trait-name">Psyche Traits<a class="more-info"
+                                data-journal-entry="Character - Profile Tab - Psyche Traits"><i
+                                    class="far fa-question-circle"></i></a></h3>
                             <div class="trait-notes item-detail">Notes</div>
                             <div class="item-controls">
                                 <a class="item-control item-create active" title="Create Psyche Trait" data-type="trait"
@@ -397,7 +401,9 @@
                 </div>
                 <div class="flexcol">
                     <div class="profile-desc flexcol">
-                        <label class="label">Description</label>
+                        <label class="label">Biography<a class="more-info"
+                            data-journal-entry="Character - Profile Tab - Biography"><i
+                                class="far fa-question-circle"></i></a></label>
                         <div class="description">
                             {{editor content=data.biography target="data.biography" button=true owner=owner editable=editable}}
                         </div>
@@ -415,7 +421,9 @@
             <!-- Physical Skills -->
             <ol class="items-list skills-list">
                 <li class="items-header skill flexrow">
-                    <h3 class="item-name skill-name">Physical Skills</h3>
+                    <h3 class="item-name skill-name">Physical Skills<a class="more-info"
+                        data-journal-entry="Character - Skills Tab - Physical Skills"><i
+                            class="far fa-question-circle"></i></a></h3>
                     <div class="skill-ele item-detail">SB</div>
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
@@ -457,7 +465,9 @@
             <!-- Communication Skills -->
             <ol class="items-list skills-list">
                 <li class="items-header skill flexrow">
-                    <h3 class="item-name skill-name">Communication Skills</h3>
+                    <h3 class="item-name skill-name">Communication Skills<a class="more-info"
+                        data-journal-entry="Character - Skills Tab - Communication Skills"><i
+                            class="far fa-question-circle"></i></a></h3>
                     <div class="skill-ele item-detail">SB</div>
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
@@ -499,7 +509,9 @@
             <!-- Combat Skills -->
             <ol class="items-list skills-list">
                 <li class="items-header skill flexrow">
-                    <h3 class="item-name skill-name">Combat Skills</h3>
+                    <h3 class="item-name skill-name">Combat Skills<a class="more-info"
+                        data-journal-entry="Character - Skills Tab - Combat Skills"><i
+                            class="far fa-question-circle"></i></a></h3>
                     <div class="skill-ele item-detail">SB</div>
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
@@ -541,7 +553,9 @@
             <!-- Craft Skills -->
             <ol class="items-list skills-list">
                 <li class="items-header skill flexrow">
-                    <h3 class="item-name skill-name">Craft Skills</h3>
+                    <h3 class="item-name skill-name">Craft Skills<a class="more-info"
+                        data-journal-entry="Character - Skills Tab - Craft Skills"><i
+                            class="far fa-question-circle"></i></a></h3>
                     <div class="skill-ele item-detail">SB</div>
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
@@ -583,7 +597,9 @@
             <!-- Magic Skills -->
             <ol class="items-list skills-list">
                 <li class="items-header skill flexrow">
-                    <h3 class="item-name skill-name">Magic Skills</h3>
+                    <h3 class="item-name skill-name">Magic Skills<a class="more-info"
+                        data-journal-entry="Character - Skill Tab - Magic Skills"><i
+                            class="far fa-question-circle"></i></a></h3>
                     <div class="skill-ele item-detail">SB</div>
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
@@ -600,9 +616,7 @@
                                 data-item-name="{{item.name}}">
                                 <div class="item-name skill-roll skill-name flexrow">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
-                                    <h4>{{item.name}}<a class="more-info"
-                                            data-journal-entry="Character - Skill Tab - Magic Skills"><i
-                                                class="far fa-question-circle"></i></a></h4>
+                                    <h4>{{item.name}}</h4>
                                 </div>
                                 <div class="skill-ele item-detail">{{data.skillBase.value}}</div>
                                 <div class="skill-ele item-detail">{{data.masteryLevel}}</div>
@@ -627,7 +641,9 @@
             <!-- Ritual Skills -->
             <ol class="items-list skills-list">
                 <li class="items-header skill flexrow">
-                    <h3 class="item-name skill-name">Ritual Skills</h3>
+                    <h3 class="item-name skill-name">Ritual Skills<a class="more-info"
+                        data-journal-entry="Character - Skills Tab - Ritual Skills"><i
+                            class="far fa-question-circle"></i></a></h3>
                     <div class="skill-ele item-detail">SB</div>
                     <div class="skill-ele item-detail">ML</div>
                     <div class="skill-ele item-detail">EML</div>
@@ -645,9 +661,7 @@
                                 data-item-name="{{item.name}}">
                                 <div class="item-name skill-roll skill-name flexrow">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
-                                    <h4>{{item.name}}<a class="more-info"
-                                            data-journal-entry="Character - Skills Tab - Ritual Skills"><i
-                                                class="far fa-question-circle"></i></a></h4>
+                                    <h4>{{item.name}}</h4>
                                 </div>
                                 <div class="skill-ele item-detail">{{data.skillBase.value}}</div>
                                 <div class="skill-ele item-detail">{{data.masteryLevel}}</div>
@@ -675,7 +689,9 @@
         <div class="tab combat items" data-group="primary" data-tab="combat">
             <div class="items-list">
                 <div class="items-header flexrow">
-                    <h3 class="item-name">Combat Statistics</h3>
+                    <h3 class="item-name">Combat Statistics<a class="more-info"
+                        data-journal-entry="Character - Combat Tab - Combat Statistics"><i
+                            class="far fa-question-circle"></i></a></h3>
                 </div>
             </div>
             <div class="items-list combat-stats grid grid-fixed-row grid-5col">
@@ -1149,7 +1165,9 @@
                 <ol class="items-list gear-list">
                     <li class="items-header gear flexrow" data-container-id="{{cid}}"
                         data-container-name="{{citem.data.name}}">
-                        <h3 class="item-name gear-name">{{citem.data.name}}</h3>
+                        <h3 class="item-name gear-name">{{citem.data.name}}<a class="more-info"
+                            data-journal-entry="Character - Gear Tab - Containers"><i
+                                class="far fa-question-circle"></i></a></h3>
                         <div class="item-detail gear-type">Type</div>
                         <div class="item-detail gear-qty">Qty</div>
                         <div class="item-detail gear-weight">Weight</div>
@@ -1203,9 +1221,11 @@
         <div class="tab effects" data-group="primary" data-tab="effects">
             <ol class="effects-list">
                 <li class="effects-header flexrow">
-                    <h3 class="effect-name flexrow">Effect</h3>
+                    <h3 class="effect-name flexrow">Effect<a class="more-info"
+                        data-journal-entry="Character - Effect Tab"><i
+                            class="far fa-question-circle"></i></a></h3>
                     <div class="effect-source">Source</div>
-                    <div class="effect-duration">Duration</div>
+                    <div class="effect-duration">Remaining</div>
                     <div class="effect-changes">Changes</div>
                     <a class="effect-controls effect-control" title="Add Effect" data-action="create"><span class="active"><i
                         class="fas fa-plus"></i> Add</span></a>
