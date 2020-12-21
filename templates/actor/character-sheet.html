@@ -1146,11 +1146,11 @@
                     </li>
                     <li class="weight-line flexrow">
                         <div class="weight-detail title">Weight</div>
-                        <div class="weight-detail weapon">{{data.totalWeaponWeight}}</div>
-                        <div class="weight-detail missile">{{data.totalMissileWeight}}</div>
-                        <div class="weight-detail armor">{{data.totalArmorWeight}}</div>
-                        <div class="weight-detail misc-gear">{{data.totalMiscGearWeight}}</div>
-                        <div class="total">{{data.totalGearWeight}}</div>
+                        <div class="weight-detail weapon">{{data.eph.totalWeaponWeight}}</div>
+                        <div class="weight-detail missile">{{data.eph.totalMissileWeight}}</div>
+                        <div class="weight-detail armor">{{data.eph.totalArmorWeight}}</div>
+                        <div class="weight-detail misc-gear">{{data.eph.totalMiscGearWeight}}</div>
+                        <div class="total">{{data.eph.totalGearWeight}}</div>
                     </li>
                 </ol>
                 <div class="buf"></div>
@@ -1230,7 +1230,6 @@
                     <a class="effect-controls effect-control" title="Add Effect" data-action="create"><span class="active"><i
                         class="fas fa-plus"></i> Add</span></a>
                 </li>
-            
                 <ol class="effect-list item-list">
                 {{#each effects as |effect id|}}
                     <li class="effect {{#if effect.data.disabled}}disabled{{/if}} flexrow" data-effect-id="{{effect.data._id}}">
