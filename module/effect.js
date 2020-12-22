@@ -58,6 +58,60 @@ export async function onManageActiveEffect(event, owner) {
         case "delete":
             return effect.delete();
         case "toggle":
-            return effect.update({ disabled: !effect.data.disabled });
+            const updateData = {};
+            if (effect.data.disabled) {
+                // Enable the Active Effect
+                updateData['disabled'] = false;
+
+                // Also set the timer to start now
+                updateData['duration.startTime'] = game.time.worldTime;
+                if (game.combat) {
+                    updateData['duration.startRound'] = game.combat.round;
+                    updateData['duration.startTurn'] = game.combat.turn;
+                }
+            } else {
+                // Disable the Active Effect
+                updateData['disabled'] = true;
+            }
+            return effect.update(updateData);
+    }
+}
+
+/**
+ * This function searches all actors and tokens that are owned
+ * by the user and disables them if their duration has expired.
+ */
+export async function checkExpiredActiveEffects() {
+    // Handle game actors first
+    for (let actor of game.actors.values()) {
+        if (actor.owner && actor.effects && actor.effects.length) {
+            await disableExpiredAE(actor);
+        }
+    }
+
+    // Next, handle tokens (only unlinked tokens)
+    for (let token of canvas.tokens.ownedTokens.values()) {
+        if (!token.data.actorLink && token.actor) {
+            await disableExpiredAE(token.actor);
+        }
+    }
+}
+
+/**
+ * Checks all of the active effects for a single actor and disables
+ * them if their duration has expired.
+ * 
+ * @param {Actor} actor 
+ */
+async function disableExpiredAE(actor) {
+    for (let effect of actor.effects.values()) {
+        if (!effect.data.disabled) {
+            const duration = effect.duration;
+            if (duration.type !== 'none') {
+                if (duration.remaining <= 0) {
+                    await effect.update({'disabled': true});
+                }
+            }
+        }
     }
 }
