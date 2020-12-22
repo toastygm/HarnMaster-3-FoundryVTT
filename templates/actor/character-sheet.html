@@ -1,5 +1,4 @@
 <form class="{{cssClass}} sheet flexcol" autocomplete="off">
-
     {{!-- Sheet Header --}}
     <header class="sheet-header sheet-header-character">
         <div class="flexrow">
@@ -434,7 +433,7 @@
                     </div>
                 </li>
                 <ol class="item-list skill-list">
-                    {{#each actor.items as |item id|}}
+                    {{#each items as | item |}}
                         {{#if (and (eq item.type "skill") (eq item.data.type "Physical"))}}
                             <li class="item skill skill-item flexrow" data-item-id="{{item._id}}"
                                 data-item-name="{{item.name}}">
@@ -478,7 +477,7 @@
                     </div>
                 </li>
                 <ol class="item-list skill-list">
-                    {{#each actor.items as |item id|}}
+                    {{#each items as | item |}}
                         {{#if (and (eq item.type "skill") (eq item.data.type "Communication"))}}
                             <li class="item skill skill-item flexrow" data-item-id="{{item._id}}"
                                 data-item-name="{{item.name}}">
@@ -522,7 +521,7 @@
                     </div>
                 </li>
                 <ol class="item-list skill-list">
-                    {{#each actor.items as |item id|}}
+                    {{#each items as | item |}}
                         {{#if (and (eq item.type "skill") (eq item.data.type "Combat"))}}
                             <li class="item skill skill-item flexrow" data-item-id="{{item._id}}"
                                 data-item-name="{{item.name}}">
@@ -566,7 +565,7 @@
                     </div>
                 </li>
                 <ol class="item-list skill-list">
-                    {{#each actor.items as |item id|}}
+                    {{#each items as | item |}}
                         {{#if (and (eq item.type "skill") (eq item.data.type "Craft"))}}
                             <li class="item skill skill-item flexrow" data-item-id="{{item._id}}"
                                 data-item-name="{{item.name}}">
@@ -610,7 +609,7 @@
                     </div>
                 </li>
                 <ol class="item-list skill-list">
-                    {{#each actor.items as |item id|}}
+                    {{#each items as | item |}}
                         {{#if (and (eq item.type "skill") (eq item.data.type "Magic"))}}
                             <li class="item skill skill-item flexrow" data-item-id="{{item._id}}"
                                 data-item-name="{{item.name}}">
@@ -655,7 +654,7 @@
                     </div>
                 </li>
                 <ol class="item-list skill-list">
-                    {{#each actor.items as |item id|}}
+                    {{#each items as | item |}}
                         {{#if (and (eq item.type "skill") (eq item.data.type "Ritual"))}}
                             <li class="item skill skill-item flexrow" data-item-id="{{item._id}}"
                                 data-item-name="{{item.name}}">
@@ -777,7 +776,7 @@
                     <div class="item-detail weapon-notes">Notes</div>
                 </li>
                 <ol class="item-list weapon-list">
-                    {{#each actor.items as |item id|}}
+                    {{#each items as | item |}}
                         {{#if (and (eq item.type "weapongear") data.isEquipped)}}
                             <li class="item weapon {{#unless data.isCarried}}nocarry{{/unless}} flexrow"
                                 data-item-id="{{item._id}}" data-item-name="{{data.name}}">
@@ -853,7 +852,7 @@
                     <div class="item-detail missile-notes">Notes</div>
                 </li>
                 <ol class="item-list missile-list">
-                    {{#each actor.items as |item id|}}
+                    {{#each items as | item |}}
                         {{#if (and (eq item.type "missilegear") data.isEquipped)}}
                             <li class="item missile {{#unless data.isCarried}}nocarry{{/unless}} flexrow"
                                 data-item-id="{{item._id}}" data-item-name="{{data.name}}">
@@ -934,7 +933,7 @@
                     </div>
                 </li>
                 <ol class="item-list injury-list">
-                    {{#each actor.items as |item id|}}
+                    {{#each items as | item |}}
                         {{#if (eq item.type "injury")}}
                             <li class="item injury flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
                                 <div class="item-name injury-name flexrow">
@@ -974,7 +973,7 @@
                     </div>
                 </li>
                 <ol class="item-list armorlocation-list">
-                    {{#each actor.items as |item id|}}
+                    {{#each items as | item |}}
                         {{#if (eq item.type "armorlocation")}}
                             <li class="item armorlocation flexrow" data-item-id="{{item._id}}"
                                 data-item-name="{{data.name}}">
@@ -1018,7 +1017,7 @@
                     </div>
                 </li>
                 <ol class="item-list spell-list">
-                    {{#each actor.items as |item id|}}
+                    {{#each items as | item |}}
                         {{#if (eq item.type "spell")}}
                             <li class="item spell flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
                                 <div class="item-name spell-name spell-roll flexrow">
@@ -1059,7 +1058,7 @@
                     </div>
                 </li>
                 <ol class="item-list spell-list">
-                    {{#each actor.items as |item id|}}
+                    {{#each items as | item |}}
                         {{#if (eq item.type "invocation")}}
                             <li class="item spell flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
                                 <div class="item-name spell-name invocation-roll flexrow">
@@ -1101,7 +1100,7 @@
                     </div>
                 </li>
                 <ol class="item-list spell-list">
-                    {{#each actor.items as |item id|}}
+                    {{#each items as | item |}}
                         {{#if (eq item.type "psionic")}}
                             <li class="item psionic flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
                                 <div class="item-name psionic-name psionic-roll flexrow">
@@ -1182,7 +1181,7 @@
                         </div>
                     </li>
                     <ol class="item-list gear-list">
-                        {{#each ../actor.items as |item id|}}
+                        {{#each ../items as | item |}}
                             {{#if (and (endswith item.type "gear") (eq item.data.container cid))}}
                                 <li class="item gear-item {{#unless data.isCarried}}nocarry{{/unless}} flexrow"
                                     data-item-id="{{item._id}}" data-item-name="{{item.name}}"

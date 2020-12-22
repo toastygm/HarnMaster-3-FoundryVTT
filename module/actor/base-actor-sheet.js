@@ -14,8 +14,29 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
     /** @override */
     getData() {
-        const data = super.getData();
-        data.config = CONFIG.HM3;
+        let isOwner = this.entity.owner;
+        const data = {
+            owner: isOwner,
+            limited: this.entity.limited,
+            options: this.options,
+            editable: this.isEditable,
+            cssClass: isOwner ? "editable" : "locked",
+            isCharacter: this.entity.data.type === "character",
+            isCreature: this.entity.data.type === "creature",
+            isContainer: this.entity.data.type === "container",
+            config: CONFIG.HM3
+        }
+
+        data.actor = duplicate(this.actor.data);
+        data.items = this.actor.items.map(i => {
+            i.data.labels = i.labels;
+            return i.data;
+        });
+        data.items.sort((a, b) => (a.sort || 0) - (b.sort || 0));
+        data.data = data.actor.data;
+        data.labels = this.actor.labels || {};
+        data.filters = this._filters;
+        
         data.dtypes = ["String", "Number", "Boolean"];
         let capacityMax = 0;
         let capacityVal = 0;
@@ -167,7 +188,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     }
 
     async _moveContainer(event, data) {
-        console.log(data);
         // create new container
         const item = await Item.fromDropData(data);
         let itemData = duplicate(item.data);
@@ -881,10 +901,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         }
 
         // Finally, create the item!
-        console.log(data);
         const result = await this.actor.createOwnedItem(data);
 
-        console.log(result);
         if (!result) {
             throw new Error(`Error creating item '${data.name}' of type '${data.type}' on character '${this.actor.data.name}'`);
         }
