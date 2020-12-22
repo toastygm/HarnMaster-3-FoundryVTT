@@ -12,6 +12,7 @@ import { registerSystemSettings } from "./settings.js";
 import * as migrations from "./migrations.js";
 import * as macros from "./macros.js";
 import * as combat from "./combat.js";
+import * as effect from "./effect.js";
 
 Hooks.once('init', async function () {
 
@@ -35,11 +36,13 @@ Hooks.once('init', async function () {
     };
 
     CONFIG.HM3 = HM3;
-    //  CONFIG.ActiveEffect.entityClass = HM3ActiveEffect;
-    CONFIG.ActiveEffect.sheetClass = HM3ActiveEffectConfig;
 
     // Register system settings
     registerSystemSettings();
+
+    // Define custom ActiveEffect class
+//    CONFIG.ActiveEffect.entityClass = HM3ActiveEffect;
+    CONFIG.ActiveEffect.sheetClass = HM3ActiveEffectConfig;
 
     // Define custom Entity classes
     CONFIG.Actor.entityClass = HarnMasterActor;
@@ -92,48 +95,16 @@ Hooks.on('renderChatPopout', (app, html, data) => HarnMasterActor.chatListeners(
 /**
  * Active Effects need to expire at certain times, so keep track of that here
  */
-Hooks.on('updateWorldTime', (currentTime, change) => {
+Hooks.on('updateWorldTime', async (currentTime, change) => {
     // Disable any expired active effects (WorldTime-based durations).
-    checkExpiredActiveEffects();
+    await effect.checkExpiredActiveEffects();
 });
 
-Hooks.on('updateCombat', (combat, updateData) => {
+Hooks.on('updateCombat', async (combat, updateData) => {
     // Called when the combat object is updated.  Possibly because of a change in round
     // or turn. updateData will have specifics of what changed.
-    checkExpiredActiveEffects();
+    await effect.checkExpiredActiveEffects();
 });
-
-function checkExpiredActiveEffects() {
-    // Handle game actors first
-    game.actors.forEach(actor => {
-        if (actor.owner && actor.effects && actor.effects.length) {
-            disableExpiredAE(actor);
-        }
-    });
-
-    // Next, handle tokens (only unlinked tokens)
-    canvas.tokens.ownedTokens.forEach(token => {
-        if (!token.data.actorLink && token.actor) {
-            disableExpiredAE(token.actor);
-        }
-    });
-}
-
-function disableExpiredAE(actor) {
-    actor.effects.forEach(e => {
-        console.log(`name: ${e.data.label}, e.data.disabled=${e.data.disabled}`);
-        console.log(e);
-        if (!e.data.disabled) {
-            const duration = e.duration;
-            if (duration.type !== 'none') {
-                if (duration.remaining <= 0) {
-                    const result = e.update({'disabled': true});
-                    console.log(result);
-                }
-            }
-        }
-    });
-}
 
 /**
  * Once the entire VTT framework is initialized, check to see if
