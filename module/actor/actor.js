@@ -81,7 +81,14 @@ export class HarnMasterActor extends Actor {
         }
     }
 
-    /** @override */
+    /**
+     * When prepareBaseData() runs, the Actor.items map is not available, or if it is, it
+     * is not dependable.  The very next method will update the Actor.items map using
+     * information from the Actor.data.items array.  So, at this point we may safely
+     * use Actor.data.items, so long as we remember that that data is going to be going
+     * through a prepareData() stage next.
+     * 
+     * @override */
     prepareBaseData() {
         super.prepareBaseData();
         const actorData = this.data;
@@ -125,6 +132,7 @@ export class HarnMasterActor extends Actor {
 
         // Setup temporary work values masking the base values
         eph.move = data.move.base;
+        eph.fatigue = data.fatigue;
         eph.strength = data.abilities.strength.base;
         eph.stamina = data.abilities.stamina.base;
         eph.dexterity = data.abilities.dexterity.base;
@@ -186,7 +194,18 @@ export class HarnMasterActor extends Actor {
         }
     }
 
-    /** @override */
+    /** 
+     * Perform data preparation after Items preparation and Active Effects have
+     * been applied.
+     * 
+     * At this point the Actor.items map is guaranteed to be availabile, consisting
+     * of real Items.  It is preferable for this method to use those items at this
+     * point (unlike the situation with prepareBaseData()).
+     * 
+     * Note that all Active Effects have already been applied by this point, so
+     * nothing in this method will be affected further by Active Effects.
+     * 
+     * @override */
     prepareDerivedData() {
         super.prepareDerivedData();
         const actorData = this.data;
@@ -201,16 +220,18 @@ export class HarnMasterActor extends Actor {
         
         // All common character and creature derived data below here
 
-        data.fatigue = Math.round(data.fatigue + Number.EPSILON);
+        // Since active effects may have modified these values, we must ensure
+        // that they are integers and not floating values. Round to nearest integer.
         data.encumbrance = Math.round(data.encumbrance + Number.EPSILON);
         data.endurance = Math.round(data.endurance + Number.EPSILON);
-        eph.totalInjuryLevels = Math.round(eph.totalInjuryLevels + Number.EPSILON);
         data.move.effective = Math.round(eph.move + Number.EPSILON);
+        eph.totalInjuryLevels = Math.round(eph.totalInjuryLevels + Number.EPSILON);
+        eph.fatigue = Math.round(eph.fatigue + Number.EPSILON);
 
         // Universal Penalty and Physical Penalty are used to calculate many
         // things, including effectiveMasteryLevel for all skills,
         // endurance, move, etc.
-        data.universalPenalty = eph.totalInjuryLevels + data.fatigue;
+        data.universalPenalty = eph.totalInjuryLevels + eph.fatigue;
         data.physicalPenalty = data.universalPenalty + data.encumbrance;
         if (!eph.shockIndex) eph.shockIndex = {};
         eph.shockIndex.value = HarnMasterActor._normProb(data.endurance, data.universalPenalty * 3.5, data.universalPenalty);
