@@ -20,6 +20,15 @@
         .combat-stat {
             align-items: center;
 
+            .combat-eff-fatigue {
+                flex: 0 0 25px;
+            }
+
+            .combat-fatigue-input {
+                flex: 0 0 25px;
+                text-align: center;
+            }
+
             .combat-stat-label {
                 flex: 0 0 55px;
                 font-weight: bold;
@@ -30,11 +39,6 @@
                 flex: 0 0 40px;
                 background: #bbb;
                 padding: 2px;
-                text-align: center;
-            }
-
-            .combat-stat-input {
-                flex: 0 0 40px;
                 text-align: center;
             }
         }
