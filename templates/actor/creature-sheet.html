@@ -13,10 +13,10 @@
                             <div class="statend">PP: {{data.physicalPenalty}}</div>
                         </div>
                         <div class="endurance flexrow">
-                            <span class="label">Shock Index: {{data.shockIndex.value}}</span>
+                            <span class="label">Shock Index: {{data.eph.shockIndex.value}}</span>
                         </div>
                         <div class="endbar">
-                            <span class="bar" style="width: {{data.shockIndex.value}}%"></span>
+                            <span class="bar" style="width: {{data.eph.shockIndex.value}}%"></span>
                         </div>
                     </div>
                 </div>
@@ -48,6 +48,7 @@
         <a class="item" data-tab="combat">Combat</a>
         <a class="item" data-tab="esoteric">Esoterics</a>
         <a class="item" data-tab="inventory">Gear</a>
+        <a class="item" data-tab="effects">Effects</a>
     </nav>
 
     {{!-- Sheet Body --}}
@@ -270,16 +271,6 @@
                 </ul>
                 <div class="profile-params">
                     <div class="flexrow profile-item">
-                        <div class="attribute sunsign flexrow">
-                            <label class="label">Sunsign</label>
-                            <select class="value" name="sunsign" data-dtype="String">
-                                {{#select data.sunsign}}
-                                    {{#each config.sunsigns}}
-                                        <option value="{{this}}">{{this}}</option>
-                                    {{/each}}
-                                {{/select}}
-                            </select>    
-                        </div>
                         <div class="attribute species flexrow">
                             <label class="label">Load Rating</label>
                             <input class="value" type="text" name="data.loadRating" value="{{data.loadRating}}"
@@ -794,29 +785,59 @@
 
         {{!-- Inventory Tab --}}
         <div class="tab inventory items" data-group="primary" data-tab="inventory">
+            <div class="flexrow">
+                <ol class="weight flexcol">
+                    <li class="weight-header flexrow">
+                        <div class="weight-detail title"></div>
+                        <div class="weight-detail weapon">Weapon</div>
+                        <div class="weight-detail missile">Missile</div>
+                        <div class="weight-detail armor">Armor</div>
+                        <div class="weight-detail misc-gear">Misc. Gear</div>
+                        <div class="total">Total</div>
+                    </li>
+                    <li class="weight-line flexrow">
+                        <div class="weight-detail title">Weight</div>
+                        <div class="weight-detail weapon">{{data.eph.totalWeaponWeight}}</div>
+                        <div class="weight-detail missile">{{data.eph.totalMissileWeight}}</div>
+                        <div class="weight-detail armor">{{data.eph.totalArmorWeight}}</div>
+                        <div class="weight-detail misc-gear">{{data.eph.totalMiscGearWeight}}</div>
+                        <div class="total">{{data.eph.totalGearWeight}}</div>
+                    </li>
+                </ol>
+                <div class="buf"></div>
+            </div>
 
             <!-- Gear -->
             <div class="flexrow">
-                <input class="gear-name-filter" type="text" name="data.gearNameFilter" placeholder="Filter gear by name..." data-dtype="String" />
+                <input class="gear-name-filter" type="text" name="data.gearNameFilter"
+                    placeholder="Filter gear by name..." data-dtype="String" />
             </div>
             {{#each containers as |citem cid|}}
                 <ol class="items-list gear-list">
-                    <li class="items-header gear flexrow" data-container-id="{{cid}}" data-container-name="{{citem.data.name}}">
-                        <h3 class="item-name gear-name">{{citem.data.name}}</h3>
+                    <li class="items-header gear flexrow" data-container-id="{{cid}}"
+                        data-container-name="{{citem.data.name}}">
+                        <h3 class="item-name gear-name">{{citem.data.name}}<a class="more-info"
+                            data-journal-entry="Character - Gear Tab - Containers"><i
+                                class="far fa-question-circle"></i></a></h3>
                         <div class="item-detail gear-type">Type</div>
                         <div class="item-detail gear-qty">Qty</div>
                         <div class="item-detail gear-weight">Weight</div>
                         <div class="item-detail gear-notes">Notes</div>
-                        <div class="item detail gear-capacity"></div>
+                        <div
+                            class="item detail gear-capacity {{#if (gt citem.data.data.capacity.value citem.data.data.capacity.max)}}overcapacity{{/if}}">
+                            Capacity: {{citem.data.data.capacity.value}}/{{citem.data.data.capacity.max}}</div>
                         <div class="item-controls">
-                            <a class="item-control item-create active" title="Add Gear" data-type="gear" data-container-id="{{cid}}" data-container-name="{{citem.data.name}}"><i
+                            <a class="item-control item-create active" title="Add Gear" data-type="gear"
+                                data-container-id="{{cid}}" data-container-name="{{citem.data.name}}"><i
                                     class="fas fa-plus"></i> Add</a>
                         </div>
                     </li>
                     <ol class="item-list gear-list">
-                        {{#each ../actor.items as |item id|}}
-                             {{#if (and (endswith item.type "gear") (eq item.data.container cid))}}
-                                <li class="item gear-item {{#unless data.isCarried}}nocarry{{/unless}} flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}" data-container-id="{{cid}}" data-container-name="{{citem.data.name}}">
+                        {{#each ../items as | item |}}
+                            {{#if (and (endswith item.type "gear") (eq item.data.container cid))}}
+                                <li class="item gear-item {{#unless data.isCarried}}nocarry{{/unless}} flexrow"
+                                    data-item-id="{{item._id}}" data-item-name="{{item.name}}"
+                                    data-container-id="{{cid}}" data-container-name="{{citem.data.name}}">
                                     <div class="item-name gear-name flexrow">
                                         <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                                         <h4>{{item.name}}</h4>
@@ -827,13 +848,17 @@
                                     <div class="item-detail gear-notes">{{data.notes}}</div>
                                     <div class="item-controls-wide">
                                         {{#if (eq cid "on-person")}}
-                                        {{#unless (or (eq item.type "containergear") (eq item.type "miscgear"))}}
-                                        <a class="item-control item-equip" title="Equip"><i class="{{#if data.isEquipped}}active{{/if}} fas fa-shield-alt"></i></a>
-                                        {{/unless}}
-                                        <a class="item-control item-carry" title="Carry"><i class="{{#if data.isCarried}}active{{/if}} fas fa-suitcase"></i></a>
+                                            {{#unless (or (eq item.type "containergear") (eq item.type "miscgear"))}}
+                                                <a class="item-control item-equip" title="Equip"><i
+                                                        class="{{#if data.isEquipped}}active{{/if}} fas fa-shield-alt"></i></a>
+                                            {{/unless}}
+                                            <a class="item-control item-carry" title="Carry"><i
+                                                    class="{{#if data.isCarried}}active{{/if}} fas fa-suitcase"></i></a>
                                         {{/if}}
-                                        <a class="item-control item-edit" title="Edit"><i class="active fas fa-edit"></i></a>
-                                        <a class="item-control item-delete" title="Delete" data-label="Miscellaneous Gear"><i class="active fas fa-trash"></i></a>
+                                        <a class="item-control item-edit" title="Edit"><i
+                                                class="active fas fa-edit"></i></a>
+                                        <a class="item-control item-delete" title="Delete"
+                                            data-label="Miscellaneous Gear"><i class="active fas fa-trash"></i></a>
                                     </div>
                                 </li>
                             {{/if}}
@@ -855,6 +880,40 @@
                         class="fas fa-plus"></i> Add</span></a>
                 </li>
             
+                <ol class="effect-list item-list">
+                {{#each effects as |effect id|}}
+                    <li class="effect {{#if effect.data.disabled}}disabled{{/if}} flexrow" data-effect-id="{{effect.data._id}}">
+                        <div class="effect-name flexrow">
+                            <div class="effect-image" style="background-image: url('{{effect.data.icon}}')"></div>
+                            <h4>{{effect.data.label}}</h4>
+                        </div>
+                        <div class="effect-ele effect-source">{{effect.source}}</div>
+                        <div class="effect-ele effect-duration">{{effect.duration.label}}</div>
+                        <div class="effect-ele effect-changes">{{effect.changes}}</div>
+                        <div class="effect-controls">
+                            <a class="effect-control" data-action="toggle"><i class="{{#unless effect.data.disabled}}active{{/unless}} fas fa-circle-notch"></i></a>
+                            <a class="effect-control" data-action="edit"><i class="active fas fa-edit"></i></a>
+                            <a class="effect-control" data-action="delete"><i class="active fas fa-trash"></i></a>
+                        </div>
+                    </li>
+                {{/each}}
+                </ol>
+            </ol>
+        </div>
+
+        {{!-- Effects Tab --}}
+        <div class="tab effects" data-group="primary" data-tab="effects">
+            <ol class="effects-list">
+                <li class="effects-header flexrow">
+                    <h3 class="effect-name flexrow">Effect<a class="more-info"
+                        data-journal-entry="Character - Effect Tab"><i
+                            class="far fa-question-circle"></i></a></h3>
+                    <div class="effect-source">Source</div>
+                    <div class="effect-duration">Remaining</div>
+                    <div class="effect-changes">Changes</div>
+                    <a class="effect-controls effect-control" title="Add Effect" data-action="create"><span class="active"><i
+                        class="fas fa-plus"></i> Add</span></a>
+                </li>
                 <ol class="effect-list item-list">
                 {{#each effects as |effect id|}}
                     <li class="effect {{#if effect.data.disabled}}disabled{{/if}} flexrow" data-effect-id="{{effect.data._id}}">
