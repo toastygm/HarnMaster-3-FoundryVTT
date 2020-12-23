@@ -83,7 +83,8 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
         attackToken.actor.updateOwnedItem({'_id': missileItem.data._id, 'data.quantity': missileItem.data.data.quantity - 1});
     }
 
-    const effAML = dialogResult.weapon.data.data.attackMasteryLevel + dialogResult.addlModifier + dialogResult.rangeMod;
+    const effAML = dialogResult.weapon.data.data.attackMasteryLevel + 
+        dialogResult.addlModifier + dialogResult.rangeMod + attackToken.actor.data.data.eph.missileAMLMod;
 
     // Prepare for Chat Message
     const chatTemplate = 'systems/hm3/templates/chat/attack-card.html';
@@ -215,7 +216,8 @@ export async function meleeAttack(attackToken, defendToken, weaponItem=null) {
         weaponItem = dialogResult.weapon;
     }
     
-    const effAML = dialogResult.weapon.data.data.attackMasteryLevel + dialogResult.addlModifier;
+    const effAML = dialogResult.weapon.data.data.attackMasteryLevel + dialogResult.addlModifier +
+    attackToken.actor.data.data.eph.meleeAMLMod;
 
     // Prepare for Chat Message
     const chatTemplate = 'systems/hm3/templates/chat/attack-card.html';
@@ -502,7 +504,8 @@ function defaultMeleeWeapon(token) {
 }
 
 /**
- * Resume the attack with the defender performing the "Dodge" defense.  Note that this defense is only applicable to melee attacks.
+ * Resume the attack with the defender performing the "Counterstrike" defense.
+ * Note that this defense is only applicable to melee attacks.
  * 
  * @param {*} atkToken Token representing the attacker
  * @param {*} defToken Token representing the defender
@@ -544,13 +547,16 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         target: atkEffAML
     });
 
+    const csEffEML = csDialogResult.weapon.data.data.attackMasteryLevel +
+        defendToken.actor.data.data.eph.meleeAMLMod
+
     // Roll Counterstrike Attack
     const csRoll = DiceHM3.rollTest({
         data: {},
         diceSides: 100,
         diceNum: 1,
         modifier: csDialogResult.addlModifier,
-        target: csDialogResult.weapon.data.data.attackMasteryLevel
+        target: csEffEML
     });
 
     // If we have "Dice So Nice" module, roll them dice!
@@ -621,9 +627,9 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         mlType: 'AML',
         addlModifierAbs: Math.abs(csDialogResult.addlModifier),
         addlModifierSign: csDialogResult.addlModifier < 0?'-':'+',
-        origEML: csDialogResult.weapon.data.data.attackMasteryLevel,
-        effEML: csDialogResult.weapon.data.data.attackMasteryLevel + csDialogResult.addlModifier,
-        effAML: csDialogResult.weapon.data.data.attackMasteryLevel + csDialogResult.addlModifier,
+        origEML: csEffEML,
+        effEML: csEffEML + csDialogResult.addlModifier,
+        effAML: csEffEML + csDialogResult.addlModifier,
         effDML: 0,
         attackRoll: csRoll.rollObj.total,
         atkRollResult: csRoll.description,
@@ -921,6 +927,8 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
             effDML = Math.max(Math.round(effDML/2), 5);
         }
     }
+
+    effDML = Math.max(5 + defToken.actor.data.data.eph.meleeDMLMod, 5);
 
     const defRoll = DiceHM3.rollTest({
         data: {},
