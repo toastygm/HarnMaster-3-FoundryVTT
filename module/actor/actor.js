@@ -125,8 +125,7 @@ export class HarnMasterActor extends Actor {
         const eph = data.eph;
 
         // Calculate weight of gear
-        if (actorData.items) this._calcGearWeightTotals();
-
+        this._calcGearWeightTotals();
 
         if (actorData.type === 'container') {
             this._prepareBaseContainerData(actorData);
@@ -182,8 +181,6 @@ export class HarnMasterActor extends Actor {
             this._prepareBaseCharacterData(actorData);
         } else if (actorData.type === 'creature') {
             this._prepareBaseCreatureData(actorData);
-        } else if (actorData.type === 'container') {
-            this._prepareBaseContainerData(actorData);
         }
     }
 
@@ -194,6 +191,8 @@ export class HarnMasterActor extends Actor {
     }
 
     _prepareBaseContainerData(actorData) {
+        actorData.data.capacity.pct = Math.max(Math.round(1 - (actorData.data.eph.totalGearWeight / (actorData.data.capacity.max || 1))), 0);
+        console.log(`Capacity Percentage: ${actorData.data.capacity.pct}`);
     }
 
     /** 
