@@ -73,7 +73,7 @@ function askWeaponMacro(name, slot, img) {
             content: html.trim(),
             buttons: {
                 enhAttackButton: {
-                    label: "Enhanced Attack",
+                    label: "Automated Combat",
                     callback: async (html) => {
                         return await applyMacro(name, `game.hm3.macros.weaponAttack("${name}");`, slot, img, {"hm3.itemMacro": false});
                     }
@@ -113,7 +113,7 @@ function askMissileMacro(name, slot, img) {
             content: html.trim(),
             buttons: {
                 enhAttackButton: {
-                    label: "Enhanced Attack",
+                    label: "Automated Combat",
                     callback: async (html) => {
                         return await applyMacro(name, `game.hm3.macros.missileAttack("${name}");`, slot, img, {"hm3.itemMacro": false});
                     }
