@@ -501,7 +501,7 @@ export function weaponAttackRoll(itemName, noDialog = false, myActor = null) {
 
     const stdRollData = {
         label: `${item.data.name} Attack`,
-        target: item.data.data.attackMasteryLevel + actor.data.data.eph.meleeAMLMod,
+        target: item.data.data.attackMasteryLevel,
         notesData: {
             up: actor.data.data.universalPenalty,
             pp: actor.data.data.physicalPenalty,
@@ -538,7 +538,7 @@ export function weaponDefendRoll(itemName, noDialog = false, myActor = null) {
 
     const stdRollData = {
         label: `${item.data.name} Defense`,
-        target: item.data.data.defenseMasteryLevel + actor.data.data.eph.meleeDMLMod,
+        target: item.data.data.defenseMasteryLevel,
         notesData: {
             up: actor.data.data.universalPenalty,
             pp: actor.data.data.physicalPenalty,
@@ -589,7 +589,7 @@ export function missileAttackRoll(itemName, myActor = null) {
         name: item.data.name,
         attackerName: actor.token.data.name,
         defenderName: targetToken.data.name,
-        target: item.data.data.attackMasteryLevel + actor.data.data.eph.missileAMLMod,
+        target: item.data.data.attackMasteryLevel,
         aspect: item.data.data.weaponAspect,
         range: range,
         rangeShort: item.data.data.range.short,

@@ -83,8 +83,7 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
         attackToken.actor.updateOwnedItem({'_id': missileItem.data._id, 'data.quantity': missileItem.data.data.quantity - 1});
     }
 
-    const effAML = dialogResult.weapon.data.data.attackMasteryLevel + 
-        dialogResult.addlModifier + dialogResult.rangeMod + attackToken.actor.data.data.eph.missileAMLMod;
+    const effAML = dialogResult.weapon.data.data.attackMasteryLevel + dialogResult.addlModifier + dialogResult.rangeMod;
 
     // Prepare for Chat Message
     const chatTemplate = 'systems/hm3/templates/chat/attack-card.html';
@@ -216,8 +215,7 @@ export async function meleeAttack(attackToken, defendToken, weaponItem=null) {
         weaponItem = dialogResult.weapon;
     }
     
-    const effAML = dialogResult.weapon.data.data.attackMasteryLevel + dialogResult.addlModifier +
-    attackToken.actor.data.data.eph.meleeAMLMod;
+    const effAML = dialogResult.weapon.data.data.attackMasteryLevel + dialogResult.addlModifier;
 
     // Prepare for Chat Message
     const chatTemplate = 'systems/hm3/templates/chat/attack-card.html';
@@ -547,8 +545,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         target: atkEffAML
     });
 
-    const csEffEML = csDialogResult.weapon.data.data.attackMasteryLevel +
-        defendToken.actor.data.data.eph.meleeAMLMod
+    const csEffEML = csDialogResult.weapon.data.data.attackMasteryLevel;
 
     // Roll Counterstrike Attack
     const csRoll = DiceHM3.rollTest({
@@ -927,8 +924,6 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
             effDML = Math.max(Math.round(effDML/2), 5);
         }
     }
-
-    effDML = Math.max(5 + defToken.actor.data.data.eph.meleeDMLMod, 5);
 
     const defRoll = DiceHM3.rollTest({
         data: {},
