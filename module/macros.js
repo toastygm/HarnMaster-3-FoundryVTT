@@ -138,7 +138,7 @@ function askMissileMacro(name, slot, img) {
 }
 
 export function skillRoll(itemName, noDialog = false, myActor=null) {
-    const speaker = myActor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
+    const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
@@ -172,7 +172,7 @@ export function skillRoll(itemName, noDialog = false, myActor=null) {
 }
 
 export function castSpellRoll(itemName, noDialog = false, myActor=null) {
-    const speaker = myActor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
+    const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
@@ -209,7 +209,7 @@ export function castSpellRoll(itemName, noDialog = false, myActor=null) {
 }
 
 export function invokeRitualRoll(itemName, noDialog = false, myActor = null) {
-    const speaker = myActor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
+    const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
@@ -246,7 +246,7 @@ export function invokeRitualRoll(itemName, noDialog = false, myActor = null) {
 }
 
 export function usePsionicRoll(itemName, noDialog = false, myActor=null) {
-    const speaker = myActor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
+    const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
@@ -282,7 +282,7 @@ export function usePsionicRoll(itemName, noDialog = false, myActor=null) {
 }
 
 export function testAbilityD6Roll(ability, noDialog = false, myActor=null) {
-    const speaker = myActor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
+    const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
@@ -314,7 +314,7 @@ export function testAbilityD6Roll(ability, noDialog = false, myActor=null) {
 }
 
 export function testAbilityD100Roll(ability, noDialog = false, myActor = null) {
-    const speaker = myActor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
+    const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
@@ -344,7 +344,7 @@ export function testAbilityD100Roll(ability, noDialog = false, myActor = null) {
 }
 
 export function weaponDamageRoll(itemName, aspect=null, myActor = null) {
-    const speaker = myActor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
+    const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
@@ -382,7 +382,7 @@ export function weaponDamageRoll(itemName, aspect=null, myActor = null) {
 }
 
 export function missileDamageRoll(itemName, range=null, myActor = null) {
-    const speaker = myActor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
+    const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
@@ -486,7 +486,7 @@ export function weaponAttackResume(atkTokenId, defTokenId, action, effAML, aim, 
 }
 
 export function weaponAttackRoll(itemName, noDialog = false, myActor = null) {
-    const speaker = myActor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
+    const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
@@ -523,7 +523,7 @@ export function weaponAttackRoll(itemName, noDialog = false, myActor = null) {
 }
 
 export function weaponDefendRoll(itemName, noDialog = false, myActor = null) {
-    const speaker = myActor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
+    const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
@@ -604,7 +604,7 @@ export function missileAttackRoll(itemName, myActor = null) {
 }
 
 export function injuryRoll(myActor = null) {
-    const speaker = myActor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
+    const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
@@ -622,7 +622,7 @@ export function injuryRoll(myActor = null) {
 }
 
 export function healingRoll(itemName, noDialog = false, myActor = null) {
-    const speaker = myActor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
+    const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
@@ -655,7 +655,7 @@ export function healingRoll(itemName, noDialog = false, myActor = null) {
 }
 
 export function dodgeRoll(noDialog = false, myActor = null) {
-    const speaker = myActor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
+    const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
@@ -674,7 +674,7 @@ export function dodgeRoll(noDialog = false, myActor = null) {
 }
 
 export function shockRoll(noDialog = false, myActor = null) {
-    const speaker = myActor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
+    const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
@@ -694,7 +694,7 @@ export function shockRoll(noDialog = false, myActor = null) {
 }
 
 export function stumbleRoll(noDialog = false, myActor = null) {
-    const speaker = myActor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
+    const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
@@ -714,7 +714,7 @@ export function stumbleRoll(noDialog = false, myActor = null) {
 }
 
 export function fumbleRoll(noDialog = false, myActor = null) {
-    const speaker = myActor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
+    const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
@@ -734,7 +734,7 @@ export function fumbleRoll(noDialog = false, myActor = null) {
 }
 
 export function genericDamageRoll(myActor = null) {
-    const speaker = myActor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
+    const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
@@ -752,7 +752,7 @@ export function genericDamageRoll(myActor = null) {
 }
 
 export function changeFatigue(newValue, myActor = null) {
-    const speaker = myActor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
+    const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor || !actor.owner) {
         ui.notifications.warn(`You are not an owner of ${actor.name}, so you may not change fatigue.`);
@@ -776,7 +776,7 @@ export function changeFatigue(newValue, myActor = null) {
 }
 
 export function changeMissileQuanity(missileName, newValue, myActor = null) {
-    const speaker = myActor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
+    const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor.owner) {
         ui.notifications.warn(`You are not an owner of ${actor.name}, so you may not change ${missileName} quantity.`);
@@ -807,7 +807,7 @@ export function changeMissileQuanity(missileName, newValue, myActor = null) {
 }
 
 export function setSkillDevelopmentFlag(skillName, myActor = null) {
-    const speaker = myActor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
+    const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
@@ -904,12 +904,15 @@ function getActor(actor, speaker) {
         } else {
             // The actor must actually be either an Actor or Token id, or actor name
             if (actor.startsWith('Actor$')) {
+                // We have a real actor id, so grab it from game.actors
                 resultActor = game.actors.get(actor.slice(6));
             } else if (actor.startsWith('Token$')) {
-                for (let tokActor in Object.values(game.actors.tokens)) {
-                    if (tokActor.token.data.name === actor.slice(6)) return tokActor;
-                }
+                // We have a token id, so grab it from canvas.tokens
+                const tokId = actor.slice(6);
+                const token = canvas.tokens.get(tokId);
+                resultActor = token.actor;
             } else {
+                // This must be an actor name, grab it from game.actors by name
                 resultActor = game.actors.getName(actor);
             }
         }
