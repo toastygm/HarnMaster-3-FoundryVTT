@@ -412,9 +412,9 @@ export class HarnMasterActor extends Actor {
     _setupWeaponData(combatSkills) {
         const eph = this.data.data.eph;
 
-        this.data.items.forEach(it => {
-            const itemData = it.data;
-            if (it.type === 'missilegear') {
+        this.items.forEach(it => {
+            const itemData = it.data.data;
+            if (it.data.type === 'missilegear') {
                 // Reset mastery levels in case nothing matches
                 itemData.attackMasteryLevel = eph.missileAMLMod;
 
@@ -425,11 +425,11 @@ export class HarnMasterActor extends Actor {
                     let skillEml = combatSkills[assocSkill].eml;
                     itemData.attackMasteryLevel = skillEml + itemData.attackModifier + eph.missileAMLMod;
                 }
-            } else if (it.type === 'weapongear') {
+            } else if (it.data.type === 'weapongear') {
                 // Reset mastery levels in case nothing matches
                 itemData.attackMasteryLevel = eph.weaponAMLMod;
                 itemData.defenseMasteryLevel = eph.weaponDMLMod;
-                let weaponName = it.name;
+                let weaponName = it.data.name;
 
                 // If associated skill is 'None', see if there is a skill with the
                 // same name as the weapon; if so, then set it to that skill.
