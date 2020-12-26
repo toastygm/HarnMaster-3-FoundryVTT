@@ -456,22 +456,24 @@ export class HarnMasterActor extends Actor {
 
     _refreshSpellsAndInvocations() {
         this._resetAllSpellsAndInvocations();
-        this.data.items.forEach(it => {
-            if (it.type === 'skill' && it.data.type === 'Magic') {
-                this._setConvocationSpells(it.name, it.data.skillBase.value, it.data.masteryLevel, it.data.effectiveMasteryLevel);
-            } else if (it.type === 'skill' && it.data.type === 'Ritual') {
-                this._setRitualInvocations(it.name, it.data.skillBase.value, it.data.masteryLevel, it.data.effectiveMasteryLevel);
+        this.items.forEach(it => {
+            const itemData = it.data;
+            if (itemData.type === 'skill' && itemData.data.type === 'Magic') {
+                this._setConvocationSpells(itemData.name, itemData.data.skillBase.value, itemData.data.masteryLevel, itemData.data.effectiveMasteryLevel);
+            } else if (itemData.type === 'skill' && itemData.data.type === 'Ritual') {
+                this._setRitualInvocations(itemData.name, itemData.data.skillBase.value, itemData.data.masteryLevel, itemData.data.effectiveMasteryLevel);
             }
         });
     }
 
     _resetAllSpellsAndInvocations() {
-        this.data.items.forEach(it => {
-            if (it.type === 'spell' || it.type === 'invocation') {
-                it.data.effectiveMasteryLevel = 0;
-                it.data.skillIndex = 0;
-                it.data.masteryLevel = 0;
-                it.data.effectiveMasteryLevel = 0;
+        this.items.forEach(it => {
+            const itemData = it.data;
+            if (itemData.type === 'spell' || itemData.type === 'invocation') {
+                itemData.data.effectiveMasteryLevel = 0;
+                itemData.data.skillIndex = 0;
+                itemData.data.masteryLevel = 0;
+                itemData.data.effectiveMasteryLevel = 0;
             }
         })
     }
@@ -480,12 +482,13 @@ export class HarnMasterActor extends Actor {
         if (!convocation || convocation.length == 0) return;
 
         let lcConvocation = convocation.toLowerCase();
-        this.data.items.forEach(it => {
-            if (it.type === 'spell' && it.data.convocation && it.data.convocation.toLowerCase() === lcConvocation) {
-                it.data.effectiveMasteryLevel = Math.max(eml - (it.data.level * 5), 5);
-                it.data.skillIndex = Math.floor(ml / 10);
-                it.data.masteryLevel = ml;
-                it.data.skillBase = sb;
+        this.items.forEach(it => {
+            const itemData = it.data;
+            if (itemData.type === 'spell' && itemData.data.convocation && itemData.data.convocation.toLowerCase() === lcConvocation) {
+                itemData.data.effectiveMasteryLevel = Math.max(eml - (itemData.data.level * 5), 5);
+                itemData.data.skillIndex = Math.floor(ml / 10);
+                itemData.data.masteryLevel = ml;
+                itemData.data.skillBase = sb;
             }
         });
     }
@@ -494,12 +497,13 @@ export class HarnMasterActor extends Actor {
         if (!diety || diety.length == 0) return;
 
         let lcDiety = diety.toLowerCase();
-        this.data.items.forEach(it => {
-            if (it.type === 'invocation' && it.data.diety && it.data.diety.toLowerCase() === lcDiety) {
-                it.data.effectiveMasteryLevel = Math.max(eml - (it.data.circle * 5), 5);
-                it.data.skillIndex = Math.floor(ml / 10);
-                it.data.masteryLevel = ml;
-                it.data.skillBase = sb;
+        this.items.forEach(it => {
+            const itemData = it.data;
+            if (itemData.type === 'invocation' && itemData.data.diety && itemData.data.diety.toLowerCase() === lcDiety) {
+                itemData.data.effectiveMasteryLevel = Math.max(eml - (itemData.data.circle * 5), 5);
+                itemData.data.skillIndex = Math.floor(ml / 10);
+                itemData.data.masteryLevel = ml;
+                itemData.data.skillBase = sb;
             }
         });
     }
@@ -520,35 +524,38 @@ export class HarnMasterActor extends Actor {
             }
         });
 
-        this.data.items.forEach(it => {
-            if (it.type === 'armorgear' && it.data.isCarried && it.data.isEquipped) {
+        this.items.forEach(it => {
+            const itemData = it.data;
+            const data = itemData.data;
+
+            if (itemData.type === 'armorgear' && data.isCarried && data.isEquipped) {
 
                 // Go through all of the armor locations for this armor,
                 // applying this armor's settings to each location
 
                 // If locations doesn't exist, then just abandon and continue
-                if (typeof it.data.locations === 'undefined') {
+                if (typeof data.locations === 'undefined') {
                     return;
                 }
 
-                it.data.locations.forEach(l => {
+                data.locations.forEach(l => {
                     // If the location is unknown, skip the rest
                     if (typeof armorMap[l] != 'undefined') {
 
                         // Add this armor's protection to the location
                         if (typeof it.data.protection != 'undefined') {
-                            armorMap[l].blunt += it.data.protection.blunt;
-                            armorMap[l].edged += it.data.protection.edged;
-                            armorMap[l].piercing += it.data.protection.piercing;
-                            armorMap[l].fire += it.data.protection.fire;
+                            armorMap[l].blunt += data.protection.blunt;
+                            armorMap[l].edged += data.protection.edged;
+                            armorMap[l].piercing += data.protection.piercing;
+                            armorMap[l].fire += data.protection.fire;
                         }
 
                         // if a material has been specified, add it to the layers
-                        if (it.data.material.length > 0) {
+                        if (data.material.length > 0) {
                             if (armorMap[l].layers.length > 0) {
                                 armorMap[l].layers += ',';
                             }
-                            armorMap[l].layers += it.data.material;
+                            armorMap[l].layers += data.material;
                         }
 
                     }
@@ -563,47 +570,22 @@ export class HarnMasterActor extends Actor {
 
         // We now have a full map of all of the armor, let's apply it to
         // existing armor locations
-        this.data.items.forEach(it => {
-            if (it.type === 'armorlocation') {
-                let armorProt = armorArray.find(a => a.name === it.data.impactType);
+        this.items.forEach(it => {
+            const itemData = it.data;
+            const data = itemData.data;
+            if (itemData.type === 'armorlocation') {
+                let armorProt = armorArray.find(a => a.name === data.impactType);
 
                 // We will ignore any armorProt if there is no armor values specified
                 if (armorProt) {
-                    it.data.blunt = armorProt.blunt;
-                    it.data.edged = armorProt.edged;
-                    it.data.piercing = armorProt.piercing;
-                    it.data.fire = armorProt.fire;
-                    it.data.layers = armorProt.layers;
+                    data.blunt = armorProt.blunt;
+                    data.edged = armorProt.edged;
+                    data.piercing = armorProt.piercing;
+                    data.fire = armorProt.fire;
+                    data.layers = armorProt.layers;
                 }
             }
         });
-    }
-
-    stdRoll(label, options = {}) {
-
-        const rollData = {
-            label: label,
-            target: options.target,
-            fastforward: options.fastforward,
-            data: this.data,
-            speaker: ChatMessage.getSpeaker({ actor: this })
-        };
-
-        return DiceHM3.d100StdRoll(rollData);
-    }
-
-    d6Roll(label, options = {}) {
-
-        const rollData = {
-            label: label,
-            target: options.target,
-            numdice: options.numdice,
-            fastforward: options.fastforward,
-            data: this.data,
-            speaker: ChatMessage.getSpeaker({ actor: this })
-        };
-
-        return DiceHM3.d6Roll(rollData);
     }
 
     damageRoll(weaponName) {
