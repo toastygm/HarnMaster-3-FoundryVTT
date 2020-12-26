@@ -18,32 +18,133 @@ HM3.skillTypes = ["Craft", "Physical", "Communication", "Combat", "Magic", "Ritu
 
 HM3.traitTypes = ["Physical", "Psyche"];
 
-HM3.sunsigns = [ 'Ulandus', 'Ulandus-Aralius', 'Aralius', 'Aralius-Feniri', 'Feniri', 'Feniri-Ahnu',
+HM3.sunsigns = ['Ulandus', 'Ulandus-Aralius', 'Aralius', 'Aralius-Feniri', 'Feniri', 'Feniri-Ahnu',
     'Ahnu', 'Ahnu-Angberelius', 'Angberelius', 'Angberelius-Nadai', 'Nadai', 'Nadai-Hirin',
     'Hirin', 'Hirin-Tarael', 'Tarael', 'Tarael-Tai', 'Tai', 'Tai-Skorus', 'Skorus',
-    'Skorus-Masara', 'Masara', 'Masara-Lado', 'Lado', 'Lado-Ulandus' ];
+    'Skorus-Masara', 'Masara', 'Masara-Lado', 'Lado', 'Lado-Ulandus'];
 
 HM3.injuryLocations = {
-    "Custom": {impactType: "custom", probWeight: {"high": 1, "mid": 1, "low": 1}, isStumble: false, isFumble: false, isAmputate: false, effectiveImpact: { ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "G5"}},
-    "Skull": {impactType: "skull", probWeight: {"high": 150, "mid": 50, "low": 0}, isStumble: false, isFumble: false, isAmputate: false, effectiveImpact: { ei1: "M1", ei5: "S2", ei9: "S3", ei13: "K4", ei17: "K5"}},
-    "Face": {impactType: "face", probWeight: {"high": 150, "mid": 50, "low": 0}, isStumble: false, isFumble: false, isAmputate: false, effectiveImpact: {ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "K5"}},
-    "Neck": {impactType: "neck", probWeight: {"high": 150, "mid": 50, "low": 0}, isStumble: false, isFumble: false, isAmputate: true, effectiveImpact: {ei1: "M1", ei5: "S2", ei9: "S3", ei13: "K4", ei17: "K5"}},
-    "Shoulder": {impactType: "shoulder", probWeight: {"high": 60, "mid": 60, "low": 0}, isStumble: false, isFumble: true, isAmputate: false, effectiveImpact: {ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "K4"}},
-    "Upper Arm": {impactType: "upperarm", probWeight: {"high": 60, "mid": 30, "low": 0}, isStumble: false, isFumble: true, isAmputate: true, effectiveImpact: {ei1: "M1", ei5: "M1", ei9: "S2", ei13: "S3", ei17: "G4"}},
-    "Elbow": {impactType: "elbow", probWeight: {"high": 20, "mid": 10, "low": 0}, isStumble: false, isFumble: true, isAmputate: true, effectiveImpact: {ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "G5"}},
-    "Forearm": {impactType: "forearm", probWeight: {"high": 40, "mid": 20, "low": 30}, isStumble: false, isFumble: true, isAmputate: true, effectiveImpact: {ei1: "M1", ei5: "M1", ei9: "S2", ei13: "S3", ei17: "G4"}},
-    "Hand": {impactType: "hand", probWeight: {"high": 20, "mid": 20, "low": 30}, isStumble: false, isFumble: true, isAmputate: true, effectiveImpact: {ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "G5"}},
-    "Thorax": {impactType: "thorax", probWeight: {"high": 100, "mid": 170, "low": 70}, isStumble: false, isFumble: false, isAmputate: false, effectiveImpact: {ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "K5"}},
-    "Abdomen": {impactType: "abdomen", probWeight: {"high": 60, "mid": 100, "low": 100}, isStumble: false, isFumble: false, isAmputate: false, effectiveImpact: {ei1: "M1", ei5: "S2", ei9: "S3", ei13: "K4", ei17: "K5"}},
-    "Groin": {impactType: "groin", probWeight: {"high": 0, "mid": 40, "low": 60}, isStumble: false, isFumble: false, isAmputate: true, effectiveImpact: {ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "G5"}},
-    "Hip": {impactType: "hip", probWeight: {"high": 0, "mid": 30, "low": 70}, isStumble: true, isFumble: false, isAmputate: false, effectiveImpact: {ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "K4"}},
-    "Thigh": {impactType: "thigh", probWeight: {"high": 0, "mid": 40, "low": 100}, isStumble: true, isFumble: false, isAmputate: true, effectiveImpact: {ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "K4"}},
-    "Knee": {impactType: "knee", probWeight: {"high": 0, "mid": 10, "low": 40}, isStumble: true, isFumble: false, isAmputate: true, effectiveImpact: {ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "G5"}},
-    "Calf": {impactType: "calf", probWeight: {"high": 0, "mid": 30, "low": 70}, isStumble: true, isFumble: false, isAmputate: true, effectiveImpact: {ei1: "M1", ei5: "M1", ei9: "S2", ei13: "S3", ei17: "G4"}},
-    "Foot": {impactType: "foot", probWeight: {"high": 0, "mid": 20, "low": 40}, isStumble: true, isFumble: false, isAmputate: true, effectiveImpact: {ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "G5"}},
-    "Wing": {impactType: "wing", probWeight: {"high": 150, "mid": 50, "low": 0}, isStumble: false, isFumble: true, isAmputate: true, effectiveImpact: {ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "G5"}},
-    "Tentacle": {impactType: "tentacle", probWeight: {"high": 50, "mid": 150, "low": 0}, isStumble: false, isFumble: true, isAmputate: true, effectiveImpact: {ei1: "M1", ei5: "M1", ei9: "S2", ei13: "S3", ei17: "G4"}},
-    "Tail": {impactType: "tail", probWeight: {"high": 0, "mid": 50, "low": 100}, isStumble: true, isFumble: false, isAmputate: true, effectiveImpact: {ei1: "M1", ei5: "M1", ei9: "S2", ei13: "S3", ei17: "G4"}}
+    "Custom": { impactType: "custom", probWeight: { "high": 1, "mid": 1, "low": 1 }, isStumble: false, isFumble: false, isAmputate: false, effectiveImpact: { ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "G5" } },
+    "Skull": { impactType: "skull", probWeight: { "high": 150, "mid": 50, "low": 0 }, isStumble: false, isFumble: false, isAmputate: false, effectiveImpact: { ei1: "M1", ei5: "S2", ei9: "S3", ei13: "K4", ei17: "K5" } },
+    "Face": { impactType: "face", probWeight: { "high": 150, "mid": 50, "low": 0 }, isStumble: false, isFumble: false, isAmputate: false, effectiveImpact: { ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "K5" } },
+    "Neck": { impactType: "neck", probWeight: { "high": 150, "mid": 50, "low": 0 }, isStumble: false, isFumble: false, isAmputate: true, effectiveImpact: { ei1: "M1", ei5: "S2", ei9: "S3", ei13: "K4", ei17: "K5" } },
+    "Shoulder": { impactType: "shoulder", probWeight: { "high": 60, "mid": 60, "low": 0 }, isStumble: false, isFumble: true, isAmputate: false, effectiveImpact: { ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "K4" } },
+    "Upper Arm": { impactType: "upperarm", probWeight: { "high": 60, "mid": 30, "low": 0 }, isStumble: false, isFumble: true, isAmputate: true, effectiveImpact: { ei1: "M1", ei5: "M1", ei9: "S2", ei13: "S3", ei17: "G4" } },
+    "Elbow": { impactType: "elbow", probWeight: { "high": 20, "mid": 10, "low": 0 }, isStumble: false, isFumble: true, isAmputate: true, effectiveImpact: { ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "G5" } },
+    "Forearm": { impactType: "forearm", probWeight: { "high": 40, "mid": 20, "low": 30 }, isStumble: false, isFumble: true, isAmputate: true, effectiveImpact: { ei1: "M1", ei5: "M1", ei9: "S2", ei13: "S3", ei17: "G4" } },
+    "Hand": { impactType: "hand", probWeight: { "high": 20, "mid": 20, "low": 30 }, isStumble: false, isFumble: true, isAmputate: true, effectiveImpact: { ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "G5" } },
+    "Thorax": { impactType: "thorax", probWeight: { "high": 100, "mid": 170, "low": 70 }, isStumble: false, isFumble: false, isAmputate: false, effectiveImpact: { ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "K5" } },
+    "Abdomen": { impactType: "abdomen", probWeight: { "high": 60, "mid": 100, "low": 100 }, isStumble: false, isFumble: false, isAmputate: false, effectiveImpact: { ei1: "M1", ei5: "S2", ei9: "S3", ei13: "K4", ei17: "K5" } },
+    "Groin": { impactType: "groin", probWeight: { "high": 0, "mid": 40, "low": 60 }, isStumble: false, isFumble: false, isAmputate: true, effectiveImpact: { ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "G5" } },
+    "Hip": { impactType: "hip", probWeight: { "high": 0, "mid": 30, "low": 70 }, isStumble: true, isFumble: false, isAmputate: false, effectiveImpact: { ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "K4" } },
+    "Thigh": { impactType: "thigh", probWeight: { "high": 0, "mid": 40, "low": 100 }, isStumble: true, isFumble: false, isAmputate: true, effectiveImpact: { ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "K4" } },
+    "Knee": { impactType: "knee", probWeight: { "high": 0, "mid": 10, "low": 40 }, isStumble: true, isFumble: false, isAmputate: true, effectiveImpact: { ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "G5" } },
+    "Calf": { impactType: "calf", probWeight: { "high": 0, "mid": 30, "low": 70 }, isStumble: true, isFumble: false, isAmputate: true, effectiveImpact: { ei1: "M1", ei5: "M1", ei9: "S2", ei13: "S3", ei17: "G4" } },
+    "Foot": { impactType: "foot", probWeight: { "high": 0, "mid": 20, "low": 40 }, isStumble: true, isFumble: false, isAmputate: true, effectiveImpact: { ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "G5" } },
+    "Wing": { impactType: "wing", probWeight: { "high": 150, "mid": 50, "low": 0 }, isStumble: false, isFumble: true, isAmputate: true, effectiveImpact: { ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "G5" } },
+    "Tentacle": { impactType: "tentacle", probWeight: { "high": 50, "mid": 150, "low": 0 }, isStumble: false, isFumble: true, isAmputate: true, effectiveImpact: { ei1: "M1", ei5: "M1", ei9: "S2", ei13: "S3", ei17: "G4" } },
+    "Tail": { impactType: "tail", probWeight: { "high": 0, "mid": 50, "low": 100 }, isStumble: true, isFumble: false, isAmputate: true, effectiveImpact: { ei1: "M1", ei5: "M1", ei9: "S2", ei13: "S3", ei17: "G4" } }
+};
+
+HM3.stdSkills = {
+    "Sword": { "source": "HM3 Skills 19", "skillBase": { "formula": "@str, @dex, @dex, Angberelius:3, Ahnu, Nadai" }, "type": "Combat" },
+    "Axe": { "source": "HM3 Skills 19", "skillBase": { "formula": "@str, @str, @dex, Ahnu, Feniri, Angberelius" }, "type": "Combat" },
+    "Bow": { "source": "HM3 Skills 19", "skillBase": { "formula": "@str, @dex, @eye, Hirin, Tarael, Nadai" }, "type": "Combat" },
+    "Shield": { "source": "HM3 Skills 19", "skillBase": { "formula": "@str, @dex, @dex, Ulandus, Lado, Masara" }, "type": "Combat" },
+    "Flail": { "source": "HM3 Skills 19", "skillBase": { "formula": "@dex, @dex, @dex, Hirin, Tarael, Nadai" }, "type": "Combat" },
+    "Sling": { "source": "HM3 Skills 19", "skillBase": { "formula": "@dex, @dex, @eye, Hirin, Tarael, Nadai" }, "type": "Combat" },
+    "Riding": { "source": "HM3 Skills 18", "skillBase": { "formula": "@dex, @agl, @wil, Ulandus, Aralius" }, "type": "Combat" },
+    "Initiative": { "source": "HM3 Skills 18", "skillBase": { "formula": "@agl, @wil, @wil" }, "type": "Combat" },
+    "Unarmed": { "source": "HM3 Skills 18", "skillBase": { "formula": "@str, @dex, @agl, Madada:2, Lado:2, Ulandus:2" }, "type": "Combat" },
+    "Polearm": { "source": "HM3 Skills 19", "skillBase": { "formula": "@str, @str, @dex, Angberelius, Aralius" }, "type": "Combat" },
+    "Dagger": { "source": "HM3 Skills 19", "skillBase": { "formula": "@dex, @dex, @eye, Angberelius:2, Nadai:2" }, "type": "Combat" },
+    "Blowgun": { "source": "HM3 Skills 19", "skillBase": { "formula": "@sta, @dex, @eye, Hirin:2, Tarael, Nadai" }, "type": "Combat" },
+    "Spear": { "source": "HM3 Skills 19", "skillBase": { "formula": "@str, @str, @dex, Aralius, Feniri, Ulandus" }, "type": "Combat" },
+    "Net": { "source": "HM3 Skills 19", "skillBase": { "formula": "@dex, @dex, @eye, Masara, Skorus, Lado" }, "type": "Combat" },
+    "Club": { "source": "HM3 Skills 19", "skillBase": { "formula": "@str, @str, @dex, Ulandus, Aralius" }, "type": "Combat" },
+    "Whip": { "source": "HM3 Skills 19", "skillBase": { "formula": "@dex, @dex, @eye, Hirin, Nadai" }, "type": "Combat" },
+    "Dodge": { "source": "HM3 Skills 21", "skillBase": { "formula": "@agl, @agl, @agl" }, "type": "Combat" },
+    "Acting": { "source": "HM3 Skills 11", "skillBase": { "formula": "@agl, @voi, @int, Tarael, Tai" }, "type": "Communication" },
+    "Intrigue": { "source": "HM3 Skills 11", "skillBase": { "formula": "@int, @aur, @wil, Tai, Tarael, Skorus" }, "type": "Communication" },
+    "Awareness": { "source": "HM3 Skills 11", "skillBase": { "formula": "@eye, @hrg, @sml, Hirin:2, Tarael:2" }, "type": "Communication" },
+    "Oratory": { "source": "HM3 Skills 12", "skillBase": { "formula": "@cml, @voi, @int, Tarael" }, "type": "Communication" },
+    "Script": { "source": "HM3 Skills 11", "skillBase": { "formula": "@dex, @eye, @int, Tarael, Tai" }, "type": "Communication" },
+    "Rhetoric": { "source": "HM3 Skills 12", "skillBase": { "formula": "@voi, @int, @wil, Tai, Tarael, Skorus" }, "type": "Communication" },
+    "Language": { "source": "HM3 Skills 10", "skillBase": { "formula": "@voi, @int, @wil, Tai" }, "type": "Communication" },
+    "Musician": { "source": "HM3 Skills 12", "skillBase": { "formula": "@dex, @hrg, @hrg, Masara, Angberelius" }, "type": "Communication" },
+    "Mental Conflict": { "source": "HM3 Skills 12", "skillBase": { "formula": "@aur, @wil, @wil" }, "type": "Communication" },
+    "Singing": { "source": "HM3 Skills 12", "skillBase": { "formula": "@hrg, @voi, @voi, Masara" }, "type": "Communication" },
+    "Lovecraft": { "source": "HM3 Skills 11", "skillBase": { "formula": "@cml, @agl, @voi, Masara, Angberelius" }, "type": "Communication" },
+    "Physician": { "source": "HM3 Skills 17", "skillBase": { "formula": "@dex, @eye, @int, Masara:2, Skorus, Tai" }, "type": "Craft" },
+    "Fishing": { "source": "HM3 Skills 14", "skillBase": { "formula": "@dex, @eye, @wil, Masara:2, Lado:2" }, "type": "Craft" },
+    "Survival": { "source": "HM3 Skills 17", "skillBase": { "formula": "@str, @dex, @int, Ulandus:2, Aralius" }, "type": "Craft" },
+    "Foraging": { "source": "HM3 Skills 15", "skillBase": { "formula": "@dex, @sml, @int, Ulandus:2, Aralius:2" }, "type": "Craft" },
+    "Mathematics": { "source": "HM3 Skills 16", "skillBase": { "formula": "@int, @int, @wil, Tai:3, Tarael, Skorus" }, "type": "Craft" },
+    "Folklore": { "source": "HM3 Skills 15", "skillBase": { "formula": "@voi, @int, @int, Tai:2" }, "type": "Craft" },
+    "Jewelcraft": { "source": "HM3 Skills 16", "skillBase": { "formula": "@dex, @eye, @wil, Feniri:3, Tarael, Aralius" }, "type": "Craft" },
+    "Tracking": { "source": "HM3 Skills 17", "skillBase": { "formula": "@eye, @sml, @wil, Ulandus:3, Aralius:3" }, "type": "Craft" },
+    "Hunting": { "source": "HM3 Skills 16", "skillBase": { "formula": "@agl, @sml, @int, Ulandus:2, Aralius:2" }, "type": "Craft" },
+    "Law": { "source": "HM3 Skills 16", "skillBase": { "formula": "@voi, @int, @wil, Tarael, Tai" }, "type": "Craft" },
+    "Weaponcraft": { "source": "HM3 Skills 17", "skillBase": { "formula": "@str, @dex, @wil, Feniri:3, Ahnu, Angberelius" }, "type": "Craft" },
+    "Mining": { "source": "HM3 Skills 16", "skillBase": { "formula": "@str, @eye, @int, Ulandus:2, Aralius:2, Feniri" }, "type": "Craft" },
+    "Metalcraft": { "source": "HM3 Skills 16", "skillBase": { "formula": "@str, @dex, @wil, Feniri:3, Ahnu, Angberelius" }, "type": "Craft" },
+    "Ceramics": { "source": "HM3 Skills 13", "skillBase": { "formula": "@dex, @dex, @eye, Ulandus:2, Aralius:2" }, "type": "Craft" },
+    "Runecraft": { "source": "HM3 Skills 17", "skillBase": { "formula": "@int, @aur, @aur, Tai:2, Skorus" }, "type": "Craft" },
+    "Tarotry": { "source": "HM3 Skills 17", "skillBase": { "formula": "@int, @aur, @wil, Tarael:2, Tai:2, Skorus, Hirin" }, "type": "Craft" },
+    "Perfumery": { "source": "HM3 Skills 16", "skillBase": { "formula": "@sml, @sml, @int, Hirin, Skorus, Tarael" }, "type": "Craft" },
+    "Fletching": { "source": "HM3 Skills 15", "skillBase": { "formula": "@dex, @dex, @eye, Hirin:2, Tarael, Nadai" }, "type": "Craft" },
+    "Piloting": { "source": "HM3 Skills 17", "skillBase": { "formula": "@dex, @eye, @int, Lado:3, Masara" }, "type": "Craft" },
+    "Weatherlore": { "source": "HM3 Skills 17", "skillBase": { "formula": "@int, @eye, @sml, Hirin, Tarael, Masada, Lado" }, "type": "Craft" },
+    "Engineering": { "source": "HM3 Skills 14", "skillBase": { "formula": "@dex, @int, @int, Ulandus:2, Aralius:2, Feniri" }, "type": "Craft" },
+    "Embalming": { "source": "HM3 Skills 14", "skillBase": { "formula": "@dex, @eye, @sml, Skorus, Ulandus" }, "type": "Craft" },
+    "Brewing": { "source": "HM3 Skills 13", "skillBase": { "formula": "@dex, @sml, @sml, Skorus:3, Tai:2, Masara:2" }, "type": "Craft" },
+    "Lockcraft": { "source": "HM3 Skills 16", "skillBase": { "formula": "@dex, @eye, @wil, Feniri" }, "type": "Craft" },
+    "Masonry": { "source": "HM3 Skills 16", "skillBase": { "formula": "@str, @dex, @int, Ulandus:2, Aralius:2" }, "type": "Craft" },
+    "Textilecraft": { "source": "HM3 Skills 17", "skillBase": { "formula": "@dex, @dex, @eye, Ulandus, Aralius" }, "type": "Craft" },
+    "Cookery": { "source": "HM3 Skills 13", "skillBase": { "formula": "@dex, @sml, @sml, Skorus" }, "type": "Craft" },
+    "Lore": { "source": "HM3 Skills 16", "skillBase": { "formula": "@eye, @int, @int, Tai:2" }, "type": "Craft" },
+    "Drawing": { "source": "HM3 Skills 13", "skillBase": { "formula": "@dex, @eye, @eye, Skorus, Tai" }, "type": "Craft" },
+    "Alchemy": { "source": "HM3 Skills 13", "skillBase": { "formula": "@sml, @int, @aur, Skorus:3, Tai:2, Masara:2" }, "type": "Craft" },
+    "Milling": { "source": "HM3 Skills 16", "skillBase": { "formula": "@str, @dex, @sml, Ulandus" }, "type": "Craft" },
+    "Timbercraft": { "source": "HM3 Skills 17", "skillBase": { "formula": "@str, @dex, @agl, Ulandus:3, Aralius" }, "type": "Craft" },
+    "Hidework": { "source": "HM3 Skills 15", "skillBase": { "formula": "@dex, @sml, @wil, Ulandis, Aralius" }, "type": "Craft" },
+    "Shipwright": { "source": "HM3 Skills 17", "skillBase": { "formula": "@str, @dex, @int, Lado:3, Masara" }, "type": "Craft" },
+    "Astrology": { "source": "HM3 Skills 13", "skillBase": { "formula": "@eye, @int, @aur, Tarael" }, "type": "Craft" },
+    "Woodcraft": { "source": "HM3 Skills 17", "skillBase": { "formula": "@dex, @dex, @wil, Ulandus:2, Aralius, Lado" }, "type": "Craft" },
+    "Herblore": { "source": "HM3 Skills 15", "skillBase": { "formula": "@eye, @sml, @int, Ulandus:3, Aralius:2" }, "type": "Craft" },
+    "Inkcraft": { "source": "HM3 Skills 16", "skillBase": { "formula": "@eye, @sml, @int, Skorus:2, Tai" }, "type": "Craft" },
+    "Heraldry": { "source": "HM3 Skills 15", "skillBase": { "formula": "@dex, @eye, @wil, Skorus, Tai" }, "type": "Craft" },
+    "Animalcraft": { "source": "HM3 Skills 13", "skillBase": { "formula": "@agl, @voi, @wil, Ulandus, Aralius" }, "type": "Craft" },
+    "Seamanship": { "source": "HM3 Skills 17", "skillBase": { "formula": "@str, @dex, @agl, Lado:3, Masara, Skorus" }, "type": "Craft" },
+    "Glassworking": { "source": "HM3 Skills 15", "skillBase": { "formula": "@dex, @eye, @wil, Feniri:2" }, "type": "Craft" },
+    "Agriculture": { "source": "HM3 Skills 13", "skillBase": { "formula": "@str, @sta, @wil, Ulandus:2, Aralius:2" }, "type": "Craft" },
+    "Lyahvi": { "source": "HM Magic, Shek-Pvar 6", "skillBase": { "formula": "@aur, @aur, @eye, Ulandus:-3, Aralius:-2,Feneri:-1, Angberelius, Nadai:2, Hirin:3, Tarael:2, Tai,Masara:-1, Lado:-2" }, "type": "Magic" },
+    "Savorya": { "source": "HM Magic, Shek-pvar 6", "skillBase": { "formula": "@aur, @aur, @int, Ulandus:-1, Aralius:-2, Feneri:-3, Ahnu:-2, Angberelius:-1, Hirin:1, Tarael:2, Tai:3, Skorus:2, Masara" }, "type": "Magic" },
+    "Peleahn": { "source": "HM Magic, Shek-pvar 6", "skillBase": { "formula": "@aur, @aur, @agl, Ulandus:-1, Feneri, Ahnu:2, Angberelius:3, Nadai:2, Hirin, Tai:-1, Skorus:-2, Masara:-3, Lado:-2" }, "type": "Magic" },
+    "Jmorvi": { "source": "HM Magic, Shek-pvar 6", "skillBase": { "formula": "@aur, @aur, @str, Ulandus, Aralius:2, Feneri:3, Ahnu:2, Angberelius:1, Hirin:-1, Tarael:-2, Tai:-3, Skorus:-2, Masara:-1" }, "type": "Magic" },
+    "Odivshe": { "source": "HM Magic, Shek-pvar 6", "skillBase": { "formula": "@aur, @aur, @dex, Ulandus, Feneri:-1, Ahnu:-2, Angberelius:-3, Nadai:-2, Hirin:-1, Tai:1, Skorus:2, Masara:3, Lado:2" }, "type": "Magic" },
+    "Neutral": { "source": "HM Magic, Shek-pvar 6", "skillBase": { "formula": "@aur, @aur, @wil" }, "type": "Magic" },
+    "Fyvria": { "source": "HM Magic, Shek-pvar 6", "skillBase": { "formula": "@aur, @aur, @sml, Ulandus:3, Aralius:2, Feneri:1, Angberelius:-1, Nadai:-2, Hirin:-3, Tarael:-2, Tai:-1, Masara, Lado:2" }, "type": "Magic" },
+    "Climbing": { "source": "HM3 Skills 8", "skillBase": { "formula": "@str, @dex, @agl, Ulandus:2, Aralius:2" }, "type": "Physical" },
+    "Swimming": { "source": "HM3 Skills 9", "skillBase": { "formula": "@sta, @dex, @agl, Skorus, Masara:3, Lado:3" }, "type": "Physical" },
+    "Skiing": { "source": "HM3 Skills 9", "skillBase": { "formula": "@str, @dex, @agl, Masara:2, Skorus, Lado" }, "type": "Physical" },
+    "Stealth": { "source": "HM3 Skills 9", "skillBase": { "formula": "@agl, @hrg, @wil, Hirin:2, Tarael:2, Tai:2" }, "type": "Physical" },
+    "Jumping": { "source": "HM3 Skills 9", "skillBase": { "formula": "@str, @agl, @agl, Nadai:2, Hirin:2" }, "type": "Physical" },
+    "Condition": { "source": "HM3 Skills 9", "skillBase": { "formula": "@str, @sta, @wil, Ulandus, Lado" }, "type": "Physical" },
+    "Dancing": { "source": "HM3 Skills 9", "skillBase": { "formula": "@Dex, @agl, @agl, Tarael:2, Hirin, Tai" }, "type": "Physical" },
+    "Acrobatics": { "source": "HM3 Skills 8", "skillBase": { "formula": "@str, @agl, @agl, Nadai:2, Hirin" }, "type": "Physical" },
+    "Throwing": { "source": "HM3 Skills 10", "skillBase": { "formula": "@str, @dex, @eye, Hirin:2, Tarael, Nadai" }, "type": "Physical" },
+    "Legerdemain": { "source": "HM3 Skills 9", "skillBase": { "formula": "@dex, @dex, @wil, Skorus:2, Tai:2, Tarael:2" }, "type": "Physical" },
+    "Peoni": { "source": "HM Religion, Peoni 1", "skillBase": { "formula": "@voi, @int, @dex, Aralius:2, Angberelius, Ulandus" }, "type": "Ritual" },
+    "Agrik": { "source": "HM Religion, Agrik 1", "skillBase": { "formula": "@voi, @int, @str, Nadai:2, Angberelius, Ahnu" }, "type": "Ritual" },
+    "Ilvir": { "source": "HM Religion, Ilvir 1", "skillBase": { "formula": "@voi, @int, @aur, Skorus:2, Tai, Ulandus" }, "type": "Ritual" },
+    "Siem": { "source": "HM Religion, Siem 1", "skillBase": { "formula": "@voi, @int, @aur, Hirin:2, Feniri, Ulandus" }, "type": "Ritual" },
+    "Sarajin": { "source": "HM Religion, Sarajin 1", "skillBase": { "formula": "@voi, @int, @str, Feniri:2, Aralius, Lado" }, "type": "Ritual" },
+    "Morgath": { "source": "HM Religion, Morgath 1", "skillBase": { "formula": "@voi, @int, @aur, Lado:2, Ahnu, Masara" }, "type": "Ritual" },
+    "Halea": { "source": "HM Religion, Halea 1", "skillBase": { "formula": "@voi, @int, @cml, Tarael:2, Hirin, Masara" }, "type": "Ritual" },
+    "Naveh": { "source": "HM Religion, Naveh 1", "skillBase": { "formula": "@voi, @int, @wil, Masara:2, Skorus, Tarael" }, "type": "Ritual" },
+    "Larani": { "source": "HM Religion, Larani 1", "skillBase": { "formula": "@voi, @int, @wil, Angberelius:2, Ahnu, Feniri" }, "type": "Ritual" },
+    "Save K'nor": { "source": "HM Religion, Save K'nor 1", "skillBase": { "formula": "@voi, @int, @int, Tai:2, Tarael, Skorus" }, "type": "Craft" }
 };
 
 HM3.injuryLevels = ["NA", "M1", "S2", "S3", "G4", "G5", "K4", "K5"];
@@ -308,15 +409,15 @@ HM3.miscGearIcons = [
 
 HM3.defaultItemIcons = new Map(
     HM3.physicalSkillIcons
-    .concat(HM3.commSkillIcons)
-    .concat(HM3.combatSkillIcons)
-    .concat(HM3.weaponSkillIcons)
-    .concat(HM3.craftSkillIcons)
-    .concat(HM3.miscGearIcons)
-    .concat(HM3.armorGearIcons)
-    .concat(HM3.ritualIcons)
-    .concat(HM3.magicIcons)
-    .concat(HM3.psionicTalentIcons)
+        .concat(HM3.commSkillIcons)
+        .concat(HM3.combatSkillIcons)
+        .concat(HM3.weaponSkillIcons)
+        .concat(HM3.craftSkillIcons)
+        .concat(HM3.miscGearIcons)
+        .concat(HM3.armorGearIcons)
+        .concat(HM3.ritualIcons)
+        .concat(HM3.magicIcons)
+        .concat(HM3.psionicTalentIcons)
 );
 
 HM3.meleeCombatTable = {
