@@ -159,12 +159,20 @@ export class HarnMasterActor extends Actor {
         data.endurance = Math.round((data.abilities.strength.base + data.abilities.stamina.base +
             data.abilities.will.base) / 3);
         data.hasCondition = false;
-        if (actorData.items) actorData.items.forEach(it => {
-            if (it.data.type === 'skill' && it.data.name === 'Condition') {
-                data.endurance = Math.floor(it.data.data.masteryLevel / 5);
-                data.hasCondition = true;
-            }
-        });
+        if (this.items) {
+            this.items.forEach(it => {
+                if (it.data.type === 'skill' && it.data.name.toLowerCase() === 'condition') {
+                    data.endurance = Math.round(it.data.data.masteryLevel / 5);
+                    data.hasCondition = true;
+                }
+            });
+        } else {
+            actorData.items.forEach(itemData => {
+                if (itemData.type === 'skill' && itemData.name.toLowerCase() === 'condition') {
+                    data.endurance = Math.round(itemData.data.masteryLevel / 5);
+                }
+            })
+        }
         data.endurance = data.endurance || 1;
 
         data.encumbrance = Math.floor(eph.totalGearWeight / data.endurance);
