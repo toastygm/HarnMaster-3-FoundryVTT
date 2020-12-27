@@ -232,28 +232,32 @@ export class HarnMasterActor extends Actor {
         // Universal Penalty and Physical Penalty are used to calculate many
         // things, including effectiveMasteryLevel for all skills,
         // endurance, move, etc.
-        data.universalPenalty = eph.totalInjuryLevels + eph.fatigue;
-        data.physicalPenalty = data.universalPenalty + data.encumbrance;
+        data.universalPenalty = (eph.totalInjuryLevels + eph.fatigue) || 0;
+        data.physicalPenalty = (data.universalPenalty + data.encumbrance) || 0;
+
         if (!eph.shockIndex) eph.shockIndex = {};
         eph.shockIndex.value = HarnMasterActor._normProb(data.endurance, data.universalPenalty * 3.5, data.universalPenalty);
         if (canvas) this.getActiveTokens().forEach(token => {
             if (token.bars) token._onUpdateBarAttributes(this.data, { "eph.shockIndex.value": eph.shockIndex.value });
         });
 
+        // Calculate current Move speed.  Cannot go below 0
+        data.move.effective = Math.max(eph.move - data.physicalPenalty, 0);
+
         // Setup effective abilities (accounting for UP and PP)
         this._setupEffectiveAbilities(data);
+
+        // Calculate Important Roll Targets
+        eph.stumbleTarget = Math.max(eph.agility, 0);
+        eph.fumbleTarget = Math.max(eph.dexterity, 0);
 
         // Process all the final post activities for Items
         this.items.forEach(it => {
             it.prepareDerivedData();
         });
 
-        // Calculate current Move speed.  Cannot go below 0
-        data.move.effective = Math.max(eph.move - data.physicalPenalty, 0);
-
-        // Calculate Important Roll Targets
-        eph.stumbleTarget = Math.max(data.abilities.agility.effective - data.physicalPenalty, 0);
-        eph.fumbleTarget = Math.max(data.abilities.dexterity.effective - data.physicalPenalty, 0);
+        // Calculate spell effective mastery level values
+        this._refreshSpellsAndInvocations();
 
         // Collect all combat skills into a map for use later
         let combatSkills = {};
@@ -267,11 +271,11 @@ export class HarnMasterActor extends Actor {
             }
         });
 
-        // Calculate spell effective mastery level values
-        this._refreshSpellsAndInvocations();
-
         this._setupWeaponData(combatSkills);
+
         this._generateArmorLocationMap(data);
+
+        return;
     }
 
 
@@ -412,23 +416,28 @@ export class HarnMasterActor extends Actor {
     _setupWeaponData(combatSkills) {
         const eph = this.data.data.eph;
 
+        // Just ensure we take care of any NaN or other falsy nonsense
+        if (!eph.misileAMLMod) eph.missileAMLMod = 0;
+        if (!eph.weaponAMLMod) eph.weaponAMLMod = 0;
+        if (!eph.weaponDMLMod) eph.weaponDMLMod = 0;
+
         this.items.forEach(it => {
             const itemData = it.data.data;
             if (it.data.type === 'missilegear') {
                 // Reset mastery levels in case nothing matches
-                itemData.attackMasteryLevel = eph.missileAMLMod;
+                itemData.attackMasteryLevel = Math.max(eph.missileAMLMod, 5);
 
                 // If the associated skill is in our combat skills list, get EML from there
                 // and then calculate AML.
                 let assocSkill = itemData.assocSkill;
                 if (typeof combatSkills[assocSkill] !== 'undefined') {
                     let skillEml = combatSkills[assocSkill].eml;
-                    itemData.attackMasteryLevel = skillEml + itemData.attackModifier + eph.missileAMLMod;
+                    itemData.attackMasteryLevel = Math.max((skillEml + itemData.attackModifier + eph.missileAMLMod) || 5, 5);
                 }
             } else if (it.data.type === 'weapongear') {
                 // Reset mastery levels in case nothing matches
-                itemData.attackMasteryLevel = eph.weaponAMLMod;
-                itemData.defenseMasteryLevel = eph.weaponDMLMod;
+                itemData.attackMasteryLevel = Math.max(eph.weaponAMLMod, 5);
+                itemData.defenseMasteryLevel = Math.max(eph.weaponDMLMod, 5);
                 let weaponName = it.data.name;
 
                 // If associated skill is 'None', see if there is a skill with the
@@ -447,8 +456,8 @@ export class HarnMasterActor extends Actor {
                 let assocSkill = itemData.assocSkill;
                 if (typeof combatSkills[assocSkill] !== 'undefined') {
                     let skillEml = combatSkills[assocSkill].eml;
-                    itemData.attackMasteryLevel = skillEml + itemData.attack + itemData.attackModifier + eph.meleeAMLMod;
-                    itemData.defenseMasteryLevel = skillEml + itemData.defense + eph.meleeDMLMod;
+                    itemData.attackMasteryLevel = Math.max((skillEml + itemData.attack + itemData.attackModifier + eph.meleeAMLMod) || 5, 5);
+                    itemData.defenseMasteryLevel = MAth.max((skillEml + itemData.defense + eph.meleeDMLMod) || 5, 5);
                 }
             }
         });
@@ -543,7 +552,7 @@ export class HarnMasterActor extends Actor {
                     if (typeof armorMap[l] != 'undefined') {
 
                         // Add this armor's protection to the location
-                        if (typeof it.data.protection != 'undefined') {
+                        if (typeof data.protection != 'undefined') {
                             armorMap[l].blunt += data.protection.blunt;
                             armorMap[l].edged += data.protection.edged;
                             armorMap[l].piercing += data.protection.piercing;

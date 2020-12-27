@@ -162,10 +162,12 @@ export class HarnMasterItem extends Item {
         const actorData = this.actor ? this.actor.data : {};
         const data = itemData.data;
 
-        const pctUnivPen = this.actor ? actorData.data.universalPenalty * 5 : 0;
-        const pctPhysPen = this.actor ? actorData.data.physicalPenalty * 5 : 0
+        const pctUnivPen = this.actor ? (actorData.data.universalPenalty * 5) || 0 : 0;
+        const pctPhysPen = this.actor ? (actorData.data.physicalPenalty * 5) || 0 : 0;
 
         if (itemData.type === 'skill') {
+            if (!data.masteryLevel || data.masteryLevel < 0) data.masteryLevel = 0; 
+
             // Set EML for skills based on UP/PP
             switch (data.type) {
                 case 'Combat':
@@ -186,19 +188,20 @@ export class HarnMasterItem extends Item {
                 if (this.actor) actorData.data.dodge = data.effectiveMasteryLevel;
             }
         } else if (itemData.type === 'psionic') {
+            if (!data.masteryLevel || data.masteryLevel < 0) data.masteryLevel = 0; 
             data.effectiveMasteryLevel = Math.max(data.masteryLevel - pctUnivPen, 5);
         } else if (itemData.type === 'injury') {
             // Just make sure if injuryLevel is negative, we set it to zero
-            if (data.injuryLevel < 0) data.injuryLevel = 0;
+            if (!data.injuryLevel || data.injuryLevel < 0) data.injuryLevel = 0;
 
             if (data.injuryLevel === 0) {
                 data.severity = '';
             } else if (data.injuryLevel == 1) {
                 data.severity = 'M1';
             } else if (data.injuryLevel <= 3) {
-                data.severity = 'S' + data.injuryLevel;
+                data.severity = `S${data.injuryLevel}`;
             } else {
-                data.severity = 'G' + data.injuryLevel;
+                data.severity = `G${data.injuryLevel}`;
             }
         }
     }
