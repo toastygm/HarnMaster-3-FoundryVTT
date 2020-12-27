@@ -432,12 +432,17 @@ export function weaponAttack(itemName = null, noDialog = false, myToken = null, 
 
     const targets = game.user.targets;
     if (!targets || targets.size !== 1) {
-        ui.notifications.warn(`You must have one selected target.`);
+        ui.notifications.warn(`You must select exactly one target.`);
         return;
     }
 
     const targetToken = Array.from(game.user.targets)[0];
 
+    if (targetToken.id === combatant.token.id) {
+        ui.notifications.warn(`You have targetted the combatant, they cannot attack themself, combat aborted.`);
+        return;
+    }
+    
     let weapon = null;
     if (itemName) {
         weapon = combat.getItem(itemName, 'weapongear', combatant.actor);
@@ -453,12 +458,17 @@ export function missileAttack(itemName = null, noDialog = false, myToken = null,
     
     const targets = game.user.targets;
     if (!targets || targets.size !== 1) {
-        ui.notifications.warn(`You must have one selected target.`);
+        ui.notifications.warn(`You must select exactly one target.`);
         return;
     }
 
     const targetToken = Array.from(game.user.targets)[0];
 
+    if (targetToken.id === combatant.token.id) {
+        ui.notifications.warn(`You have targetted the combatant, they cannot attack themself, combat aborted.`);
+        return;
+    }
+    
     let missile = null;
     if (itemName) {
         missile = combat.getItem(itemName, 'missilegear', combatant.actor);
