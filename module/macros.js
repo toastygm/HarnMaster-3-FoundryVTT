@@ -425,76 +425,6 @@ export function missileDamageRoll(itemName, range=null, myActor = null) {
     return DiceHM3.missileDamageRoll(rollData);
 }
 
-export function weaponAttack(itemName = null, noDialog = false, myToken = null, forceAllow=false) {
-    const speaker = myToken ? ChatMessage.getSpeaker({token: myToken}) : ChatMessage.getSpeaker();
-    const combatant = getTokenInCombat(myToken, forceAllow);
-    if (!combatant) return null;
-
-    const targets = game.user.targets;
-    if (!targets || targets.size !== 1) {
-        ui.notifications.warn(`You must select exactly one target.`);
-        return;
-    }
-
-    const targetToken = Array.from(game.user.targets)[0];
-
-    if (targetToken.id === combatant.token.id) {
-        ui.notifications.warn(`You have targetted the combatant, they cannot attack themself, combat aborted.`);
-        return;
-    }
-    
-    let weapon = null;
-    if (itemName) {
-        weapon = combat.getItem(itemName, 'weapongear', combatant.actor);
-    }
-
-    return combat.meleeAttack(combatant.token, targetToken, weapon);
-}
-
-export function missileAttack(itemName = null, noDialog = false, myToken = null, forceAllow=false) {
-    const speaker = myToken ? ChatMessage.getSpeaker({token: myToken}) : ChatMessage.getSpeaker();
-    const combatant = getTokenInCombat(myToken, forceAllow);
-    if (!combatant) return null;
-    
-    const targets = game.user.targets;
-    if (!targets || targets.size !== 1) {
-        ui.notifications.warn(`You must select exactly one target.`);
-        return;
-    }
-
-    const targetToken = Array.from(game.user.targets)[0];
-
-    if (targetToken.id === combatant.token.id) {
-        ui.notifications.warn(`You have targetted the combatant, they cannot attack themself, combat aborted.`);
-        return;
-    }
-    
-    let missile = null;
-    if (itemName) {
-        missile = combat.getItem(itemName, 'missilegear', combatant.actor);
-    }
-
-    return combat.missileAttack(combatant.token, targetToken, missile);
-}
-
-export function weaponAttackResume(atkTokenId, defTokenId, action, effAML, aim, aspect, impactMod) {
-    const atkToken = canvas.tokens.get(atkTokenId);
-    if (!atkToken) {
-        ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
-        return null;
-    }
-
-    const speaker = ChatMessage.getSpeaker({token: atkToken});
-
-    const defToken = canvas.tokens.get(defTokenId);
-    if (!defToken) {
-        ui.notifications.warn(`Defender ${defToken.name} could not be found on canvas.`);
-        return null;
-    }
-
-    return combat.meleeAttackResume(atkToken, defToken, action, effAML, aim, aspect, impactMod);
-}
-
 export function weaponAttackRoll(itemName, noDialog = false, myActor = null) {
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
@@ -577,7 +507,7 @@ export function missileAttackRoll(itemName, myActor = null) {
 
     const speaker = ChatMessage.getSpeaker({actor: actor});
 
-    const targetToken = getSingleTarget();
+    const targetToken = getSingleSelectedToken();
 
     const range = combat.rangeToTarget(actor.token, targetToken);
 
@@ -843,6 +773,64 @@ export function setSkillDevelopmentFlag(skillName, myActor = null) {
     return true;
 }
 
+/*--------------------------------------------------------------*/
+/*        AUTOMATED COMBAT                                      */
+/*--------------------------------------------------------------*/
+
+export function weaponAttack(itemName = null, noDialog = false, myToken = null, forceAllow=false) {
+    const speaker = myToken ? ChatMessage.getSpeaker({token: myToken}) : ChatMessage.getSpeaker();
+    const combatant = getTokenInCombat(myToken, forceAllow);
+    if (!combatant) return null;
+
+    const targetToken = getUserTargetedToken(combatant);
+    if (!targetToken) return null;
+
+    let weapon = null;
+    if (itemName) {
+        weapon = combat.getItem(itemName, 'weapongear', combatant.actor);
+    }
+
+    return combat.meleeAttack(combatant.token, targetToken, weapon);
+}
+
+export function missileAttack(itemName = null, noDialog = false, myToken = null, forceAllow=false) {
+    const speaker = myToken ? ChatMessage.getSpeaker({token: myToken}) : ChatMessage.getSpeaker();
+    const combatant = getTokenInCombat(myToken, forceAllow);
+    if (!combatant) return null;
+    
+    const targetToken = getUserTargetedToken(combatant);
+    if (!targetToken) return null;
+
+    let missile = null;
+    if (itemName) {
+        missile = combat.getItem(itemName, 'missilegear', combatant.actor);
+    }
+
+    return combat.missileAttack(combatant.token, targetToken, missile);
+}
+
+export function weaponAttackResume(atkTokenId, defTokenId, action, effAML, aim, aspect, impactMod) {
+    const atkToken = canvas.tokens.get(atkTokenId);
+    if (!atkToken) {
+        ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
+        return null;
+    }
+
+    const speaker = ChatMessage.getSpeaker({token: atkToken});
+
+    const defToken = canvas.tokens.get(defTokenId);
+    if (!defToken) {
+        ui.notifications.warn(`Defender ${defToken.name} could not be found on canvas.`);
+        return null;
+    }
+
+    return combat.meleeAttackResume(atkToken, defToken, action, effAML, aim, aspect, impactMod);
+}
+
+/*--------------------------------------------------------------*/
+/*        UTILITY FUNCTIONS                                     */
+/*--------------------------------------------------------------*/
+
 /**
  * Determines the identity of the current token/actor that is in combat. If token
  * is specified, tries to use token (and will allow it regardless if user is GM.),
@@ -877,19 +865,38 @@ function getTokenInCombat(token=null, forceAllow=false) {
     return { token: token, actor: combatant.actor};
 }
 
-function getSingleTarget() {
-    const numTargets = canvas.tokens.controlled.length;
-    if (numTargets === 0) {
-        ui.notifications.warn(`No selected actors on the canvas.`);
+function getSingleSelectedToken() {
+    const numTargets = canvas.tokens?.controlled?.length;
+    if (!numTargets) {
+        ui.notifications.warn(`No selected tokens on the canvas.`);
         return null;
     }
 
     if (numTargets > 1) {
-        ui.notifications.warn(`There are ${numTargets} selected actors on the canvas, please select only one`);
+        ui.notifications.warn(`There are ${numTargets} selected tokens on the canvas, please select only one`);
         return null;
     }
 
     return canvas.tokens.controlled[0];
+}
+
+function getUserTargetedToken(combatant) {
+    const targets = game.user.targets;
+    if (!targets?.size) {
+        ui.notifications.warn(`No targets selected, you must select exactly one target, combat aborted.`);
+        return null;
+    } else if (targets.size > 1) {
+        ui.notifications.warn(`${targets} targets selected, you must select exactly one target, combat aborted.`);
+    }
+
+    const targetToken = Array.from(game.user.targets)[0];
+
+    if (combatant?.token && targetToken.id === combatant.token.id) {
+        ui.notifications.warn(`You have targetted the combatant, they cannot attack themself, combat aborted.`);
+        return null;
+    }
+
+    return targetToken;
 }
 
 function getActor(actor, speaker) {
