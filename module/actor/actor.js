@@ -133,12 +133,27 @@ export class HarnMasterActor extends Actor {
         }
 
         // Injury Calculations
+        //
+        // Normally, this method should never reference any items, since the Actor.items has
+        // not necessarily been setup.  But I'm in a bit of a conundrum, since I need the
+        // total injury levels.  So, if Actor.items is not available, I temporarily use the
+        // Actor.data.items array, and hope for the best.
         eph.totalInjuryLevels = 0;
-        actorData.items.forEach(it => {
-            if (it.data.type === 'injury') {
-                if (it.data.data.injuryLevel > 0) eph.totalInjuryLevels += it.data.data.injuryLevel;
-            }
-        });
+        if (this.items) {
+            this.items.forEach(it => {
+                if (it.data.type === 'injury') {
+                    if (it.data.data.injuryLevel > 0) eph.totalInjuryLevels += it.data.data.injuryLevel;
+                }
+            });
+        } else {
+            // This should only need to be executed on initial startup, before
+            // the Actor.items map has been created.
+            actorData.items.forEach(itemData => {
+                if (itemData.type === 'injury') {
+                    if (itemData.data.injuryLevel > 0) eph.totalInjuryLevels += itemData.data.injuryLevel;
+                }
+            });
+        }
 
         // Calculate endurance, ensure it is never zero
         data.endurance = Math.round((data.abilities.strength.base + data.abilities.stamina.base +
