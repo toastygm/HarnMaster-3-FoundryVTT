@@ -457,7 +457,7 @@ export class HarnMasterActor extends Actor {
                 if (typeof combatSkills[assocSkill] !== 'undefined') {
                     let skillEml = combatSkills[assocSkill].eml;
                     itemData.attackMasteryLevel = Math.max((skillEml + itemData.attack + itemData.attackModifier + eph.meleeAMLMod) || 5, 5);
-                    itemData.defenseMasteryLevel = MAth.max((skillEml + itemData.defense + eph.meleeDMLMod) || 5, 5);
+                    itemData.defenseMasteryLevel = Math.max((skillEml + itemData.defense + eph.meleeDMLMod) || 5, 5);
                 }
             }
         });
