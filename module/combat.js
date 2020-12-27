@@ -21,7 +21,8 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
     }
 
     if (!isValidToken(attackToken)) {
-        console.error(`HM3 | meleeAttack attackToken=${attackToken} is not valid.`);
+        ui.notifications.error(`Attack token not valid.`);
+        console.error(`HM3 | missileAttack attackToken=${attackToken} is not valid.`);
         return null;
     }
     
@@ -32,7 +33,8 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
     }
 
     if (!isValidToken(defendToken)) {
-        console.error(`HM3 | meleeAttack defendToken=${defendToken} is not valid.`);
+        ui.notifications.error(`Defender token not valid.`);
+        console.error(`HM3 | missileAttack defendToken=${defendToken} is not valid.`);
         return null;
     }
 
@@ -1402,24 +1404,29 @@ export function getItem(itemName, type, actor) {
  * Calculates the distance from sourceToken to targetToken in "scene" units (e.g., feet).
  * 
  * @param {Token} sourceToken 
- * @param {Token} targetToken 
+ * @param {Token} targetToken
+ * @param {Boolean} gridUnits If true, return in grid units, not "scene" units
  */
 export function rangeToTarget(sourceToken, targetToken, gridUnits=false) {
     if (!sourceToken || !targetToken || !canvas.scene || !canvas.scene.data.grid) return 9999;
     const sToken = canvas.tokens.get(sourceToken.id);
     const tToken = canvas.tokens.get(targetToken.id);
-    const snappedSource = canvas.grid.getSnappedPosition(sToken.x, sToken.y, 2);
-    const snappedDest = canvas.grid.getSnappedPosition(tToken.x, tToken.y, 2);
-    const ray = new Ray(snappedSource, snappedDest);
 
-    let distance = 0;
-    if (gridUnits || game.settings.get('hm3', 'distanceUnits') === 'grid') {
-        distance = Math.round(ray.distance / (canvas.dimensions.size || 1));
-    } else {
-        const ratio = (canvas.dimensions.size / (canvas.dimensions.distance || 1));
-        distance = Math.ceil(ray.distance / ratio);
-    }
+    const segments = [];
+    const source = {};
+    const dest = {}
+    const s = canvas.grid.getCenter(sToken.x, sToken.y);
+    source.x = Math.round(s[0]);
+    source.y = Math.round(s[1]);
+    const d = canvas.grid.getCenter(tToken.x, tToken.y);
+    dest.x = Math.round(d[0]);
+    dest.y = Math.round(d[1]);
+    const ray = new Ray(source, dest);
+    segments.push({ray});
+    const distances = canvas.grid.measureDistances(segments, {gridSpaces: true});
+    const distance = distances[0];
     console.log(`Distance = ${distance}, gridUnits=${gridUnits}`);
+    if (gridUnits) return Math.round(distance / canvas.dimensions.distance);
     return distance;
 }
 
