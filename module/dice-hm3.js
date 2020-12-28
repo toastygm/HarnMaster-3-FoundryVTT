@@ -76,9 +76,9 @@ export class DiceHM3 {
             rollResult: roll.rollObj.total,
             showResult: false,
             description: roll.description,
-            notes: renderedNotes
+            notes: renderedNotes,
+            roll: roll
         };
-
 
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
@@ -98,7 +98,7 @@ export class DiceHM3 {
         // Create a chat message
         await ChatMessage.create(messageData, messageOptions)
     
-        return roll;
+        return chatTemplateData;
     }
     
     
@@ -160,6 +160,7 @@ export class DiceHM3 {
      * rollData is expected to contain the following values:
      *  target: Target value to check against
      *  modifier: Modifier to target value
+     *  numdice: Number of d6 to roll
      *  label: The label associated with the 'target' value
      *  fastForward: If true, assume no modifier and don't present Dialog
      *  speaker: the Speaker to use in Chat
@@ -214,7 +215,8 @@ export class DiceHM3 {
             rollResult: roll.rollObj.dice[0].values.join(" + "),
             showResult: roll.rollObj.dice[0].values.length > 1,
             description: roll.description,
-            notes: renderedNotes
+            notes: renderedNotes,
+            roll: roll
         };
 
         const html = await renderTemplate(chatTemplate, chatTemplateData);
@@ -235,7 +237,7 @@ export class DiceHM3 {
         // Create a chat message
         await ChatMessage.create(messageData, messageOptions)
     
-        return roll;
+        return chatTemplateData;
     }
     
     
@@ -307,7 +309,8 @@ export class DiceHM3 {
             rollResult: roll.result,
             showResult: true,
             description: isSuccess ? "Success" : "Failure",
-            notes: ''
+            notes: '',
+            sdrIncr: isSuccess ? (specMatch ? 2 : 1 ) : 0
         };
 
         if (specMatch && isSuccess) {
@@ -332,7 +335,7 @@ export class DiceHM3 {
         // Create a chat message
         await ChatMessage.create(messageData, messageOptions);
     
-        return isSuccess ? (specMatch ? 2 : 1 ) : 0;
+        return chatTemplateData;
     }
 
     /*--------------------------------------------------------------------------------*/
@@ -402,7 +405,7 @@ export class DiceHM3 {
         if (game.settings.get("hm3", "combatAudio")) {
             AudioHelper.play({src: "systems/hm3/audio/grunt1.ogg", autoplay: true, loop: false}, true);
         }
-        return result;
+        return chatTemplateData;
     }
     
     /**
@@ -787,7 +790,8 @@ export class DiceHM3 {
             totalImpact: totalImpact,
             impactRoll: roll.rollObj.dice[0].values.join(" + "),
             rollValue: roll.rollObj.total,
-            notes: renderedNotes
+            notes: renderedNotes,
+            roll: roll
         };
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
@@ -807,7 +811,7 @@ export class DiceHM3 {
         // Create a chat message
         await ChatMessage.create(messageData, messageOptions)
     
-        return roll;
+        return chatTemplateData;
     }
     
     /**
@@ -961,7 +965,8 @@ export class DiceHM3 {
             isCritical: roll.isCritical,
             rollValue: roll.rollObj.total,
             description: roll.description,
-            notes: renderedNotes
+            notes: renderedNotes,
+            roll: roll
         };
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
@@ -981,7 +986,7 @@ export class DiceHM3 {
         // Create a chat message
         await ChatMessage.create(messageData, messageOptions);
     
-        return roll;
+        return chatTemplateData;
     }
 
     static async missileAttackDialog(dialogOptions) {
@@ -1131,7 +1136,8 @@ export class DiceHM3 {
             addlImpact: roll.addlImpact,
             totalImpact: totalImpact,
             rollValue: roll.rollObj.total,
-            notes: renderedNotes
+            notes: renderedNotes,
+            roll: roll
         };
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
@@ -1151,7 +1157,7 @@ export class DiceHM3 {
         // Create a chat message
         await ChatMessage.create(messageData, messageOptions)
     
-        return roll;
+        return chatTemplateData;
     }
 
     static async missileDamageDialog(dialogOptions) {

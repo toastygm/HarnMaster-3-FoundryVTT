@@ -124,58 +124,21 @@ export class HarnMasterActor extends Actor {
         if (!data.eph) data.eph = {};
         const eph = data.eph;
 
-        // Calculate weight of gear
-        this._calcGearWeightTotals();
-
         if (actorData.type === 'container') {
             this._prepareBaseContainerData(actorData);
             return;
         }
 
-        // Injury Calculations
-        //
-        // Normally, this method should never reference any items, since the Actor.items has
-        // not necessarily been setup.  But I'm in a bit of a conundrum, since I need the
-        // total injury levels.  So, if Actor.items is not available, I temporarily use the
-        // Actor.data.items array, and hope for the best.
-        eph.totalInjuryLevels = 0;
-        if (this.items) {
-            this.items.forEach(it => {
-                if (it.data.type === 'injury') {
-                    if (it.data.data.injuryLevel > 0) eph.totalInjuryLevels += it.data.data.injuryLevel;
-                }
-            });
-        } else {
-            // This should only need to be executed on initial startup, before
-            // the Actor.items map has been created.
-            actorData.items.forEach(itemData => {
-                if (itemData.type === 'injury') {
-                    if (itemData.data.injuryLevel > 0) eph.totalInjuryLevels += itemData.data.injuryLevel;
-                }
-            });
+        // Calculate endurance
+        if (!data.hasCondition) {
+            data.endurance = Math.round((data.abilities.strength.base + data.abilities.stamina.base +
+                data.abilities.will.base) / 3);    
         }
 
-        // Calculate endurance, ensure it is never zero
-        data.endurance = Math.round((data.abilities.strength.base + data.abilities.stamina.base +
-            data.abilities.will.base) / 3);
-        data.hasCondition = false;
-        if (this.items) {
-            this.items.forEach(it => {
-                if (it.data.type === 'skill' && it.data.name.toLowerCase() === 'condition') {
-                    data.endurance = Math.round(it.data.data.masteryLevel / 5);
-                    data.hasCondition = true;
-                }
-            });
-        } else {
-            actorData.items.forEach(itemData => {
-                if (itemData.type === 'skill' && itemData.name.toLowerCase() === 'condition') {
-                    data.endurance = Math.round(itemData.data.masteryLevel / 5);
-                }
-            })
-        }
-        data.endurance = data.endurance || 1;
+        // Safety net: We divide things by endurance, so ensure it is > 0
+        data.endurance = Math.max(data.endurance || 1, 1);
 
-        data.encumbrance = Math.floor(eph.totalGearWeight / data.endurance);
+        data.encumbrance = Math.floor(data.totalWeight / data.endurance);
 
         // Setup temporary work values masking the base values
         eph.move = data.move.base;
@@ -193,6 +156,7 @@ export class HarnMasterActor extends Actor {
         eph.aura = data.abilities.aura.base;
         eph.morality = data.abilities.morality.base;
         eph.comliness = data.abilities.comliness.base;
+        eph.totalInjuryLevels = data.totalInjuryLevels;
     
         eph.meleeAMLMod = 0;
         eph.meleeDMLMod = 0;
@@ -215,7 +179,6 @@ export class HarnMasterActor extends Actor {
 
     _prepareBaseContainerData(actorData) {
         actorData.data.capacity.pct = Math.max(Math.round(1 - (actorData.data.eph.totalGearWeight / (actorData.data.capacity.max || 1))), 0);
-        console.log(`Capacity Percentage: ${actorData.data.capacity.pct}`);
     }
 
     /** 
@@ -236,6 +199,8 @@ export class HarnMasterActor extends Actor {
         const data = actorData.data;
 
         const eph = data.eph;
+
+        this._calcGearWeightTotals();
 
         if (actorData.type === 'container') {
             this._prepareDerivedContainerData(actorData);
@@ -258,10 +223,9 @@ export class HarnMasterActor extends Actor {
         data.universalPenalty = Math.max((eph.totalInjuryLevels + eph.fatigue) || 0, 0);
         data.physicalPenalty = Math.max((data.universalPenalty + data.encumbrance) || 0, 0);
 
-        if (!eph.shockIndex) eph.shockIndex = {};
-        eph.shockIndex.value = HarnMasterActor._normProb(data.endurance, data.universalPenalty * 3.5, data.universalPenalty);
+        data.shockIndex.value = HarnMasterActor._normProb(data.endurance, data.universalPenalty * 3.5, data.universalPenalty);
         if (canvas) this.getActiveTokens().forEach(token => {
-            if (token.bars) token._onUpdateBarAttributes(this.data, { "eph.shockIndex.value": eph.shockIndex.value });
+            if (token.bars) token._onUpdateBarAttributes(this.data, { "shockIndex.value": data.shockIndex.value });
         });
 
         // Calculate current Move speed.  Cannot go below 0
@@ -303,11 +267,10 @@ export class HarnMasterActor extends Actor {
 
 
     /**
-     * Calculate the weight of the gear. Note that since this method
-     * is called before the actor has been completely setup, actor.items
-     * will not be avaialble.  We specifically use actor.data.items array
-     * instead, which will be available.  This array is not an array of
-     * class HarnMasterItem, but an array of item data!
+     * Calculate the weight of the gear. Note that this is somewhat redundant
+     * with the calculation being done during item create/update/delete,
+     * but here we are generating a much more fine-grained set of data
+     * regarding the weight distribution.
      */
     _calcGearWeightTotals() {
         const eph = this.data.data.eph;
@@ -319,57 +282,60 @@ export class HarnMasterActor extends Actor {
 
         let tempWeight = 0;
 
-        this.data.items.forEach(it => {
-            if (it.type === 'containergear') it.data.capacity.value = 0;
+        // Initialize all container capacity values
+        this.items.forEach(it => {
+            if (it.data.type === 'containergear') it.data.data.capacity.value = 0;
         });
 
-        this.data.items.forEach(it => {
-            if (it.type.endsWith('gear')) {
+        this.items.forEach(it => {
+            const itemData = it.data;
+            const data = itemData.data;
+            if (itemData.type.endsWith('gear')) {
                 // If the gear is inside of a container, then the "carried"
                 // flag is inherited from the container.
-                if (it.data.container && it.data.container !== 'on-person') {
-                    const container = this.data.items.find(i => i._id === it.data.container);
-                    if (container) it.data.isCarried = container.data.isCarried;
+                if (data.container && data.container !== 'on-person') {
+                    const container = this.data.items.find(i => i._id === data.container);
+                    if (container) data.isCarried = container.data.isCarried;
                 }
             }
 
-            switch (it.type) {
+            switch (itemData.type) {
                 case 'weapongear':
-                    if (!it.data.isCarried) break;
-                    tempWeight = it.data.weight * it.data.quantity;
+                    if (!data.isCarried) break;
+                    tempWeight = data.weight * data.quantity;
                     if (tempWeight < 0) tempWeight = 0;
                     eph.totalWeaponWeight += tempWeight;
                     break;
 
                 case 'missilegear':
-                    if (!it.data.isCarried) break;
-                    tempWeight = it.data.weight * it.data.quantity;
+                    if (!data.isCarried) break;
+                    tempWeight = data.weight * data.quantity;
                     if (tempWeight < 0) tempWeight = 0;
                     eph.totalMissileWeight += tempWeight;
                     break;
 
                 case 'armorgear':
-                    if (!it.data.isCarried) break;
-                    tempWeight = it.data.weight * it.data.quantity;
+                    if (!data.isCarried) break;
+                    tempWeight = data.weight * data.quantity;
                     if (tempWeight < 0) tempWeight = 0;
                     eph.totalArmorWeight += tempWeight;
                     break;
 
                 case 'miscgear':
                 case 'containergear':
-                    if (!it.data.isCarried) break;
-                    tempWeight = it.data.weight * it.data.quantity;
+                    if (!data.isCarried) break;
+                    tempWeight = data.weight * data.quantity;
                     if (tempWeight < 0) tempWeight = 0;
                     eph.totalMiscGearWeight += tempWeight;
                     break;
             }
 
-            if (it.type.endsWith('gear')) {
-                const cid = it.data.container;
+            if (itemData.type.endsWith('gear')) {
+                const cid = data.container;
                 if (cid && cid != 'on-person') {
-                    const container = this.data.items.find(i => i._id === cid);
-                    if (container) container.data.capacity.value = 
-                        Math.round((container.data.capacity.value + tempWeight + Number.EPSILON) * 100) / 100;
+                    const container = this.items.get(cid);
+                    if (container) container.data.data.capacity.value = 
+                        Math.round((container.data.data.capacity.value + tempWeight + Number.EPSILON) * 100) / 100;
                 }
             }
         });
@@ -620,66 +586,6 @@ export class HarnMasterActor extends Actor {
         });
     }
 
-    damageRoll(weaponName) {
-
-        const rollData = {
-            weapon: weaponName,
-            data: this.data,
-            speaker: ChatMessage.getSpeaker({ actor: this })
-        };
-
-        return DiceHM3.damageRoll(rollData);
-    }
-
-    missileDamageRoll(eventData) {
-        const rollData = {
-            name: eventData.missile,
-            aspect: eventData.aspect,
-            impactShort: eventData.impactShort,
-            impactMedium: eventData.impactMedium,
-            impactLong: eventData.impactLong,
-            impactExtreme: eventData.impactExtreme,
-            data: this.data,
-            speaker: ChatMessage.getSpeaker({ actor: this })
-        }
-
-        return DiceHM3.missileDamageRoll(rollData);
-    }
-
-    missileAttackRoll(eventData) {
-        const rollData = {
-            name: eventData.missile,
-            target: eventData.target,
-            aspect: eventData.aspect,
-            rangeShort: eventData.rangeShort,
-            rangeMedium: eventData.rangeMedium,
-            rangeLong: eventData.rangeLong,
-            rangeExtreme: eventData.rangeExtreme,
-            data: this.data,
-            speaker: ChatMessage.getSpeaker({ actor: this })
-        }
-        return DiceHM3.missileAttackRoll(rollData);
-    }
-
-    injuryRoll() {
-        const rollData = {
-            actor: this,
-            speaker: ChatMessage.getSpeaker({ actor: this })
-        };
-
-        return DiceHM3.injuryRoll(rollData);
-    }
-
-    _d100StdRoll(stdRollData) {
-        const rollData = mergeObject({ data: this.data }, stdRollData);
-        return DiceHM3.d100StdRoll(rollData);
-    }
-
-    _d6StdRoll(stdRollData) {
-        const rollData = mergeObject({ data: this.data }, stdRollData);
-        return DiceHM3.d6Roll(rollData);
-    }
-
     /** @override */
     _onDeleteEmbeddedEntity(embeddedName, child, options, userId) {
         if (embeddedName === "OwnedItem") {
@@ -713,17 +619,19 @@ export class HarnMasterActor extends Actor {
         return prob;
     }
 
-    async skillDevRoll(item) {
+    static async skillDevRoll(item) {
         const result = await DiceHM3.sdrRoll(item.data);
 
-        if (result) {
-            return item.update({
+        if (result?.sdrIncr) {
+            await item.update({
                 "data.improveFlag": false,
-                "data.masteryLevel": item.data.data.masteryLevel + result
+                "data.masteryLevel": item.data.data.masteryLevel + (result.sdrIncr === 2 ? 2 : 1)
             });
         } else {
-            return item.update({ "data.improveFlag": false });
+            await item.update({ "data.improveFlag": false });
         }
+
+        return result;
     }
 
     static chatListeners(html) {
@@ -797,25 +705,25 @@ export class HarnMasterActor extends Actor {
                 break;
 
             case 'dodge':
-                combat.dodgeResume(atkToken, defToken, button.dataset.weaponType, button.dataset.weapon,
+                macros.dodgeResume(atkToken.id, defToken.id, button.dataset.weaponType, button.dataset.weapon,
                     button.dataset.effAml, button.dataset.aim,
                     button.dataset.aspect, button.dataset.impactMod)
                 break;
 
             case 'ignore':
-                combat.ignoreResume(atkToken, defToken, button.dataset.weaponType, button.dataset.weapon,
+                macros.ignoreResume(atkToken.id, defToken.id, button.dataset.weaponType, button.dataset.weapon,
                     button.dataset.effAml, button.dataset.aim,
                     button.dataset.aspect, button.dataset.impactMod)
                 break;
 
             case 'block':
-                combat.blockResume(atkToken, defToken, button.dataset.weaponType, button.dataset.weapon,
+                macros.blockResume(atkToken.id, defToken.id, button.dataset.weaponType, button.dataset.weapon,
                     button.dataset.effAml, button.dataset.aim,
                     button.dataset.aspect, button.dataset.impactMod)
                 break;
 
             case 'counterstrike':
-                combat.meleeCounterstrikeResume(atkToken, defToken, button.dataset.weapon,
+                macros.meleeCounterstrikeResume(atkToken.id, defToken.id, button.dataset.weapon,
                     button.dataset.effAml, button.dataset.aim,
                     button.dataset.aspect, button.dataset.impactMod)
                 break;
@@ -834,6 +742,91 @@ export class HarnMasterActor extends Actor {
         }
 
         button.disabled = false;
+    }
+
+    /**
+     * If the actor is an unlinked actor for a token, then when an item on that unlinked
+     * actor is changed, it is considered an "Actor change" and this method gets called.
+     * In that case, data will contain an "items" element, which is what tells us that
+     * some embedded item changed.
+     * 
+     * @override 
+     */
+    _onUpdate(data, options, userId, context) {
+        // Ensure we process the changes first, so the Actor.items map gets updated
+        const result = super._onUpdate(data, options, userId, context);
+
+        // Now handle any actor updates if any embedded items were changed
+        if (data.items) {
+            this.handleRefreshItems();
+        }
+        return result;
+    }
+
+    /**
+     * If the actor is either a linked actor for a token, or not associated with a token
+     * at all, then when any change to the embedded items occurs this method gets called.
+     * 
+     * @override 
+     */
+    _onModifyEmbeddedEntity(embeddedName, changes, options, userId, context={}) {
+        // The Actor.items map should already be updated, so process actor updates
+        if (embeddedName === 'OwnedItem') {
+            this.handleRefreshItems();
+        }
+
+        return super._onModifyEmbeddedEntity(embeddedName, changes, options, userId, context);
+    }
+
+    handleRefreshItems() {
+        const updateData = {
+            'data.hasCondition': false
+        };
+
+        // Find all containergear, and track whether container is carried or not
+        const containerCarried = {};
+        this.items.forEach(it => {
+            if (it.data.type === 'containergear') {
+                containerCarried[it.data._id] = it.data.data.isCarried;
+            }
+        });
+
+        let totalIL = 0;
+        let totalWeight = 0;
+        this.items.forEach(it => {
+            const itemData = it.data;
+
+            if (itemData.type === 'skill') {
+                // Handle setting Endurance based on Condition skill
+                if (itemData.data.type.toLowerCase() === 'condition') {
+                    updateData['data.hasCondition'] = true;
+                    updateData['data.endurance'] = Math.round((itemData.data.masteryLevel || 0) / 5);
+                }
+            } else if (itemData.type === 'injury') {
+                totalIL += it.data.data.injuryLevel || 0;
+            } else if (itemData.type.endsWith('gear')) {
+                // If gear is on-person, then check the carried flag to determine
+                // whether the gear is carried. Otherwise, it must be in a container,
+                // so check whether the container is carried.
+                if (it.data.data.container === 'on-person') {
+                    if (it.data.data.isCarried) {
+                        totalWeight += it.data.data.weight * it.data.data.quantity;
+                    }
+                } else {
+                    if (containerCarried[it.data.data.container]) {
+                        totalWeight += it.data.data.weight * it.data.data.quantity;
+                    }
+                }
+            }
+        });
+
+        // Normalize weight to two decimal points
+        totalWeight = Math.round((totalWeight + Number.EPSILON) * 100) / 100;
+
+        updateData['data.totalWeight'] = totalWeight;
+        updateData['data.totalInjuryLevels'] = totalIL;
+
+        this.update(updateData);
     }
 
     static async _createDefaultCharacterSkills(data) {

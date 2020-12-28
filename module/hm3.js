@@ -128,7 +128,19 @@ Hooks.once("ready", function () {
             game.settings.set("hm3", "showWelcomeDialog", showAgain);
         });
     }
+
+    refreshAllActors();
 });
+
+function refreshAllActors() {
+    game.actors.forEach(actor => {
+        actor.handleRefreshItems();
+    });
+
+    canvas.tokens.ownedTokens.forEach(token => {
+        if (!token.data.actorLink) token.actor.handleRefreshItems();
+    });
+}
 
 // Since HM3 does not have the concept of rolling for initiative,
 // this hook simply prepopulates the initiative value. This ensures

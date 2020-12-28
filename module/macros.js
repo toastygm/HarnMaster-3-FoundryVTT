@@ -9,7 +9,7 @@ import * as combat from './combat.js';
  * @returns {Promise}
  */
 export async function createHM3Macro(data, slot) {
-    if (data.type !== "Item") return;
+    if (data.type !== "Item") return null;
     if (!data.data) return ui.notifications.warn("No macro exists for that type of object.");
     const item = data.data;
 
@@ -137,18 +137,18 @@ function askMissileMacro(name, slot, img) {
     });
 }
 
-export function skillRoll(itemName, noDialog = false, myActor=null) {
+export async function skillRoll(itemName, noDialog = false, myActor=null) {
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
-        return;
+        return null;
     }
 
     const item = combat.getItem(itemName, 'skill', actor);
     if (!item) {
         ui.notifications.warn(`${itemName} could not be found in the list of skills for ${actor.name}.`);
-        return;
+        return null;
     }
 
     const stdRollData = {
@@ -168,21 +168,27 @@ export function skillRoll(itemName, noDialog = false, myActor=null) {
         fastforward: noDialog,
         notes: item.data.data.notes
     };
-    return actor._d100StdRoll(stdRollData);
+    if (actor.isToken) {
+        stdRollData.token = actor.token.id;
+    } else {
+        stdRollData.actor = actor.id;
+    }
+    
+    return await DiceHM3.d100StdRoll(stdRollData);
 }
 
-export function castSpellRoll(itemName, noDialog = false, myActor=null) {
+export async function castSpellRoll(itemName, noDialog = false, myActor=null) {
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
-        return;
+        return null;
     }
 
     const item = combat.getItem(itemName, 'spell', actor);
     if (!item) {
         ui.notifications.warn(`${itemName} could not be found in the list of spells for ${actor.name}.`);
-        return;
+        return null;
     }
 
     const stdRollData = {
@@ -205,21 +211,27 @@ export function castSpellRoll(itemName, noDialog = false, myActor=null) {
         fastforward: noDialog,
         notes: item.data.data.notes
     };
-    return actor._d100StdRoll(stdRollData);
+    if (actor.isToken) {
+        stdRollData.token = actor.token.id;
+    } else {
+        stdRollData.actor = actor.id;
+    }
+
+    return await DiceHM3.d100StdRoll(stdRollData);
 }
 
-export function invokeRitualRoll(itemName, noDialog = false, myActor = null) {
+export async function invokeRitualRoll(itemName, noDialog = false, myActor = null) {
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
-        return;
+        return null;
     }
 
     const item = combat.getItem(itemName, 'invocation', actor);
     if (!item) {
         ui.notifications.warn(`${itemName} could not be found in the list of ritual invocations for ${actor.name}.`);
-        return;
+        return null;
     }
 
     const stdRollData = {
@@ -242,21 +254,27 @@ export function invokeRitualRoll(itemName, noDialog = false, myActor = null) {
         fastforward: noDialog,
         notes: item.data.data.notes
     };
-    return actor._d100StdRoll(stdRollData);
+    if (actor.isToken) {
+        stdRollData.token = actor.token.id;
+    } else {
+        stdRollData.actor = actor.id;
+    }
+    
+    return await DiceHM3.d100StdRoll(stdRollData);
 }
 
-export function usePsionicRoll(itemName, noDialog = false, myActor=null) {
+export async function usePsionicRoll(itemName, noDialog = false, myActor=null) {
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
-        return;
+        return null;
     }
 
     const item = combat.getItem(itemName, 'psionic', actor);
     if (!item) {
         ui.notifications.warn(`${itemName} could not be found in the list of psionic talents for ${actor.name}.`);
-        return;
+        return null;
     }
 
     const stdRollData = {
@@ -278,15 +296,21 @@ export function usePsionicRoll(itemName, noDialog = false, myActor=null) {
         fastforward: noDialog,
         notes: item.data.data.notes
     };
-    return actor._d100StdRoll(stdRollData);
+    if (actor.isToken) {
+        stdRollData.token = actor.token.id;
+    } else {
+        stdRollData.actor = actor.id;
+    }
+    
+    return await DiceHM3.d100StdRoll(stdRollData);
 }
 
-export function testAbilityD6Roll(ability, noDialog = false, myActor=null) {
+export async function testAbilityD6Roll(ability, noDialog = false, myActor=null) {
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
-        return;
+        return null;
     }
 
     let abilities;
@@ -296,9 +320,9 @@ export function testAbilityD6Roll(ability, noDialog = false, myActor=null) {
         abilities = Object.keys(game.system.model.Actor.creature.abilities);
     } else {
         ui.notifications.warn(`${actor.name} does not have ability scores.`);
-        return;
+        return null;
     }
-    if (!ability || !abilities.includes(ability)) return;
+    if (!ability || !abilities.includes(ability)) return null;
 
 
     const stdRollData = {
@@ -310,15 +334,21 @@ export function testAbilityD6Roll(ability, noDialog = false, myActor=null) {
         fastforward: noDialog,
         notes: ''
     };
-    return actor._d6StdRoll(stdRollData);
+    if (actor.isToken) {
+        stdRollData.token = actor.token.id;
+    } else {
+        stdRollData.actor = actor.id;
+    }
+    
+    return await DiceHM3.d6Roll(stdRollData);
 }
 
-export function testAbilityD100Roll(ability, noDialog = false, myActor = null) {
+export async function testAbilityD100Roll(ability, noDialog = false, myActor = null) {
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
-        return;
+        return null;
     }
 
     let abilities;
@@ -328,9 +358,9 @@ export function testAbilityD100Roll(ability, noDialog = false, myActor = null) {
         abilities = Object.keys(game.system.model.Actor.creature.abilities);
     } else {
         ui.notifications.warn(`${actor.name} does not have ability scores.`);
-        return;
+        return null;
     }
-    if (!ability || !abilities.includes(ability)) return;
+    if (!ability || !abilities.includes(ability)) return null;
 
     const stdRollData = {
         label: `d100 ${ability[0].toUpperCase()}${ability.slice(1)} Roll`,
@@ -340,28 +370,34 @@ export function testAbilityD100Roll(ability, noDialog = false, myActor = null) {
         fastforward: noDialog,
         notes: ''
     };
-    return actor._d100StdRoll(stdRollData);
+    if (actor.isToken) {
+        stdRollData.token = actor.token.id;
+    } else {
+        stdRollData.actor = actor.id;
+    }
+    
+    return await DiceHM3.d100StdRoll(stdRollData);
 }
 
-export function weaponDamageRoll(itemName, aspect=null, myActor = null) {
+export async function weaponDamageRoll(itemName, aspect=null, myActor = null) {
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
-        return;
+        return null;
     }
 
     if (aspect) {
         if (!['Edged', 'Piercing', 'Blunt'].includes(aspect)) {
             ui.notifications.warn(`Invalid aspect requested on damage roll: ${aspect}`);
-            return;
+            return null;
         }
     }
 
     const item = combat.getItem(itemName, 'weapongear', actor);
     if (!item) {
         ui.notifications.warn(`${itemName} could not be found in the list of melee weapons for ${actor.name}.`);
-        return;
+        return null;
     }
 
     const rollData = {
@@ -378,27 +414,33 @@ export function weaponDamageRoll(itemName, aspect=null, myActor = null) {
         aspect: aspect ? aspect : null,
         notes: item.data.data.notes
     };
-    return DiceHM3.damageRoll(rollData);
+    if (actor.isToken) {
+        rollData.token = actor.token.id;
+    } else {
+        rollData.actor = actor.id;
+    }
+    
+    return await DiceHM3.damageRoll(rollData);
 }
 
-export function missileDamageRoll(itemName, range=null, myActor = null) {
+export async function missileDamageRoll(itemName, range=null, myActor = null) {
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
-        return;
+        return null;
     }
 
     const item = combat.getItem(itemName, 'missilegear', actor);
     if (!item) {
         ui.notifications.warn(`${itemName} could not be found in the list of melee weapons for ${actor.name}.`);
-        return;
+        return null;
     }
 
     if (range) {
         if (!['Short', 'Medium', 'Long', 'Extreme'].includes(range)) {
             ui.notifications.warn(`Invalid range requested on damage roll: ${range}`);
-            return;
+            return null;
         }
     }
 
@@ -422,21 +464,27 @@ export function missileDamageRoll(itemName, range=null, myActor = null) {
         speaker: speaker,
         notes: item.data.data.notes
     };
-    return DiceHM3.missileDamageRoll(rollData);
+    if (actor.isToken) {
+        rollData.token = actor.token.id;
+    } else {
+        rollData.actor = actor.id;
+    }
+    
+    return await DiceHM3.missileDamageRoll(rollData);
 }
 
-export function weaponAttackRoll(itemName, noDialog = false, myActor = null) {
+export async function weaponAttackRoll(itemName, noDialog = false, myActor = null) {
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
-        return;
+        return null;
     }
 
     const item = combat.getItem(itemName, 'weapongear', actor);
     if (!item) {
         ui.notifications.warn(`${itemName} could not be found in the list of melee weapons for ${actor.name}.`);
-        return;
+        return null;
     }
 
     const stdRollData = {
@@ -459,21 +507,27 @@ export function weaponAttackRoll(itemName, noDialog = false, myActor = null) {
         fastforward: noDialog,
         notes: item.data.data.notes
     };
-    return actor._d100StdRoll(stdRollData);
+    if (actor.isToken) {
+        stdRollData.token = actor.token.id;
+    } else {
+        stdRollData.actor = actor.id;
+    }
+    
+    return await DiceHM3.d100StdRoll(stdRollData);
 }
 
-export function weaponDefendRoll(itemName, noDialog = false, myActor = null) {
+export async function weaponDefendRoll(itemName, noDialog = false, myActor = null) {
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
-        return;
+        return null;
     }
 
     const item = combat.getItem(itemName, 'weapongear', actor);
     if (!item) {
         ui.notifications.warn(`${itemName} could not be found in the list of melee weapons for ${actor.name}.`);
-        return;
+        return null;
     }
 
     const stdRollData = {
@@ -495,27 +549,29 @@ export function weaponDefendRoll(itemName, noDialog = false, myActor = null) {
         fastforward: noDialog,
         notes: item.data.data.notes
     };
-    return actor._d100StdRoll(stdRollData);
+    if (actor.isToken) {
+        stdRollData.token = actor.token.id;
+    } else {
+        stdRollData.actor = actor.id;
+    }
+    
+    return await DiceHM3.d100StdRoll(stdRollData);
 }
 
-export function missileAttackRoll(itemName, myActor = null) {
+export async function missileAttackRoll(itemName, myActor = null) {
     const actor = getActor(myActor);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
-        return;
+        return null;
     }
 
     const speaker = ChatMessage.getSpeaker({actor: actor});
-
-    const targetToken = getSingleSelectedToken();
-
-    const range = combat.rangeToTarget(actor.token, targetToken);
 
     const item = combat.getItem(itemName, 'missilegear', actor);
 
     if (!item) {
         ui.notifications.warn(`${itemName} could not be found in the list of missile weapons for ${actor.name}.`);
-        return;
+        return null;
     }
 
     const rollData = {
@@ -527,11 +583,8 @@ export function missileAttackRoll(itemName, myActor = null) {
             missileName: item.data.name
         },
         name: item.data.name,
-        attackerName: actor.token.data.name,
-        defenderName: targetToken.data.name,
         target: item.data.data.attackMasteryLevel,
         aspect: item.data.data.weaponAspect,
-        range: range,
         rangeShort: item.data.data.range.short,
         rangeMedium: item.data.data.range.medium,
         rangeLong: item.data.data.range.long,
@@ -540,15 +593,21 @@ export function missileAttackRoll(itemName, myActor = null) {
         speaker: speaker,
         notes: item.data.data.notes
     }
-    return DiceHM3.missileAttackRoll(rollData);
+    if (actor.isToken) {
+        rollData.token = actor.token.id;
+    } else {
+        rollData.actor = actor.id;
+    }
+    
+    return await DiceHM3.missileAttackRoll(rollData);
 }
 
-export function injuryRoll(myActor = null) {
+export async function injuryRoll(myActor = null) {
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
-        return;
+        return null;
     }
 
     const rollData = {
@@ -561,18 +620,18 @@ export function injuryRoll(myActor = null) {
     return DiceHM3.injuryRoll(rollData);
 }
 
-export function healingRoll(itemName, noDialog = false, myActor = null) {
+export async function healingRoll(itemName, noDialog = false, myActor = null) {
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
-        return;
+        return null;
     }
 
     const item = combat.getItem(itemName, 'injury', actor);
     if (!item) {
         ui.notifications.warn(`${itemName} could not be found in the list of injuries for ${actor.name}.`);
-        return;
+        return null;
     }
 
     const stdRollData = {
@@ -591,15 +650,21 @@ export function healingRoll(itemName, noDialog = false, myActor = null) {
         fastforward: noDialog,
         notes: item.data.data.notes
     };
-    return actor._d100StdRoll(stdRollData);
+    if (actor.isToken) {
+        stdRollData.token = actor.token.id;
+    } else {
+        stdRollData.actor = actor.id;
+    }
+    
+    return await DiceHM3.d100StdRoll(stdRollData);
 }
 
-export function dodgeRoll(noDialog = false, myActor = null) {
+export async function dodgeRoll(noDialog = false, myActor = null) {
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
-        return;
+        return null;
     }
 
     const stdRollData = {
@@ -610,15 +675,21 @@ export function dodgeRoll(noDialog = false, myActor = null) {
         fastforward: noDialog,
         notes: ''
     };
-    return actor._d100StdRoll(stdRollData);
+    if (actor.isToken) {
+        stdRollData.token = actor.token.id;
+    } else {
+        stdRollData.actor = actor.id;
+    }
+    
+    return await DiceHM3.d100StdRoll(stdRollData);
 }
 
-export function shockRoll(noDialog = false, myActor = null) {
+export async function shockRoll(noDialog = false, myActor = null) {
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
-        return;
+        return null;
     }
 
     const stdRollData = {
@@ -630,15 +701,21 @@ export function shockRoll(noDialog = false, myActor = null) {
         fastforward: noDialog,
         notes: ''
     };
-    return actor._d6StdRoll(stdRollData);
+    if (actor.isToken) {
+        stdRollData.token = actor.token.id;
+    } else {
+        stdRollData.actor = actor.id;
+    }
+    
+    return await DiceHM3.d6Roll(stdRollData);
 }
 
-export function stumbleRoll(noDialog = false, myActor = null) {
+export async function stumbleRoll(noDialog = false, myActor = null) {
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
-        return;
+        return null;
     }
 
     const stdRollData = {
@@ -650,15 +727,21 @@ export function stumbleRoll(noDialog = false, myActor = null) {
         fastforward: noDialog,
         notes: ''
     };
-    return actor._d6StdRoll(stdRollData);
+    if (actor.isToken) {
+        stdRollData.token = actor.token.id;
+    } else {
+        stdRollData.actor = actor.id;
+    }
+    
+    return await DiceHM3.d6Roll(stdRollData);
 }
 
-export function fumbleRoll(noDialog = false, myActor = null) {
+export async function fumbleRoll(noDialog = false, myActor = null) {
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
-        return;
+        return null;
     }
 
     const stdRollData = {
@@ -670,15 +753,21 @@ export function fumbleRoll(noDialog = false, myActor = null) {
         fastforward: noDialog,
         notes: ''
     };
-    return actor._d6StdRoll(stdRollData);
+    if (actor.isToken) {
+        stdRollData.token = actor.token.id;
+    } else {
+        stdRollData.actor = actor.id;
+    }
+    
+    return await DiceHM3.d6Roll(stdRollData);
 }
 
-export function genericDamageRoll(myActor = null) {
+export async function genericDamageRoll(myActor = null) {
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
-        return;
+        return null;
     }
 
     const rollData = {
@@ -688,10 +777,16 @@ export function genericDamageRoll(myActor = null) {
         notesData: {},
         notes: ''
     };
-    return DiceHM3.damageRoll(rollData);
+    if (actor.isToken) {
+        rollData.token = actor.token.id;
+    } else {
+        rollData.actor = actor.id;
+    }
+    
+    return await DiceHM3.damageRoll(rollData);
 }
 
-export function changeFatigue(newValue, myActor = null) {
+export async function changeFatigue(newValue, myActor = null) {
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor || !actor.owner) {
@@ -709,13 +804,13 @@ export function changeFatigue(newValue, myActor = null) {
         if (!isNaN(value)) updateData['data.fatigue'] = value;
     }
     if (typeof updateData['data.fatigue'] !== 'undefined') {
-        actor.update(updateData);
+        await actor.update(updateData);
     }
 
     return true;
 }
 
-export function changeMissileQuanity(missileName, newValue, myActor = null) {
+export async function changeMissileQuanity(missileName, newValue, myActor = null) {
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor.owner) {
@@ -741,12 +836,12 @@ export function changeMissileQuanity(missileName, newValue, myActor = null) {
 
     if (typeof updateData['data.quantity'] !== 'undefined') {
         updateData['_id'] = missile._id;
-        actor.updateOwnedItem(updateData);
+        await actor.updateOwnedItem(updateData);
     }
     return true;
 }
 
-export function setSkillDevelopmentFlag(skillName, myActor = null) {
+export async function setSkillDevelopmentFlag(skillName, myActor = null) {
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
@@ -767,7 +862,7 @@ export function setSkillDevelopmentFlag(skillName, myActor = null) {
 
     if (!skill.data.data.improveFlag) {
         const updateData = { 'data.improveFlag': true };
-        skill.update(updateData);
+        await skill.update(updateData);
     }
 
     return true;
@@ -777,7 +872,7 @@ export function setSkillDevelopmentFlag(skillName, myActor = null) {
 /*        AUTOMATED COMBAT                                      */
 /*--------------------------------------------------------------*/
 
-export function weaponAttack(itemName = null, noDialog = false, myToken = null, forceAllow=false) {
+export async function weaponAttack(itemName = null, noDialog = false, myToken = null, forceAllow=false) {
     const speaker = myToken ? ChatMessage.getSpeaker({token: myToken}) : ChatMessage.getSpeaker();
     const combatant = getTokenInCombat(myToken, forceAllow);
     if (!combatant) return null;
@@ -790,10 +885,10 @@ export function weaponAttack(itemName = null, noDialog = false, myToken = null, 
         weapon = combat.getItem(itemName, 'weapongear', combatant.actor);
     }
 
-    return combat.meleeAttack(combatant.token, targetToken, weapon);
+    return await combat.meleeAttack(combatant.token, targetToken, weapon);
 }
 
-export function missileAttack(itemName = null, noDialog = false, myToken = null, forceAllow=false) {
+export async function missileAttack(itemName = null, noDialog = false, myToken = null, forceAllow=false) {
     const speaker = myToken ? ChatMessage.getSpeaker({token: myToken}) : ChatMessage.getSpeaker();
     const combatant = getTokenInCombat(myToken, forceAllow);
     if (!combatant) return null;
@@ -806,10 +901,22 @@ export function missileAttack(itemName = null, noDialog = false, myToken = null,
         missile = combat.getItem(itemName, 'missilegear', combatant.actor);
     }
 
-    return combat.missileAttack(combatant.token, targetToken, missile);
+    return await combat.missileAttack(combatant.token, targetToken, missile);
 }
 
-export function weaponAttackResume(atkTokenId, defTokenId, action, effAML, aim, aspect, impactMod) {
+/**
+ * Resume the attack with the defender performing the "Counterstrike" defense.
+ * Note that this defense is only applicable to melee attacks.
+ * 
+ * @param {*} atkTokenId Token representing the attacker
+ * @param {*} defTokenId Token representing the defender/counterstriker
+ * @param {*} atkWeaponName Name of the weapon the attacker is using
+ * @param {*} atkEffAML The effective AML (Attack Mastery Level) of the attacker after modifiers applied
+ * @param {*} atkAim Attack aim ("High", "Mid", "Low")
+ * @param {*} atkAspect Weapon aspect ("Blunt", "Edged", "Piercing")
+ * @param {*} atkImpactMod Additional modifier to impact
+ */
+export async function meleeCounterstrikeResume(atkTokenId, defTokenId, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod) {
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
         ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
@@ -824,7 +931,97 @@ export function weaponAttackResume(atkTokenId, defTokenId, action, effAML, aim, 
         return null;
     }
 
-    return combat.meleeAttackResume(atkToken, defToken, action, effAML, aim, aspect, impactMod);
+    return await combat.meleeCounterstrikeResume(atkToken, defToken, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod);
+}
+
+/**
+ * Resume the attack with the defender performing the "Dodge" defense.
+ * 
+ * @param {*} atkTokenId Token representing the attacker
+ * @param {*} defTokenId Token representing the defender
+ * @param {*} type Type of attack: "melee" or "missile"
+ * @param {*} weaponName Name of the weapon the attacker is using
+ * @param {*} effAML The effective AML (Attack Mastery Level) of the attacker after modifiers applied
+ * @param {*} aim Attack aim ("High", "Mid", "Low")
+ * @param {*} aspect Weapon aspect ("Blunt", "Edged", "Piercing")
+ * @param {*} impactMod Additional modifier to impact
+ */
+export async function dodgeResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod) {
+    const atkToken = canvas.tokens.get(atkTokenId);
+    if (!atkToken) {
+        ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
+        return null;
+    }
+
+    const speaker = ChatMessage.getSpeaker({token: atkToken});
+
+    const defToken = canvas.tokens.get(defTokenId);
+    if (!defToken) {
+        ui.notifications.warn(`Defender ${defToken.name} could not be found on canvas.`);
+        return null;
+    }
+
+    return await combat.dodgeResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
+}
+
+/**
+ * Resume the attack with the defender performing the "Block" defense.
+ * 
+ * @param {*} atkTokenId Token representing the attacker
+ * @param {*} defTokenId Token representing the defender
+ * @param {*} type Type of attack: "melee" or "missile"
+ * @param {*} weaponName Name of the weapon the attacker is using
+ * @param {*} effAML The effective AML (Attack Mastery Level) of the attacker after modifiers applied
+ * @param {*} aim Attack aim ("High", "Mid", "Low")
+ * @param {*} aspect Weapon aspect ("Blunt", "Edged", "Piercing")
+ * @param {*} impactMod Additional modifier to impact
+ */
+export async function blockResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod) {
+    const atkToken = canvas.tokens.get(atkTokenId);
+    if (!atkToken) {
+        ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
+        return null;
+    }
+
+    const speaker = ChatMessage.getSpeaker({token: atkToken});
+
+    const defToken = canvas.tokens.get(defTokenId);
+    if (!defToken) {
+        ui.notifications.warn(`Defender ${defToken.name} could not be found on canvas.`);
+        return null;
+    }
+
+    return await combat.blockResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
+}
+
+/**
+ * Resume the attack with the defender performing the "Ignore" defense.
+ * 
+ * @param {*} atkTokenId Token representing the attacker
+ * @param {*} defTokenId Token representing the defender
+ * @param {*} type Type of attack: "melee" or "missile"
+ * @param {*} weaponName Name of the weapon the attacker is using
+ * @param {*} effAML The effective AML (Attack Mastery Level) of the attacker after modifiers applied
+ * @param {*} aim Attack aim ("High", "Mid", "Low")
+ * @param {*} aspect Weapon aspect ("Blunt", "Edged", "Piercing")
+ * @param {*} impactMod Additional modifier to impact
+ */
+export async function ignoreResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod) {
+    const atkToken = canvas.tokens.get(atkTokenId);
+    if (!atkToken) {
+        ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
+        return null;
+    }
+
+    const speaker = ChatMessage.getSpeaker({token: atkToken});
+
+    const defToken = canvas.tokens.get(defTokenId);
+    if (!defToken) {
+        ui.notifications.warn(`Defender ${defToken.name} could not be found on canvas.`);
+        return null;
+    }
+
+    return await combat.ignoreResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
 }
 
 /*--------------------------------------------------------------*/
