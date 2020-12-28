@@ -1238,7 +1238,7 @@
                             <h4>{{effect.data.label}}</h4>
                         </div>
                         <div class="effect-ele effect-source">{{effect.source}}</div>
-                        <div class="effect-ele effect-duration">{{effect.duration.label}}</div>
+                        <div class="effect-ele effect-duration">{{#if (eq effect.duration.label "None")}}Indefinite{{else}}{{effect.duration.label}}{{/if}}</div>
                         <div class="effect-ele effect-changes">{{effect.changes}}</div>
                         <div class="effect-controls">
                             <a class="effect-control" data-action="toggle"><i class="{{#unless effect.data.disabled}}active{{/unless}} fas fa-circle-notch"></i></a>
