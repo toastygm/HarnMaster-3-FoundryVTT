@@ -255,8 +255,8 @@ export class HarnMasterActor extends Actor {
         // Universal Penalty and Physical Penalty are used to calculate many
         // things, including effectiveMasteryLevel for all skills,
         // endurance, move, etc.
-        data.universalPenalty = (eph.totalInjuryLevels + eph.fatigue) || 0;
-        data.physicalPenalty = (data.universalPenalty + data.encumbrance) || 0;
+        data.universalPenalty = Math.max((eph.totalInjuryLevels + eph.fatigue) || 0, 0);
+        data.physicalPenalty = Math.max((data.universalPenalty + data.encumbrance) || 0, 0);
 
         if (!eph.shockIndex) eph.shockIndex = {};
         eph.shockIndex.value = HarnMasterActor._normProb(data.endurance, data.universalPenalty * 3.5, data.universalPenalty);
@@ -440,7 +440,7 @@ export class HarnMasterActor extends Actor {
         const eph = this.data.data.eph;
 
         // Just ensure we take care of any NaN or other falsy nonsense
-        if (!eph.misileAMLMod) eph.missileAMLMod = 0;
+        if (!eph.missileAMLMod) eph.missileAMLMod = 0;
         if (!eph.weaponAMLMod) eph.weaponAMLMod = 0;
         if (!eph.weaponDMLMod) eph.weaponDMLMod = 0;
 
