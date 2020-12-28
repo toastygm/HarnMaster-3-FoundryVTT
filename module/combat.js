@@ -133,7 +133,8 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
     if (game.settings.get('hm3', 'combatAudio')) {
         AudioHelper.play({src: "sounds/drums.wav", autoplay: true, loop: false}, true);
     }
-    return null;
+
+    return chatTemplateData;
 }
 
 /**
@@ -260,7 +261,8 @@ export async function meleeAttack(attackToken, defendToken, weaponItem=null) {
     if (game.settings.get('hm3', 'combatAudio')) {
         AudioHelper.play({src: "sounds/drums.wav", autoplay: true, loop: false}, true);
     }
-    return null;
+
+    return chatTemplateData;
 }
 
 /**
@@ -697,7 +699,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     // Create a chat message
     await ChatMessage.create(messageData, messageOptions)
 
-    return null;
+    return {atk: atkChatData, cs: csChatData};
 }
 
 /**
@@ -819,7 +821,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         AudioHelper.play({src: "systems/hm3/audio/swoosh1.ogg", autoplay: true, loop: false}, true);
     }
 
-    return null;
+    return chatData;
 }
 
 /**
@@ -1033,7 +1035,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         AudioHelper.play({src: "systems/hm3/audio/shield-bash.ogg", autoplay: true, loop: false}, true);
     }
 
-    return null;
+    return chatData;
 }
 
 export function checkWeaponBreak(atkWeapon, defWeapon) {
@@ -1187,7 +1189,7 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
     // Create a chat message
     await ChatMessage.create(messageData, messageOptions)
 
-    return null;
+    return chatData;
 }
 
 /**
