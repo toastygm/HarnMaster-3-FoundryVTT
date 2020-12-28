@@ -157,7 +157,7 @@ export function skillRoll(itemName, noDialog = false, myActor=null) {
         notesData: {
             up: actor.data.data.universalPenalty,
             pp: actor.data.data.physicalPenalty,
-            il: actor.data.data.totalInjuryLevels || 0,
+            il: actor.data.data.eph.totalInjuryLevels || 0,
             fatigue: actor.data.data.eph.fatigue,
             eml: item.data.data.effectiveMasteryLevel,
             ml: item.data.data.masteryLevel,
@@ -191,7 +191,7 @@ export function castSpellRoll(itemName, noDialog = false, myActor=null) {
         notesData: {
             up: actor.data.data.universalPenalty,
             pp: actor.data.data.physicalPenalty,
-            il: actor.data.data.totalInjuryLevels || 0,
+            il: actor.data.data.eph.totalInjuryLevels || 0,
             fatigue: actor.data.data.eph.fatigue,
             eml: item.data.data.effectiveMasteryLevel,
             ml: item.data.data.masteryLevel,
@@ -228,7 +228,7 @@ export function invokeRitualRoll(itemName, noDialog = false, myActor = null) {
         notesData: {
             up: actor.data.data.universalPenalty,
             pp: actor.data.data.physicalPenalty,
-            il: actor.data.data.totalInjuryLevels || 0,
+            il: actor.data.data.eph.totalInjuryLevels || 0,
             fatigue: actor.data.data.eph.fatigue,
             eml: item.data.data.effectiveMasteryLevel,
             ml: item.data.data.masteryLevel,
@@ -265,7 +265,7 @@ export function usePsionicRoll(itemName, noDialog = false, myActor=null) {
         notesData: {
             up: actor.data.data.universalPenalty,
             pp: actor.data.data.physicalPenalty,
-            il: actor.data.data.totalInjuryLevels || 0,
+            il: actor.data.data.eph.totalInjuryLevels || 0,
             fatigue: actor.data.data.eph.fatigue,
             eml: item.data.data.effectiveMasteryLevel,
             ml: item.data.data.masteryLevel,
@@ -368,7 +368,7 @@ export function weaponDamageRoll(itemName, aspect=null, myActor = null) {
         notesData: {
             up: actor.data.data.universalPenalty,
             pp: actor.data.data.physicalPenalty,
-            il: actor.data.data.totalInjuryLevels || 0,
+            il: actor.data.data.eph.totalInjuryLevels || 0,
             fatigue: actor.data.data.eph.fatigue,
             weaponName: item.data.name 
         },
@@ -406,7 +406,7 @@ export function missileDamageRoll(itemName, range=null, myActor = null) {
         notesData: {
             up: actor.data.data.universalPenalty,
             pp: actor.data.data.physicalPenalty,
-            il: actor.data.data.totalInjuryLevels || 0,
+            il: actor.data.data.eph.totalInjuryLevels || 0,
             fatigue: actor.data.data.eph.fatigue,
             missileName: item.data.name,
             aspect: item.data.data.weaponAspect
@@ -445,7 +445,7 @@ export function weaponAttackRoll(itemName, noDialog = false, myActor = null) {
         notesData: {
             up: actor.data.data.universalPenalty,
             pp: actor.data.data.physicalPenalty,
-            il: actor.data.data.totalInjuryLevels || 0,
+            il: actor.data.data.eph.totalInjuryLevels || 0,
             fatigue: actor.data.data.eph.fatigue,
             ml: item.data.data.masteryLevel,
             sb: item.data.data.skillBase,
@@ -482,7 +482,7 @@ export function weaponDefendRoll(itemName, noDialog = false, myActor = null) {
         notesData: {
             up: actor.data.data.universalPenalty,
             pp: actor.data.data.physicalPenalty,
-            il: actor.data.data.totalInjuryLevels || 0,
+            il: actor.data.data.eph.totalInjuryLevels || 0,
             fatigue: actor.data.data.eph.fatigue,
             ml: item.data.data.masteryLevel,
             sb: item.data.data.skillBase,
@@ -522,7 +522,7 @@ export function missileAttackRoll(itemName, myActor = null) {
         notesData: {
             up: actor.data.data.universalPenalty,
             pp: actor.data.data.physicalPenalty,
-            il: actor.data.data.totalInjuryLevels || 0,
+            il: actor.data.data.eph.totalInjuryLevels || 0,
             fatigue: actor.data.data.eph.fatigue,
             missileName: item.data.name
         },
@@ -581,7 +581,7 @@ export function healingRoll(itemName, noDialog = false, myActor = null) {
         notesData: {
             up: actor.data.data.universalPenalty,
             pp: actor.data.data.physicalPenalty,
-            il: actor.data.data.totalInjuryLevels || 0,
+            il: actor.data.data.eph.totalInjuryLevels || 0,
             fatigue: actor.data.data.eph.fatigue,
             endurance: actor.data.data.endurance,
             injuryName: item.data.name,
