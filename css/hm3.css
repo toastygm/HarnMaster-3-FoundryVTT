@@ -748,6 +748,11 @@
   overflow: hidden; }
   .hm3 .combat .combat-stats .combat-stat {
     align-items: center; }
+    .hm3 .combat .combat-stats .combat-stat .combat-eff-fatigue {
+      flex: 0 0 25px; }
+    .hm3 .combat .combat-stats .combat-stat .combat-fatigue-input {
+      flex: 0 0 25px;
+      text-align: center; }
     .hm3 .combat .combat-stats .combat-stat .combat-stat-label {
       flex: 0 0 55px;
       font-weight: bold;
@@ -756,9 +761,6 @@
       flex: 0 0 40px;
       background: #bbb;
       padding: 2px;
-      text-align: center; }
-    .hm3 .combat .combat-stats .combat-stat .combat-stat-input {
-      flex: 0 0 40px;
       text-align: center; }
 
 .hm3 .combat .weapons-list {
@@ -1180,9 +1182,15 @@
 .hm3 .sheet-body .profile-desc {
   margin-top: 5px; }
   .hm3 .sheet-body .profile-desc .label {
-    flex: 0 0 18px;
+    padding-left: 5px;
+    font-family: "Modesto Condensed", "Palatino Linotype", serif;
+    font-size: 16px;
+    margin: 2px 0;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.05);
+    border: 2px groove #eeede0;
     font-weight: bold;
-    text-transform: uppercase; }
+    line-height: 24px; }
     .hm3 .sheet-body .profile-desc .label i {
       font-size: 12px;
       padding-left: 5px; }
@@ -1193,9 +1201,6 @@
   flex: 0 0 200px;
   object-fit: contain;
   background: white; }
-
-.hm3 .sheet-body .profile .profile-desc {
-  margin-left: 5px; }
 
 .hm3 .injuries-list {
   list-style: none;
