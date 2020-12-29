@@ -779,6 +779,9 @@ export class HarnMasterActor extends Actor {
     }
 
     handleRefreshItems() {
+        // If not the owner of this actor, then this method is useless
+        if (!this.owner) return;
+        
         const updateData = {
             'data.hasCondition': false
         };
