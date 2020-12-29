@@ -151,7 +151,7 @@ HM3.injuryLevels = ["NA", "M1", "S2", "S3", "G4", "G5", "K4", "K5"];
 
 HM3.activeEffectKey = {
     'data.eph.meleeAMLMod': 'Melee Attack',
-    'data.eph.meleeDMLMod': 'Melee Defence',
+    'data.eph.meleeDMLMod': 'Melee Defense',
     'data.eph.missileAMLMod': 'Missile Attack',
     'data.fatigue': 'Fatigue',
     'data.encumbrance': 'Encumbrance',
