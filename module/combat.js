@@ -612,10 +612,10 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         atkAspect: atkAspect,
         isAtkStumbleRoll: combatResult.outcome.atkStumble,
         isAtkFumbleRoll: combatResult.outcome.atkFumble,
-        isDefStumbleRoll: combatResult.outcome.defStumble,
-        isDefFumbleRoll: combatResult.outcome.defFumble,
+        isDefStumbleRoll: null,
+        isDefFumbleRoll: null,
         visibleAtkActorId: atkToken.actor.id,
-        visibleDefActorId: defToken.actor.id
+        visibleDefActorId: null
     } 
 
     const csChatData = {
@@ -647,10 +647,10 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         dta: combatResult.outcome.dta,
         isAtkStumbleRoll: combatResult.outcome.defStumble,
         isAtkFumbleRoll: combatResult.outcome.defFumble,
-        isDefStumbleRoll: combatResult.outcome.atkStumble,
-        isDefFumbleRoll: combatResult.outcome.atkFumble,
+        isDefStumbleRoll: null,
+        isDefFumbleRoll: null,
         visibleAtkActorId: defToken.actor.id,
-        visibleDefActorId: atkToken.actor.id
+        visibleDefActorId: null
     }
 
     let chatTemplate = "systems/hm3/templates/chat/attack-result-card.html";
