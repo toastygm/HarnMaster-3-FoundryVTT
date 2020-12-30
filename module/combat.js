@@ -21,7 +21,8 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
     }
 
     if (!isValidToken(attackToken)) {
-        console.error(`HM3 | meleeAttack attackToken=${attackToken} is not valid.`);
+        ui.notifications.error(`Attack token not valid.`);
+        console.error(`HM3 | missileAttack attackToken=${attackToken} is not valid.`);
         return null;
     }
     
@@ -32,7 +33,8 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
     }
 
     if (!isValidToken(defendToken)) {
-        console.error(`HM3 | meleeAttack defendToken=${defendToken} is not valid.`);
+        ui.notifications.error(`Defender token not valid.`);
+        console.error(`HM3 | missileAttack defendToken=${defendToken} is not valid.`);
         return null;
     }
 
@@ -131,7 +133,8 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
     if (game.settings.get('hm3', 'combatAudio')) {
         AudioHelper.play({src: "sounds/drums.wav", autoplay: true, loop: false}, true);
     }
-    return null;
+
+    return chatTemplateData;
 }
 
 /**
@@ -258,7 +261,8 @@ export async function meleeAttack(attackToken, defendToken, weaponItem=null) {
     if (game.settings.get('hm3', 'combatAudio')) {
         AudioHelper.play({src: "sounds/drums.wav", autoplay: true, loop: false}, true);
     }
-    return null;
+
+    return chatTemplateData;
 }
 
 /**
@@ -502,7 +506,8 @@ function defaultMeleeWeapon(token) {
 }
 
 /**
- * Resume the attack with the defender performing the "Dodge" defense.  Note that this defense is only applicable to melee attacks.
+ * Resume the attack with the defender performing the "Counterstrike" defense.
+ * Note that this defense is only applicable to melee attacks.
  * 
  * @param {*} atkToken Token representing the attacker
  * @param {*} defToken Token representing the defender
@@ -544,13 +549,15 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         target: atkEffAML
     });
 
+    const csEffEML = csDialogResult.weapon.data.data.attackMasteryLevel;
+
     // Roll Counterstrike Attack
     const csRoll = DiceHM3.rollTest({
         data: {},
         diceSides: 100,
         diceNum: 1,
         modifier: csDialogResult.addlModifier,
-        target: csDialogResult.weapon.data.data.attackMasteryLevel
+        target: csEffEML
     });
 
     // If we have "Dice So Nice" module, roll them dice!
@@ -605,8 +612,8 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         atkAspect: atkAspect,
         isAtkStumbleRoll: combatResult.outcome.atkStumble,
         isAtkFumbleRoll: combatResult.outcome.atkFumble,
-        isDefStumbleRoll: combatResult.outcome.defStumble,
-        isDefFumbleRoll: combatResult.outcome.defFumble,
+        isDefStumbleRoll: null,
+        isDefFumbleRoll: null,
         visibleAtkActorId: atkToken.actor.id,
         visibleDefActorId: defToken.actor.id
     } 
@@ -621,9 +628,9 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         mlType: 'AML',
         addlModifierAbs: Math.abs(csDialogResult.addlModifier),
         addlModifierSign: csDialogResult.addlModifier < 0?'-':'+',
-        origEML: csDialogResult.weapon.data.data.attackMasteryLevel,
-        effEML: csDialogResult.weapon.data.data.attackMasteryLevel + csDialogResult.addlModifier,
-        effAML: csDialogResult.weapon.data.data.attackMasteryLevel + csDialogResult.addlModifier,
+        origEML: csEffEML,
+        effEML: csEffEML + csDialogResult.addlModifier,
+        effAML: csEffEML + csDialogResult.addlModifier,
         effDML: 0,
         attackRoll: csRoll.rollObj.total,
         atkRollResult: csRoll.description,
@@ -640,8 +647,8 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         dta: combatResult.outcome.dta,
         isAtkStumbleRoll: combatResult.outcome.defStumble,
         isAtkFumbleRoll: combatResult.outcome.defFumble,
-        isDefStumbleRoll: combatResult.outcome.atkStumble,
-        isDefFumbleRoll: combatResult.outcome.atkFumble,
+        isDefStumbleRoll: null,
+        isDefFumbleRoll: null,
         visibleAtkActorId: defToken.actor.id,
         visibleDefActorId: atkToken.actor.id
     }
@@ -692,7 +699,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     // Create a chat message
     await ChatMessage.create(messageData, messageOptions)
 
-    return null;
+    return {atk: atkChatData, cs: csChatData};
 }
 
 /**
@@ -814,7 +821,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         AudioHelper.play({src: "systems/hm3/audio/swoosh1.ogg", autoplay: true, loop: false}, true);
     }
 
-    return null;
+    return chatData;
 }
 
 /**
@@ -853,10 +860,12 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
     let defAvailWeapons = defToken.actor.itemTypes.weapongear;
     const shields = defAvailWeapons.filter(w => w.data.data.isEquipped && /shield|\bbuckler\b/i.test(w.name));
 
+    let atkWeapon = null;
     // Missile Pre-processing.  If attacker is using a high-velocity weapon, then defender
     // can only block with a shield.  If attacker is using a low-velocity weapon, then defender
     // can either block with a shield (at full DML) or with a melee weapon (at 1/2 DML).
     if (type === 'missile') {
+        atkWeapon = atkToken.actor.itemTypes.missilegear.find(w => w.name === weaponName);
         const highVelocityMissile = /\bbow\b|shortbow|longbow|crossbow|\bsling\b|\barrow\b|\bbolt\b|\bbullet\b/i.test(weaponName);
     
         if (highVelocityMissile) {
@@ -870,6 +879,8 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         } else {
             prompt = `${weaponName} is a low-velocity missile, and can be blocked either by a shield (at full DML) or by a melee weapon (at &#189; DML). Choose wisely.`;
         }
+    } else {
+        atkWeapon = atkToken.actor.itemTypes.weapongear.find(w => w.name === weaponName);
     }
 
     // pop up dialog asking for which weapon to use for blocking
@@ -951,7 +962,11 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         atkImpactRoll = new Roll(`${combatResult.outcome.atkDice}d6`).roll();
     }
 
-    const weaponBroke = checkWeaponBreak(atkWeapon, defWeapon);
+    // If there was a block, check whether a weapon broke
+    let weaponBroke = {attackWeaponBroke: false, defendWeaponBroke: false};
+    if (combatResult.outcome.block) {
+        weaponBroke = checkWeaponBreak(atkWeapon, defWeapon);
+    }
 
     const chatData = {
         title: `Attack Result`,
@@ -1020,14 +1035,22 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         AudioHelper.play({src: "systems/hm3/audio/shield-bash.ogg", autoplay: true, loop: false}, true);
     }
 
-    return null;
+    return chatData;
 }
 
 export function checkWeaponBreak(atkWeapon, defWeapon) {
+    if (!atkWeapon) {
+        console.warn(`Defend weapon is not specified`);
+    }
+
+    if (!defWeapon) {
+        console.warn(`Attack weapon is not specified`);
+    }
+
     // Weapon Break Check
     let atkWeaponBroke = false;
     let defWeaponBroke = false;
-    if (type === "melee" && game.settings.get('hm3', 'weaponDamage') && combatResult.outcome.block && defWeapon) {
+    if (game.settings.get('hm3', 'weaponDamage')) {
         const atkWeapon = atkToken.actor.itemTypes.weapongear.find(w => w.name === weaponName);
         if (atkWeapon) {
             const atkWeaponQuality = atkWeapon.data.data.weaponQuality;
@@ -1166,7 +1189,7 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
     // Create a chat message
     await ChatMessage.create(messageData, messageOptions)
 
-    return null;
+    return chatData;
 }
 
 /**
@@ -1195,40 +1218,43 @@ export function meleeCombatResult(atkResult, defResult, defense, atkAddlImpact=0
 
     const result = { outcome: outcome, desc: 'Attack misses.', csDesc: 'Counterstrike misses.'};
     
-    if (outcome.atkDice) {
-        result.desc = `Attacker strikes for ${diceFormula(outcome.atkDice, atkAddlImpact)} impact.`;
-    } else if (outcome.atkFumble & outcome.defFumble) {
-        result.desc = 'Both Attacker and Defender Fumble';
-    } else if (outcome.atkFumble) {
-        result.desc = `Attacker fumbles.`;
-    } else if (outcome.defFumble) {
-        result.desc = `Defender fumbles.`;
-    } else if (outcome.defStumble && outcome.atkStumble) {
-        result.desc = `Both attacker and defender stumble.`;
-    } else if (outcome.atkStumble) {
-        result.desc = `Attacker stumbles.`;
-    } else if (outcome.defStumble) {
-        result.desc = `Defender stumbles.`;
-    } else if (outcome.block) {
-        result.desc = `Attack blocked.`;
-    } else if (outcome.dta) {
-        result.desc = `Defender gains Tactical Advantage.`;
-    }
+    if (defense !== 'counterstrike') {
+        if (outcome.atkDice) {
+            result.desc = `Attacker strikes for ${diceFormula(outcome.atkDice, atkAddlImpact)} impact.`;
+        } else if (outcome.atkFumble & outcome.defFumble) {
+            result.desc = 'Both Attacker and Defender Fumble';
+        } else if (outcome.atkFumble) {
+            result.desc = `Attacker fumbles.`;
+        } else if (outcome.defFumble) {
+            result.desc = `Defender fumbles.`;
+        } else if (outcome.defStumble && outcome.atkStumble) {
+            result.desc = `Both attacker and defender stumble.`;
+        } else if (outcome.atkStumble) {
+            result.desc = `Attacker stumbles.`;
+        } else if (outcome.defStumble) {
+            result.desc = `Defender stumbles.`;
+        } else if (outcome.block) {
+            result.desc = `Attack blocked.`;
+        } else if (outcome.dta) {
+            result.desc = `Defender gains Tactical Advantage.`;
+        }
+    } else {
+        if (outcome.atkDice) {
+            result.desc = `Attacker strikes for ${diceFormula(outcome.atkDice, atkAddlImpact)} impact.`;
+        } else if (outcome.atkFumble) {
+            result.desc = `Attacker fumbles.`;
+        } else if (outcome.atkStumble) {
+            result.desc = `Attacker stumbles.`;
+        }
 
-    if (defense === 'counterstrike') {
         if (outcome.defDice) {
             result.csDesc = `Counterstriker strikes for ${diceFormula(outcome.defDice, defAddlImpact)} impact.`;
-        } else if (outcome.atkFumble && outcome.defFumble) {
-            result.desc = 'Attacker fumbles.';
-            result.csDesc = 'Counterstriker fumbles.';
         } else if (outcome.defFumble) {
             result.csDesc = 'Counterstriker fumbles.';
-        } else if (outcome.atkStumble && outcome.defStumble) {
-            result.desc = 'Attacker stumbles.';
-            result.csDesc = 'Counterstriker stumbles.';
         } else if (outcome.defStumble) {
             result.csDesc = 'Counterstriker stumbles.';
         } else if (outcome.block) {
+            result.desc = 'Attacker blocked.';
             result.csDesc = `Counterstriker blocked.`;
         } else if (outcome.dta) {
             result.csDesc = `Counterstriker achieves Tactical Advantage!`
@@ -1236,6 +1262,7 @@ export function meleeCombatResult(atkResult, defResult, defense, atkAddlImpact=0
             result.csDesc = `Counterstrike misses.`;
         }
     }
+
     return result;
 }
 
@@ -1379,24 +1406,29 @@ export function getItem(itemName, type, actor) {
  * Calculates the distance from sourceToken to targetToken in "scene" units (e.g., feet).
  * 
  * @param {Token} sourceToken 
- * @param {Token} targetToken 
+ * @param {Token} targetToken
+ * @param {Boolean} gridUnits If true, return in grid units, not "scene" units
  */
 export function rangeToTarget(sourceToken, targetToken, gridUnits=false) {
     if (!sourceToken || !targetToken || !canvas.scene || !canvas.scene.data.grid) return 9999;
     const sToken = canvas.tokens.get(sourceToken.id);
     const tToken = canvas.tokens.get(targetToken.id);
-    const snappedSource = canvas.grid.getSnappedPosition(sToken.x, sToken.y, 2);
-    const snappedDest = canvas.grid.getSnappedPosition(tToken.x, tToken.y, 2);
-    const ray = new Ray(snappedSource, snappedDest);
 
-    let distance = 0;
-    if (gridUnits || game.settings.get('hm3', 'distanceUnits') === 'grid') {
-        distance = Math.round(ray.distance / (canvas.dimensions.size || 1));
-    } else {
-        const ratio = (canvas.dimensions.size / (canvas.dimensions.distance || 1));
-        distance = Math.ceil(ray.distance / ratio);
-    }
+    const segments = [];
+    const source = {};
+    const dest = {}
+    const s = canvas.grid.getCenter(sToken.x, sToken.y);
+    source.x = Math.round(s[0]);
+    source.y = Math.round(s[1]);
+    const d = canvas.grid.getCenter(tToken.x, tToken.y);
+    dest.x = Math.round(d[0]);
+    dest.y = Math.round(d[1]);
+    const ray = new Ray(source, dest);
+    segments.push({ray});
+    const distances = canvas.grid.measureDistances(segments, {gridSpaces: true});
+    const distance = distances[0];
     console.log(`Distance = ${distance}, gridUnits=${gridUnits}`);
+    if (gridUnits) return Math.round(distance / canvas.dimensions.distance);
     return distance;
 }
 

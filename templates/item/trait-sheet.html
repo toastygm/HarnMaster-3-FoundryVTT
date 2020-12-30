@@ -1,8 +1,20 @@
 <form class="{{cssClass}}" autocomplete="off">
-    <header class="sheet-header">
-        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
-        <div class="header-fields">
-            <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name" /></h1>
+    <header class="sheet-header skill-header">
+        <div class="flexrow">
+            <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+            <div class="header-fields flexcol">
+                <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name" /></h1>
+                <div class="skill-type flexrow">
+                    <label class="label">Type</label>
+                    <select class="value" name="data.type">
+                        {{#select data.type}}
+                            {{#each config.traitTypes}}
+                                <option value="{{this}}">{{this}}</option>
+                            {{/each}}
+                        {{/select}}
+                    </select>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -14,30 +26,10 @@
     </nav>
 
     {{!-- Sheet Body --}}
-    <section class="sheet-body">
+    <section class="sheet-body skill-body">
 
         {{!-- Properties Tab --}}
         <div class="tab properties" data-group="primary" data-tab="properties">
-            <div class="grid grid-fixed-row grid-2col">
-                <div class="resource">
-                    <label class="resource-label" for="data.convocation">Convocation</label>
-                    {{#if hasMagicSkills}}
-                        <select class="resource-value" name="data.convocation" data-dtype="String">
-                            {{#select data.convocation}}
-                                {{#each convocations}}
-                                    <option value="{{this}}">{{this}}</option>
-                                {{/each}}
-                            {{/select}}
-                        </select>
-                    {{else}}
-                        <input type="text" name="data.convocation" value="{{data.convocation}}" data-dtype="String" />
-                    {{/if}}
-                </div>
-                <div class="resource">
-                    <label class="resource-label">Level</label>
-                    <input type="number" name="data.level" value="{{data.level}}" data-dtype="Number" />
-                </div>
-            </div>
             <div class="resource">
                 <label class="resource-label">Source</label>
                 <input type="text" name="data.source" value="{{data.source}}" data-dtype="String" />
@@ -89,5 +81,4 @@
             </ol>
         </div>
     </section>
-
 </form>

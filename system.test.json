@@ -2,9 +2,9 @@
   "name": "hm3",
   "title": "HarnMaster 3",
   "description": "The HarnMaster 3 system for FoundryVTT!",
-  "version": "1.1.0",
-  "minimumCoreVersion": "0.7.9",
-  "compatibleCoreVersion": "0.7.9",
+  "version": "1.0.3.1",
+  "minimumCoreVersion": "0.7.1",
+  "compatibleCoreVersion": "0.7.8",
   "templateVersion": 2,
   "author": "Tom Rodriguez",
   "esmodules": ["module/hm3.js"],
@@ -62,15 +62,8 @@
     },
     {
       "label": "Std Melee Weapons",
-      "name": "std-melee-weapons",
+      "name": "std-weapons",
       "path": "packs/std-melee-weapons.db",
-      "system": "hm3",
-      "entity": "Item"
-    },
-    {
-      "label": "Std Missile Weapons",
-      "name": "std-missile-weapons",
-      "path": "packs/std-missile-weapons.db",
       "system": "hm3",
       "entity": "Item"
     },
@@ -82,9 +75,9 @@
       "entity": "Item"
     },
     {
-      "label": "System Help",
-      "name": "system-help",
-      "path": "packs/system-help.db",
+      "label": "HM3 System Help",
+      "name": "hm3-system-help",
+      "path": "packs/hm3-system-help.db",
       "system": "hm3",
       "entity": "JournalEntry"
     }
@@ -102,7 +95,7 @@
   "primaryTokenAttribute": "shockIndex",
   "secondaryTokenAttribute": null,
   "url": "https://github.com/toastygm/HarnMaster-3-FoundryVTT/",
-  "manifest": "https://raw.githubusercontent.com/toastygm/HarnMaster-3-FoundryVTT/master/system.json",
-  "download": "https://github.com/toastygm/HarnMaster-3-FoundryVTT/archive/v1.1.0.zip",
+  "manifest": "https://raw.githubusercontent.com/toastygm/HarnMaster-3-FoundryVTT/tom/system.test.json",
+  "download": "https://github.com/toastygm/HarnMaster-3-FoundryVTT/archive/v1.0.3.1.zip",
   "license": "LICENSE.txt"
 }

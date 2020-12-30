@@ -8,6 +8,10 @@
   padding: 0;
 }
 
+.grid-fixed-row {
+  grid-template-rows: 25px 5px;
+}
+
 .grid-3col {
   grid-column: span 3 / span 3;
   grid-template-columns: repeat(3, minmax(0, 1fr));
