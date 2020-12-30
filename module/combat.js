@@ -615,7 +615,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         isDefStumbleRoll: null,
         isDefFumbleRoll: null,
         visibleAtkActorId: atkToken.actor.id,
-        visibleDefActorId: null
+        visibleDefActorId: defToken.actor.id
     } 
 
     const csChatData = {
@@ -650,7 +650,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         isDefStumbleRoll: null,
         isDefFumbleRoll: null,
         visibleAtkActorId: defToken.actor.id,
-        visibleDefActorId: null
+        visibleDefActorId: atkToken.actor.id
     }
 
     let chatTemplate = "systems/hm3/templates/chat/attack-result-card.html";
