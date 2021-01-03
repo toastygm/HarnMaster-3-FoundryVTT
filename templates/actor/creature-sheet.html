@@ -13,10 +13,10 @@
                             <div class="statend">PP: {{data.physicalPenalty}}</div>
                         </div>
                         <div class="endurance flexrow">
-                            <span class="label">Shock Index: {{data.eph.shockIndex.value}}</span>
+                            <span class="label">Shock Index: {{data.shockIndex.value}}</span>
                         </div>
                         <div class="endbar">
-                            <span class="bar" style="width: {{data.eph.shockIndex.value}}%"></span>
+                            <span class="bar" style="width: {{data.shockIndex.value}}%"></span>
                         </div>
                     </div>
                 </div>
@@ -282,7 +282,7 @@
                     <ol class="items-list traits-list">
                         <li class="items-header trait flexrow">
                             <h3 class="item-name trait-name">Physical Traits<a class="more-info"
-                                data-journal-entry="Sheet - Profile Tab - Physical Traits"><i
+                                data-journal-entry="Sheet - Profile Tab"><i
                                     class="far fa-question-circle"></i></a></h3>
                             <div class="trait-notes item-detail">Notes</div>
                             <div class="item-controls">
@@ -314,7 +314,7 @@
                     <ol class="items-list traits-list">
                         <li class="items-header trait flexrow">
                             <h3 class="item-name trait-name">Psyche Traits<a class="more-info"
-                                data-journal-entry="Sheet - Profile Tab - Psyche Traits"><i
+                                data-journal-entry="Sheet - Profile Tab"><i
                                     class="far fa-question-circle"></i></a></h3>
                             <div class="trait-notes item-detail">Notes</div>
                             <div class="item-controls">
@@ -347,7 +347,7 @@
                 <div class="flexcol">
                     <div class="profile-desc flexcol">
                         <label class="label">Description<a class="more-info"
-                            data-journal-entry="Sheet - Profile Tab - Biography"><i
+                            data-journal-entry="Sheet - Profile Tab"><i
                                 class="far fa-question-circle"></i></a></label>
                         <div class="description">
                             {{editor content=data.biography target="data.biography" button=true owner=owner editable=editable}}
@@ -367,7 +367,7 @@
             <ol class="items-list skills-list">
                 <li class="items-header skill flexrow">
                     <h3 class="item-name skill-name">Physical Skills<a class="more-info"
-                        data-journal-entry="Sheet - Skills Tab - Physical Skills"><i
+                        data-journal-entry="Sheet - Skills Tab"><i
                             class="far fa-question-circle"></i></a></h3>
                     <div class="skill-ele item-detail">SB</div>
                     <div class="skill-ele item-detail">ML</div>
@@ -404,7 +404,7 @@
             <ol class="items-list skills-list">
                 <li class="items-header skill flexrow">
                     <h3 class="item-name skill-name">Communication Skills<a class="more-info"
-                        data-journal-entry="Sheet - Skills Tab - Communication Skills"><i
+                        data-journal-entry="Sheet - Skills Tab"><i
                             class="far fa-question-circle"></i></a></h3>
                     <div class="skill-ele item-detail">SB</div>
                     <div class="skill-ele item-detail">ML</div>
@@ -441,7 +441,7 @@
             <ol class="items-list skills-list">
                 <li class="items-header skill flexrow">
                     <h3 class="item-name skill-name">Combat Skills<a class="more-info"
-                        data-journal-entry="Sheet - Skills Tab - Combat Skills"><i
+                        data-journal-entry="Sheet - Skills Tab"><i
                             class="far fa-question-circle"></i></a></h3>
                     <div class="skill-ele item-detail">SB</div>
                     <div class="skill-ele item-detail">ML</div>
@@ -478,7 +478,7 @@
             <ol class="items-list skills-list">
                 <li class="items-header skill flexrow">
                     <h3 class="item-name skill-name">Craft Skills<a class="more-info"
-                        data-journal-entry="Sheet - Skills Tab - Craft Skills"><i
+                        data-journal-entry="Sheet - Skills Tab"><i
                             class="far fa-question-circle"></i></a></h3>
                     <div class="skill-ele item-detail">SB</div>
                     <div class="skill-ele item-detail">ML</div>
@@ -517,7 +517,7 @@
             <div class="items-list">
                 <div class="items-header flexrow">
                     <h3 class="item-name">Combat Statistics<a class="more-info"
-                        data-journal-entry="Sheet - Combat Tab - Combat Statistics"><i
+                        data-journal-entry="Sheet - Combat Tab"><i
                             class="far fa-question-circle"></i></a></h3>
                 </div>
             </div>
@@ -588,7 +588,7 @@
             <ol class="items-list weapons-list">
                 <li class="items-header weapon flexrow">
                     <h3 class="item-name weapon-name">Melee Weapons<a class="more-info"
-                        data-journal-entry="Sheet - Combat Tab - Melee Weapons"><i
+                        data-journal-entry="Sheet - Combat Tab"><i
                             class="far fa-question-circle"></i></a></h3>
                     <div class="item-detail weapon-qty">Qty</div>
                     <div class="item-detail weapon-quality">WQ</div>
@@ -641,7 +641,7 @@
             <ol class="items-list missiles-list">
                 <li class="items-header missile flexrow">
                     <h3 class="item-name missile-name">Missile Weapons<a class="more-info"
-                        data-journal-entry="Sheet - Combat Tab - Missile Weapons"><i
+                        data-journal-entry="Sheet - Combat Tab"><i
                             class="far fa-question-circle"></i></a></h3>
                     <div class="item-detail missile-qty">Qty</div>
                     <div class="item-detail missile-skill">Skill</div>
@@ -694,7 +694,7 @@
             <ol class="items-list injuries-list">
                 <li class="items-header injury flexrow">
                     <h3 class="item-name injury-name">Injuries<a class="more-info"
-                        data-journal-entry="Sheet - Combat Tab - Injuries"><i
+                        data-journal-entry="Sheet - Combat Tab"><i
                             class="far fa-question-circle"></i></a></h3>
                     <div class="item-detail injury-healrate">HR</div>
                     <div class="item-detail injury-severity">IL</div>
@@ -728,7 +728,7 @@
             <ol class="items-list armorlocations-list">
                 <li class="items-header armorlocation flexrow">
                     <h3 class="item-name armorlocation-name">Armor Locations<a class="more-info"
-                        data-journal-entry="Sheet - Combat Tab - Armor Locations"><i
+                        data-journal-entry="Sheet - Combat Tab"><i
                             class="far fa-question-circle"></i></a></h3>
                     <div class="item-detail armorlocation-layers">Layers</div>
                     <div class="item-detail armorlocation-quality">AQ</div>
@@ -773,7 +773,7 @@
             <ol class="items-list psionics-list">
                 <li class="items-header psionic flexrow">
                     <h3 class="item-name psionic-name">Psionic Talents<a class="more-info"
-                        data-journal-entry="Sheet - Esoterics Tab - Psionic Talents"><i
+                        data-journal-entry="Sheet - Esoterics Tab"><i
                             class="far fa-question-circle"></i></a></h3>
                     <div class="item-detail psionic-fatigue">Fatigue</div>
                     <div class="item-detail psionic-sb">SB</div>
