@@ -229,7 +229,11 @@ export class HarnMasterActor extends Actor {
         });
 
         // Calculate current Move speed.  Cannot go below 0
-        data.move.effective = Math.max(eph.move - data.physicalPenalty, 0);
+        // HEURISTIC: Assume if base move < 25 that user is specifying hexes for movement (use PP as penalty);
+        // 25+ means they are specifying feet (and use PP*5 as penalty); unlikely many characters will have
+        // a base Agility of <= 4 and will want to specify the base move speed in feet.
+        // Eventually we will standardize on "feet" and this heuristic can be removed.
+        data.move.effective = Math.max(eph.move - (data.move.base < 25 ? data.physicalPenalty : data.physicalPenalty * 5), 0);
 
         // Setup effective abilities (accounting for UP and PP)
         this._setupEffectiveAbilities(data);
