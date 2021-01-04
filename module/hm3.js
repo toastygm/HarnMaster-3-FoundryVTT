@@ -3,11 +3,11 @@ import { HarnMasterActor } from "./actor/actor.js";
 import { HarnMasterCharacterSheet } from "./actor/character-sheet.js";
 import { HarnMasterCreatureSheet } from "./actor/creature-sheet.js"
 import { HarnMasterContainerSheet } from "./actor/container-sheet.js"
+import { HarnMasterCombat } from "./hm3-combat.js";
 import { HarnMasterItem } from "./item/item.js";
 import { HarnMasterItemSheet } from "./item/item-sheet.js";
 import { HM3ActiveEffectConfig } from "./hm3-active-effect-config.js";
 import { HM3 } from "./config.js";
-import { DiceHM3 } from "./dice-hm3.js";
 import { registerSystemSettings } from "./settings.js";
 import * as migrations from "./migrations.js";
 import * as macros from "./macros.js";
@@ -47,6 +47,7 @@ Hooks.once('init', async function () {
     // Define custom Entity classes
     CONFIG.Actor.entityClass = HarnMasterActor;
     CONFIG.Item.entityClass = HarnMasterItem;
+    CONFIG.Combat.entityClass = HarnMasterCombat;
 
     // Register sheet application classes
     Actors.unregisterSheet("core", ActorSheet);

@@ -979,15 +979,14 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         event.preventDefault();
         const journalEntry = event.currentTarget.dataset.journalEntry;
 
-        //const helpJournal = await game.packs.find(p => p.collection === `hm3.hm3-system-help`).getContent();
-        //const article = helpJournal.find(i => i.name === journalEntry);
-        //article.sheet.render(true, {editable: false});
-        const article = game.journal.getName(journalEntry);
+        const helpJournal = await game.packs.find(p => p.collection === `hm3.system-help`).getContent();
+        const article = helpJournal.find(i => i.name === journalEntry);
+        //const article = game.journal.getName(journalEntry);
         if (!article) {
             console.error(`HM3 | Can't find journal entry with name "${journalEntry}".`);
             return null;
         }
-        article.sheet.render(true);
+        article.sheet.render(true, {editable: false});
         return null;
     }
 
