@@ -47,6 +47,7 @@ Hooks.once('init', async function () {
     // Define custom Entity classes
     CONFIG.Actor.entityClass = HarnMasterActor;
     CONFIG.Item.entityClass = HarnMasterItem;
+    CONFIG.Combat.entityClass = HarnMasterCombat;
 
     // Register sheet application classes
     Actors.unregisterSheet("core", ActorSheet);
