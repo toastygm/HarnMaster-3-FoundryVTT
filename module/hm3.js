@@ -48,6 +48,12 @@ Hooks.once('init', async function () {
     CONFIG.Actor.entityClass = HarnMasterActor;
     CONFIG.Item.entityClass = HarnMasterItem;
     CONFIG.Combat.entityClass = HarnMasterCombat;
+    CONFIG.TinyMCE.style_formats[0].items.push({
+        title: 'Highlight',
+        block: 'section',
+        classes: 'highlight',
+        wrapper: true
+    })
 
     // Register sheet application classes
     Actors.unregisterSheet("core", ActorSheet);
