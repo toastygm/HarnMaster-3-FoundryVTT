@@ -776,7 +776,10 @@ export class HarnMasterActor extends Actor {
     _onModifyEmbeddedEntity(embeddedName, changes, options, userId, context={}) {
         // The Actor.items map should already be updated, so process actor updates
         if (embeddedName === 'OwnedItem') {
-            this.handleRefreshItems();
+            this.handleRefreshItems().then(() => {
+                return super._onModifyEmbeddedEntity(embeddedName, changes, options, userId, context);
+            });
+            return;
         }
 
         return super._onModifyEmbeddedEntity(embeddedName, changes, options, userId, context);
@@ -792,36 +795,34 @@ export class HarnMasterActor extends Actor {
 
         // Find all containergear, and track whether container is carried or not
         const containerCarried = {};
-        this.items.forEach(it => {
-            if (it.data.type === 'containergear') {
-                containerCarried[it.data._id] = it.data.data.isCarried;
+        this._data.items.forEach(itemData => {
+            if (itemData.type === 'containergear') {
+                containerCarried[itemData._id] = itemData.data.isCarried;
             }
         });
 
         let totalIL = 0;
         let totalWeight = 0;
-        this.items.forEach(it => {
-            const itemData = it.data;
-
+        this._data.items.forEach(itemData => {
             if (itemData.type === 'skill') {
                 // Handle setting Endurance based on Condition skill
-                if (itemData.data.type.toLowerCase() === 'condition') {
+                if (itemData.name.toLowerCase() === 'condition') {
                     updateData['data.hasCondition'] = true;
                     updateData['data.endurance'] = Math.round((itemData.data.masteryLevel || 0) / 5);
                 }
             } else if (itemData.type === 'injury') {
-                totalIL += it.data.data.injuryLevel || 0;
+                totalIL += itemData.data.injuryLevel || 0;
             } else if (itemData.type.endsWith('gear')) {
                 // If gear is on-person, then check the carried flag to determine
                 // whether the gear is carried. Otherwise, it must be in a container,
                 // so check whether the container is carried.
-                if (it.data.data.container === 'on-person') {
-                    if (it.data.data.isCarried) {
-                        totalWeight += it.data.data.weight * it.data.data.quantity;
+                if (itemData.data.container === 'on-person') {
+                    if (itemData.data.isCarried) {
+                        totalWeight += itemData.data.weight * itemData.data.quantity;
                     }
                 } else {
-                    if (containerCarried[it.data.data.container]) {
-                        totalWeight += it.data.data.weight * it.data.data.quantity;
+                    if (containerCarried[itemData.data.container]) {
+                        totalWeight += itemData.data.weight * itemData.data.quantity;
                     }
                 }
             }
@@ -833,7 +834,7 @@ export class HarnMasterActor extends Actor {
         updateData['data.totalWeight'] = totalWeight;
         updateData['data.totalInjuryLevels'] = totalIL;
 
-        this.update(updateData);
+        return this.update(updateData);
     }
 
     static async _createDefaultCharacterSkills(data) {
