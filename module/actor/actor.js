@@ -239,8 +239,8 @@ export class HarnMasterActor extends Actor {
         this._setupEffectiveAbilities(data);
 
         // Calculate Important Roll Targets
-        eph.stumbleTarget = Math.max(eph.agility, 0);
-        eph.fumbleTarget = Math.max(eph.dexterity, 0);
+        eph.stumbleTarget = Math.max(data.abilities.agility.effective, 0);
+        eph.fumbleTarget = Math.max(data.abilities.dexterity.effective, 0);
 
         // Process all the final post activities for Items
         this.items.forEach(it => {
