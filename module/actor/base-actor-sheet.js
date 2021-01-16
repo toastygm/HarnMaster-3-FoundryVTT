@@ -626,9 +626,10 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 return;
             }
 
-            const title = `Delete ${data.label}`;
+            let title = `Delete ${data.label}`;
             let content;
             if (item.data.type === 'containergear') {
+                title = 'Delete Container';
                 content = '<p>WARNING: All items in this container will be deleted as well!</p><p>Are you sure?</p>';
             } else {
                 content = '<p>Are you sure?</p>';
@@ -638,7 +639,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             let agree = false;
             await Dialog.confirm({
                 title: title,
-                content: '<p>Are you sure?</p>',
+                content: content,
                 yes: () => agree = true
             });
 
@@ -648,16 +649,16 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 // Add all items in the container to the delete list
                 if (item.data.type === 'containeritem') {
                     this.actor.items.forEach(it => {
-                        if (it.data.data.container === itemId) deleteItems.push(it.id);
+                        if (item.data.type.endsWith('gear') && it.data.data.container === itemId) deleteItems.push(it.id);
                     });
                 }
 
                 deleteItems.push(itemId);  // ensure we delete the container last
 
-                deleteItems.forEach(it => {
-                    this.actor.deleteOwnedItem(itemId);
+                for (let it of deleteItems) {
+                    await this.actor.deleteOwnedItem(it);
                     li.slideUp(200, () => this.render(false));
-                })
+                }
             }
         }
     }
