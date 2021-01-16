@@ -8,6 +8,11 @@
   text-shadow: 0 0 10px red;
   cursor: pointer; }
 
+section.highlight {
+  padding: 0 5px;
+  background: rgba(247, 230, 2, 0.05);
+  border: 1px solid #666; }
+
 .grid,
 .grid-2col {
   display: grid;

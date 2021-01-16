@@ -964,8 +964,19 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
 
     // If there was a block, check whether a weapon broke
     let weaponBroke = {attackWeaponBroke: false, defendWeaponBroke: false};
-    if (combatResult.outcome.block) {
+    if (game.settings.get('hm3', 'weaponDamage') && combatResult.outcome.block) {
         weaponBroke = checkWeaponBreak(atkWeapon, defWeapon);
+
+        // If either of the weapons has broken, then mark the appropriate
+        // weapon as "unequipped"
+
+        if (weaponBroke.attackWeaponBroke) {
+            await atkToken.actor.updateOwnedItem({_id: atkWeapon.data._id, 'data.isEquipped': false});
+        }
+
+        if (weaponBroke.defendWeaponBroke) {
+            await defToken.actor.updateOwnedItem({_id: defWeapon.data._id, 'data.isEquipped': false});
+        }
     }
 
     const chatData = {
@@ -1040,45 +1051,33 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
 
 export function checkWeaponBreak(atkWeapon, defWeapon) {
     if (!atkWeapon) {
-        console.warn(`Defend weapon is not specified`);
+        console.error(`Attack weapon was not specified`);
+        return {attackWeaponBroke: false, defendWeaponBroke: false};
     }
 
     if (!defWeapon) {
-        console.warn(`Attack weapon is not specified`);
+        console.error(`Defend weapon was not specified`);
+        return {attackWeaponBroke: false, defendWeaponBroke: false};
     }
 
     // Weapon Break Check
     let atkWeaponBroke = false;
     let defWeaponBroke = false;
-    if (game.settings.get('hm3', 'weaponDamage')) {
-        const atkWeapon = atkToken.actor.itemTypes.weapongear.find(w => w.name === weaponName);
-        if (atkWeapon) {
-            const atkWeaponQuality = atkWeapon.data.data.weaponQuality;
-            const defWeaponQuality = defWeapon.data.data.weaponQuality;
 
-            const atkBreakRoll = new Roll('3d6').roll();
-            const defBreakRoll = new Roll('3d6').roll();
+    const atkWeaponQuality = atkWeapon.data.data.weaponQuality;
+    const defWeaponQuality = defWeapon.data.data.weaponQuality;
 
-            if (atkWeaponQuality <= defWeaponQuality) {
-                // Check attacker first, then defender
-                atkWeaponBroke = atkBreakRoll.total > atkWeaponQuality;
-                defWeaponBroke = !atkWeaponBroke && defBreakRoll.total > defWeaponQuality;
-            } else {
-                // Check defender first, then attacker
-                defWeaponBroke = defBreakRoll.total > defWeaponQuality;
-                atkWeaponBroke = !defWeaponBroke && atkBreakRoll.total > atkWeaponQuality;
-            }
-        }
-    }
+    const atkBreakRoll = new Roll('3d6').roll();
+    const defBreakRoll = new Roll('3d6').roll();
 
-    if (atkWeaponBroke) {
-        // Unequip broken attack weapon
-        atkWeapon.data.data.isEquipped = false;
-    }
-
-    if (defWeaponBroke) {
-        // unequip broken defend weapon
-        defWeapon.data.data.isEquipped = false;
+    if (atkWeaponQuality <= defWeaponQuality) {
+        // Check attacker first, then defender
+        atkWeaponBroke = atkBreakRoll.total > atkWeaponQuality;
+        defWeaponBroke = !atkWeaponBroke && defBreakRoll.total > defWeaponQuality;
+    } else {
+        // Check defender first, then attacker
+        defWeaponBroke = defBreakRoll.total > defWeaponQuality;
+        atkWeaponBroke = !defWeaponBroke && atkBreakRoll.total > atkWeaponQuality;
     }
 
     return {attackWeaponBroke: atkWeaponBroke, defendWeaponBroke: defWeaponBroke};
