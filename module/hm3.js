@@ -159,6 +159,40 @@ Hooks.on('preCreateCombatant', (combat, combatant, options, id) => {
     }
 });
 
+Hooks.on('renderSceneConfig', (app, html, data) => {
+    const scene = app.object;
+    if (app.renderTOTMScene) return;
+    app.renderTOTMScene = true;
+    
+    let isTotm = scene.getFlag('hm3', 'isTotm');
+    if (typeof isTotm === 'undefined') {
+        if (scene.compendium === null) {
+            scene.setFlag('hm3', 'isTotm', false);
+        }
+        isTotm = false;
+    }
+
+    const totmHtml = `
+    <div class="form-group">
+        <label>Theatre of the Mind</label>
+        <input id="hm3-totm" type="checkbox" name="hm3Totm" data-dtype="Boolean" ${isTotm ? 'checked' : ''}>
+        <p class="notes">Configure scene for Theatre of the Mind (e.g., no range calcs).</p>
+    </div>
+    `;
+
+    const totmFind = html.find("input[name = 'gridAlpha']");
+    const formGroup = totmFind.closest(".form-group");
+    formGroup.after(totmHtml);
+});
+
+Hooks.on('closeSceneConfig', (app, html, data) => {
+    const scene = app.object;
+    app.renderTOTMScene = false;
+    if (scene.compendium === null) {
+        scene.setFlag('hm3', 'isTotm', html.find("input[name='hm3Totm']").is(":checked"));
+    }
+});
+
 async function welcomeDialog() {
     const dlgTemplate = 'systems/hm3/templates/dialog/welcome.html';
     const html = await renderTemplate(dlgTemplate, {});

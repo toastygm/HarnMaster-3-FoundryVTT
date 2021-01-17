@@ -1041,12 +1041,12 @@ function getTokenInCombat(token=null, forceAllow=false) {
         return result;
     }
     
-    if (game.combats.size === 0 || game.combats.active.data.combatants.length === 0) {
+    if (!game.combat || game.combat.data.combatants.length === 0) {
         ui.notifications.warn(`No active combatant.`);
         return null;
     }
 
-    const combatant = game.combats.active.combatant;
+    const combatant = game.combat.combatant;
 
     if (token && (token.id !== combatant.token._id)) {
         ui.notifications.warn(`${token.name} cannot perform that action at this time.`);
