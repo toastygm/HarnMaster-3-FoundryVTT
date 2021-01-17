@@ -1410,6 +1410,10 @@ export function getItem(itemName, type, actor) {
  */
 export function rangeToTarget(sourceToken, targetToken, gridUnits=false) {
     if (!sourceToken || !targetToken || !canvas.scene || !canvas.scene.data.grid) return 9999;
+
+    // If the current scene is marked "Theatre of the Mind", then range is always 0
+    if (canvas.scene.getFlag('hm3', 'isTotm')) return 0;
+
     const sToken = canvas.tokens.get(sourceToken.id);
     const tToken = canvas.tokens.get(targetToken.id);
 
