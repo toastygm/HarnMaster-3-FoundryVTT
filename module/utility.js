@@ -32,7 +32,7 @@ export function calcSkillBase(item) {
     }
 
     let actorData = null;
-    if (item.actor) {
+    if (item.actor?.data) {
         actorData = item.actor.data.data;
     }
 
@@ -224,7 +224,7 @@ export function createUniqueName(prefix, itemTypes) {
  * @param {String} name 
  */
 export function getImagePath(name) {
-    if (!name) return DEFAULT_TOKEN;
+    if (!name) return CONST.DEFAULT_TOKEN;
 
     const lcName = name.toLowerCase();
     const re = /\(([^\)]+)\)/;
@@ -254,7 +254,7 @@ export function getImagePath(name) {
         }
     }
 
-    return DEFAULT_TOKEN;
+    return CONST.DEFAULT_TOKEN;
 }
 
 export function getAssocSkill(name, skillsItemArray, defaultSkill) {
