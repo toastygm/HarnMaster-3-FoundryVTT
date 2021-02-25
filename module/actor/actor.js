@@ -298,7 +298,7 @@ export class HarnMasterActor extends Actor {
                 // If the gear is inside of a container, then the "carried"
                 // flag is inherited from the container.
                 if (data.container && data.container !== 'on-person') {
-                    const container = this.data.items.find(i => i._id === data.container);
+                    const container = this.data.items.find(i => i.id === data.container);
                     if (container) data.isCarried = container.data.isCarried;
                 }
             }
