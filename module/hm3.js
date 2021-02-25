@@ -45,9 +45,9 @@ Hooks.once('init', async function () {
     CONFIG.ActiveEffect.sheetClass = HM3ActiveEffectConfig;
 
     // Define custom Entity classes
-    CONFIG.Actor.entityClass = HarnMasterActor;
-    CONFIG.Item.entityClass = HarnMasterItem;
-    CONFIG.Combat.entityClass = HarnMasterCombat;
+    CONFIG.Actor.documentClass = HarnMasterActor;
+    CONFIG.Item.documentClass = HarnMasterItem;
+    CONFIG.Combat.documentClass = HarnMasterCombat;
     CONFIG.TinyMCE.style_formats[0].items.push({
         title: 'Highlight',
         block: 'section',
