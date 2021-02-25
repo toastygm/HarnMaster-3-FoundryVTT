@@ -83,7 +83,7 @@ export class DiceHM3 {
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
-            user: game.user._id,
+            user: game.user.id,
             speaker: speaker,
             content: html.trim(),
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
@@ -222,7 +222,7 @@ export class DiceHM3 {
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
-            user: game.user._id,
+            user: game.user.id,
             speaker: speaker,
             content: html.trim(),
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
@@ -322,7 +322,7 @@ export class DiceHM3 {
         const messageData = {
             speaker: speaker,
             content: html.trim(),
-            user: game.user._id,
+            user: game.user.id,
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
             sound: CONFIG.sounds.dice,
             roll: roll
@@ -391,7 +391,7 @@ export class DiceHM3 {
         const messageData = {
             speaker: speaker,
             content: html.trim(),
-            user: game.user._id,
+            user: game.user.id,
             type: CONST.CHAT_MESSAGE_TYPES.OTHER,
             sound: CONFIG.sounds.notify
         };
@@ -796,7 +796,7 @@ export class DiceHM3 {
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
-            user: game.user._id,
+            user: game.user.id,
             speaker: speaker,
             content: html.trim(),
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
@@ -971,7 +971,7 @@ export class DiceHM3 {
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
-            user: game.user._id,
+            user: game.user.id,
             speaker: speaker,
             content: html.trim(),
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
@@ -1142,7 +1142,7 @@ export class DiceHM3 {
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
-            user: game.user._id,
+            user: game.user.id,
             speaker: speaker,
             content: html.trim(),
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,

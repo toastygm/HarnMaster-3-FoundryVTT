@@ -120,7 +120,7 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
     const html = await renderTemplate(chatTemplate, chatTemplateData);
 
     const messageData = {
-        user: game.user._id,
+        user: game.user.id,
         speaker: speaker,
         content: html.trim(),
         type: CONST.CHAT_MESSAGE_TYPES.OTHER
@@ -248,7 +248,7 @@ export async function meleeAttack(attackToken, defendToken, weaponItem=null) {
     const html = await renderTemplate(chatTemplate, chatTemplateData);
 
     const messageData = {
-        user: game.user._id,
+        user: game.user.id,
         speaker: speaker,
         content: html.trim(),
         type: CONST.CHAT_MESSAGE_TYPES.OTHER
@@ -661,7 +661,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     let html = await renderTemplate(chatTemplate, atkChatData);
 
     let messageData = {
-        user: game.user._id,
+        user: game.user.id,
         speaker: speaker,
         content: html.trim()
     };
@@ -684,7 +684,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     html = await renderTemplate(chatTemplate, csChatData);
 
     messageData = {
-        user: game.user._id,
+        user: game.user.id,
         speaker: speaker,
         content: html.trim()
     };
@@ -801,7 +801,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
     const html = await renderTemplate(chatTemplate, chatData);
 
     let messageData = {
-        user: game.user._id,
+        user: game.user.id,
         speaker: speaker,
         content: html.trim()
     };
@@ -1026,7 +1026,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
     const html = await renderTemplate(chatTemplate, chatData);
 
     let messageData = {
-        user: game.user._id,
+        user: game.user.id,
         speaker: speaker,
         content: html.trim()
     };
@@ -1171,7 +1171,7 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
     const html = await renderTemplate(chatTemplate, chatData);
 
     let messageData = {
-        user: game.user._id,
+        user: game.user.id,
         speaker: speaker,
         content: html.trim()
     };
