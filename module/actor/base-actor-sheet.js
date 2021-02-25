@@ -676,7 +676,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         if (!data.source || data.source === '') updateData['data.source'] = otherData.source;
         if (!data.description || data.description === '') updateData['data.description'] = otherData.description;
         if (!data.macro || data.macro === '') updateData['data.macro'] = otherData.macro;
-        if (item.data.img === DEFAULT_TOKEN) updateData['img'] = other.img;
+        if (item.data.img === CONST.DEFAULT_TOKEN) updateData['img'] = other.img;
 
         switch (item.data.type) {
             case 'skill':
@@ -816,7 +816,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     name: itemName,
                     type: dialogData.type,
                     data: itemData,
-                    img: DEFAULT_TOKEN
+                    img: CONST.DEFAULT_TOKEN
                 });
             },
             options: { jQuery: false }
@@ -853,12 +853,12 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             }
         }
 
-        if (data.img === DEFAULT_TOKEN) {
+        if (data.img === CONST.DEFAULT_TOKEN) {
             // Guess the icon from the name
             data.img = utility.getImagePath(data.name);
         }
 
-        if (data.img === DEFAULT_TOKEN) {
+        if (data.img === CONST.DEFAULT_TOKEN) {
             switch (data.type) {
                 case 'skill':
                     if (data.type === 'Ritual') {
@@ -874,7 +874,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
                 case 'spell':
                     data.img = utility.getImagePath(data.convocation);
-                    if (data.img === DEFAULT_TOKEN) {
+                    if (data.img === CONST.DEFAULT_TOKEN) {
 
                         data.img = utility.getImagePath("pentacle");
                     }
@@ -882,7 +882,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
                 case 'invocation':
                     data.img = utility.getImagePath(data.diety);
-                    if (data.img === DEFAULT_TOKEN) {
+                    if (data.img === CONST.DEFAULT_TOKEN) {
                         data.img = utility.getImagePath("circle");
                     }
                     break;
