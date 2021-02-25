@@ -795,7 +795,7 @@ export class HarnMasterActor extends Actor {
 
         // Find all containergear, and track whether container is carried or not
         const containerCarried = {};
-        this._data.items.forEach(itemData => {
+        this.data._source.items.forEach(itemData => {
             if (itemData.type === 'containergear') {
                 containerCarried[itemData._id] = itemData.data.isCarried;
             }
@@ -803,7 +803,7 @@ export class HarnMasterActor extends Actor {
 
         let totalIL = 0;
         let totalWeight = 0;
-        this._data.items.forEach(itemData => {
+        this.data._source.items.forEach(itemData => {
             if (itemData.type === 'skill') {
                 // Handle setting Endurance based on Condition skill
                 if (itemData.name.toLowerCase() === 'condition') {
