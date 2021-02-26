@@ -41,7 +41,7 @@ Hooks.once('init', async function () {
     registerSystemSettings();
 
     // Define custom ActiveEffect class
-//    CONFIG.ActiveEffect.entityClass = HM3ActiveEffect;
+//    CONFIG.ActiveEffect.documentClass = HM3ActiveEffect;
     CONFIG.ActiveEffect.sheetClass = HM3ActiveEffectConfig;
 
     // Define custom Entity classes

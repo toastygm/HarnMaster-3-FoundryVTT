@@ -15,16 +15,16 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
     /** @override */
     getData() {
-        let isOwner = this.entity.owner;
+        let isOwner = this.document.isOwner;
         const data = {
             owner: isOwner,
-            limited: this.entity.limited,
+            limited: this.document.limited,
             options: this.options,
             editable: this.isEditable,
             cssClass: isOwner ? "editable" : "locked",
-            isCharacter: this.entity.data.type === "character",
-            isCreature: this.entity.data.type === "creature",
-            isContainer: this.entity.data.type === "container",
+            isCharacter: this.document.data.type === "character",
+            isCreature: this.document.data.type === "creature",
+            isContainer: this.document.data.type === "container",
             config: CONFIG.HM3
         }
 
@@ -128,12 +128,12 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         });
 
         // Perform the update
-        return this.actor.updateEmbeddedEntity("OwnedItem", updateData);
+        return this.actor.updateEmbeddedDocuments("Item", updateData);
     }
 
     /** @override */
     async _onDropItem(event, data) {
-        if (!this.actor.owner) return false;
+        if (!this.actor.isOwner) return false;
 
         // Destination containerid: set to 'on-person' if a containerid can't be found
         const closestContainer = event.target.closest('[data-container-id]');
@@ -343,7 +343,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     /** @override */
     async _onDropItemCreate(data) {
         const actor = this.actor;
-        if (!actor.owner) return false;
+        if (!actor.isOwner) return false;
         //const item = await Item.fromDropData(data);
 
         if (!data.type.endsWith("gear")) {
@@ -393,7 +393,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         html.find('.item-dumpdesc').click(this._onDumpEsotericDescription.bind(this));
 
         // Active Effect management
-        html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.entity));
+        html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.document));
 
         // Ensure all text is selected when entering text input field
         html.on("click", "input[type='text']", ev => {

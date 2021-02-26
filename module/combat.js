@@ -39,7 +39,7 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
     }
 
 
-    if (!attackToken.owner) {
+    if (!attackToken.isOwner) {
         ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
         return null;
     }
@@ -172,7 +172,7 @@ export async function meleeAttack(attackToken, defendToken, weaponItem=null) {
         return null;
     }
 
-    if (!attackToken.owner) {
+    if (!attackToken.isOwner) {
         ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
         return null;
     }
@@ -519,7 +519,7 @@ function defaultMeleeWeapon(token) {
  */
 export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
-    if (!defToken.owner) {
+    if (!defToken.isOwner) {
         ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
         return null;
     }
@@ -716,7 +716,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
  */
 export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
-    if (!defToken.owner) {
+    if (!defToken.isOwner) {
         ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
         return null;
     }
@@ -838,7 +838,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
  */
 export async function blockResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
-    if (!defToken.owner) {
+    if (!defToken.isOwner) {
         ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
         return null;
     }
@@ -1098,7 +1098,7 @@ export function checkWeaponBreak(atkWeapon, defWeapon) {
  */
 export async function ignoreResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
-    if (!defToken.owner) {
+    if (!defToken.isOwner) {
         ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
         return null;
     }
@@ -1448,7 +1448,7 @@ export const displayChatActionButtons = function(message, html, data) {
         const buttons = chatCard.find("button[data-action]");
         buttons.each((i, btn) => {
             const actor = btn.dataset.visibleActorId ? game.actors.get(btn.dataset.visibleActorId) : null;
-            if (!actor || !actor.owner) {
+            if (!actor || !actor.isOwner) {
                 btn.style.display = "none";
             }
         });

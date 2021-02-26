@@ -789,7 +789,7 @@ export async function genericDamageRoll(myActor = null) {
 export async function changeFatigue(newValue, myActor = null) {
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
-    if (!actor || !actor.owner) {
+    if (!actor || !actor.isOwner) {
         ui.notifications.warn(`You are not an owner of ${actor.name}, so you may not change fatigue.`);
         return false;
     }
@@ -813,7 +813,7 @@ export async function changeFatigue(newValue, myActor = null) {
 export async function changeMissileQuanity(missileName, newValue, myActor = null) {
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
-    if (!actor.owner) {
+    if (!actor.isOwner) {
         ui.notifications.warn(`You are not an owner of ${actor.name}, so you may not change ${missileName} quantity.`);
         return false;
     }
@@ -849,7 +849,7 @@ export async function setSkillDevelopmentFlag(skillName, myActor = null) {
         return null;
     }
     
-    if (!actor.owner) {
+    if (!actor.isOwner) {
         ui.notifications.warn(`You are not an owner of ${actor.name}, so you may not set the skill development flag.`);
         return null;
     }
@@ -1053,7 +1053,7 @@ function getTokenInCombat(token=null, forceAllow=false) {
         return null;
     }
 
-    if (!combatant.actor.owner) {
+    if (!combatant.actor.isOwner) {
         ui.notifications.warn(`You do not have permissions to control ${combatant.token.name}.`);
         return null;
     }
@@ -1137,7 +1137,7 @@ function getActor(actor, speaker) {
         }    
     }
 
-    if (!resultActor.owner) {
+    if (!resultActor.isOwner) {
         ui.notifications.warn(`You do not have permissions to control ${resultActor.name}.`);
         return null;
     }
