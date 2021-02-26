@@ -841,33 +841,33 @@ export class HarnMasterActor extends Actor {
         let itemData;
 
         const physicalSkills = await game.packs.find(p => p.collection === `hm3.std-skills-physical`).getContent();
-        itemData = duplicate(physicalSkills.find(i => i.name === 'Climbing'));
+        itemData = foundry.utils.deepClone(physicalSkills.find(i => i.name === 'Climbing'));
         data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = duplicate(physicalSkills.find(i => i.name === 'Jumping'));
+        itemData = foundry.utils.deepClone(physicalSkills.find(i => i.name === 'Jumping'));
         data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = duplicate(physicalSkills.find(i => i.name === 'Stealth'));
+        itemData = foundry.utils.deepClone(physicalSkills.find(i => i.name === 'Stealth'));
         data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = duplicate(physicalSkills.find(i => i.name === 'Throwing'));
+        itemData = foundry.utils.deepClone(physicalSkills.find(i => i.name === 'Throwing'));
         data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
 
         const commSkills = await game.packs.find(p => p.collection === `hm3.std-skills-communication`).getContent();
-        itemData = duplicate(commSkills.find(i => i.name === 'Awareness'));
+        itemData = foundry.utils.deepClone(commSkills.find(i => i.name === 'Awareness'));
         data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = duplicate(commSkills.find(i => i.name === 'Intrigue'));
+        itemData = foundry.utils.deepClone(commSkills.find(i => i.name === 'Intrigue'));
         data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = duplicate(commSkills.find(i => i.name === 'Oratory'));
+        itemData = foundry.utils.deepClone(commSkills.find(i => i.name === 'Oratory'));
         data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = duplicate(commSkills.find(i => i.name === 'Rhetoric'));
+        itemData = foundry.utils.deepClone(commSkills.find(i => i.name === 'Rhetoric'));
         data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = duplicate(commSkills.find(i => i.name === 'Singing'));
+        itemData = foundry.utils.deepClone(commSkills.find(i => i.name === 'Singing'));
         data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
 
         const combatSkills = await game.packs.find(p => p.collection === `hm3.std-skills-combat`).getContent();
-        itemData = duplicate(combatSkills.find(i => i.name === 'Initiative'));
+        itemData = foundry.utils.deepClone(combatSkills.find(i => i.name === 'Initiative'));
         data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = duplicate(combatSkills.find(i => i.name === 'Unarmed'));
+        itemData = foundry.utils.deepClone(combatSkills.find(i => i.name === 'Unarmed'));
         data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = duplicate(combatSkills.find(i => i.name === 'Dodge'));
+        itemData = foundry.utils.deepClone(combatSkills.find(i => i.name === 'Dodge'));
         data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
     }
 
@@ -875,11 +875,11 @@ export class HarnMasterActor extends Actor {
         let itemData;
 
         const combatSkills = await game.packs.find(p => p.collection === `hm3.std-skills-combat`).getContent();
-        itemData = duplicate(combatSkills.find(i => i.name === 'Initiative'));
+        itemData = foundry.utils.deepClone(combatSkills.find(i => i.name === 'Initiative'));
         data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = duplicate(combatSkills.find(i => i.name === 'Unarmed'));
+        itemData = foundry.utils.deepClone(combatSkills.find(i => i.name === 'Unarmed'));
         data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = duplicate(combatSkills.find(i => i.name === 'Dodge'));
+        itemData = foundry.utils.deepClone(combatSkills.find(i => i.name === 'Dodge'));
         data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
     }
 

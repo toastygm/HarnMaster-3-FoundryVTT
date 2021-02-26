@@ -28,7 +28,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             config: CONFIG.HM3
         }
 
-        data.actor = duplicate(this.actor.data);
+        data.actor = foundry.utils.deepClone(this.actor.data);
         data.items = this.actor.items.map(i => {
             i.data.labels = i.labels;
             return i.data;
@@ -191,7 +191,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     async _moveContainer(event, data) {
         // create new container
         const item = await Item.fromDropData(data);
-        let itemData = duplicate(item.data);
+        let itemData = foundry.utils.deepClone(item.data);
 
         // Get source actor
         let sourceActor = null;
@@ -217,7 +217,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         let failure = false;
         for (let it of sourceActor.items.values()) {
             if (!failure && it.data.data.container === item.id) {
-                itemData = duplicate(it.data);
+                itemData = foundry.utils.deepClone(it.data);
                 itemData.data.container = containerResult._id;
                 const result = await this.actor.createOwnedItem(itemData);
 
@@ -322,7 +322,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         } else {
             // Create an item
             const item = await Item.fromDropData(data);
-            const itemData = duplicate(item.data);
+            const itemData = foundry.utils.deepClone(item.data);
             itemData.data.quantity = moveQuantity;
             itemData.data.container = 'on-person';
             result = await this.actor.createOwnedItem(itemData);
@@ -616,7 +616,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         event.preventDefault();
         const header = event.currentTarget;
         const type = header.dataset.type;
-        const data = duplicate(header.dataset);
+        const data = foundry.utils.deepClone(header.dataset);
         const li = $(header).parents(".item");
         const itemId = li.data("itemId");
         if (itemId) {
@@ -727,7 +727,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         event.preventDefault();
         const header = event.currentTarget;
         // Grab any data associated with this control.
-        const dataset = duplicate(header.dataset);
+        const dataset = foundry.utils.deepClone(header.dataset);
 
         let extraList = [];
         let extraLabel = null;
@@ -805,7 +805,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 }
 
                 // Item Data
-                const itemData = duplicate(game.system.model.Item[dialogData.type]);
+                const itemData = foundry.utils.deepClone(game.system.model.Item[dialogData.type]);
                 if (dataset.type === 'skill') itemData.type = dataset.skilltype;
                 else if (dataset.type === 'trait') itemData.type = dataset.traittype;
                 else if (dataset.type.endsWith('gear')) itemData.container = dataset.containerId;
@@ -1024,7 +1024,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         event.preventDefault();
         const header = event.currentTarget;
         const type = header.dataset.type;
-        const data = duplicate(header.dataset);
+        const data = foundry.utils.deepClone(header.dataset);
         const li = $(header).parents(".item");
         const itemId = li.data("itemId");
 
