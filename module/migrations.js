@@ -46,7 +46,7 @@ export const migrateWorld = async function() {
   
     // Migrate World Compendium Packs
     const packs = game.packs.filter(p => {
-      return (p.metadata.package === "world") && ["Actor", "Item", "Scene"].includes(p.metadata.entity)
+      return (p.metadata.package === "world") && ["Actor", "Item", "Scene"].includes(p.metadata.document)
     });
     for ( let p of packs ) {
       await migrateCompendium(p);
@@ -65,7 +65,7 @@ export const migrateWorld = async function() {
    * @return {Promise}
    */
   export const migrateCompendium = async function(pack) {
-    const entity = pack.metadata.entity;
+    const entity = pack.metadata.document;
     if ( !["Actor", "Item", "Scene"].includes(entity) ) return;
   
     // Begin by requesting server-side data model migration and get the migrated content
@@ -378,7 +378,7 @@ export const migrateWorld = async function() {
     const content = await pack.getContent();
     for ( let entity of content ) {
       const update = {_id: entity.id, flags: cleanFlags(entity.data.flags)};
-      if ( pack.entity === "Actor" ) {
+      if ( pack.document === "Actor" ) {
         update.items = entity.data.items.map(i => {
           i.flags = cleanFlags(i.flags);
           return i;
