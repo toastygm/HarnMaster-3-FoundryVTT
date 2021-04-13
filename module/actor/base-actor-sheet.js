@@ -106,7 +106,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         if (!itemData.type.endsWith('gear')) return super._onSortItem(event, itemData);
 
         // Get the drag source and its siblings
-        const source = this.actor.getOwnedItem(itemData._id);
+        const source = this.actor.items.get(itemData._id);
         const siblings = this.actor.items.filter(i => {
             return (i.data.type.endsWith('gear') && (i.data._id !== source.data._id));
         });
@@ -148,7 +148,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             const item = await Item.fromDropData(data);
             if (item.data.type.endsWith('gear') && item.data.type !== 'containergear') {
                 if (item.data.data.container != destContainer) {
-                    this.actor.updateOwnedItem({ '_id': item.data._id, 'data.container': destContainer });
+                    this.actor.updateEmbeddedDocuments({ '_id': item.data._id, 'data.container': destContainer });
                 }
             }
 
@@ -207,7 +207,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             return null;
         }
 
-        const containerResult = await this.actor.createOwnedItem(itemData);
+        const containerResult = await this.actor.createEmbeddedDocuments("Item", [itemData]);
         if (!containerResult) {
             ui.notifications.warn(`Error while moving container, move aborted`);
             return null;
@@ -219,10 +219,10 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             if (!failure && it.data.data.container === item.id) {
                 itemData = foundry.utils.deepClone(it.data);
                 itemData.data.container = containerResult._id;
-                const result = await this.actor.createOwnedItem(itemData);
+                const result = await this.actor.createEmbeddedDocuments("Item", [itemData]);
 
                 if (result) {
-                    await sourceActor.deleteOwnedItem(it.id);
+                    await sourceActor.deleteEmbeddedDocuments(it.id);
                 } else {
                     failure = true;
                 }
@@ -235,7 +235,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         }
 
         // delete old container
-        await sourceActor.deleteOwnedItem(data.data._id);
+        await sourceActor.deleteEmbeddedDocuments(data.data._id);
 
         return containerResult;
     }
@@ -325,15 +325,15 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             const itemData = foundry.utils.deepClone(item.data);
             itemData.data.quantity = moveQuantity;
             itemData.data.container = 'on-person';
-            result = await this.actor.createOwnedItem(itemData);
+            result = await this.actor.createEmbeddedDocuments("Item", [itemData]);
         }
 
         if (result) {
             if (moveQuantity >= data.data.data.quantity) {
-                await sourceActor.deleteOwnedItem(data.data._id);
+                await sourceActor.deleteEmbeddedDocuments(data.data._id);
             } else {
                 const newSourceQuantity = sourceQuantity - moveQuantity;
-                const sourceItem = await sourceActor.getOwnedItem(data.data._id);
+                const sourceItem = await sourceActor.items.get(data.data._id);
                 await sourceItem.update({ 'data.quantity': newSourceQuantity });
             }
         }
@@ -382,7 +382,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Update Inventory Item
         html.find('.item-edit').click(ev => {
             const li = $(ev.currentTarget).parents(".item");
-            const item = this.actor.getOwnedItem(li.data("itemId"));
+            const item = this.actor.items.get(li.data("itemId"));
             item.sheet.render(true);
         });
 
@@ -656,7 +656,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 deleteItems.push(itemId);  // ensure we delete the container last
 
                 for (let it of deleteItems) {
-                    await this.actor.deleteOwnedItem(it);
+                    await this.actor.deleteEmbeddedDocuments(it);
                     li.slideUp(200, () => this.render(false));
                 }
             }
@@ -903,14 +903,14 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         }
 
         // Finally, create the item!
-        const result = await this.actor.createOwnedItem(data);
+        const result = await this.actor.deleteEmbeddedDocuments(data);
 
         if (!result) {
             throw new Error(`Error creating item '${data.name}' of type '${data.type}' on character '${this.actor.data.name}'`);
         }
 
         // Bring up edit dialog to complete creating item
-        const item = this.actor.getOwnedItem(result._id);
+        const item = this.actor.items.get(result._id);
         item.sheet.render(true);
 
         return result;
@@ -924,7 +924,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     _onToggleCarry(event) {
         event.preventDefault();
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
-        const item = this.actor.getOwnedItem(itemId);
+        const item = this.actor.items.get(itemId);
 
         // Only process inventory ("gear") items, otherwise ignore
         if (item.data.type.endsWith('gear')) {
@@ -943,7 +943,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     _onToggleEquip(event) {
         event.preventDefault();
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
-        const item = this.actor.getOwnedItem(itemId);
+        const item = this.actor.items.get(itemId);
 
         // Only process inventory ("gear") items, otherwise ignore
         if (item.data.type.endsWith('gear')) {
@@ -962,7 +962,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     _onToggleImprove(event) {
         event.preventDefault();
         const itemId = event.currentTarget.closest(".item").dataset.itemId;
-        const item = this.actor.getOwnedItem(itemId);
+        const item = this.actor.items.get(itemId);
 
         // Only process skills and psionics, otherwise ignore
         if (item.data.type === 'skill' || item.data.type === 'psionic') {

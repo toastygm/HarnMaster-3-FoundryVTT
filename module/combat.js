@@ -82,7 +82,7 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
             return null;
         }
 
-        attackToken.actor.updateOwnedItem({'_id': missileItem.data._id, 'data.quantity': missileItem.data.data.quantity - 1});
+        attackToken.actor.updateEmbeddedDocuments({'_id': missileItem.data._id, 'data.quantity': missileItem.data.data.quantity - 1});
     }
 
     const effAML = dialogResult.weapon.data.data.attackMasteryLevel + dialogResult.addlModifier + dialogResult.rangeMod;
@@ -971,11 +971,11 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         // weapon as "unequipped"
 
         if (weaponBroke.attackWeaponBroke) {
-            await atkToken.actor.updateOwnedItem({_id: atkWeapon.data._id, 'data.isEquipped': false});
+            await atkToken.actor.updateEmbeddedDocuments({_id: atkWeapon.data._id, 'data.isEquipped': false});
         }
 
         if (weaponBroke.defendWeaponBroke) {
-            await defToken.actor.updateOwnedItem({_id: defWeapon.data._id, 'data.isEquipped': false});
+            await defToken.actor.updateEmbeddedDocuments({_id: defWeapon.data._id, 'data.isEquipped': false});
         }
     }
 
@@ -1379,7 +1379,7 @@ export function getItem(itemName, type, actor) {
 
     let item = null;
     if (itemName.startsWith("Item$")) {
-        return actor.getOwnedItem(itemName.slice(5));
+        return actor.items.get(itemName.slice(5));
     }
     if (!item) {
         const lcItemName = itemName.toLowerCase();

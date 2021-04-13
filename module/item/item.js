@@ -240,4 +240,12 @@ export class HarnMasterItem extends Item {
             itemData.data.fire = 0;
         }
     }
+
+    _onDelete(options, userId) {
+        super._onDelete(options, userId);
+    }
+
+    _onUpdate(changed, options, userId) {
+        super._onUpdate(changed, options, userId);
+    }
 }

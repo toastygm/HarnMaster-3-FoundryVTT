@@ -590,18 +590,6 @@ export class HarnMasterActor extends Actor {
         });
     }
 
-    /** @override */
-    _onDeleteEmbeddedEntity(embeddedName, child, options, userId) {
-        if (embeddedName === "OwnedItem") {
-            const item = this.getOwnedItem(child._id);
-            if (["physicalskill", "commskill", "combatskill", "craftskill", "magicskill", "ritualskill"].includes(item.type)) {
-                this.items.delete(item.id);
-            } else {
-                super._onDeleteEmbeddedEntity(embeddedName, child, options, userId)
-            }
-        }
-    }
-
     static _normalcdf(x) {
         var t = 1 / (1 + .2316419 * Math.abs(x));
         var d = .3989423 * Math.exp(-x * x / 2);
@@ -775,7 +763,7 @@ export class HarnMasterActor extends Actor {
      */
     _onModifyEmbeddedEntity(embeddedName, changes, options, userId, context={}) {
         // The Actor.items map should already be updated, so process actor updates
-        if (embeddedName === 'OwnedItem') {
+        if (embeddedName === 'Item') {
             this.handleRefreshItems().then(() => {
                 return super._onModifyEmbeddedEntity(embeddedName, changes, options, userId, context);
             });

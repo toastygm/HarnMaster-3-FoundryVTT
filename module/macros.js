@@ -836,7 +836,7 @@ export async function changeMissileQuanity(missileName, newValue, myActor = null
 
     if (typeof updateData['data.quantity'] !== 'undefined') {
         updateData['_id'] = missile._id;
-        await actor.updateOwnedItem(updateData);
+        await actor.updateEmbeddedDocuments(updateData);
     }
     return true;
 }

@@ -443,7 +443,7 @@ export class DiceHM3 {
         }
 
         injuryData.healRate = 0;  // until it is tended, we can't determine HR
-        let item = actor.createOwnedItem({name: locationName, type: 'injury', data: injuryData});
+        let item = actor.createEmbeddedDocuments("Item", [{name: locationName, type: 'injury', data: injuryData}]);
 
         return item;
     }
