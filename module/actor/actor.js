@@ -14,58 +14,36 @@ export class HarnMasterActor extends Actor {
      * Override the create() function to initialize skills and locations. Original code taken
      * from WFRP4e-FoundryVTT project.
      */
-    static async create(data, options) {
+    static async create(data, context) {
         // If the created actor has items (only applicable to duplicated actors) bypass the new actor creation logic
         if (data.items) {
-            return super.create(data, options);
+            return super.create(data, context);
         }
 
-        // Initialize empty items
-        data.items = [];
+        if (!['character', 'creature', 'container'].includes(data.type)) {
+            console.error(`HM3 | Unsupported actor type '${data.type}'`);
+            return null;
+        }
 
         // If character, automatically add basic skills and armor locations
         if (data.type === 'character') {
-            // Request whether to initialize skills and armor locations
-            if (options.skipDefaultItems) {
-                HarnMasterActor.setupDefaultDescription(data);
-                const actor = await super.create(data, options);
-                const updateData = HarnMasterActor.setupDefaultDescription('character');
-                return actor.update(updateData);    
-            }
+            data['data.description'] = '<table style=\"user-select: text; width: 95%; color: #191813; font-size: 13px;\" border=\"1\">\n<tbody style=\"box-sizing: border-box; user-select: text;\">\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Apparent Age</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Culture</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\"></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Social Class</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\"><span style=\"box-sizing: border-box; user-select: text;\"></span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Height</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Frame</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Weight</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Appearance/Comeliness</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Hair Color</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Eye Color</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Voice</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong>Obvious Medical Traits</strong><span style=\"box-sizing: border-box; user-select: text;\"><br style=\"box-sizing: border-box; user-select: text;\" /></span></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\"><span style=\"box-sizing: border-box; user-select: text;\">&nbsp;</span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong>Apparent Occupation</strong><span style=\"box-sizing: border-box; user-select: text;\"><br style=\"box-sizing: border-box; user-select: text;\" /></span></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\"><span style=\"box-sizing: border-box; user-select: text;\">&nbsp;</span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong>Apparent Wealth</strong><span style=\"box-sizing: border-box; user-select: text;\"><br style=\"box-sizing: border-box; user-select: text;\" /></span></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\"><span style=\"box-sizing: border-box; user-select: text;\">&nbsp;</span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong>Weapons</strong><span style=\"box-sizing: border-box; user-select: text;\"><br style=\"box-sizing: border-box; user-select: text;\" /></span></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\"><span style=\"box-sizing: border-box; user-select: text;\">&nbsp;</span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Armour</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Companions</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Other obvious features</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\">&nbsp;</td>\n</tr>\n</tbody>\n</table>\n<p>&nbsp;</p>\n<p>&nbsp;</p>';
+            data['data.biography'] = '<h1>Data</h1>\n<table style=\"width: 95%;\" border=\"1\">\n<tbody>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Birthdate</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Birthplace</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Sibling Rank</strong></td>\n<td style=\"width: 432px;\">x of y</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Parent(s)</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Parent Occupation</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Estrangement</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Clanhead</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Medical Traits</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Psyche Traits</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n</tbody>\n</table>\n<h1>Life Story</h1>';
+            data['data.bioImage'] = 'systems/hm3/images/svg/knight-silhouette.svg';
 
-            new Dialog({
-                title: 'Initialize Skills and Locations',
-                content: `<p>Add Default Skills and Locations?</p>`,
-                buttons: {
-                    yes: {
-                        label: 'Yes',
-                        callback: async dlg => {
-                            await HarnMasterActor._createDefaultCharacterSkills(data);
-                            HarnMasterActor._createDefaultHumanoidLocations(data);
-                            const actor = await super.create(data, options); // Follow through the the rest of the Actor creation process upstream
-                            const updateData = HarnMasterActor.setupDefaultDescription('character');
-                            return actor.update(updateData);                
-                        }
-                    },
-                    no: {
-                        label: 'No',
-                        callback: async dlg => {
-                            HarnMasterActor.setupDefaultDescription(data);
-                            const actor = await super.create(data, options); // Do not add new items, continue with the rest of the Actor creation process upstream          
-                            const updateData = HarnMasterActor.setupDefaultDescription('character');
-                            return actor.update(updateData);                
-                        }
-                    },
-                },
-                default: 'yes'
-            }).render(true);
+            const actor = await super.create(data, context); // Follow through the the rest of the Actor creation process upstream
+            await HarnMasterActor._createDefaultCharacterSkills(actor);
+            await HarnMasterActor._createDefaultHumanoidLocations(actor);
+            return actor;
         } else if (data.type === 'creature') {
             // Create Creature Default Skills
-            this._createDefaultCreatureSkills(data).then(async result => {
-                const actor = await super.create(data, options); // Follow through the the rest of the Actor creation process upstream
-                const updateData = HarnMasterActor.setupDefaultDescription('creature');
-                return actor.update(updateData);    
-            });
+            data['data.description'] = '';
+            data['data.biography'] = '<h1>Data</h1>\n<table style=\"width: 95%;\" border=\"1\">\n<tbody>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Habitat</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Height</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Weight</strong></td>\n<td style=\"width: 432px;\"></td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Diet</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Lifespan</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Group</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n</tbody>\n</table>\n<h1>Special Abilities</h1>\n<p>Describe any special abilities.</p>\n<h1>Attacks</h1>\n<p>Describe methods of attack.</p>\n<h1>Behavior</h1>\n<p>Describe behavioral aspects.</p>';
+            data['data.bioImage'] = 'systems/hm3/images/svg/monster-silhouette.svg';
+
+            const actor = await super.create(data, context); // Follow through the the rest of the Actor creation process upstream
+            await HarnMasterActor._createDefaultCreatureSkills(actor);
+            return actor;
         } else if (data.type === 'container') {
             const html = await renderTemplate("systems/hm3/templates/dialog/container-size.html", {});
             Dialog.prompt({
@@ -77,33 +55,85 @@ export class HarnMasterActor extends Actor {
                     const fd = new FormDataExtended(form);
                     const formdata = fd.toObject();
                     const maxCapacity = parseInt(formdata.maxCapacity);
-                    const actor = await super.create(data, options); // Follow through the the rest of the Actor creation process upstream
-                    const updateData = HarnMasterActor.setupDefaultDescription('container');
-                    updateData['data.capacity.max'] = maxCapacity;
-                    return actor.update(updateData);
+                    data['data.capacity.max'] = maxCapacity;
+                    data['data.description'] = '';
+                    data['data.bioImage'] = 'systems/hm3/images/icons/svg/chest.svg';
+                    data['img'] = 'systems/hm3/images/icons/svg/chest.svg';    
+                    return await super.create(data, context); // Follow through the the rest of the Actor creation process upstream
                 }
             });
-        } else {
-            console.error(`HM3 | Unsupported actor type '${data.type}'`);
         }
     }
 
-    static setupDefaultDescription(type) {
-        const updateData = {};
-        if (type === 'character') {
-            updateData['data.description'] = '<table style=\"user-select: text; width: 95%; color: #191813; font-size: 13px;\" border=\"1\">\n<tbody style=\"box-sizing: border-box; user-select: text;\">\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Apparent Age</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Culture</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\"></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Social Class</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\"><span style=\"box-sizing: border-box; user-select: text;\"></span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Height</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Frame</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Weight</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Appearance/Comeliness</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Hair Color</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Eye Color</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Voice</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong>Obvious Medical Traits</strong><span style=\"box-sizing: border-box; user-select: text;\"><br style=\"box-sizing: border-box; user-select: text;\" /></span></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\"><span style=\"box-sizing: border-box; user-select: text;\">&nbsp;</span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong>Apparent Occupation</strong><span style=\"box-sizing: border-box; user-select: text;\"><br style=\"box-sizing: border-box; user-select: text;\" /></span></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\"><span style=\"box-sizing: border-box; user-select: text;\">&nbsp;</span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong>Apparent Wealth</strong><span style=\"box-sizing: border-box; user-select: text;\"><br style=\"box-sizing: border-box; user-select: text;\" /></span></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\"><span style=\"box-sizing: border-box; user-select: text;\">&nbsp;</span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong>Weapons</strong><span style=\"box-sizing: border-box; user-select: text;\"><br style=\"box-sizing: border-box; user-select: text;\" /></span></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\"><span style=\"box-sizing: border-box; user-select: text;\">&nbsp;</span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Armour</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Companions</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Other obvious features</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\">&nbsp;</td>\n</tr>\n</tbody>\n</table>\n<p>&nbsp;</p>\n<p>&nbsp;</p>';
-            updateData['data.biography'] = '<h1>Data</h1>\n<table style=\"width: 95%;\" border=\"1\">\n<tbody>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Birthdate</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Birthplace</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Sibling Rank</strong></td>\n<td style=\"width: 432px;\">x of y</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Parent(s)</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Parent Occupation</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Estrangement</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Clanhead</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Medical Traits</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Psyche Traits</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n</tbody>\n</table>\n<h1>Life Story</h1>';
-            updateData['data.bioImage'] = 'systems/hm3/images/svg/knight-silhouette.svg';
-        } else if (type === 'creature') {
-            updateData['data.description'] = '';
-            updateData['data.biography'] = '<h1>Data</h1>\n<table style=\"width: 95%;\" border=\"1\">\n<tbody>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Habitat</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Height</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Weight</strong></td>\n<td style=\"width: 432px;\"></td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Diet</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Lifespan</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Group</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n</tbody>\n</table>\n<h1>Special Abilities</h1>\n<p>Describe any special abilities.</p>\n<h1>Attacks</h1>\n<p>Describe methods of attack.</p>\n<h1>Behavior</h1>\n<p>Describe behavioral aspects.</p>';
-            updateData['data.bioImage'] = 'systems/hm3/images/svg/monster-silhouette.svg';    
-        } else if (type === 'container') {
-            updateData['data.description'] = '';
-            updateData['data.bioImage'] = 'systems/hm3/images/icons/svg/chest.svg';
-            updateData['img'] = 'systems/hm3/images/icons/svg/chest.svg';    
-        }
-        return updateData;
+    static async _copySkill(skillList, skillName, actor) {
+        const itemData = skillList.find(i => i.name === skillName);
+        if (!itemData) return null;
+        return Item.create({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data.data}, {parent: actor});
+    }
+
+    static async _createDefaultCharacterSkills(actor) {
+        const physicalSkills = await game.packs.find(p => p.collection === `hm3.std-skills-physical`).getDocuments();
+        await HarnMasterActor._copySkill(physicalSkills, 'Climbing', actor);
+        await HarnMasterActor._copySkill(physicalSkills, 'Jumping', actor);
+        await HarnMasterActor._copySkill(physicalSkills, 'Stealth', actor);
+        await HarnMasterActor._copySkill(physicalSkills, 'Throwing', actor);
+
+        const commSkills = await game.packs.find(p => p.collection === `hm3.std-skills-communication`).getDocuments();
+        await HarnMasterActor._copySkill(commSkills, 'Awareness', actor);
+        await HarnMasterActor._copySkill(commSkills, 'Intrigue', actor);
+        await HarnMasterActor._copySkill(commSkills, 'Oratory', actor);
+        await HarnMasterActor._copySkill(commSkills, 'Rhetoric', actor);
+        await HarnMasterActor._copySkill(commSkills, 'Singing', actor);
+
+        const combatSkills = await game.packs.find(p => p.collection === `hm3.std-skills-combat`).getDocuments();
+        await HarnMasterActor._copySkill(combatSkills, 'Initiative', actor);
+        await HarnMasterActor._copySkill(combatSkills, 'Unarmed', actor);
+        await HarnMasterActor._copySkill(combatSkills, 'Dodge', actor);
+    }
+
+    static async _createDefaultCreatureSkills(actor) {
+        const commSkills = await game.packs.find(p => p.collection === `hm3.std-skills-communication`).getDocuments();
+        await HarnMasterActor._copySkill(commSkills, 'Awareness', actor);
+
+        const combatSkills = await game.packs.find(p => p.collection === `hm3.std-skills-combat`).getDocuments();
+        await HarnMasterActor._copySkill(combatSkills, 'Initiative', actor);
+        await HarnMasterActor._copySkill(combatSkills, 'Unarmed', actor);
+        await HarnMasterActor._copySkill(combatSkills, 'Dodge', actor);
+    }
+
+    static async _setupLocation(locName, templateName, actor) {
+        const armorLocationData = foundry.utils.deepClone(game.system.model.Item.armorlocation);
+        mergeObject(armorLocationData, HM3.injuryLocations[templateName])
+        return await Item.create({name: locName, type: 'armorlocation', data: armorLocationData}, {parent: actor});
+    }
+
+    static async _createDefaultHumanoidLocations(actor) {
+        await HarnMasterActor._setupLocation('Skull', 'Skull', actor);
+        await HarnMasterActor._setupLocation('Face', 'Face', actor);
+        await HarnMasterActor._setupLocation('Neck', 'Neck', actor);
+        await HarnMasterActor._setupLocation('Left Shoulder', 'Shoulder', actor);
+        await HarnMasterActor._setupLocation('Right Shoulder', 'Shoulder', actor);
+        await HarnMasterActor._setupLocation('Left Upper Arm', 'Upper Arm', actor);
+        await HarnMasterActor._setupLocation('Right Upper Arm', 'Upper Arm', actor);
+        await HarnMasterActor._setupLocation('Left Elbow', 'Elbow', actor);
+        await HarnMasterActor._setupLocation('Right Elbow', 'Elbow', actor);
+        await HarnMasterActor._setupLocation('Left Forearm', 'Forearm', actor);
+        await HarnMasterActor._setupLocation('Right Forearm', 'Forearm', actor);
+        await HarnMasterActor._setupLocation('Left Hand', 'Hand', actor);
+        await HarnMasterActor._setupLocation('Right Hand', 'Hand', actor);
+        await HarnMasterActor._setupLocation('Thorax', 'Thorax', actor);
+        await HarnMasterActor._setupLocation('Abdomen', 'Abdomen', actor);
+        await HarnMasterActor._setupLocation('Groin', 'Groin', actor);
+        await HarnMasterActor._setupLocation('Left Hip', 'Hip', actor);
+        await HarnMasterActor._setupLocation('Right Hip', 'Hip', actor);
+        await HarnMasterActor._setupLocation('Left Thigh', 'Thigh', actor);
+        await HarnMasterActor._setupLocation('Right Thigh', 'Thigh', actor);
+        await HarnMasterActor._setupLocation('Left Knee', 'Knee', actor);
+        await HarnMasterActor._setupLocation('Right Knee', 'Knee', actor);
+        await HarnMasterActor._setupLocation('Left Calf', 'Calf', actor);
+        await HarnMasterActor._setupLocation('Right Calf', 'Calf', actor);
+        await HarnMasterActor._setupLocation('Left Foot', 'Foot', actor);
+        await HarnMasterActor._setupLocation('Right Foot', 'Foot', actor);
     }
 
     /**
@@ -824,159 +854,5 @@ export class HarnMasterActor extends Actor {
 
         return this.update(updateData);
     }
-
-    static async _createDefaultCharacterSkills(data) {
-        let itemData;
-
-        const physicalSkills = await game.packs.find(p => p.collection === `hm3.std-skills-physical`).getContent();
-        itemData = foundry.utils.deepClone(physicalSkills.find(i => i.name === 'Climbing'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = foundry.utils.deepClone(physicalSkills.find(i => i.name === 'Jumping'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = foundry.utils.deepClone(physicalSkills.find(i => i.name === 'Stealth'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = foundry.utils.deepClone(physicalSkills.find(i => i.name === 'Throwing'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-
-        const commSkills = await game.packs.find(p => p.collection === `hm3.std-skills-communication`).getContent();
-        itemData = foundry.utils.deepClone(commSkills.find(i => i.name === 'Awareness'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = foundry.utils.deepClone(commSkills.find(i => i.name === 'Intrigue'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = foundry.utils.deepClone(commSkills.find(i => i.name === 'Oratory'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = foundry.utils.deepClone(commSkills.find(i => i.name === 'Rhetoric'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = foundry.utils.deepClone(commSkills.find(i => i.name === 'Singing'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-
-        const combatSkills = await game.packs.find(p => p.collection === `hm3.std-skills-combat`).getContent();
-        itemData = foundry.utils.deepClone(combatSkills.find(i => i.name === 'Initiative'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = foundry.utils.deepClone(combatSkills.find(i => i.name === 'Unarmed'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = foundry.utils.deepClone(combatSkills.find(i => i.name === 'Dodge'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-    }
-
-    static async _createDefaultCreatureSkills(data) {
-        let itemData;
-
-        const combatSkills = await game.packs.find(p => p.collection === `hm3.std-skills-combat`).getContent();
-        itemData = foundry.utils.deepClone(combatSkills.find(i => i.name === 'Initiative'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = foundry.utils.deepClone(combatSkills.find(i => i.name === 'Unarmed'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = foundry.utils.deepClone(combatSkills.find(i => i.name === 'Dodge'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-    }
-
-    static _createDefaultHumanoidLocations(data) {
-        let armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Skull'])
-        data.items.push((new Item({ name: 'Skull', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Face'])
-        data.items.push((new Item({ name: 'Face', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Neck'])
-        data.items.push((new Item({ name: 'Neck', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Shoulder'])
-        data.items.push((new Item({ name: 'Left Shoulder', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Shoulder'])
-        data.items.push((new Item({ name: 'Right Shoulder', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Upper Arm'])
-        data.items.push((new Item({ name: 'Left Upper Arm', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Upper Arm'])
-        data.items.push((new Item({ name: 'Right Upper Arm', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Elbow'])
-        data.items.push((new Item({ name: 'Left Elbow', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Elbow'])
-        data.items.push((new Item({ name: 'Right Elbow', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Forearm'])
-        data.items.push((new Item({ name: 'Left Forearm', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Forearm'])
-        data.items.push((new Item({ name: 'Right Forearm', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Hand'])
-        data.items.push((new Item({ name: 'Left Hand', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Hand'])
-        data.items.push((new Item({ name: 'Right Hand', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Thorax'])
-        data.items.push((new Item({ name: 'Thorax', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Abdomen'])
-        data.items.push((new Item({ name: 'Abdomen', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Groin'])
-        data.items.push((new Item({ name: 'Groin', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Hip'])
-        data.items.push((new Item({ name: 'Left Hip', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Hip'])
-        data.items.push((new Item({ name: 'Right Hip', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Thigh'])
-        data.items.push((new Item({ name: 'Left Thigh', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Thigh'])
-        data.items.push((new Item({ name: 'Right Thigh', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Knee'])
-        data.items.push((new Item({ name: 'Left Knee', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Knee'])
-        data.items.push((new Item({ name: 'Right Knee', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Calf'])
-        data.items.push((new Item({ name: 'Left Calf', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Calf'])
-        data.items.push((new Item({ name: 'Right Calf', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Foot'])
-        data.items.push((new Item({ name: 'Left Foot', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Foot'])
-        data.items.push((new Item({ name: 'Right Foot', type: 'armorlocation', data: armorLocationData })).data);
-    }
-
 }
 
