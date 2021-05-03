@@ -82,7 +82,7 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
             return null;
         }
 
-        attackToken.actor.updateEmbeddedDocuments({'_id': missileItem.data._id, 'data.quantity': missileItem.data.data.quantity - 1});
+        attackToken.actor.updateEmbeddedDocuments("Item", [{'_id': missileItem.data._id, 'data.quantity': missileItem.data.data.quantity - 1}]);
     }
 
     const effAML = dialogResult.weapon.data.data.attackMasteryLevel + dialogResult.addlModifier + dialogResult.rangeMod;
@@ -289,12 +289,12 @@ async function selectWeaponDialog(options) {
     }
     dialogOptions.prompt = options.prompt ? options.prompt : 'Please select your weapon';
     
-    const html = await renderTemplate(queryWeaponDialog, dialogOptions);
+    const dlghtml = await renderTemplate(queryWeaponDialog, dialogOptions);
 
     // Request weapon name
     return Dialog.prompt({
         title: dialogOptions.title,
-        content: html.trim(),
+        content: dlghtml.trim(),
         label: "OK",
         callback: html => {
             const form = html[0].querySelector("form");
@@ -406,13 +406,13 @@ async function attackDialog(options) {
 
     dialogOptions.title = `${options.attackerName} vs. ${options.defenderName} ${options.type} with ${options.weapon.name}`;
 
-    const attackDialog = "systems/hm3/templates/dialog/attack-dialog.html";
-    const html = await renderTemplate(attackDialog, dialogOptions);
+    const attackDialogTemplate = "systems/hm3/templates/dialog/attack-dialog.html";
+    const dlghtml = await renderTemplate(attackDialogTemplate, dialogOptions);
 
     // Request weapon details
     return Dialog.prompt({
         title: dialogOptions.title,
-        content: html.trim(),
+        content: dlghtml.trim(),
         label: options.type,
         callback: html => {
             const form = html[0].querySelector("form");
@@ -461,7 +461,7 @@ async function attackDialog(options) {
 function isValidToken(token) {
     if (!token) {
         ui.notifications.warn('No token selected.');
-        false;
+        return false;
     }
 
     if (!token.actor) {
@@ -913,7 +913,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
 
     if (!dialogResult) return null;
 
-    let effDML = 5;
+    let effDML;
     const defWeapon = defToken.actor.itemTypes.weapongear.find(w => w.name === dialogResult.weapon);
     if (defWeapon) {
         effDML = defWeapon.data.data.defenseMasteryLevel;
@@ -971,11 +971,11 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         // weapon as "unequipped"
 
         if (weaponBroke.attackWeaponBroke) {
-            await atkToken.actor.updateEmbeddedDocuments({_id: atkWeapon.data._id, 'data.isEquipped': false});
+            await atkToken.actor.updateEmbeddedDocuments("Item", [{_id: atkWeapon.data._id, 'data.isEquipped': false}]);
         }
 
         if (weaponBroke.defendWeaponBroke) {
-            await defToken.actor.updateEmbeddedDocuments({_id: defWeapon.data._id, 'data.isEquipped': false});
+            await defToken.actor.updateEmbeddedDocuments("Item", [{_id: defWeapon.data._id, 'data.isEquipped': false}]);
         }
     }
 
@@ -1220,7 +1220,7 @@ export function meleeCombatResult(atkResult, defResult, defense, atkAddlImpact=0
     if (defense !== 'counterstrike') {
         if (outcome.atkDice) {
             result.desc = `Attacker strikes for ${diceFormula(outcome.atkDice, atkAddlImpact)} impact.`;
-        } else if (outcome.atkFumble & outcome.defFumble) {
+        } else if (outcome.atkFumble && outcome.defFumble) {
             result.desc = 'Both Attacker and Defender Fumble';
         } else if (outcome.atkFumble) {
             result.desc = `Attacker fumbles.`;

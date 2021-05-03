@@ -68,7 +68,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         this.actor.items.forEach(it => {
             if (it.type === 'containergear') {
-                data.containers[it._id] = it;
+                data.containers[it.id] = it;
             }
         });
 
@@ -128,7 +128,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         });
 
         // Perform the update
-        return this.actor.updateEmbeddedDocuments("Item", updateData);
+        return this.actor.updateEmbeddedDocuments("Item", [updateData]);
     }
 
     /** @override */
@@ -139,7 +139,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         const closestContainer = event.target.closest('[data-container-id]');
         const destContainer = closestContainer && closestContainer.dataset && closestContainer.dataset.containerId ? closestContainer.dataset.containerId : 'on-person';
 
-        if (data.actorId === this.actor._id) {
+        if (data.actorId === this.actor.id) {
             // We are dropping from the same actor
 
             // If the item is some type of gear (other than containergear), then
@@ -148,7 +148,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             const item = await Item.fromDropData(data);
             if (item.data.type.endsWith('gear') && item.data.type !== 'containergear') {
                 if (item.data.data.container != destContainer) {
-                    this.actor.updateEmbeddedDocuments({ '_id': item.data._id, 'data.container': destContainer });
+                    this.actor.updateEmbeddedDocuments("Item", [{ '_id': item.data._id, 'data.container': destContainer }]);
                 }
             }
 
@@ -222,7 +222,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 const result = await this.actor.createEmbeddedDocuments("Item", [itemData]);
 
                 if (result) {
-                    await sourceActor.deleteEmbeddedDocuments(it.id);
+                    await sourceActor.deleteEmbeddedDocuments("Item", [it.id]);
                 } else {
                     failure = true;
                 }
@@ -235,7 +235,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         }
 
         // delete old container
-        await sourceActor.deleteEmbeddedDocuments(data.data._id);
+        await sourceActor.deleteEmbeddedDocuments("Item", [data.data._id]);
 
         return containerResult;
     }
@@ -264,12 +264,12 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             maxItems: data.data.data.quantity,
         };
 
-        const html = await renderTemplate(dlgTemplate, dialogData);
+        const dlghtml = await renderTemplate(dlgTemplate, dialogData);
 
         // Create the dialog window
         return Dialog.prompt({
             title: "Move Items",
-            content: html,
+            content: dlghtml,
             label: "OK",
             callback: async (html) => {
                 const form = html.querySelector('#items-to-move');
@@ -330,7 +330,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         if (result) {
             if (moveQuantity >= data.data.data.quantity) {
-                await sourceActor.deleteEmbeddedDocuments(data.data._id);
+                await sourceActor.deleteEmbeddedDocuments("Item", [data.data._id]);
             } else {
                 const newSourceQuantity = sourceQuantity - moveQuantity;
                 const sourceItem = await sourceActor.items.get(data.data._id);
@@ -402,7 +402,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         // Filter on name for Skills
         html.on("keyup", ".skill-name-filter", ev => {
-            const data = this.getData();
             this.skillNameFilter = $(ev.currentTarget).val();
             const lcSkillNameFilter = this.skillNameFilter.toLowerCase();
             let skills = html.find('.skill-item');
@@ -422,7 +421,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         // Filter on name for gear
         html.on("keyup", ".gear-name-filter", ev => {
-            const data = this.getData();
             this.gearNameFilter = $(ev.currentTarget).val();
             const lcGearNameFilter = this.gearNameFilter.toLowerCase();
             let gearItems = html.find('.gear-item');
@@ -615,7 +613,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     async _onItemDelete(event) {
         event.preventDefault();
         const header = event.currentTarget;
-        const type = header.dataset.type;
         const data = foundry.utils.deepClone(header.dataset);
         const li = $(header).parents(".item");
         const itemId = li.data("itemId");
@@ -656,7 +653,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 deleteItems.push(itemId);  // ensure we delete the container last
 
                 for (let it of deleteItems) {
-                    await this.actor.deleteEmbeddedDocuments(it);
+                    await this.actor.deleteEmbeddedDocuments("Item", [it]);
                     li.slideUp(200, () => this.render(false));
                 }
             }
@@ -732,9 +729,10 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         let extraList = [];
         let extraLabel = null;
 
+        let name;
+
         // Ask type
         // Initialize a default name.
-        let name = "New Item";
         if (dataset.type === 'skill' && dataset.skilltype) {
             name = utility.createUniqueName(`New ${dataset.skilltype} Skill`, this.actor.itemTypes.skill);
         } else if (dataset.type == 'trait' && dataset.traittype) {
@@ -782,12 +780,12 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             extraLabel: extraLabel,
         };
 
-        const html = await renderTemplate(dlgTemplate, dialogData);
+        const dlghtml = await renderTemplate(dlgTemplate, dialogData);
 
         // Create the dialog window
         return Dialog.prompt({
             title: dialogData.title,
-            content: html,
+            content: dlghtml,
             label: "Create",
             callback: async (html) => {
                 const form = html.querySelector('#create-item');
@@ -903,14 +901,14 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         }
 
         // Finally, create the item!
-        const result = await this.actor.deleteEmbeddedDocuments(data);
+        const result = await this.actor.createEmbeddedDocuments("Item", [data]);
 
         if (!result) {
             throw new Error(`Error creating item '${data.name}' of type '${data.type}' on character '${this.actor.data.name}'`);
         }
 
         // Bring up edit dialog to complete creating item
-        const item = this.actor.items.get(result._id);
+        const item = this.actor.items.get(result[0].id);
         item.sheet.render(true);
 
         return result;
@@ -992,13 +990,13 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     }
 
     _improveToggleDialog(item) {
-        const html = '<p>Do you want to perform a Skill Development Roll (SDR), or just disable the flag?</p>'
+        const dlghtml = '<p>Do you want to perform a Skill Development Roll (SDR), or just disable the flag?</p>'
 
         // Create the dialog window
         return new Promise(resolve => {
             new Dialog({
                 title: 'Skill Development Toggle',
-                content: html.trim(),
+                content: dlghtml.trim(),
                 buttons: {
                     performSDR: {
                         label: "Perform SDR",
@@ -1023,8 +1021,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     async _onDumpEsotericDescription(event) {
         event.preventDefault();
         const header = event.currentTarget;
-        const type = header.dataset.type;
-        const data = foundry.utils.deepClone(header.dataset);
         const li = $(header).parents(".item");
         const itemId = li.data("itemId");
 
