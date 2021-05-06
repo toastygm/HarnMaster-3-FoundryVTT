@@ -35,7 +35,7 @@ export class DiceHM3 {
         };
 
         // Create the Roll instance
-        const roll = rollData.fastforward ? DiceHM3.rollTest({
+        const roll = rollData.fastforward ? await DiceHM3.rollTest({
             data: rollData.data,
             diceSides: 100,
             diceNum: 1,
@@ -182,7 +182,7 @@ export class DiceHM3 {
         };
 
         // Create the Roll instance
-        const roll = rollData.fastforward ? DiceHM3.rollTest({
+        const roll = rollData.fastforward ? await DiceHM3.rollTest({
             data: rollData.data,
             diceSides: 6,
             diceNum: Number(rollData.numdice),
@@ -291,7 +291,7 @@ export class DiceHM3 {
     static async sdrRoll(itemData) {
         const speaker = ChatMessage.getSpeaker();
 
-        let roll = new Roll(`1d100 + @sb`, {sb: itemData.data.skillBase.value}).roll();
+        let roll = await (new Roll(`1d100 + @sb`, {sb: itemData.data.skillBase.value})).evaluate({async: true});
 
         const isSuccess = roll.total > itemData.data.masteryLevel;
 
@@ -698,9 +698,7 @@ export class DiceHM3 {
             // roll to get a random number.
             let rollWeight = 0;
             if (totalWeight > 0) {
-                // now, roll for a random number
-                let roll = new Roll(`1d${totalWeight}`).roll();
-                rollWeight = roll.total;
+                rollWeight = Math.floor(MersenneTwister.random()*totalWeight)+1;
             }
 
             // find the location that meets that number
@@ -891,12 +889,12 @@ export class DiceHM3 {
                 buttons: {
                     rollButton: {
                         label: "Roll",
-                        callback: html => {
+                        callback: async html => {
                             const form = html[0].querySelector("form");
                             const formAddlWeaponImpact = Number(form.addlWeaponImpact.value);
                             const formDamageDice = Number(form.damageDice.value);
                             const formWeaponAspect = form.weaponAspect.value;
-                            let roll = DiceHM3.rollTest({
+                            let roll = await DiceHM3.rollTest({
                                 target: 0,
                                 data: dialogOptions.data,
                                 diceSides: 6,
@@ -1023,7 +1021,7 @@ export class DiceHM3 {
                 buttons: {
                     rollButton: {
                         label: "Roll",
-                        callback: html => {
+                        callback: async html => {
                             const form = html[0].querySelector("form");
                             const formAddlModifier = Number(form.addlModifier.value);
                             let formRange = form.range.value;
@@ -1042,7 +1040,7 @@ export class DiceHM3 {
                                 formRange = 'Extreme';
                             }
 
-                            let roll = DiceHM3.rollTest({
+                            let roll = await DiceHM3.rollTest({
                                 target: dialogOptions.target,
                                 data: dialogOptions.data,
                                 diceSides: 100,
@@ -1181,12 +1179,12 @@ export class DiceHM3 {
                 buttons: {
                     rollButton: {
                         label: "Roll",
-                        callback: html => {
+                        callback: async html => {
                             const form = html[0].querySelector("form");
                             const formAddlImpact = Number(form.addlImpact.value);
                             const formDamageDice = Number(form.damageDice.value);
                             const formRange = form.range.value;
-                            let roll = DiceHM3.rollTest({
+                            let roll = await DiceHM3.rollTest({
                                 target: 0,
                                 data: dialogOptions.data,
                                 diceSides: 6,
@@ -1213,16 +1211,19 @@ export class DiceHM3 {
     /*        GENERIC DICE ROLLING PROCESSING
     /*--------------------------------------------------------------------------------*/
 
-    static rollTest(testData) {
+    static async rollTest(testData) {
 
-        let diceType = testData.diceSides === 6 ? "d6" : "d100";
-        let diceSpec = ((testData.diceNum > 0) ? testData.diceNum : 1) + diceType;
-        let roll = new Roll(diceSpec, testData.data).roll();
-
-        let modifier = Number(testData.modifier);
-        let targetNum = Number(testData.target) + modifier;
+        const diceType = testData.diceSides === 6 ? "d6" : "d100";
+        const diceSpec = ((testData.diceNum > 0) ? testData.diceNum : 1) + diceType;
+        const rollObj = new Roll(diceSpec, testData.data);
+        const roll = await rollObj.evaluate({async: true});
+        if (!roll) {
+            console.error(`Roll evaluation failed, diceSpec=${diceSpec}`)
+        }
+        const modifier = Number(testData.modifier);
+        const targetNum = Number(testData.target) + modifier;
         let isCrit = (roll.total % 5) === 0;
-        let levelDesc = isCrit ? "Critical" : "Marginal";
+        const levelDesc = isCrit ? "Critical" : "Marginal";
         let description = "";
         let isSuccess = false;
 

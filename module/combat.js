@@ -541,7 +541,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     if (!csDialogResult) return null;
 
     // Roll Attacker's Attack
-    const atkRoll = DiceHM3.rollTest({
+    const atkRoll = await DiceHM3.rollTest({
         data: {},
         diceSides: 100,
         diceNum: 1,
@@ -552,7 +552,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     const csEffEML = csDialogResult.weapon.data.data.attackMasteryLevel;
 
     // Roll Counterstrike Attack
-    const csRoll = DiceHM3.rollTest({
+    const csRoll = await DiceHM3.rollTest({
         data: {},
         diceSides: 100,
         diceNum: 1,
@@ -579,12 +579,12 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     // We now know the results of the attack, roll applicable damage
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
-        atkImpactRoll = new Roll(`${combatResult.outcome.atkDice}d6`).roll();
+        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d6`).evaluate({async: true});
     }
     
     let csImpactRoll = null;
     if (combatResult.outcome.defDice) {
-        csImpactRoll = new Roll(`${combatResult.outcome.defDice}d6`).roll();
+        csImpactRoll = await new Roll(`${combatResult.outcome.defDice}d6`).evaluate({async: true});
     }
 
     const atkChatData = {
@@ -723,7 +723,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
 
     const speaker = ChatMessage.getSpeaker({token: atkToken});
 
-    const atkRoll = DiceHM3.rollTest({
+    const atkRoll = await DiceHM3.rollTest({
         data: {},
         diceSides: 100,
         diceNum: 1,
@@ -733,7 +733,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
 
     const effDML = defToken.actor.data.data.dodge;
 
-    const defRoll = DiceHM3.rollTest({
+    const defRoll = await DiceHM3.rollTest({
         data: {},
         diceSides: 100,
         diceNum: 1,
@@ -762,7 +762,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
 
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
-        atkImpactRoll = new Roll(`${combatResult.outcome.atkDice}d6`).roll();
+        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d6`).evaluate({async: true});
     }
 
     const chatData = {
@@ -845,7 +845,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
 
     const speaker = ChatMessage.getSpeaker({token: atkToken});
 
-    const atkRoll = DiceHM3.rollTest({
+    const atkRoll = await DiceHM3.rollTest({
         data: {},
         diceSides: 100,
         diceNum: 1,
@@ -929,7 +929,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         }
     }
 
-    const defRoll = DiceHM3.rollTest({
+    const defRoll = await DiceHM3.rollTest({
         data: {},
         diceSides: 100,
         diceNum: 1,
@@ -959,7 +959,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
 
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
-        atkImpactRoll = new Roll(`${combatResult.outcome.atkDice}d6`).roll();
+        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d6`).evaluate({async: true});
     }
 
     // If there was a block, check whether a weapon broke
@@ -1049,7 +1049,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
     return chatData;
 }
 
-export function checkWeaponBreak(atkWeapon, defWeapon) {
+export async function checkWeaponBreak(atkWeapon, defWeapon) {
     if (!atkWeapon) {
         console.error(`Attack weapon was not specified`);
         return {attackWeaponBroke: false, defendWeaponBroke: false};
@@ -1067,8 +1067,8 @@ export function checkWeaponBreak(atkWeapon, defWeapon) {
     const atkWeaponQuality = atkWeapon.data.data.weaponQuality;
     const defWeaponQuality = defWeapon.data.data.weaponQuality;
 
-    const atkBreakRoll = new Roll('3d6').roll();
-    const defBreakRoll = new Roll('3d6').roll();
+    const atkBreakRoll = await new Roll('3d6').evaluate({async: true});
+    const defBreakRoll = await new Roll('3d6').evaluate({async: true});
 
     if (atkWeaponQuality <= defWeaponQuality) {
         // Check attacker first, then defender
@@ -1105,7 +1105,7 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
 
     const speaker = ChatMessage.getSpeaker({token: atkToken});
 
-    const atkRoll = DiceHM3.rollTest({
+    const atkRoll = await DiceHM3.rollTest({
         data: {},
         diceSides: 100,
         diceNum: 1,
@@ -1131,7 +1131,7 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
 
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
-        atkImpactRoll = new Roll(`${combatResult.outcome.atkDice}d6`).roll();
+        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d6`).evaluate({async: true});
     }
 
     const chatData = {
