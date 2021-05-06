@@ -43,7 +43,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         let capacityVal = 0;
         if ((this.actor.data.type === 'creature') || (this.actor.data.type === 'character')) {
             capacityMax = data.data.endurance * 10;
-            capacityVal = data.data.eph.totalGearWeight;
+            if (data.data.eph) {
+                capacityVal = data.data.eph.totalGearWeight;
+            }
         } else if (this.actor.data.type === 'container') {
             capacityMax = data.data.capacity.max;
             capacityVal = data.data.capacity.value;
@@ -1056,7 +1058,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 const html = await renderTemplate(chatTemplate, chatData);
 
                 const messageData = {
-                    user: game.user._id,
+                    user: game.user.id,
                     speaker: ChatMessage.getSpeaker(),
                     content: html.trim(),
                     type: CONST.CHAT_MESSAGE_TYPES.OTHER
