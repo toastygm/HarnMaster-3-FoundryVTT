@@ -150,7 +150,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             const item = await Item.fromDropData(data);
             if (item.data.type.endsWith('gear') && item.data.type !== 'containergear') {
                 if (item.data.data.container != destContainer) {
-                    this.actor.updateEmbeddedDocuments("Item", [{ '_id': item.data._id, 'data.container': destContainer }]);
+                    const embItem = this.actor.items.get(item.id);
+                    await embItem.update({'data.container': destContainer });
                 }
             }
 
@@ -209,7 +210,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             return null;
         }
 
-        const containerResult = await this.actor.createEmbeddedDocuments("Item", [itemData]);
+        const containerResult = await Item.create(itemData, {parent: this.actor});
         if (!containerResult) {
             ui.notifications.warn(`Error while moving container, move aborted`);
             return null;
@@ -220,11 +221,10 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         for (let it of sourceActor.items.values()) {
             if (!failure && it.data.data.container === item.id) {
                 itemData = foundry.utils.deepClone(it.data);
-                itemData.data.container = containerResult._id;
-                const result = await this.actor.createEmbeddedDocuments("Item", [itemData]);
-
+                itemData.data.container = containerResult.id;
+                const result = await Item.create(itemData, {parent: this.actor});
                 if (result) {
-                    await sourceActor.deleteEmbeddedDocuments("Item", [it.id]);
+                    await Item.delete(it.id);
                 } else {
                     failure = true;
                 }
@@ -237,8 +237,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         }
 
         // delete old container
-        await sourceActor.deleteEmbeddedDocuments("Item", [data.data._id]);
-
+        const delItem = sourceActor.items.get(data.data._id);
+        await delItem.delete();
         return containerResult;
     }
 
@@ -327,12 +327,13 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             const itemData = foundry.utils.deepClone(item.data);
             itemData.data.quantity = moveQuantity;
             itemData.data.container = 'on-person';
-            result = await this.actor.createEmbeddedDocuments("Item", [itemData]);
+            result = await Item.create(itemData, {parent: this.actor});
         }
 
         if (result) {
             if (moveQuantity >= data.data.data.quantity) {
-                await sourceActor.deleteEmbeddedDocuments("Item", [data.data._id]);
+                const delItem = sourceActor.items.get(data.data._id);
+                await delItem.delete();
             } else {
                 const newSourceQuantity = sourceQuantity - moveQuantity;
                 const sourceItem = await sourceActor.items.get(data.data._id);
@@ -655,7 +656,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 deleteItems.push(itemId);  // ensure we delete the container last
 
                 for (let it of deleteItems) {
-                    await this.actor.deleteEmbeddedDocuments("Item", [it]);
+                    const delItem = this.actor.items.get(it);
+                    await delItem.delete();
                     li.slideUp(200, () => this.render(false));
                 }
             }
@@ -903,7 +905,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         }
 
         // Finally, create the item!
-        const result = await this.actor.createEmbeddedDocuments("Item", [data]);
+        const result = await Item.create(data, {parent: this.actor });
 
         if (!result) {
             throw new Error(`Error creating item '${data.name}' of type '${data.type}' on character '${this.actor.data.name}'`);

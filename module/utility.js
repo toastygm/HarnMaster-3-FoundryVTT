@@ -123,7 +123,7 @@ export function calcSkillBase(item) {
                             break;
 
                         case 'cml':
-                            sumAbilities += actorData.abilities.comliness.base;
+                            sumAbilities += actorData.abilities.comeliness.base;
                             break;
 
                         case 'mor':

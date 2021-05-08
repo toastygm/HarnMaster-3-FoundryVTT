@@ -120,7 +120,7 @@ Hooks.on('updateCombat', async (combat, updateData) => {
 Hooks.once("ready", function () {
     // Determine whether a system migration is required
     const currentVersion = game.settings.get("hm3", "systemMigrationVersion");
-    const NEEDS_MIGRATION_VERSION = "0.7.14";  // Anything older than this must be migrated
+    const NEEDS_MIGRATION_VERSION = "1.2.0";  // Anything older than this must be migrated
 
     let needMigration = currentVersion === null || (isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion));
     if (needMigration && game.user.isGM) {
@@ -136,18 +136,18 @@ Hooks.once("ready", function () {
         });
     }
 
-    refreshAllActors();
+    //refreshAllActors();
 });
 
-function refreshAllActors() {
-    game.actors.forEach(actor => {
-        actor.handleRefreshItems();
-    });
+// function refreshAllActors() {
+//     game.actors.forEach(actor => {
+//         actor.handleRefreshItems();
+//     });
 
-    canvas.tokens.ownedTokens.forEach(token => {
-        if (!token.data.actorLink) token.actor.handleRefreshItems();
-    });
-}
+//     canvas.tokens.ownedTokens.forEach(token => {
+//         if (!token.data.actorLink) token.actor.handleRefreshItems();
+//     });
+// }
 
 // Since HM3 does not have the concept of rolling for initiative,
 // this hook simply prepopulates the initiative value. This ensures

@@ -783,7 +783,8 @@ export async function genericDamageRoll(myActor = null) {
         rollData.actor = actor.id;
     }
     
-    return await DiceHM3.damageRoll(rollData);
+    const result = await DiceHM3.damageRoll(rollData);
+    return result;
 }
 
 export async function changeFatigue(newValue, myActor = null) {
@@ -835,8 +836,8 @@ export async function changeMissileQuanity(missileName, newValue, myActor = null
     }
 
     if (typeof updateData['data.quantity'] !== 'undefined') {
-        updateData['_id'] = missile._id;
-        await actor.updateEmbeddedDocuments("Item", [updateData]);
+        const item = actor.items.get(missile.id);
+        await item.update(updateData);
     }
     return true;
 }

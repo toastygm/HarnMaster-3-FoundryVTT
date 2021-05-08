@@ -82,7 +82,8 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
             return null;
         }
 
-        attackToken.actor.updateEmbeddedDocuments("Item", [{'_id': missileItem.data._id, 'data.quantity': missileItem.data.data.quantity - 1}]);
+        const item = attackToken.actor.items.get(missileItem.id);
+        item.update({'data.quantity': missileItem.data.data.quantity - 1});
     }
 
     const effAML = dialogResult.weapon.data.data.attackMasteryLevel + dialogResult.addlModifier + dialogResult.rangeMod;
@@ -971,11 +972,13 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         // weapon as "unequipped"
 
         if (weaponBroke.attackWeaponBroke) {
-            await atkToken.actor.updateEmbeddedDocuments("Item", [{_id: atkWeapon.data._id, 'data.isEquipped': false}]);
+            const item = atkToken.actor.get(atkWeapon.id);
+            await item.update({'data.isEquipped': false});
         }
 
         if (weaponBroke.defendWeaponBroke) {
-            await defToken.actor.updateEmbeddedDocuments("Item", [{_id: defWeapon.data._id, 'data.isEquipped': false}]);
+            const item = defToken.actor.get(defWeapon.id);
+            await item.update({'data.isEquipped': false});
         }
     }
 
