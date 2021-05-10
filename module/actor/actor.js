@@ -290,12 +290,6 @@ export class HarnMasterActor extends Actor {
 
         this._generateArmorLocationMap(data);
 
-        // Redraw token attribute bars for all linked tokens
-        // FIXME: This should be removed after FVTT 0.8.3
-        this.getActiveTokens(true).forEach(token => {
-            if (game.actors.tokens[token.id]) token.drawBars();
-        });
-
         return;
     }
 
