@@ -365,12 +365,15 @@ export class HarnMasterActor extends Actor {
         this.items.forEach(it => {
             const itemData = it.data;
             const data = itemData.data;
+            
+            tempWeight = 0;
+            
             if (itemData.type.endsWith('gear')) {
                 // If the gear is inside of a container, then the "carried"
                 // flag is inherited from the container.
                 if (data.container && data.container !== 'on-person') {
                     const container = this.data.items.find(i => i.id === data.container);
-                    if (container) data.isCarried = container.data.isCarried;
+                    if (container) data.isCarried = container.data.data.isCarried;
                 }
             }
 
@@ -409,8 +412,14 @@ export class HarnMasterActor extends Actor {
                 const cid = data.container;
                 if (cid && cid != 'on-person') {
                     const container = this.items.get(cid);
-                    if (container) container.data.data.capacity.value = 
-                        Math.round((container.data.data.capacity.value + tempWeight + Number.EPSILON) * 100) / 100;
+                    if (container) {
+                        container.data.data.capacity.value = 
+                            Math.round((container.data.data.capacity.value + tempWeight + Number.EPSILON) * 100) / 100;
+                    } else {
+                        // If container is set and is not 'on-person', but if we can't find the container,
+                        // move the item back to 'on-person'.
+                        data.container = 'on-person';
+                    }
                 }
             }
         });
