@@ -170,7 +170,7 @@ HM3.activeEffectKey = {
     'data.eph.will': 'Will',
     'data.eph.aura': 'Aura',
     'data.eph.morality': 'Morality',
-    'data.eph.comliness': 'Comeliness'
+    'data.eph.comeliness': 'Comeliness'
 };
 
 HM3.defaultMagicIconName = 'pentacle';

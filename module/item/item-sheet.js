@@ -28,6 +28,11 @@ export class HarnMasterItemSheet extends ItemSheet {
   /** @override */
   getData() {
     const data = super.getData();
+    const itemData = data.data;
+
+    // Re-define the template data references (backwards compatible)
+    data.item = itemData;
+    data.data = itemData.data;
     data.config = CONFIG.HM3;
     data.itemType = this.item.data.type;
     data.hasActor = this.actor && true;

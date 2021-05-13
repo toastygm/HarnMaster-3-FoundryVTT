@@ -57,14 +57,14 @@ export class HarnMasterItem extends Item {
                 }
                 else if (data.type === 'Ritual' && utility.isStdIcon(itemData.img, HM3.ritualIcons)) {
                     img = utility.getImagePath(itemData.name);
-                    if (img === DEFAULT_TOKEN) {
+                    if (img === CONST.DEFAULT_TOKEN) {
                         img = utility.getImagePath(HM3.defaultRitualIconName);
                     }
                 }
 
                 
                 // Handle using Condition Skill for Endurance if it is present
-                if (itemData.name.toLowerCase() === 'condition' && this.actor) {
+                if (itemData.name.toLowerCase() === 'condition' && this.actor?.data) {
                     this.actor.data.data.hasCondition = true;
                     this.actor.data.data.endurance = Math.floor(data.masteryLevel / 5) || 1;
                 }
@@ -75,7 +75,7 @@ export class HarnMasterItem extends Item {
 
                 if (utility.isStdIcon(itemData.img, HM3.psionicTalentIcons)) {
                     img = utility.getImagePath(itemData.name);
-                    if (img === DEFAULT_TOKEN) {
+                    if (img === CONST.DEFAULT_TOKEN) {
                         img = utility.getImagePath(HM3.defaultPsionicsIconName);
                     }
                 }
@@ -84,9 +84,9 @@ export class HarnMasterItem extends Item {
             case 'spell':
                 if (utility.isStdIcon(itemData.img, HM3.magicIcons)) {
                     img = utility.getImagePath(itemData.name);
-                    if (img === DEFAULT_TOKEN) {
+                    if (img === CONST.DEFAULT_TOKEN) {
                         img = utility.getImagePath(data.convocation);
-                        if (img === DEFAULT_TOKEN) {
+                        if (img === CONST.DEFAULT_TOKEN) {
                             img = utility.getImagePath(HM3.defaultMagicIconName);
                         }
                     }
@@ -96,9 +96,9 @@ export class HarnMasterItem extends Item {
             case 'invocation':
                 if (utility.isStdIcon(itemData.img, HM3.ritualIcons)) {
                     img = utility.getImagePath(itemData.name);
-                    if (img === DEFAULT_TOKEN) {
+                    if (img === CONST.DEFAULT_TOKEN) {
                         img = utility.getImagePath(data.diety);
-                        if (img === DEFAULT_TOKEN) {
+                        if (img === CONST.DEFAULT_TOKEN) {
                             img = utility.getImagePath(HM3.defaultRitualIconName);
                         }
                     }
@@ -106,7 +106,7 @@ export class HarnMasterItem extends Item {
                 break;
 
             case 'armorgear':
-                if (itemData.img === DEFAULT_TOKEN) {
+                if (itemData.img === CONST.DEFAULT_TOKEN) {
                     if (utility.isStdIcon(itemData.img, HM3.armorGearIcons)) {
                         img = utility.getImagePath(itemData.name);
                     }
@@ -114,15 +114,8 @@ export class HarnMasterItem extends Item {
                 break;
 
             case 'weapongear':
-                if (itemData.img === DEFAULT_TOKEN) {
-                    if (utility.isStdIcon(itemData.img, HM3.weaponSkillIcons)) {
-                        img = utility.getImagePath(itemData.name);
-                    }
-                }
-                break;
-
             case 'missilegear':
-                if (itemData.img === DEFAULT_TOKEN) {
+                if (itemData.img === CONST.DEFAULT_TOKEN) {
                     if (utility.isStdIcon(itemData.img, HM3.weaponSkillIcons)) {
                         img = utility.getImagePath(itemData.name);
                     }
@@ -130,10 +123,10 @@ export class HarnMasterItem extends Item {
                 break;
 
             case 'miscgear':
-                if (itemData.img === DEFAULT_TOKEN) {
+                if (itemData.img === CONST.DEFAULT_TOKEN) {
                     if (utility.isStdIcon(itemData.img, HM3.miscGearIcons)) {
                         img = utility.getImagePath(itemData.name);
-                        if (img === DEFAULT_TOKEN) {
+                        if (img === CONST.DEFAULT_TOKEN) {
                             img = utility.getImagePath(HM3.defaultMiscItemIconName);
                         }
                     }
@@ -141,10 +134,10 @@ export class HarnMasterItem extends Item {
                 break;
 
             case 'containergear':
-                if (itemData.img === DEFAULT_TOKEN) {
+                if (itemData.img === CONST.DEFAULT_TOKEN) {
                     if (utility.isStdIcon(itemData.img, HM3.miscGearIcons)) {
                         img = utility.getImagePath(itemData.name);
-                        if (img === DEFAULT_TOKEN) {
+                        if (img === CONST.DEFAULT_TOKEN) {
                             img = utility.getImagePath(HM3.defaultContainerIconName);
                         }
                     }
@@ -159,11 +152,10 @@ export class HarnMasterItem extends Item {
 
     prepareDerivedData() {
         const itemData = this.data;
-        const actorData = this.actor ? this.actor.data : {};
         const data = itemData.data;
 
-        const pctUnivPen = this.actor ? (actorData.data.universalPenalty * 5) || 0 : 0;
-        const pctPhysPen = this.actor ? (actorData.data.physicalPenalty * 5) || 0 : 0;
+        const pctUnivPen = this.actor?.data?.data.universalPenalty * 5 || 0;
+        const pctPhysPen = this.actor?.data?.data.physicalPenalty * 5 || 0;
 
         if (itemData.type === 'skill') {
             if (!data.masteryLevel || data.masteryLevel < 0) data.masteryLevel = 0; 
@@ -183,9 +175,9 @@ export class HarnMasterItem extends Item {
             // Set some actor properties from skills
             const lcSkillName = itemData.name.toLowerCase();
             if (lcSkillName === 'initiative') {
-                if (this.actor) actorData.data.initiative = data.effectiveMasteryLevel;
+                if (this.actor?.data) this.actor.data.data.initiative = data.effectiveMasteryLevel;
             } else if (lcSkillName === 'dodge') {
-                if (this.actor) actorData.data.dodge = data.effectiveMasteryLevel;
+                if (this.actor?.data) this.actor.data.data.dodge = data.effectiveMasteryLevel;
             }
         } else if (itemData.type === 'psionic') {
             if (!data.masteryLevel || data.masteryLevel < 0) data.masteryLevel = 0; 
@@ -247,5 +239,13 @@ export class HarnMasterItem extends Item {
         if (isNaN(itemData.data.fire)) {
             itemData.data.fire = 0;
         }
+    }
+
+    _onDelete(options, userId) {
+        super._onDelete(options, userId);
+    }
+
+    _onUpdate(changed, options, userId) {
+        super._onUpdate(changed, options, userId);
     }
 }

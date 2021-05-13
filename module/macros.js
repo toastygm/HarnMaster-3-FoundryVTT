@@ -64,13 +64,13 @@ async function applyMacro(name, command, slot, img, flags) {
 }
 
 function askWeaponMacro(name, slot, img) {
-    const html = '<p>Select the type of weapon macro to create:</p>'
+    const dlghtml = '<p>Select the type of weapon macro to create:</p>'
     
     // Create the dialog window
     return new Promise(resolve => {
         new Dialog({
             title: 'Select Weapon Macro',
-            content: html.trim(),
+            content: dlghtml.trim(),
             buttons: {
                 enhAttackButton: {
                     label: "Automated Combat",
@@ -104,13 +104,13 @@ function askWeaponMacro(name, slot, img) {
 }
 
 function askMissileMacro(name, slot, img) {
-    const html = '<p>Select the type of missile macro to create:</p>'
+    const dlghtml = '<p>Select the type of missile macro to create:</p>'
     
     // Create the dialog window
     return new Promise(resolve => {
         new Dialog({
             title: 'Select Missile Macro',
-            content: html.trim(),
+            content: dlghtml.trim(),
             buttons: {
                 enhAttackButton: {
                     label: "Automated Combat",
@@ -783,13 +783,14 @@ export async function genericDamageRoll(myActor = null) {
         rollData.actor = actor.id;
     }
     
-    return await DiceHM3.damageRoll(rollData);
+    const result = await DiceHM3.damageRoll(rollData);
+    return result;
 }
 
 export async function changeFatigue(newValue, myActor = null) {
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
-    if (!actor || !actor.owner) {
+    if (!actor || !actor.isOwner) {
         ui.notifications.warn(`You are not an owner of ${actor.name}, so you may not change fatigue.`);
         return false;
     }
@@ -813,7 +814,7 @@ export async function changeFatigue(newValue, myActor = null) {
 export async function changeMissileQuanity(missileName, newValue, myActor = null) {
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
-    if (!actor.owner) {
+    if (!actor.isOwner) {
         ui.notifications.warn(`You are not an owner of ${actor.name}, so you may not change ${missileName} quantity.`);
         return false;
     }
@@ -835,8 +836,8 @@ export async function changeMissileQuanity(missileName, newValue, myActor = null
     }
 
     if (typeof updateData['data.quantity'] !== 'undefined') {
-        updateData['_id'] = missile._id;
-        await actor.updateOwnedItem(updateData);
+        const item = actor.items.get(missile.id);
+        await item.update(updateData);
     }
     return true;
 }
@@ -849,7 +850,7 @@ export async function setSkillDevelopmentFlag(skillName, myActor = null) {
         return null;
     }
     
-    if (!actor.owner) {
+    if (!actor.isOwner) {
         ui.notifications.warn(`You are not an owner of ${actor.name}, so you may not set the skill development flag.`);
         return null;
     }
@@ -873,7 +874,6 @@ export async function setSkillDevelopmentFlag(skillName, myActor = null) {
 /*--------------------------------------------------------------*/
 
 export async function weaponAttack(itemName = null, noDialog = false, myToken = null, forceAllow=false) {
-    const speaker = myToken ? ChatMessage.getSpeaker({token: myToken}) : ChatMessage.getSpeaker();
     const combatant = getTokenInCombat(myToken, forceAllow);
     if (!combatant) return null;
 
@@ -889,7 +889,6 @@ export async function weaponAttack(itemName = null, noDialog = false, myToken = 
 }
 
 export async function missileAttack(itemName = null, noDialog = false, myToken = null, forceAllow=false) {
-    const speaker = myToken ? ChatMessage.getSpeaker({token: myToken}) : ChatMessage.getSpeaker();
     const combatant = getTokenInCombat(myToken, forceAllow);
     if (!combatant) return null;
     
@@ -923,8 +922,6 @@ export async function meleeCounterstrikeResume(atkTokenId, defTokenId, atkWeapon
         return null;
     }
 
-    const speaker = ChatMessage.getSpeaker({token: atkToken});
-
     const defToken = canvas.tokens.get(defTokenId);
     if (!defToken) {
         ui.notifications.warn(`Defender ${defToken.name} could not be found on canvas.`);
@@ -952,8 +949,6 @@ export async function dodgeResume(atkTokenId, defTokenId, type, weaponName, effA
         ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
         return null;
     }
-
-    const speaker = ChatMessage.getSpeaker({token: atkToken});
 
     const defToken = canvas.tokens.get(defTokenId);
     if (!defToken) {
@@ -983,8 +978,6 @@ export async function blockResume(atkTokenId, defTokenId, type, weaponName, effA
         return null;
     }
 
-    const speaker = ChatMessage.getSpeaker({token: atkToken});
-
     const defToken = canvas.tokens.get(defTokenId);
     if (!defToken) {
         ui.notifications.warn(`Defender ${defToken.name} could not be found on canvas.`);
@@ -1012,8 +1005,6 @@ export async function ignoreResume(atkTokenId, defTokenId, type, weaponName, eff
         ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
         return null;
     }
-
-    const speaker = ChatMessage.getSpeaker({token: atkToken});
 
     const defToken = canvas.tokens.get(defTokenId);
     if (!defToken) {
@@ -1048,17 +1039,17 @@ function getTokenInCombat(token=null, forceAllow=false) {
 
     const combatant = game.combat.combatant;
 
-    if (token && (token.id !== combatant.token._id)) {
+    if (token && (token.id !== combatant.token.id)) {
         ui.notifications.warn(`${token.name} cannot perform that action at this time.`);
         return null;
     }
 
-    if (!combatant.actor.owner) {
+    if (!combatant.actor.isOwner) {
         ui.notifications.warn(`You do not have permissions to control ${combatant.token.name}.`);
         return null;
     }
 
-    token = canvas.tokens.get(combatant.token._id);
+    token = canvas.tokens.get(combatant.token.id);
     return { token: token, actor: combatant.actor};
 }
 
@@ -1137,7 +1128,7 @@ function getActor(actor, speaker) {
         }    
     }
 
-    if (!resultActor.owner) {
+    if (!resultActor.isOwner) {
         ui.notifications.warn(`You do not have permissions to control ${resultActor.name}.`);
         return null;
     }

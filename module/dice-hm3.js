@@ -35,7 +35,7 @@ export class DiceHM3 {
         };
 
         // Create the Roll instance
-        const roll = rollData.fastforward ? DiceHM3.rollTest({
+        const roll = rollData.fastforward ? await DiceHM3.rollTest({
             data: rollData.data,
             diceSides: 100,
             diceNum: 1,
@@ -83,7 +83,7 @@ export class DiceHM3 {
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
-            user: game.user._id,
+            user: game.user.id,
             speaker: speaker,
             content: html.trim(),
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
@@ -120,28 +120,20 @@ export class DiceHM3 {
         const html = await renderTemplate(dlgTemplate, dialogData);
         
         // Create the dialog window
-        return new Promise(resolve => {
-            new Dialog({
-                title: dialogOptions.label,
-                content: html.trim(),
-                buttons: {
-                    rollButton: {
-                        label: "Roll",
-                        callback: html => {
-                            const formModifier = html[0].querySelector("form").modifier.value;
-                            resolve(DiceHM3.rollTest({
-                                target: dialogOptions.target,
-                                data: dialogOptions.data,
-                                diceSides: 100,
-                                diceNum: 1,
-                                modifier: formModifier
-                            }));
-                        }
-                    }
-                },
-                default: "rollButton",
-                close: () => resolve(null)
-            }, dialogOptions).render(true)
+        return Dialog.prompt({
+            title: dialogOptions.label,
+            content: html.trim(),
+            label: "Roll",
+            callback: html => {
+                const formModifier = html[0].querySelector("form").modifier.value;
+                return DiceHM3.rollTest({
+                    target: dialogOptions.target,
+                    data: dialogOptions.data,
+                    diceSides: 100,
+                    diceNum: 1,
+                    modifier: formModifier
+                });
+            }
         });
     }
     
@@ -182,7 +174,7 @@ export class DiceHM3 {
         };
 
         // Create the Roll instance
-        const roll = rollData.fastforward ? DiceHM3.rollTest({
+        const roll = rollData.fastforward ? await DiceHM3.rollTest({
             data: rollData.data,
             diceSides: 6,
             diceNum: Number(rollData.numdice),
@@ -222,7 +214,7 @@ export class DiceHM3 {
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
-            user: game.user._id,
+            user: game.user.id,
             speaker: speaker,
             content: html.trim(),
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
@@ -259,28 +251,20 @@ export class DiceHM3 {
         const html = await renderTemplate(dlgTemplate, dialogData);
         
         // Create the dialog window
-        return new Promise(resolve => {
-            new Dialog({
-                title: dialogOptions.label,
-                content: html.trim(),
-                buttons: {
-                    rollButton: {
-                        label: "Roll",
-                        callback: html => {
-                            const formModifier = html[0].querySelector("form").modifier.value;
-                            resolve(DiceHM3.rollTest({
-                                target: dialogOptions.target,
-                                data: dialogOptions.data,
-                                diceSides: 6,
-                                diceNum: dialogOptions.numdice,
-                                modifier: formModifier
-                            }));
-                        }
-                    }
-                },
-                default: "rollButton",
-                close: () => resolve(null)
-            }, dialogOptions).render(true)
+        return Dialog.prompt({
+            title: dialogOptions.label,
+            content: html.trim(),
+            label: "Roll",
+            callback: html => {
+                const formModifier = html[0].querySelector("form").modifier.value;
+                return DiceHM3.rollTest({
+                    target: dialogOptions.target,
+                    data: dialogOptions.data,
+                    diceSides: 6,
+                    diceNum: dialogOptions.numdice,
+                    modifier: formModifier
+                });
+            }
         });
     }
 
@@ -291,7 +275,7 @@ export class DiceHM3 {
     static async sdrRoll(itemData) {
         const speaker = ChatMessage.getSpeaker();
 
-        let roll = new Roll(`1d100 + @sb`, {sb: itemData.data.skillBase.value}).roll();
+        let roll = await (new Roll(`1d100 + @sb`, {sb: itemData.data.skillBase.value})).evaluate({async: true});
 
         const isSuccess = roll.total > itemData.data.masteryLevel;
 
@@ -322,7 +306,7 @@ export class DiceHM3 {
         const messageData = {
             speaker: speaker,
             content: html.trim(),
-            user: game.user._id,
+            user: game.user.id,
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
             sound: CONFIG.sounds.dice,
             roll: roll
@@ -391,7 +375,7 @@ export class DiceHM3 {
         const messageData = {
             speaker: speaker,
             content: html.trim(),
-            user: game.user._id,
+            user: game.user.id,
             type: CONST.CHAT_MESSAGE_TYPES.OTHER,
             sound: CONFIG.sounds.notify
         };
@@ -443,7 +427,7 @@ export class DiceHM3 {
         }
 
         injuryData.healRate = 0;  // until it is tended, we can't determine HR
-        let item = actor.createOwnedItem({name: locationName, type: 'injury', data: injuryData});
+        let item = Item.create({name: locationName, type: 'injury', data: injuryData}, {parent: actor});
 
         return item;
     }
@@ -493,29 +477,21 @@ export class DiceHM3 {
         const html = await renderTemplate(dlgTemplate, dialogData);
 
         // Create the dialog window
-        return new Promise(resolve => {
-            new Dialog({
-                title: dialogOptions.label,
-                content: html.trim(),
-                buttons: {
-                    injuryButton: {
-                        label: "Determine Injury",
-                        callback: html => {
-                            const form = html[0].querySelector("form");
-                            const formLocation = form.location.value;
-                            const formImpact = form.impact.value;
-                            const formAspect = form.aspect.value;
-                            const formAim = form.aim.value;
-                            const formAddToCharSheet = dialogData.askRecordInjury ?
-                                form.addToCharSheet.checked : recordInjury === 'enable';
-                            resolve(DiceHM3._calcInjury(formLocation, formImpact, formAspect, 
-                                formAddToCharSheet, formAim, dialogOptions));
-                        }
-                    }
-                },
-                default: "injuryButton",
-                close: () => resolve(null)
-            }, dialogOptions).render(true)
+        return Dialog.prompt({
+            title: dialogOptions.label,
+            content: html.trim(),
+            label: "Determine Injury",
+            callback: html => {
+                const form = html[0].querySelector("form");
+                const formLocation = form.location.value;
+                const formImpact = form.impact.value;
+                const formAspect = form.aspect.value;
+                const formAim = form.aim.value;
+                const formAddToCharSheet = dialogData.askRecordInjury ?
+                    form.addToCharSheet.checked : recordInjury === 'enable';
+                return DiceHM3._calcInjury(formLocation, formImpact, formAspect, 
+                    formAddToCharSheet, formAim, dialogOptions);
+            }
         });
     }
 
@@ -559,24 +535,24 @@ export class DiceHM3 {
         };
 
         // determine location of injury
-        let armorLocation = DiceHM3._calcLocation(location, aim, dialogOptions.items);
-        if (armorLocation === null) return;  // this means we couldn't find the location, so no injury
+        const armorLocationItem = DiceHM3._calcLocation(location, aim, dialogOptions.items);
+        if (!armorLocationItem) return;  // this means we couldn't find the location, so no injury
 
         // Just to make life simpler, get the data element which is what we really care about.
-        armorLocation = armorLocation.data;
+        const armorLocationData = armorLocationItem.data;
 
-        result.location = armorLocation.name;
-        result.armorType = armorLocation.data.layers === '' ? 'None' : armorLocation.data.layers;
+        result.location = armorLocationData.name;
+        result.armorType = armorLocationData.data.layers === '' ? 'None' : armorLocationData.data.layers;
 
         // determine effective impact (impact - armor)
         if (aspect === 'Blunt') {
-            result.armorValue = armorLocation.data.blunt;
+            result.armorValue = armorLocationData.data.blunt;
         } else if (aspect === 'Edged') {
-            result.armorValue = armorLocation.data.edged;
+            result.armorValue = armorLocationData.data.edged;
         } else if (aspect === 'Piercing') {
-            result.armorValue = armorLocation.data.piercing;
+            result.armorValue = armorLocationData.data.piercing;
         } else {
-            result.armorValue = armorLocation.data.fire;
+            result.armorValue = armorLocationData.data.fire;
         }
         result.effectiveImpact = Math.max(impact - result.armorValue, 0);
 
@@ -584,15 +560,15 @@ export class DiceHM3 {
         if (result.effectiveImpact === 0) {
             result.injuryLevelText = 'NA';
         } else if (result.effectiveImpact >= 17) {
-            result.injuryLevelText = armorLocation.data.effectiveImpact.ei17;
+            result.injuryLevelText = armorLocationData.data.effectiveImpact.ei17;
         } else if (result.effectiveImpact >= 13) {
-            result.injuryLevelText = armorLocation.data.effectiveImpact.ei13;
+            result.injuryLevelText = armorLocationData.data.effectiveImpact.ei13;
         } else if (result.effectiveImpact >= 9) {
-            result.injuryLevelText = armorLocation.data.effectiveImpact.ei9;
+            result.injuryLevelText = armorLocationData.data.effectiveImpact.ei9;
         } else if (result.effectiveImpact >= 5) {
-            result.injuryLevelText = armorLocation.data.effectiveImpact.ei5;
+            result.injuryLevelText = armorLocationData.data.effectiveImpact.ei5;
         } else {
-            result.injuryLevelText = armorLocation.data.effectiveImpact.ei1;
+            result.injuryLevelText = armorLocationData.data.effectiveImpact.ei1;
         }
 
         // Calculate injury level and whether it is a kill shot.
@@ -612,24 +588,24 @@ export class DiceHM3 {
 
             case 'G4':
                 result.injuryLevel = 4;
-                result.isAmputate = enableAmputate && armorLocation.data.isAmputate && (aspect === 'Edged');
+                result.isAmputate = enableAmputate && armorLocationData.data.isAmputate && (aspect === 'Edged');
                 break;
 
             case 'K4':
                 result.injuryLevel = 4;
                 result.isKillShot = true;
-                result.isAmputate = enableAmputate && armorLocation.data.isAmputate && (aspect === 'Edged');
+                result.isAmputate = enableAmputate && armorLocationData.data.isAmputate && (aspect === 'Edged');
                 break;
 
             case 'G5':
                 result.injuryLevel = 5;
-                result.isAmputate = enableAmputate && armorLocation.data.isAmputate && (aspect === 'Edged');
+                result.isAmputate = enableAmputate && armorLocationData.data.isAmputate && (aspect === 'Edged');
                 break;
 
             case 'K5':
                 result.injuryLevel = 5;
                 result.isKillShot = true;
-                result.isAmputate = enableAmputate && armorLocation.data.isAmputate && (aspect === 'Edged');
+                result.isAmputate = enableAmputate && armorLocationData.data.isAmputate && (aspect === 'Edged');
                 break;
 
             case 'NA':
@@ -648,13 +624,13 @@ export class DiceHM3 {
         result.isBleeder = enableBloodloss && result.injuryLevel >= 4 && result.aspect != 'Fire';
 
         // Optional Rule - Limb Injuries (Combat 14)
-        if (armorLocation.data.isFumble) {
+        if (armorLocationData.data.isFumble) {
             result.isFumble = enableLimbInjuries && result.injuryLevel >= 4;
             result.isFumbleRoll = enableLimbInjuries || (!result.isFumble && result.injuryLevel >= 2);
         }
 
         // Optional Rule - Limb Injuries (Combat 14)
-        if (armorLocation.data.isStumble) {
+        if (armorLocationData.data.isStumble) {
             result.isStumble = enableLimbInjuries && result.injuryLevel >= 4;
             result.isStumbleRoll = enableLimbInjuries || (!result.isStumble && result.injuryLevel >= 2);
         }
@@ -698,9 +674,7 @@ export class DiceHM3 {
             // roll to get a random number.
             let rollWeight = 0;
             if (totalWeight > 0) {
-                // now, roll for a random number
-                let roll = new Roll(`1d${totalWeight}`).roll();
-                rollWeight = roll.total;
+                rollWeight = Math.floor(MersenneTwister.random()*totalWeight)+1;
             }
 
             // find the location that meets that number
@@ -796,7 +770,7 @@ export class DiceHM3 {
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
-            user: game.user._id,
+            user: game.user.id,
             speaker: speaker,
             content: html.trim(),
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
@@ -842,16 +816,17 @@ export class DiceHM3 {
         // Search for the specified weapon, and then choose the aspect with
         // the greatest impact (this will become the default aspect)
         items.forEach(it => {
-            if (it.type === 'weapongear' && it.name === weapon) {
-                const maxImpact = Math.max(it.data.blunt, it.data.piercing, it.data.edged, 0);
-                result.aspects["Blunt"] = it.data.blunt;
-                result.aspects["Edged"] = it.data.edged;
-                result.aspects["Piercing"] = it.data.piercing;
-                if (maxImpact === it.data.piercing) {
+            const itemData = it.data;
+            if (itemData.type === 'weapongear' && itemData.name === weapon) {
+                const maxImpact = Math.max(itemData.data.blunt, itemData.data.piercing, itemData.data.edged, 0);
+                result.aspects["Blunt"] = itemData.data.blunt;
+                result.aspects["Edged"] = itemData.data.edged;
+                result.aspects["Piercing"] = itemData.data.piercing;
+                if (maxImpact === itemData.data.piercing) {
                     result.defaultAspect = "Piercing";
-                } else if (maxImpact === it.data.edged) {
+                } else if (maxImpact === itemData.data.edged) {
                     result.defaultAspect = "Edged";
-                } else if (maxImpact === it.data.blunt) {
+                } else if (maxImpact === itemData.data.blunt) {
                     result.defaultAspect = "Blunt";
                 } else {
                     // This shouldn't happen, but if all else fails, choose "Other"
@@ -884,38 +859,30 @@ export class DiceHM3 {
         const html = await renderTemplate(dlgTemplate, dialogData);
         
         // Create the dialog window
-        return new Promise(resolve => {
-            new Dialog({
-                title: dialogOptions.label,
-                content: html.trim(),
-                buttons: {
-                    rollButton: {
-                        label: "Roll",
-                        callback: html => {
-                            const form = html[0].querySelector("form");
-                            const formAddlWeaponImpact = Number(form.addlWeaponImpact.value);
-                            const formDamageDice = Number(form.damageDice.value);
-                            const formWeaponAspect = form.weaponAspect.value;
-                            let roll = DiceHM3.rollTest({
-                                target: 0,
-                                data: dialogOptions.data,
-                                diceSides: 6,
-                                diceNum: formDamageDice,
-                                modifier: 0
-                            });
-                            let result = {
-                                chosenAspect: formWeaponAspect,
-                                damageDice: formDamageDice,
-                                addlWeaponImpact: formAddlWeaponImpact,
-                                rollObj: roll.rollObj
-                            }
-                            resolve(result);
-                        }
-                    }
-                },
-                default: "rollButton",
-                close: () => resolve(null)
-            }, dialogOptions).render(true)
+        return Dialog.prompt({
+            title: dialogOptions.label,
+            content: html.trim(),
+            label: "Roll",
+            callback: async html => {
+                const form = html[0].querySelector("form");
+                const formAddlWeaponImpact = Number(form.addlWeaponImpact.value);
+                const formDamageDice = Number(form.damageDice.value);
+                const formWeaponAspect = form.weaponAspect.value;
+                let roll = await DiceHM3.rollTest({
+                    target: 0,
+                    data: dialogOptions.data,
+                    diceSides: 6,
+                    diceNum: formDamageDice,
+                    modifier: 0
+                });
+                let result = {
+                    chosenAspect: formWeaponAspect,
+                    damageDice: formDamageDice,
+                    addlWeaponImpact: formAddlWeaponImpact,
+                    rollObj: roll.rollObj
+                }
+                return result;
+            }
         });
     }
 
@@ -971,7 +938,7 @@ export class DiceHM3 {
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
-            user: game.user._id,
+            user: game.user.id,
             speaker: speaker,
             content: html.trim(),
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
@@ -1016,58 +983,50 @@ export class DiceHM3 {
         const title = `${dialogOptions.name} Attack`;
 
         // Create the dialog window
-        return new Promise(resolve => {
-            new Dialog({
-                title: title,
-                content: html.trim(),
-                buttons: {
-                    rollButton: {
-                        label: "Roll",
-                        callback: html => {
-                            const form = html[0].querySelector("form");
-                            const formAddlModifier = Number(form.addlModifier.value);
-                            let formRange = form.range.value;
-                            let rangeModifier;
-                            if (formRange === shortDesc) {
-                                rangeModifier = 0;
-                                formRange = 'Short';
-                            } else if (formRange === mediumDesc) {
-                                rangeModifier = -20;
-                                formRange = 'Medium';
-                            } else if (formRange === longDesc) {
-                                rangeModifier = -40;
-                                formRange = 'Long';
-                            } else {
-                                rangeModifier = -80;
-                                formRange = 'Extreme';
-                            }
+        return Dialog.prompt({
+            title: dialogOptions.label,
+            content: html.trim(),
+            label: "Roll",
+            callback: async html => {
+                const form = html[0].querySelector("form");
+                const formAddlModifier = Number(form.addlModifier.value);
+                let formRange = form.range.value;
+                let rangeModifier;
+                if (formRange === shortDesc) {
+                    rangeModifier = 0;
+                    formRange = 'Short';
+                } else if (formRange === mediumDesc) {
+                    rangeModifier = -20;
+                    formRange = 'Medium';
+                } else if (formRange === longDesc) {
+                    rangeModifier = -40;
+                    formRange = 'Long';
+                } else {
+                    rangeModifier = -80;
+                    formRange = 'Extreme';
+                }
 
-                            let roll = DiceHM3.rollTest({
-                                target: dialogOptions.target,
-                                data: dialogOptions.data,
-                                diceSides: 100,
-                                diceNum: 1,
-                                modifier: formAddlModifier + rangeModifier
-                            });
+                let roll = await DiceHM3.rollTest({
+                    target: dialogOptions.target,
+                    data: dialogOptions.data,
+                    diceSides: 100,
+                    diceNum: 1,
+                    modifier: formAddlModifier + rangeModifier
+                });
 
-                            let result = {
-                                origTarget: dialogOptions.target,
-                                range: formRange,
-                                rangeModifier: rangeModifier,
-                                addlModifier: formAddlModifier,
-                                modifiedTarget: Number(dialogOptions.target) + rangeModifier + formAddlModifier,
-                                isSuccess: roll.isSuccess,
-                                isCritical: roll.isCritical,
-                                description: roll.description,
-                                rollObj: roll.rollObj
-                            }
-                            resolve(result);
-                        }
-                    }
-                },
-                default: "rollButton",
-                close: () => resolve(null)
-            }, dialogOptions).render(true)
+                let result = {
+                    origTarget: dialogOptions.target,
+                    range: formRange,
+                    rangeModifier: rangeModifier,
+                    addlModifier: formAddlModifier,
+                    modifiedTarget: Number(dialogOptions.target) + rangeModifier + formAddlModifier,
+                    isSuccess: roll.isSuccess,
+                    isCritical: roll.isCritical,
+                    description: roll.description,
+                    rollObj: roll.rollObj
+                }
+                return result;
+            }
         });
     }
 
@@ -1142,7 +1101,7 @@ export class DiceHM3 {
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
-            user: game.user._id,
+            user: game.user.id,
             speaker: speaker,
             content: html.trim(),
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
@@ -1174,38 +1133,30 @@ export class DiceHM3 {
         const title = `${dialogOptions.name} Missile Damage`;
 
         // Create the dialog window
-        return new Promise(resolve => {
-            new Dialog({
-                title: title,
-                content: html.trim(),
-                buttons: {
-                    rollButton: {
-                        label: "Roll",
-                        callback: html => {
-                            const form = html[0].querySelector("form");
-                            const formAddlImpact = Number(form.addlImpact.value);
-                            const formDamageDice = Number(form.damageDice.value);
-                            const formRange = form.range.value;
-                            let roll = DiceHM3.rollTest({
-                                target: 0,
-                                data: dialogOptions.data,
-                                diceSides: 6,
-                                diceNum: formDamageDice,
-                                modifier: 0
-                            });
-                            let result = {
-                                range: formRange,
-                                damageDice: formDamageDice,
-                                addlImpact: formAddlImpact,
-                                rollObj: roll.rollObj
-                            }
-                            resolve(result);
-                        }
-                    }
-                },
-                default: "rollButton",
-                close: () => resolve(null)
-            }, dialogOptions).render(true)
+        return Dialog.prompt({
+            title: dialogOptions.label,
+            content: html.trim(),
+            label: "Roll",
+            callback: async html => {
+                const form = html[0].querySelector("form");
+                const formAddlImpact = Number(form.addlImpact.value);
+                const formDamageDice = Number(form.damageDice.value);
+                const formRange = form.range.value;
+                let roll = await DiceHM3.rollTest({
+                    target: 0,
+                    data: dialogOptions.data,
+                    diceSides: 6,
+                    diceNum: formDamageDice,
+                    modifier: 0
+                });
+                let result = {
+                    range: formRange,
+                    damageDice: formDamageDice,
+                    addlImpact: formAddlImpact,
+                    rollObj: roll.rollObj
+                }
+                return result;
+            }
         });
     }
 
@@ -1213,16 +1164,19 @@ export class DiceHM3 {
     /*        GENERIC DICE ROLLING PROCESSING
     /*--------------------------------------------------------------------------------*/
 
-    static rollTest(testData) {
+    static async rollTest(testData) {
 
-        let diceType = testData.diceSides === 6 ? "d6" : "d100";
-        let diceSpec = ((testData.diceNum > 0) ? testData.diceNum : 1) + diceType;
-        let roll = new Roll(diceSpec, testData.data).roll();
-
-        let modifier = Number(testData.modifier);
-        let targetNum = Number(testData.target) + modifier;
+        const diceType = testData.diceSides === 6 ? "d6" : "d100";
+        const diceSpec = ((testData.diceNum > 0) ? testData.diceNum : 1) + diceType;
+        const rollObj = new Roll(diceSpec, testData.data);
+        const roll = await rollObj.evaluate({async: true});
+        if (!roll) {
+            console.error(`Roll evaluation failed, diceSpec=${diceSpec}`)
+        }
+        const modifier = Number(testData.modifier);
+        const targetNum = Number(testData.target) + modifier;
         let isCrit = (roll.total % 5) === 0;
-        let levelDesc = isCrit ? "Critical" : "Marginal";
+        const levelDesc = isCrit ? "Critical" : "Marginal";
         let description = "";
         let isSuccess = false;
 
@@ -1271,11 +1225,12 @@ export class DiceHM3 {
         let result = `Unknown (roll=${rollResult})`;
         let done = false;
         items.forEach(it => {
+            const itemData = it.data;
             // If we finally exhaust rollResult, just return immediately,
             // so we finish this forEach as quickly as possible
             if (rollResult > 0) {
-                if (it.type === "hitlocation") {
-                    let probWeight = it.data.probWeight[hlAim];
+                if (itemData.type === "hitlocation") {
+                    let probWeight = itemData.data.probWeight[hlAim];
                     // if probWeight is not zero, then there is a possiblity
                     // of a match
                     if (probWeight != 0) {
@@ -1284,7 +1239,7 @@ export class DiceHM3 {
                             // At this point, we have a match! We have
                             // exhausted the rollResult, so we can
                             // set the result equal to this location name
-                            result = it.name;
+                            result = itemData.name;
                         }
                     }
                 }
