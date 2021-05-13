@@ -84,7 +84,7 @@ export async function onManageActiveEffect(event, owner) {
 export async function checkExpiredActiveEffects() {
     // Handle game actors first
     for (let actor of game.actors.values()) {
-        if (actor.owner && actor.effects && actor.effects.length) {
+        if (actor.isOwner && actor.effects && actor.effects.length) {
             await disableExpiredAE(actor);
         }
     }

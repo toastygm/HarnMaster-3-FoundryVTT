@@ -39,7 +39,7 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
     }
 
 
-    if (!attackToken.owner) {
+    if (!attackToken.isOwner) {
         ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
         return null;
     }
@@ -82,7 +82,8 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
             return null;
         }
 
-        attackToken.actor.updateOwnedItem({'_id': missileItem.data._id, 'data.quantity': missileItem.data.data.quantity - 1});
+        const item = attackToken.actor.items.get(missileItem.id);
+        item.update({'data.quantity': missileItem.data.data.quantity - 1});
     }
 
     const effAML = dialogResult.weapon.data.data.attackMasteryLevel + dialogResult.addlModifier + dialogResult.rangeMod;
@@ -120,7 +121,7 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
     const html = await renderTemplate(chatTemplate, chatTemplateData);
 
     const messageData = {
-        user: game.user._id,
+        user: game.user.id,
         speaker: speaker,
         content: html.trim(),
         type: CONST.CHAT_MESSAGE_TYPES.OTHER
@@ -172,7 +173,7 @@ export async function meleeAttack(attackToken, defendToken, weaponItem=null) {
         return null;
     }
 
-    if (!attackToken.owner) {
+    if (!attackToken.isOwner) {
         ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
         return null;
     }
@@ -248,7 +249,7 @@ export async function meleeAttack(attackToken, defendToken, weaponItem=null) {
     const html = await renderTemplate(chatTemplate, chatTemplateData);
 
     const messageData = {
-        user: game.user._id,
+        user: game.user.id,
         speaker: speaker,
         content: html.trim(),
         type: CONST.CHAT_MESSAGE_TYPES.OTHER
@@ -289,12 +290,12 @@ async function selectWeaponDialog(options) {
     }
     dialogOptions.prompt = options.prompt ? options.prompt : 'Please select your weapon';
     
-    const html = await renderTemplate(queryWeaponDialog, dialogOptions);
+    const dlghtml = await renderTemplate(queryWeaponDialog, dialogOptions);
 
     // Request weapon name
     return Dialog.prompt({
         title: dialogOptions.title,
-        content: html.trim(),
+        content: dlghtml.trim(),
         label: "OK",
         callback: html => {
             const form = html[0].querySelector("form");
@@ -406,13 +407,13 @@ async function attackDialog(options) {
 
     dialogOptions.title = `${options.attackerName} vs. ${options.defenderName} ${options.type} with ${options.weapon.name}`;
 
-    const attackDialog = "systems/hm3/templates/dialog/attack-dialog.html";
-    const html = await renderTemplate(attackDialog, dialogOptions);
+    const attackDialogTemplate = "systems/hm3/templates/dialog/attack-dialog.html";
+    const dlghtml = await renderTemplate(attackDialogTemplate, dialogOptions);
 
     // Request weapon details
     return Dialog.prompt({
         title: dialogOptions.title,
-        content: html.trim(),
+        content: dlghtml.trim(),
         label: options.type,
         callback: html => {
             const form = html[0].querySelector("form");
@@ -461,7 +462,7 @@ async function attackDialog(options) {
 function isValidToken(token) {
     if (!token) {
         ui.notifications.warn('No token selected.');
-        false;
+        return false;
     }
 
     if (!token.actor) {
@@ -519,7 +520,7 @@ function defaultMeleeWeapon(token) {
  */
 export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
-    if (!defToken.owner) {
+    if (!defToken.isOwner) {
         ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
         return null;
     }
@@ -541,7 +542,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     if (!csDialogResult) return null;
 
     // Roll Attacker's Attack
-    const atkRoll = DiceHM3.rollTest({
+    const atkRoll = await DiceHM3.rollTest({
         data: {},
         diceSides: 100,
         diceNum: 1,
@@ -552,7 +553,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     const csEffEML = csDialogResult.weapon.data.data.attackMasteryLevel;
 
     // Roll Counterstrike Attack
-    const csRoll = DiceHM3.rollTest({
+    const csRoll = await DiceHM3.rollTest({
         data: {},
         diceSides: 100,
         diceNum: 1,
@@ -579,12 +580,12 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     // We now know the results of the attack, roll applicable damage
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
-        atkImpactRoll = new Roll(`${combatResult.outcome.atkDice}d6`).roll();
+        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d6`).evaluate({async: true});
     }
     
     let csImpactRoll = null;
     if (combatResult.outcome.defDice) {
-        csImpactRoll = new Roll(`${combatResult.outcome.defDice}d6`).roll();
+        csImpactRoll = await new Roll(`${combatResult.outcome.defDice}d6`).evaluate({async: true});
     }
 
     const atkChatData = {
@@ -661,7 +662,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     let html = await renderTemplate(chatTemplate, atkChatData);
 
     let messageData = {
-        user: game.user._id,
+        user: game.user.id,
         speaker: speaker,
         content: html.trim()
     };
@@ -684,7 +685,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     html = await renderTemplate(chatTemplate, csChatData);
 
     messageData = {
-        user: game.user._id,
+        user: game.user.id,
         speaker: speaker,
         content: html.trim()
     };
@@ -716,14 +717,14 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
  */
 export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
-    if (!defToken.owner) {
+    if (!defToken.isOwner) {
         ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
         return null;
     }
 
     const speaker = ChatMessage.getSpeaker({token: atkToken});
 
-    const atkRoll = DiceHM3.rollTest({
+    const atkRoll = await DiceHM3.rollTest({
         data: {},
         diceSides: 100,
         diceNum: 1,
@@ -733,7 +734,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
 
     const effDML = defToken.actor.data.data.dodge;
 
-    const defRoll = DiceHM3.rollTest({
+    const defRoll = await DiceHM3.rollTest({
         data: {},
         diceSides: 100,
         diceNum: 1,
@@ -762,7 +763,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
 
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
-        atkImpactRoll = new Roll(`${combatResult.outcome.atkDice}d6`).roll();
+        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d6`).evaluate({async: true});
     }
 
     const chatData = {
@@ -801,7 +802,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
     const html = await renderTemplate(chatTemplate, chatData);
 
     let messageData = {
-        user: game.user._id,
+        user: game.user.id,
         speaker: speaker,
         content: html.trim()
     };
@@ -838,14 +839,14 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
  */
 export async function blockResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
-    if (!defToken.owner) {
+    if (!defToken.isOwner) {
         ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
         return null;
     }
 
     const speaker = ChatMessage.getSpeaker({token: atkToken});
 
-    const atkRoll = DiceHM3.rollTest({
+    const atkRoll = await DiceHM3.rollTest({
         data: {},
         diceSides: 100,
         diceNum: 1,
@@ -913,7 +914,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
 
     if (!dialogResult) return null;
 
-    let effDML = 5;
+    let effDML;
     const defWeapon = defToken.actor.itemTypes.weapongear.find(w => w.name === dialogResult.weapon);
     if (defWeapon) {
         effDML = defWeapon.data.data.defenseMasteryLevel;
@@ -929,7 +930,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         }
     }
 
-    const defRoll = DiceHM3.rollTest({
+    const defRoll = await DiceHM3.rollTest({
         data: {},
         diceSides: 100,
         diceNum: 1,
@@ -959,7 +960,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
 
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
-        atkImpactRoll = new Roll(`${combatResult.outcome.atkDice}d6`).roll();
+        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d6`).evaluate({async: true});
     }
 
     // If there was a block, check whether a weapon broke
@@ -971,11 +972,13 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         // weapon as "unequipped"
 
         if (weaponBroke.attackWeaponBroke) {
-            await atkToken.actor.updateOwnedItem({_id: atkWeapon.data._id, 'data.isEquipped': false});
+            const item = atkToken.actor.get(atkWeapon.id);
+            await item.update({'data.isEquipped': false});
         }
 
         if (weaponBroke.defendWeaponBroke) {
-            await defToken.actor.updateOwnedItem({_id: defWeapon.data._id, 'data.isEquipped': false});
+            const item = defToken.actor.get(defWeapon.id);
+            await item.update({'data.isEquipped': false});
         }
     }
 
@@ -1026,7 +1029,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
     const html = await renderTemplate(chatTemplate, chatData);
 
     let messageData = {
-        user: game.user._id,
+        user: game.user.id,
         speaker: speaker,
         content: html.trim()
     };
@@ -1049,7 +1052,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
     return chatData;
 }
 
-export function checkWeaponBreak(atkWeapon, defWeapon) {
+export async function checkWeaponBreak(atkWeapon, defWeapon) {
     if (!atkWeapon) {
         console.error(`Attack weapon was not specified`);
         return {attackWeaponBroke: false, defendWeaponBroke: false};
@@ -1067,8 +1070,8 @@ export function checkWeaponBreak(atkWeapon, defWeapon) {
     const atkWeaponQuality = atkWeapon.data.data.weaponQuality;
     const defWeaponQuality = defWeapon.data.data.weaponQuality;
 
-    const atkBreakRoll = new Roll('3d6').roll();
-    const defBreakRoll = new Roll('3d6').roll();
+    const atkBreakRoll = await new Roll('3d6').evaluate({async: true});
+    const defBreakRoll = await new Roll('3d6').evaluate({async: true});
 
     if (atkWeaponQuality <= defWeaponQuality) {
         // Check attacker first, then defender
@@ -1098,14 +1101,14 @@ export function checkWeaponBreak(atkWeapon, defWeapon) {
  */
 export async function ignoreResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod) {
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
-    if (!defToken.owner) {
+    if (!defToken.isOwner) {
         ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
         return null;
     }
 
     const speaker = ChatMessage.getSpeaker({token: atkToken});
 
-    const atkRoll = DiceHM3.rollTest({
+    const atkRoll = await DiceHM3.rollTest({
         data: {},
         diceSides: 100,
         diceNum: 1,
@@ -1131,7 +1134,7 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
 
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
-        atkImpactRoll = new Roll(`${combatResult.outcome.atkDice}d6`).roll();
+        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d6`).evaluate({async: true});
     }
 
     const chatData = {
@@ -1171,7 +1174,7 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
     const html = await renderTemplate(chatTemplate, chatData);
 
     let messageData = {
-        user: game.user._id,
+        user: game.user.id,
         speaker: speaker,
         content: html.trim()
     };
@@ -1220,7 +1223,7 @@ export function meleeCombatResult(atkResult, defResult, defense, atkAddlImpact=0
     if (defense !== 'counterstrike') {
         if (outcome.atkDice) {
             result.desc = `Attacker strikes for ${diceFormula(outcome.atkDice, atkAddlImpact)} impact.`;
-        } else if (outcome.atkFumble & outcome.defFumble) {
+        } else if (outcome.atkFumble && outcome.defFumble) {
             result.desc = 'Both Attacker and Defender Fumble';
         } else if (outcome.atkFumble) {
             result.desc = `Attacker fumbles.`;
@@ -1379,7 +1382,7 @@ export function getItem(itemName, type, actor) {
 
     let item = null;
     if (itemName.startsWith("Item$")) {
-        return actor.getOwnedItem(itemName.slice(5));
+        return actor.items.get(itemName.slice(5));
     }
     if (!item) {
         const lcItemName = itemName.toLowerCase();
@@ -1448,7 +1451,7 @@ export const displayChatActionButtons = function(message, html, data) {
         const buttons = chatCard.find("button[data-action]");
         buttons.each((i, btn) => {
             const actor = btn.dataset.visibleActorId ? game.actors.get(btn.dataset.visibleActorId) : null;
-            if (!actor || !actor.owner) {
+            if (!actor || !actor.isOwner) {
                 btn.style.display = "none";
             }
         });

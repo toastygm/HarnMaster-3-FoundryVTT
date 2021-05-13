@@ -9,73 +9,49 @@
         "sunsign": "",
         "abilities": {
           "strength": {
-            "base": 0,
-            "effective": 0
+            "base": 0
           },
           "stamina": {
-            "base": 0,
-            "effective": 0
+            "base": 0
           },
           "dexterity": {
-            "base": 0,
-            "effective": 0
+            "base": 0
           },
           "agility": {
-            "base": 0,
-            "effective": 0
+            "base": 0
           },
           "intelligence": {
-            "base": 0,
-            "effective": 0
+            "base": 0
           },
           "aura": {
-            "base": 0,
-            "effective": 0
+            "base": 0
           },
           "will": {
-            "base": 0,
-            "effective": 0
+            "base": 0
           },
           "eyesight": {
-            "base": 0,
-            "effective": 0
+            "base": 0
           },
           "hearing": {
-            "base": 0,
-            "effective": 0
+            "base": 0
           },
           "smell": {
-            "base": 0,
-            "effective": 0
+            "base": 0
           },
           "voice": {
-            "base": 0,
-            "effective": 0
+            "base": 0
           },
-          "comliness": {
-            "base": 0,
-            "effective": 0
+          "comeliness": {
+            "base": 0
           },
           "morality": {
-            "base": 0,
-            "effective": 0
+            "base": 0
           }
         },
-        "dodge": 0,
-        "initiative": 0,
-        "endurance": 0,
-        "shockIndex": {
-          "value": 0,
-          "max": 100
-        },
         "move": {
-          "base": 0,
-          "effective": 0
+          "base": 0
         },
         "description": "***INIT***",
-        "universalPenalty": 0,
-        "physicalPenalty": 0,
-        "totalInjuryLevels": 0,
         "biography": "",
         "macros": {}
       }
@@ -83,16 +59,11 @@
     "character": {
       "templates": ["base"],
       "gender": "",
-      "occupation": "",
-      "hasCondition": false,
-      "encumbrance": 0,
-      "totalWeight": 0
+      "occupation": ""
     },
     "creature": {
       "templates": ["base"],
-      "loadRating": 0,
-      "encumbrance": 0,
-      "totalWeight": 0
+      "loadRating": 0
     },
     "container": {
       "templates": [],
@@ -100,8 +71,7 @@
       "description": "",
       "macros": {},
       "capacity": {
-        "max": 0,
-        "value": 0
+        "max": 0
       }
     }
   },

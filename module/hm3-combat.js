@@ -6,7 +6,7 @@ export class HarnMasterCombat extends Combat {
      * @override
      */
     async nextRound() {
-        const combatantIds = this.combatants.map(c => c._id);
+        const combatantIds = this.combatants.map(c => c.id);
         await this.rollInitiative(combatantIds);
         return super.nextRound();
     }

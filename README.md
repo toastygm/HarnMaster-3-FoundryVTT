@@ -61,7 +61,7 @@ The following actors are supported:
   7. Biography (your personal/real characteristics, story, motivations, and attributes)
 
 * __Creature:__ Any being not a "character" (e.g., animals, Ivashu, etc.).  A creature has the following features:
-  1. Ability Scores (except no Comliness or Morality)
+  1. Ability Scores (except no Comeliness or Morality)
   2. Basic Skills
   3. Combat (Weapons, Injuries, Armor Locations)
   4. Misc. Gear

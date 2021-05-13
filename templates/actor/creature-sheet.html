@@ -291,7 +291,7 @@
                             </div>
                         </li>
                         <ol class="item-list trait-list">
-                            {{#each actor.items as |item id|}}
+                            {{#each items as |item id|}}
                                 {{#if (and (eq item.type "trait") (eq item.data.type "Physical"))}}
                                     <li class="item trait trait-item flexrow" data-item-id="{{item._id}}"
                                         data-item-name="{{item.name}}">
@@ -323,7 +323,7 @@
                             </div>
                         </li>
                         <ol class="item-list trait-list">
-                            {{#each actor.items as |item id|}}
+                            {{#each items as |item id|}}
                                 {{#if (and (eq item.type "trait") (eq item.data.type "Psyche"))}}
                                     <li class="item trait trait-item flexrow" data-item-id="{{item._id}}"
                                         data-item-name="{{item.name}}">
@@ -379,7 +379,7 @@
                     </div>
                 </li>
                 <ol class="item-list skill-list">
-                    {{#each actor.items as |item id|}}
+                    {{#each items as |item id|}}
                         {{#if (and (eq item.type "skill") (eq item.data.type "Physical"))}}
                             <li class="item skill flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
                                 <div class="item-name skill-roll skill-name flexrow">
@@ -416,7 +416,7 @@
                     </div>
                 </li>
                 <ol class="item-list skill-list">
-                    {{#each actor.items as |item id|}}
+                    {{#each items as |item id|}}
                         {{#if (and (eq item.type "skill") (eq item.data.type "Communication"))}}
                             <li class="item skill flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
                                 <div class="item-name skill-roll skill-name flexrow">
@@ -453,7 +453,7 @@
                     </div>
                 </li>
                 <ol class="item-list skill-list">
-                    {{#each actor.items as |item id|}}
+                    {{#each items as |item id|}}
                         {{#if (and (eq item.type "skill") (eq item.data.type "Combat"))}}
                             <li class="item skill flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
                                 <div class="item-name skill-roll skill-name flexrow">
@@ -490,7 +490,7 @@
                     </div>
                 </li>
                 <ol class="item-list skill-list">
-                    {{#each actor.items as |item id|}}
+                    {{#each items as |item id|}}
                         {{#if (and (eq item.type "skill") (eq item.data.type "Craft"))}}
                             <li class="item skill flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
                                 <div class="item-name skill-roll skill-name flexrow">
@@ -525,7 +525,9 @@
                 <div class="combat-stat flexrow">
                     <div class="item-dice"></div>
                     <label for="data.fatigue" class="combat-stat-label">Fatigue</label>
-                    <input class="combat-stat-input" type="text" name="data.fatigue" value="{{data.fatigue}}" data-dtype="Number" />
+                    <div class="combat-eff-fatigue">{{data.eph.fatigue}} / </div>
+                    <input class="combat-fatigue-input" type="text" name="data.fatigue" value="{{data.fatigue}}"
+                        data-dtype="Number" />
                 </div>
                 <div class="combat-stat flexrow">
                     <div class="item-dice"></div>
@@ -602,7 +604,7 @@
                     <div class="item-detail weapon-notes">Notes</div>
                 </li>
                 <ol class="item-list weapon-list">
-                    {{#each actor.items as |item id|}}
+                    {{#each items as |item id|}}
                         {{#if (and (eq item.type "weapongear") data.isEquipped)}}
                             <li class="item weapon {{#unless data.isCarried}}nocarry{{/unless}} flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
                                 <div class="item-name weapon-name {{#if (and data.isEquipped data.isCarried)}}melee-weapon-attack{{/if}} flexrow">
@@ -653,7 +655,7 @@
                     <div class="item-detail missile-notes">Notes</div>
                 </li>
                 <ol class="item-list missile-list">
-                    {{#each actor.items as |item id|}}
+                    {{#each items as |item id|}}
                         {{#if (and (eq item.type "missilegear") data.isEquipped)}}
                             <li class="item missile {{#unless data.isCarried}}nocarry{{/unless}} flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
                                 <div class="item-name missile-name {{#if (and data.isEquipped data.isCarried)}}missile-weapon-attack{{/if}} flexrow">
@@ -705,7 +707,7 @@
                     </div>
                 </li>
                 <ol class="item-list injury-list">
-                    {{#each actor.items as |item id|}}
+                    {{#each items as |item id|}}
                         {{#if (eq item.type "injury")}}
                             <li class="item injury flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
                                 <div class="item-name injury-name flexrow">
@@ -743,7 +745,7 @@
                     </div>
                 </li>
                 <ol class="item-list armorlocation-list">
-                    {{#each actor.items as |item id|}}
+                    {{#each items as |item id|}}
                         {{#if (eq item.type "armorlocation")}}
                             <li class="item armorlocation flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
                                 <div class="item-name armorlocation-name flexrow">
@@ -786,7 +788,7 @@
                     </div>
                 </li>
                 <ol class="item-list spell-list">
-                    {{#each actor.items as |item id|}}
+                    {{#each items as |item id|}}
                     {{#if (eq item.type "psionic")}}
                             <li class="item psionic flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
                                 <div class="item-name psionic-name psionic-roll flexrow">

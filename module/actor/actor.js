@@ -10,100 +10,109 @@ import { HarnMasterBaseActorSheet } from './base-actor-sheet.js';
  */
 export class HarnMasterActor extends Actor {
 
-    /**
-     * Override the create() function to initialize skills and locations. Original code taken
-     * from WFRP4e-FoundryVTT project.
-     */
-    static async create(data, options) {
-        // If the created actor has items (only applicable to duplicated actors) bypass the new actor creation logic
-        if (data.items) {
-            return super.create(data, options);
-        }
+    async _preCreate(createData, options, user) {
+        await super._preCreate(createData, options, user);
 
-        // Initialize empty items
-        data.items = [];
+        // Setup default Actor type specific data.
 
-        // If character, automatically add basic skills and armor locations
-        if (data.type === 'character') {
-            // Request whether to initialize skills and armor locations
-            if (options.skipDefaultItems) {
-                HarnMasterActor.setupDefaultDescription(data);
-                const actor = await super.create(data, options);
-                const updateData = HarnMasterActor.setupDefaultDescription('character');
-                return actor.update(updateData);    
-            }
-
-            new Dialog({
-                title: 'Initialize Skills and Locations',
-                content: `<p>Add Default Skills and Locations?</p>`,
-                buttons: {
-                    yes: {
-                        label: 'Yes',
-                        callback: async dlg => {
-                            await HarnMasterActor._createDefaultCharacterSkills(data);
-                            HarnMasterActor._createDefaultHumanoidLocations(data);
-                            const actor = await super.create(data, options); // Follow through the the rest of the Actor creation process upstream
-                            const updateData = HarnMasterActor.setupDefaultDescription('character');
-                            return actor.update(updateData);                
-                        }
-                    },
-                    no: {
-                        label: 'No',
-                        callback: async dlg => {
-                            HarnMasterActor.setupDefaultDescription(data);
-                            const actor = await super.create(data, options); // Do not add new items, continue with the rest of the Actor creation process upstream          
-                            const updateData = HarnMasterActor.setupDefaultDescription('character');
-                            return actor.update(updateData);                
-                        }
-                    },
-                },
-                default: 'yes'
-            }).render(true);
-        } else if (data.type === 'creature') {
-            // Create Creature Default Skills
-            this._createDefaultCreatureSkills(data).then(async result => {
-                const actor = await super.create(data, options); // Follow through the the rest of the Actor creation process upstream
-                const updateData = HarnMasterActor.setupDefaultDescription('creature');
-                return actor.update(updateData);    
-            });
-        } else if (data.type === 'container') {
-            const html = await renderTemplate("systems/hm3/templates/dialog/container-size.html", {});
-            Dialog.prompt({
-                title: 'Container Size',
-                content: html,
-                label: 'OK',
-                callback: async (html) => {
-                    const form = html[0].querySelector("form");
-                    const fd = new FormDataExtended(form);
-                    const formdata = fd.toObject();
-                    const maxCapacity = parseInt(formdata.maxCapacity);
-                    const actor = await super.create(data, options); // Follow through the the rest of the Actor creation process upstream
-                    const updateData = HarnMasterActor.setupDefaultDescription('container');
-                    updateData['data.capacity.max'] = maxCapacity;
-                    return actor.update(updateData);
-                }
-            });
-        } else {
-            console.error(`HM3 | Unsupported actor type '${data.type}'`);
-        }
-    }
-
-    static setupDefaultDescription(type) {
         const updateData = {};
-        if (type === 'character') {
+        if (createData.type === 'character') {
             updateData['data.description'] = '<table style=\"user-select: text; width: 95%; color: #191813; font-size: 13px;\" border=\"1\">\n<tbody style=\"box-sizing: border-box; user-select: text;\">\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Apparent Age</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Culture</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\"></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Social Class</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\"><span style=\"box-sizing: border-box; user-select: text;\"></span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Height</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Frame</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Weight</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Appearance/Comeliness</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Hair Color</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Eye Color</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Voice</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong>Obvious Medical Traits</strong><span style=\"box-sizing: border-box; user-select: text;\"><br style=\"box-sizing: border-box; user-select: text;\" /></span></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\"><span style=\"box-sizing: border-box; user-select: text;\">&nbsp;</span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong>Apparent Occupation</strong><span style=\"box-sizing: border-box; user-select: text;\"><br style=\"box-sizing: border-box; user-select: text;\" /></span></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\"><span style=\"box-sizing: border-box; user-select: text;\">&nbsp;</span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong>Apparent Wealth</strong><span style=\"box-sizing: border-box; user-select: text;\"><br style=\"box-sizing: border-box; user-select: text;\" /></span></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\"><span style=\"box-sizing: border-box; user-select: text;\">&nbsp;</span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong>Weapons</strong><span style=\"box-sizing: border-box; user-select: text;\"><br style=\"box-sizing: border-box; user-select: text;\" /></span></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\"><span style=\"box-sizing: border-box; user-select: text;\">&nbsp;</span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Armour</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Companions</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Other obvious features</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\">&nbsp;</td>\n</tr>\n</tbody>\n</table>\n<p>&nbsp;</p>\n<p>&nbsp;</p>';
             updateData['data.biography'] = '<h1>Data</h1>\n<table style=\"width: 95%;\" border=\"1\">\n<tbody>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Birthdate</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Birthplace</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Sibling Rank</strong></td>\n<td style=\"width: 432px;\">x of y</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Parent(s)</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Parent Occupation</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Estrangement</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Clanhead</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Medical Traits</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Psyche Traits</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n</tbody>\n</table>\n<h1>Life Story</h1>';
             updateData['data.bioImage'] = 'systems/hm3/images/svg/knight-silhouette.svg';
-        } else if (type === 'creature') {
+        } else if (createData.type === 'creature') {
             updateData['data.description'] = '';
             updateData['data.biography'] = '<h1>Data</h1>\n<table style=\"width: 95%;\" border=\"1\">\n<tbody>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Habitat</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Height</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Weight</strong></td>\n<td style=\"width: 432px;\"></td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Diet</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Lifespan</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Group</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n</tbody>\n</table>\n<h1>Special Abilities</h1>\n<p>Describe any special abilities.</p>\n<h1>Attacks</h1>\n<p>Describe methods of attack.</p>\n<h1>Behavior</h1>\n<p>Describe behavioral aspects.</p>';
-            updateData['data.bioImage'] = 'systems/hm3/images/svg/monster-silhouette.svg';    
-        } else if (type === 'container') {
+            updateData['data.bioImage'] = 'systems/hm3/images/svg/monster-silhouette.svg';
+        } else if (createData.type === 'container') {
+            updateData['data.capacity.max'] = 1;
             updateData['data.description'] = '';
             updateData['data.bioImage'] = 'systems/hm3/images/icons/svg/chest.svg';
-            updateData['img'] = 'systems/hm3/images/icons/svg/chest.svg';    
+            updateData['img'] = 'systems/hm3/images/icons/svg/chest.svg';
         }
-        return updateData;
+        this.data.update(updateData);
+    }
+
+    _onCreate(data, options, userid) {
+        // After an Actor has been created, add default skills and armor locations
+        if (data.type === 'character') {
+            HarnMasterActor._createDefaultCharacterSkills(this);
+            HarnMasterActor._createDefaultHumanoidLocations(this);
+        } else if (data.type === 'creature') {
+            HarnMasterActor._createDefaultCreatureSkills(this);
+        }
+        super._onCreate(data, options, userid);
+    }
+
+    static async _copySkill(skillList, skillName, actor) {
+        const itemData = skillList.find(i => i.name === skillName);
+        if (!itemData) return null;
+        return Item.create({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data.data}, {parent: actor});
+    }
+
+    static async _createDefaultCharacterSkills(actor) {
+        const physicalSkills = await game.packs.find(p => p.collection === `hm3.std-skills-physical`).getDocuments();
+        await HarnMasterActor._copySkill(physicalSkills, 'Climbing', actor);
+        await HarnMasterActor._copySkill(physicalSkills, 'Jumping', actor);
+        await HarnMasterActor._copySkill(physicalSkills, 'Stealth', actor);
+        await HarnMasterActor._copySkill(physicalSkills, 'Throwing', actor);
+
+        const commSkills = await game.packs.find(p => p.collection === `hm3.std-skills-communication`).getDocuments();
+        await HarnMasterActor._copySkill(commSkills, 'Awareness', actor);
+        await HarnMasterActor._copySkill(commSkills, 'Intrigue', actor);
+        await HarnMasterActor._copySkill(commSkills, 'Oratory', actor);
+        await HarnMasterActor._copySkill(commSkills, 'Rhetoric', actor);
+        await HarnMasterActor._copySkill(commSkills, 'Singing', actor);
+
+        const combatSkills = await game.packs.find(p => p.collection === `hm3.std-skills-combat`).getDocuments();
+        await HarnMasterActor._copySkill(combatSkills, 'Initiative', actor);
+        await HarnMasterActor._copySkill(combatSkills, 'Unarmed', actor);
+        await HarnMasterActor._copySkill(combatSkills, 'Dodge', actor);
+    }
+
+    static async _createDefaultCreatureSkills(actor) {
+        const commSkills = await game.packs.find(p => p.collection === `hm3.std-skills-communication`).getDocuments();
+        await HarnMasterActor._copySkill(commSkills, 'Awareness', actor);
+
+        const combatSkills = await game.packs.find(p => p.collection === `hm3.std-skills-combat`).getDocuments();
+        await HarnMasterActor._copySkill(combatSkills, 'Initiative', actor);
+        await HarnMasterActor._copySkill(combatSkills, 'Unarmed', actor);
+        await HarnMasterActor._copySkill(combatSkills, 'Dodge', actor);
+    }
+
+    static async _setupLocation(locName, templateName, actor) {
+        const armorLocationData = foundry.utils.deepClone(game.system.model.Item.armorlocation);
+        mergeObject(armorLocationData, HM3.injuryLocations[templateName])
+        return await Item.create({name: locName, type: 'armorlocation', data: armorLocationData}, {parent: actor});
+    }
+
+    static async _createDefaultHumanoidLocations(actor) {
+        await HarnMasterActor._setupLocation('Skull', 'Skull', actor);
+        await HarnMasterActor._setupLocation('Face', 'Face', actor);
+        await HarnMasterActor._setupLocation('Neck', 'Neck', actor);
+        await HarnMasterActor._setupLocation('Left Shoulder', 'Shoulder', actor);
+        await HarnMasterActor._setupLocation('Right Shoulder', 'Shoulder', actor);
+        await HarnMasterActor._setupLocation('Left Upper Arm', 'Upper Arm', actor);
+        await HarnMasterActor._setupLocation('Right Upper Arm', 'Upper Arm', actor);
+        await HarnMasterActor._setupLocation('Left Elbow', 'Elbow', actor);
+        await HarnMasterActor._setupLocation('Right Elbow', 'Elbow', actor);
+        await HarnMasterActor._setupLocation('Left Forearm', 'Forearm', actor);
+        await HarnMasterActor._setupLocation('Right Forearm', 'Forearm', actor);
+        await HarnMasterActor._setupLocation('Left Hand', 'Hand', actor);
+        await HarnMasterActor._setupLocation('Right Hand', 'Hand', actor);
+        await HarnMasterActor._setupLocation('Thorax', 'Thorax', actor);
+        await HarnMasterActor._setupLocation('Abdomen', 'Abdomen', actor);
+        await HarnMasterActor._setupLocation('Groin', 'Groin', actor);
+        await HarnMasterActor._setupLocation('Left Hip', 'Hip', actor);
+        await HarnMasterActor._setupLocation('Right Hip', 'Hip', actor);
+        await HarnMasterActor._setupLocation('Left Thigh', 'Thigh', actor);
+        await HarnMasterActor._setupLocation('Right Thigh', 'Thigh', actor);
+        await HarnMasterActor._setupLocation('Left Knee', 'Knee', actor);
+        await HarnMasterActor._setupLocation('Right Knee', 'Knee', actor);
+        await HarnMasterActor._setupLocation('Left Calf', 'Calf', actor);
+        await HarnMasterActor._setupLocation('Right Calf', 'Calf', actor);
+        await HarnMasterActor._setupLocation('Left Foot', 'Foot', actor);
+        await HarnMasterActor._setupLocation('Right Foot', 'Foot', actor);
     }
 
     /**
@@ -118,25 +127,65 @@ export class HarnMasterActor extends Actor {
         super.prepareBaseData();
         const actorData = this.data;
         const data = actorData.data;
+        const items = actorData.items;
 
         // Ephemeral data is kept together with other actor data,
         // but it is not in the data model so it will not be saved.
         if (!data.eph) data.eph = {};
         const eph = data.eph;
 
+        // Initialize derived attributes
+        data.abilities.strength.effective = 0;
+        data.abilities.stamina.effective = 0;
+        data.abilities.dexterity.effective = 0;
+        data.abilities.agility.effective = 0;
+        data.abilities.intelligence.effective = 0;
+        data.abilities.aura.effective = 0;
+        data.abilities.will.effective = 0;
+        data.abilities.eyesight.effective = 0;
+        data.abilities.hearing.effective = 0;
+        data.abilities.smell.effective = 0;
+        data.abilities.voice.effective = 0;
+        data.abilities.comeliness.effective = 0;
+        data.abilities.morality.effective = 0;
+        data.dodge = 0;
+        data.initiative = 0;
+        data.endurance = 0;
+        data.shockIndex = { value: 0, max: 100 };
+        data.move.effective = 0;
+        data.universalPenalty = 0;
+        data.physicalPenalty = 0;
+        data.totalInjuryLevels = 0;
+        data.encumbrance = 0;
+        data.totalWeight = 0;
+        
+        this.calcTotalGearWeight();
+
+        // Prepare data items unique to containers
         if (actorData.type === 'container') {
-            this._prepareBaseContainerData(actorData);
-            return;
+            data.capacity.value = data.totalWeight;
+            data.capacity.pct = Math.round(((data.capacity.max - data.capacity.value) / (data.capacity.max || 1)) * 100);
+            data.capacity.pct = Math.max(Math.min(data.capacity.pct, 100), 0);  // ensure value is between 0 and 100 inclusive)
         }
 
-        // Calculate endurance
-        if (!data.hasCondition) {
-            data.endurance = Math.round((data.abilities.strength.base + data.abilities.stamina.base +
-                data.abilities.will.base) / 3);    
-        }
+        // Calculate endurance (in case Condition not present)
+        data.endurance = Math.round((data.abilities.strength.base + data.abilities.stamina.base +
+            data.abilities.will.base) / 3);    
+
+        // Calculate values based on items
+        items.forEach(it => {
+            const itemData = it.data;
+            if (itemData.type === 'injury') {
+                // Calculate total injury levels
+                data.totalInjuryLevels += it.data.data.injuryLevel || 0;
+            } else if (itemData.type === 'skill' && itemData.name.toLowerCase() === 'condition') {
+                // if Condition skill is present, use that for endurance instead
+                data.endurance = Math.round((itemData.data.masteryLevel || 0) / 5);
+            }
+        });
 
         // Safety net: We divide things by endurance, so ensure it is > 0
-        data.endurance = Math.max(data.endurance || 1, 1);
+        data.endurance = Math.max(data.endurance, 1);
 
         data.encumbrance = Math.floor(data.totalWeight / data.endurance);
 
@@ -155,39 +204,17 @@ export class HarnMasterActor extends Actor {
         eph.will = data.abilities.will.base;
         eph.aura = data.abilities.aura.base;
         eph.morality = data.abilities.morality.base;
-        eph.comliness = data.abilities.comliness.base;
+        eph.comeliness = data.abilities.comeliness.base;
         eph.totalInjuryLevels = data.totalInjuryLevels;
     
         eph.meleeAMLMod = 0;
         eph.meleeDMLMod = 0;
         eph.missileAMLMod = 0;
-
-        // Make separate methods for each Actor type (character, npc, etc.) to keep
-        // things organized.
-        if (actorData.type === 'character') {
-            this._prepareBaseCharacterData(actorData);
-        } else if (actorData.type === 'creature') {
-            this._prepareBaseCreatureData(actorData);
-        }
-    }
-
-    _prepareBaseCharacterData(actorData) {
-    }
-
-    _prepareBaseCreatureData(actorData) {
-    }
-
-    _prepareBaseContainerData(actorData) {
-        actorData.data.capacity.pct = Math.max(Math.round(1 - (actorData.data.eph.totalGearWeight / (actorData.data.capacity.max || 1))), 0);
-    }
+   }
 
     /** 
      * Perform data preparation after Items preparation and Active Effects have
      * been applied.
-     * 
-     * At this point the Actor.items map is guaranteed to be availabile, consisting
-     * of real Items.  It is preferable for this method to use those items at this
-     * point (unlike the situation with prepareBaseData()).
      * 
      * Note that all Active Effects have already been applied by this point, so
      * nothing in this method will be affected further by Active Effects.
@@ -199,7 +226,7 @@ export class HarnMasterActor extends Actor {
         const data = actorData.data;
 
         const eph = data.eph;
-
+        
         this._calcGearWeightTotals();
 
         if (actorData.type === 'container') {
@@ -224,9 +251,6 @@ export class HarnMasterActor extends Actor {
         data.physicalPenalty = Math.max((data.universalPenalty + data.encumbrance) || 0, 0);
 
         data.shockIndex.value = HarnMasterActor._normProb(data.endurance, data.universalPenalty * 3.5, data.universalPenalty);
-        if (canvas) this.getActiveTokens().forEach(token => {
-            if (token.bars) token._onUpdateBarAttributes(this.data, { "shockIndex.value": data.shockIndex.value });
-        });
 
         // Calculate current Move speed.  Cannot go below 0
         // HEURISTIC: Assume if base move < 25 that user is specifying hexes for movement (use PP as penalty);
@@ -269,6 +293,53 @@ export class HarnMasterActor extends Actor {
         return;
     }
 
+    /**
+     * Calculate the total weight of all gear carried
+     */
+    calcTotalGearWeight() {
+        const items = this.data.items;
+        const data = this.data.data;
+
+        // If not the owner of this actor, then this method is useless
+        if (!this.isOwner) return;
+
+        // check to ensure items are available
+        if (!items) return;
+
+        // Find all containergear, and track whether container is carried or not
+        const containerCarried = {};
+        items.forEach(it => {
+            if (it.data.type === 'containergear') {
+                containerCarried[it.id] = it.data.data.isCarried;
+            }
+        });
+
+        let totalWeight = 0;
+        items.forEach(it => {
+            const itemData = it.data;
+            if (itemData.type.endsWith('gear')) {
+                // If gear is on-person, then check the carried flag to determine
+                // whether the gear is carried. Otherwise, it must be in a container,
+                // so check whether the container is carried.
+                if (itemData.data.container === 'on-person') {
+                    if (itemData.data.isCarried) {
+                        totalWeight += itemData.data.weight * itemData.data.quantity;
+                    }
+                } else {
+                    if (containerCarried[itemData.data.container]) {
+                        totalWeight += itemData.data.weight * itemData.data.quantity;
+                    }
+                }
+            }
+        });
+
+        // Normalize weight to two decimal points
+        totalWeight = Math.round((totalWeight + Number.EPSILON) * 100) / 100;
+
+        data.totalWeight = totalWeight;
+
+        return;
+    }
 
     /**
      * Calculate the weight of the gear. Note that this is somewhat redundant
@@ -294,12 +365,15 @@ export class HarnMasterActor extends Actor {
         this.items.forEach(it => {
             const itemData = it.data;
             const data = itemData.data;
+            
+            tempWeight = 0;
+            
             if (itemData.type.endsWith('gear')) {
                 // If the gear is inside of a container, then the "carried"
                 // flag is inherited from the container.
                 if (data.container && data.container !== 'on-person') {
-                    const container = this.data.items.find(i => i._id === data.container);
-                    if (container) data.isCarried = container.data.isCarried;
+                    const container = this.data.items.find(i => i.id === data.container);
+                    if (container) data.isCarried = container.data.data.isCarried;
                 }
             }
 
@@ -338,8 +412,14 @@ export class HarnMasterActor extends Actor {
                 const cid = data.container;
                 if (cid && cid != 'on-person') {
                     const container = this.items.get(cid);
-                    if (container) container.data.data.capacity.value = 
-                        Math.round((container.data.data.capacity.value + tempWeight + Number.EPSILON) * 100) / 100;
+                    if (container) {
+                        container.data.data.capacity.value = 
+                            Math.round((container.data.data.capacity.value + tempWeight + Number.EPSILON) * 100) / 100;
+                    } else {
+                        // If container is set and is not 'on-person', but if we can't find the container,
+                        // move the item back to 'on-person'.
+                        data.container = 'on-person';
+                    }
                 }
             }
         });
@@ -354,29 +434,6 @@ export class HarnMasterActor extends Actor {
 
         eph.totalGearWeight = eph.totalWeaponWeight + eph.totalMissileWeight + eph.totalArmorWeight + eph.totalMiscGearWeight;
         eph.totalGearWeight = Math.round((eph.totalGearWeight + Number.EPSILON) * 100) / 100;
-    }
-
-
-    /**
-     * Prepare Container type specific data
-     */
-    _prepareBaseContainerData(actorData) {
-        const data = actorData.data;
-        if (data.description === '***INIT***') {
-            data.description = '';
-            data.biography = '';
-        }
-
-        // Calculate container current capacity utilized
-        const tempData = {};
-        // TODO! -- this._calcGearWeightTotals(tempData);
-        data.capacity.value = tempData.totalGearWeight;
-        data.capacity.max = data.capacity.max || 1;
-        data.capacity.pct = Math.round((Math.max(data.capacity.max - data.capacity.value, 0) / data.capacity.max) * 100);
-    }
-
-    _prepareDerivedContainerData(actorData) {
-
     }
 
     _setupEffectiveAbilities(data) {
@@ -398,7 +455,7 @@ export class HarnMasterActor extends Actor {
         data.abilities.will.effective = Math.max(Math.round(eph.will + Number.EPSILON) - data.universalPenalty, 0);
 
         // Not affected by any penalties
-        data.abilities.comliness.effective = Math.max(Math.round(eph.comliness + Number.EPSILON), 0);
+        data.abilities.comeliness.effective = Math.max(Math.round(eph.comeliness + Number.EPSILON), 0);
         data.abilities.morality.effective = Math.max(Math.round(eph.morality + Number.EPSILON), 0);
     }
 
@@ -590,18 +647,6 @@ export class HarnMasterActor extends Actor {
         });
     }
 
-    /** @override */
-    _onDeleteEmbeddedEntity(embeddedName, child, options, userId) {
-        if (embeddedName === "OwnedItem") {
-            const item = this.getOwnedItem(child._id);
-            if (["physicalskill", "commskill", "combatskill", "craftskill", "magicskill", "ritualskill"].includes(item.type)) {
-                this.items.delete(item.id);
-            } else {
-                super._onDeleteEmbeddedEntity(embeddedName, child, options, userId)
-            }
-        }
-    }
-
     static _normalcdf(x) {
         var t = 1 / (1 + .2316419 * Math.abs(x));
         var d = .3989423 * Math.exp(-x * x / 2);
@@ -756,16 +801,16 @@ export class HarnMasterActor extends Actor {
      * 
      * @override 
      */
-    _onUpdate(data, options, userId, context) {
-        // Ensure we process the changes first, so the Actor.items map gets updated
-        const result = super._onUpdate(data, options, userId, context);
+    // _onUpdate(data, options, userId, context) {
+    //     // Ensure we process the changes first, so the Actor.items map gets updated
+    //     const result = super._onUpdate(data, options, userId, context);
 
-        // Now handle any actor updates if any embedded items were changed
-        if (data.items) {
-            this.handleRefreshItems();
-        }
-        return result;
-    }
+    //     // Now handle any actor updates if any embedded items were changed
+    //     if (data.items) {
+    //         this.calcTotalGearWeight();
+    //     }
+    //     return result;
+    // }
 
     /**
      * If the actor is either a linked actor for a token, or not associated with a token
@@ -773,222 +818,17 @@ export class HarnMasterActor extends Actor {
      * 
      * @override 
      */
-    _onModifyEmbeddedEntity(embeddedName, changes, options, userId, context={}) {
-        // The Actor.items map should already be updated, so process actor updates
-        if (embeddedName === 'OwnedItem') {
-            this.handleRefreshItems().then(() => {
-                return super._onModifyEmbeddedEntity(embeddedName, changes, options, userId, context);
-            });
-            return;
-        }
+    // _onModifyEmbeddedEntity(embeddedName, changes, options, userId, context={}) {
+    //     // The Actor.items map should already be updated, so process actor updates
+    //     if (embeddedName === 'Item') {
+    //         this.calcTotalGearWeight().then(() => {
+    //             return super._onModifyEmbeddedEntity(embeddedName, changes, options, userId, context);
+    //         });
+    //         return;
+    //     }
 
-        return super._onModifyEmbeddedEntity(embeddedName, changes, options, userId, context);
-    }
-
-    handleRefreshItems() {
-        // If not the owner of this actor, then this method is useless
-        if (!this.owner) return;
-        
-        const updateData = {
-            'data.hasCondition': false
-        };
-
-        // Find all containergear, and track whether container is carried or not
-        const containerCarried = {};
-        this._data.items.forEach(itemData => {
-            if (itemData.type === 'containergear') {
-                containerCarried[itemData._id] = itemData.data.isCarried;
-            }
-        });
-
-        let totalIL = 0;
-        let totalWeight = 0;
-        this._data.items.forEach(itemData => {
-            if (itemData.type === 'skill') {
-                // Handle setting Endurance based on Condition skill
-                if (itemData.name.toLowerCase() === 'condition') {
-                    updateData['data.hasCondition'] = true;
-                    updateData['data.endurance'] = Math.round((itemData.data.masteryLevel || 0) / 5);
-                }
-            } else if (itemData.type === 'injury') {
-                totalIL += itemData.data.injuryLevel || 0;
-            } else if (itemData.type.endsWith('gear')) {
-                // If gear is on-person, then check the carried flag to determine
-                // whether the gear is carried. Otherwise, it must be in a container,
-                // so check whether the container is carried.
-                if (itemData.data.container === 'on-person') {
-                    if (itemData.data.isCarried) {
-                        totalWeight += itemData.data.weight * itemData.data.quantity;
-                    }
-                } else {
-                    if (containerCarried[itemData.data.container]) {
-                        totalWeight += itemData.data.weight * itemData.data.quantity;
-                    }
-                }
-            }
-        });
-
-        // Normalize weight to two decimal points
-        totalWeight = Math.round((totalWeight + Number.EPSILON) * 100) / 100;
-
-        updateData['data.totalWeight'] = totalWeight;
-        updateData['data.totalInjuryLevels'] = totalIL;
-
-        return this.update(updateData);
-    }
-
-    static async _createDefaultCharacterSkills(data) {
-        let itemData;
-
-        const physicalSkills = await game.packs.find(p => p.collection === `hm3.std-skills-physical`).getContent();
-        itemData = duplicate(physicalSkills.find(i => i.name === 'Climbing'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = duplicate(physicalSkills.find(i => i.name === 'Jumping'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = duplicate(physicalSkills.find(i => i.name === 'Stealth'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = duplicate(physicalSkills.find(i => i.name === 'Throwing'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-
-        const commSkills = await game.packs.find(p => p.collection === `hm3.std-skills-communication`).getContent();
-        itemData = duplicate(commSkills.find(i => i.name === 'Awareness'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = duplicate(commSkills.find(i => i.name === 'Intrigue'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = duplicate(commSkills.find(i => i.name === 'Oratory'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = duplicate(commSkills.find(i => i.name === 'Rhetoric'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = duplicate(commSkills.find(i => i.name === 'Singing'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-
-        const combatSkills = await game.packs.find(p => p.collection === `hm3.std-skills-combat`).getContent();
-        itemData = duplicate(combatSkills.find(i => i.name === 'Initiative'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = duplicate(combatSkills.find(i => i.name === 'Unarmed'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = duplicate(combatSkills.find(i => i.name === 'Dodge'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-    }
-
-    static async _createDefaultCreatureSkills(data) {
-        let itemData;
-
-        const combatSkills = await game.packs.find(p => p.collection === `hm3.std-skills-combat`).getContent();
-        itemData = duplicate(combatSkills.find(i => i.name === 'Initiative'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = duplicate(combatSkills.find(i => i.name === 'Unarmed'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-        itemData = duplicate(combatSkills.find(i => i.name === 'Dodge'));
-        data.items.push(new Item({ name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data }).data);
-    }
-
-    static _createDefaultHumanoidLocations(data) {
-        let armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Skull'])
-        data.items.push((new Item({ name: 'Skull', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Face'])
-        data.items.push((new Item({ name: 'Face', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Neck'])
-        data.items.push((new Item({ name: 'Neck', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Shoulder'])
-        data.items.push((new Item({ name: 'Left Shoulder', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Shoulder'])
-        data.items.push((new Item({ name: 'Right Shoulder', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Upper Arm'])
-        data.items.push((new Item({ name: 'Left Upper Arm', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Upper Arm'])
-        data.items.push((new Item({ name: 'Right Upper Arm', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Elbow'])
-        data.items.push((new Item({ name: 'Left Elbow', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Elbow'])
-        data.items.push((new Item({ name: 'Right Elbow', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Forearm'])
-        data.items.push((new Item({ name: 'Left Forearm', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Forearm'])
-        data.items.push((new Item({ name: 'Right Forearm', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Hand'])
-        data.items.push((new Item({ name: 'Left Hand', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Hand'])
-        data.items.push((new Item({ name: 'Right Hand', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Thorax'])
-        data.items.push((new Item({ name: 'Thorax', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Abdomen'])
-        data.items.push((new Item({ name: 'Abdomen', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Groin'])
-        data.items.push((new Item({ name: 'Groin', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Hip'])
-        data.items.push((new Item({ name: 'Left Hip', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Hip'])
-        data.items.push((new Item({ name: 'Right Hip', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Thigh'])
-        data.items.push((new Item({ name: 'Left Thigh', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Thigh'])
-        data.items.push((new Item({ name: 'Right Thigh', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Knee'])
-        data.items.push((new Item({ name: 'Left Knee', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Knee'])
-        data.items.push((new Item({ name: 'Right Knee', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Calf'])
-        data.items.push((new Item({ name: 'Left Calf', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Calf'])
-        data.items.push((new Item({ name: 'Right Calf', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Foot'])
-        data.items.push((new Item({ name: 'Left Foot', type: 'armorlocation', data: armorLocationData })).data);
-        armorLocationData = {};
-        mergeObject(armorLocationData, game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations['Foot'])
-        data.items.push((new Item({ name: 'Right Foot', type: 'armorlocation', data: armorLocationData })).data);
-    }
+    //     return super._onModifyEmbeddedEntity(embeddedName, changes, options, userId, context);
+    // }
 
 }
 
