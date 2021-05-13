@@ -102,7 +102,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     /** @override */
     _onSortItem(event, itemData) {
 
-        // TODO - for now, don't allow sorting for Token Actor overrides
+        // TODO - for now, don't allow sorting for Synthetic Actors
         if (this.actor.isToken) return;
 
         if (!itemData.type.endsWith('gear')) return super._onSortItem(event, itemData);
@@ -110,7 +110,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Get the drag source and its siblings
         const source = this.actor.items.get(itemData._id);
         const siblings = this.actor.items.filter(i => {
-            return (i.data.type.endsWith('gear') && (i.data._id !== source.data._id));
+            return (i.type.endsWith('gear') && 
+                (i.id !== source.id));
         });
 
         // Get the drop target
@@ -130,7 +131,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         });
 
         // Perform the update
-        return this.actor.updateEmbeddedDocuments("Item", [updateData]);
+        return this.actor.updateEmbeddedDocuments("Item", updateData);
     }
 
     /** @override */
@@ -141,21 +142,44 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         const closestContainer = event.target.closest('[data-container-id]');
         const destContainer = closestContainer && closestContainer.dataset && closestContainer.dataset.containerId ? closestContainer.dataset.containerId : 'on-person';
 
-        if (data.actorId === this.actor.id) {
-            // We are dropping from the same actor
-
-            // If the item is some type of gear (other than containergear), then
-            // make sure we set the container to the same as the dropped location
-            // (this allows people to move items into containers easily)
-            const item = await Item.fromDropData(data);
-            if (item.data.type.endsWith('gear') && item.data.type !== 'containergear') {
-                if (item.data.data.container != destContainer) {
-                    const embItem = this.actor.items.get(item.id);
-                    await embItem.update({'data.container': destContainer });
+        if (data.tokenId) {  // source is a Token synthetic actor
+            if (this.actor.isToken) { // this is a token synthetic actor
+                if (this?.actor?.token?.id === data.tokenId) {
+                    // We are dropping from the same synthetic actor (tokens are the same)
+    
+                    // If the item is some type of gear (other than containergear), then
+                    // make sure we set the container to the same as the dropped location
+                    // (this allows people to move items into containers easily)
+                    const item = await Item.fromDropData(data);
+                    if (item.type.endsWith('gear') && item.type !== 'containergear') {
+                        if (item.data.data.container != destContainer) {
+                            const embItem = this.actor.items.get(item.id);
+                            await embItem.update({'data.container': destContainer });
+                        }
+                    }
+    
+                    return super._onDropItem(event, data);
                 }
             }
-
-            return super._onDropItem(event, data);
+        } else {  // source is a real actor
+            if (!this.actor.isToken) {  // this is a real actor
+                if (data.actorId === this.actor.id) {
+                    // We are dropping from the same actor
+    
+                    // If the item is some type of gear (other than containergear), then
+                    // make sure we set the container to the same as the dropped location
+                    // (this allows people to move items into containers easily)
+                    const item = await Item.fromDropData(data);
+                    if (item.data.type.endsWith('gear') && item.data.type !== 'containergear') {
+                        if (item.data.data.container != destContainer) {
+                            const embItem = this.actor.items.get(item.id);
+                            await embItem.update({'data.container': destContainer });
+                        }
+                    }
+    
+                    return super._onDropItem(event, data);
+                }    
+            }
         }
 
         // NOTE: when an item comes from the item list or a compendium, its type is
@@ -193,8 +217,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
     async _moveContainer(event, data) {
         // create new container
-        const item = await Item.fromDropData(data);
-        let itemData = foundry.utils.deepClone(item.data);
+        const itemData = data.data;
 
         // Get source actor
         let sourceActor = null;
@@ -219,12 +242,13 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // move all items into new container
         let failure = false;
         for (let it of sourceActor.items.values()) {
-            if (!failure && it.data.data.container === item.id) {
-                itemData = foundry.utils.deepClone(it.data);
-                itemData.data.container = containerResult.id;
-                const result = await Item.create(itemData, {parent: this.actor});
+            if (!failure && it.data.data.container === itemData._id) {
+                const itData = it.toJSON();
+                delete itData._id;
+                itData.data.container = containerResult.id;
+                const result = await Item.create(itData, {parent: this.actor});
                 if (result) {
-                    await Item.delete(it.id);
+                    await Item.deleteDocuments([it.id], {parent: sourceActor});
                 } else {
                     failure = true;
                 }
@@ -237,8 +261,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         }
 
         // delete old container
-        const delItem = sourceActor.items.get(data.data._id);
-        await delItem.delete();
+        await Item.deleteDocuments([data.data._id], {parent: sourceActor});
         return containerResult;
     }
 
@@ -323,8 +346,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             await result.update({ 'data.quantity': newTargetQuantity });
         } else {
             // Create an item
-            const item = await Item.fromDropData(data);
-            const itemData = foundry.utils.deepClone(item.data);
+            const itemData = data.data;
             itemData.data.quantity = moveQuantity;
             itemData.data.container = 'on-person';
             result = await Item.create(itemData, {parent: this.actor});
@@ -332,8 +354,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         if (result) {
             if (moveQuantity >= data.data.data.quantity) {
-                const delItem = sourceActor.items.get(data.data._id);
-                await delItem.delete();
+                await Item.deleteDocuments([data.data._id], {parent: sourceActor});
             } else {
                 const newSourceQuantity = sourceQuantity - moveQuantity;
                 const sourceItem = await sourceActor.items.get(data.data._id);
@@ -656,8 +677,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 deleteItems.push(itemId);  // ensure we delete the container last
 
                 for (let it of deleteItems) {
-                    const delItem = this.actor.items.get(it);
-                    await delItem.delete();
+                    await Item.deleteDocuments([it], {parent: this.actor});
                     li.slideUp(200, () => this.render(false));
                 }
             }
@@ -912,7 +932,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         }
 
         // Bring up edit dialog to complete creating item
-        const item = this.actor.items.get(result[0].id);
+        const item = this.actor.items.get(result.id);
         item.sheet.render(true);
 
         return result;
