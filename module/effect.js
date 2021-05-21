@@ -49,7 +49,7 @@ export async function onManageActiveEffect(event, owner) {
                         aeData['duration.rounds'] = 1;
                         aeData['duration.turns'] = 0;
                     }
-                    return ActiveEffect.create(aeData, owner).create();
+                    return ActiveEffect.create(aeData, {parent: owner});
                 },
                 options: { jQuery: false }
             });
