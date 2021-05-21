@@ -210,6 +210,13 @@ export class HarnMasterActor extends Actor {
         eph.meleeAMLMod = 0;
         eph.meleeDMLMod = 0;
         eph.missileAMLMod = 0;
+        eph.commSkillsMod = 0;
+        eph.physicalSkillsMod = 0;
+        eph.combatSkillsMod = 0;
+        eph.craftSkillsMod = 0;
+        eph.ritualSkillsMod = 0;
+        eph.magicSkillsMod = 0;
+        eph.psionicTalentsMod = 0;
    }
 
     /** 
@@ -247,8 +254,13 @@ export class HarnMasterActor extends Actor {
         // Universal Penalty and Physical Penalty are used to calculate many
         // things, including effectiveMasteryLevel for all skills,
         // endurance, move, etc.
-        data.universalPenalty = Math.max((eph.totalInjuryLevels + eph.fatigue) || 0, 0);
-        data.physicalPenalty = Math.max((data.universalPenalty + data.encumbrance) || 0, 0);
+        data.universalPenalty = eph.totalInjuryLevels + eph.fatigue;
+        this.applySpecificActiveEffect('data.universalPenalty');
+        data.universalPenalty = Math.floor(Math.max(data.universalPenalty || 0, 0));
+
+        data.physicalPenalty = data.universalPenalty + data.encumbrance;
+        this.applySpecificActiveEffect('data.physicalPenalty');
+        data.physicalPenalty = Math.floor(Math.max(data.physicalPenalty || 0, 0));
 
         data.shockIndex.value = HarnMasterActor._normProb(data.endurance, data.universalPenalty * 3.5, data.universalPenalty);
 
@@ -269,6 +281,12 @@ export class HarnMasterActor extends Actor {
         // Process all the final post activities for Items
         this.items.forEach(it => {
             it.prepareDerivedData();
+
+            // If a skill, apply the specific active effect to modify
+            // the EML
+            if (['skill', 'psionic'].includes(it.data.type)) {
+                this.applySkillActiveEffect(it);
+            }
         });
 
         // Calculate spell effective mastery level values
@@ -791,6 +809,71 @@ export class HarnMasterActor extends Actor {
         }
 
         button.disabled = false;
+    }
+
+    applySpecificActiveEffect(property) {
+        const overrides = {};
+
+        // Organize non-disabled effects by their application priority
+        const changes = this.effects.reduce((chgs, e) => {
+          if ( e.data.disabled) return chgs;
+          if ( e.data.changes.key !== property) return chgs;
+          return chgs.concat(e.data.changes.map(c => {
+            c = foundry.utils.duplicate(c);
+            c.effect = e;
+            c.priority = c.priority ?? (c.mode * 10);
+            return c;
+          }));
+        }, []);
+        changes.sort((a, b) => a.priority - b.priority);
+    
+        // Apply all changes
+        for ( let change of changes ) {
+          const result = change.effect.apply(this, change);
+          if ( result !== null ) overrides[change.key] = result;
+        }
+    
+        // Expand the set of final overrides
+        mergeObject(this.overrides, foundry.utils.expandObject(overrides));
+    }
+
+    applySkillActiveEffect(skill) {
+        const overrides = {};
+
+        // Organize non-disabled effects by their application priority
+        const changes = this.effects.reduce((chgs, e) => {
+            if (e.data.disabled) return chgs;
+            if (!['skill', 'psionic'].includes(skill.data.type)) return chgs;
+            if (e.data.changes.key === 'data.eph.commSkillMod' && skill.data.data.type === 'Communication') {
+                e.data.changes.key = 'data.effectiveMasteryLevel';
+            } else if (e.data.changes.key === 'data.eph.physicalSkillMod' && skill.data.data.type === 'Physical') {
+                e.data.changes.key = 'data.effectiveMasteryLevel';
+            } else if (e.data.changes.key === 'data.eph.combatSkillMod' && skill.data.data.type === 'Combat') {
+                e.data.changes.key = 'data.effectiveMasteryLevel';
+            } else if (e.data.changes.key === 'data.eph.craftSkillMod' && skill.data.data.type === 'Craft') {
+                e.data.changes.key = 'data.effectiveMasteryLevel';
+            } else if (e.data.changes.key === 'data.eph.ritualSkillMod' && skill.data.data.type === 'Ritual') {
+                e.data.changes.key = 'data.effectiveMasteryLevel';
+            } else if (e.data.changes.key === 'data.eph.magicSkillMod' && skill.data.data.type === 'Magic') {
+                e.data.changes.key = 'data.effectiveMasteryLevel';
+            } else if (e.data.changes.key === 'data.eph.psionicTalentlMod' && skill.data.type === 'psionic') {
+                e.data.changes.key = 'data.effectiveMasteryLevel';
+            } else {
+                return chgs;
+            }
+            return chgs.concat(e.data.changes.map(c => {
+                c = foundry.utils.duplicate(c);
+                c.effect = e;
+                c.priority = c.priority ?? (c.mode * 10);
+                return c;
+            }));
+        }, []);
+        changes.sort((a, b) => a.priority - b.priority);
+
+        // Apply all changes
+        for (let change of changes) {
+            change.effect.apply(skill, change);
+        }
     }
 
     /**
