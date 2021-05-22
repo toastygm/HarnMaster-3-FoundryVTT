@@ -830,8 +830,8 @@ export class HarnMasterActor extends Actor {
         // Organize non-disabled effects by their application priority
         const changes = this.effects.reduce((chgs, e) => {
           if ( e.data.disabled) return chgs;
-          if ( e.data.changes.key !== property) return chgs;
-          return chgs.concat(e.data.changes.map(c => {
+          const chgList = e.data.changes.filter(chg => chg.key === property);
+          return chgs.concat(chgList.map(c => {
             c = foundry.utils.duplicate(c);
             c.effect = e;
             c.priority = c.priority ?? (c.mode * 10);
@@ -851,31 +851,21 @@ export class HarnMasterActor extends Actor {
     }
 
     applySkillActiveEffect(skill) {
-        const overrides = {};
-
         // Organize non-disabled effects by their application priority
         const changes = this.effects.reduce((chgs, e) => {
             if (e.data.disabled) return chgs;
             if (!['skill', 'psionic'].includes(skill.data.type)) return chgs;
-            if (e.data.changes.key === 'data.eph.commSkillMod' && skill.data.data.type === 'Communication') {
-                e.data.changes.key = 'data.effectiveMasteryLevel';
-            } else if (e.data.changes.key === 'data.eph.physicalSkillMod' && skill.data.data.type === 'Physical') {
-                e.data.changes.key = 'data.effectiveMasteryLevel';
-            } else if (e.data.changes.key === 'data.eph.combatSkillMod' && skill.data.data.type === 'Combat') {
-                e.data.changes.key = 'data.effectiveMasteryLevel';
-            } else if (e.data.changes.key === 'data.eph.craftSkillMod' && skill.data.data.type === 'Craft') {
-                e.data.changes.key = 'data.effectiveMasteryLevel';
-            } else if (e.data.changes.key === 'data.eph.ritualSkillMod' && skill.data.data.type === 'Ritual') {
-                e.data.changes.key = 'data.effectiveMasteryLevel';
-            } else if (e.data.changes.key === 'data.eph.magicSkillMod' && skill.data.data.type === 'Magic') {
-                e.data.changes.key = 'data.effectiveMasteryLevel';
-            } else if (e.data.changes.key === 'data.eph.psionicTalentlMod' && skill.data.type === 'psionic') {
-                e.data.changes.key = 'data.effectiveMasteryLevel';
-            } else {
-                return chgs;
-            }
-            return chgs.concat(e.data.changes.map(c => {
+            const skillChanges = e.data.changes.filter(chg => 
+                (chg.key === 'data.eph.commSkillsMod' && skill.data.data.type === 'Communication') ||
+                (chg.key === 'data.eph.physicalSkillsMod' && skill.data.data.type === 'Physical') ||
+                (chg.key === 'data.eph.combatSkillsMod' && skill.data.data.type === 'Combat') ||
+                (chg.key === 'data.eph.craftSkillsMod' && skill.data.data.type === 'Craft') ||
+                (chg.key === 'data.eph.ritualSkillsMod' && skill.data.data.type === 'Ritual') ||
+                (chg.key === 'data.eph.magicSkillsMod' && skill.data.data.type === 'Magic') ||
+                (chg.key === 'data.eph.psionicTalentsMod' && skill.data.type === 'psionic'));
+            return chgs.concat(skillChanges.map(c => {
                 c = foundry.utils.duplicate(c);
+                c.key = 'data.effectiveMasteryLevel';
                 c.effect = e;
                 c.priority = c.priority ?? (c.mode * 10);
                 return c;
