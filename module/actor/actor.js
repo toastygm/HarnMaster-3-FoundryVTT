@@ -10,6 +10,7 @@ import { HarnMasterBaseActorSheet } from './base-actor-sheet.js';
  */
 export class HarnMasterActor extends Actor {
 
+    /** @override */
     async _preCreate(createData, options, user) {
         await super._preCreate(createData, options, user);
 
@@ -20,10 +21,34 @@ export class HarnMasterActor extends Actor {
             updateData['data.description'] = '<table style=\"user-select: text; width: 95%; color: #191813; font-size: 13px;\" border=\"1\">\n<tbody style=\"box-sizing: border-box; user-select: text;\">\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Apparent Age</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Culture</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\"></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Social Class</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\"><span style=\"box-sizing: border-box; user-select: text;\"></span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Height</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Frame</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Weight</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Appearance/Comeliness</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Hair Color</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Eye Color</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 16px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 16px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Voice</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 16px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong>Obvious Medical Traits</strong><span style=\"box-sizing: border-box; user-select: text;\"><br style=\"box-sizing: border-box; user-select: text;\" /></span></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\"><span style=\"box-sizing: border-box; user-select: text;\">&nbsp;</span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong>Apparent Occupation</strong><span style=\"box-sizing: border-box; user-select: text;\"><br style=\"box-sizing: border-box; user-select: text;\" /></span></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\"><span style=\"box-sizing: border-box; user-select: text;\">&nbsp;</span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong>Apparent Wealth</strong><span style=\"box-sizing: border-box; user-select: text;\"><br style=\"box-sizing: border-box; user-select: text;\" /></span></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\"><span style=\"box-sizing: border-box; user-select: text;\">&nbsp;</span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong>Weapons</strong><span style=\"box-sizing: border-box; user-select: text;\"><br style=\"box-sizing: border-box; user-select: text;\" /></span></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\"><span style=\"box-sizing: border-box; user-select: text;\">&nbsp;</span></td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Armour</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Companions</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\">&nbsp;</td>\n</tr>\n<tr style=\"box-sizing: border-box; user-select: text; height: 23px;\">\n<td style=\"box-sizing: border-box; user-select: text; width: 143.2px; height: 23px;\"><strong><span style=\"box-sizing: border-box; user-select: text;\">Other obvious features</span></strong></td>\n<td style=\"box-sizing: border-box; user-select: text; width: 365.6px; height: 23px;\">&nbsp;</td>\n</tr>\n</tbody>\n</table>\n<p>&nbsp;</p>\n<p>&nbsp;</p>';
             updateData['data.biography'] = '<h1>Data</h1>\n<table style=\"width: 95%;\" border=\"1\">\n<tbody>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Birthdate</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Birthplace</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Sibling Rank</strong></td>\n<td style=\"width: 432px;\">x of y</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Parent(s)</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Parent Occupation</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Estrangement</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Clanhead</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Medical Traits</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Psyche Traits</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n</tbody>\n</table>\n<h1>Life Story</h1>';
             updateData['data.bioImage'] = 'systems/hm3/images/svg/knight-silhouette.svg';
+            updateData.items = [];
+
+            // Add standard skills
+            await this._addItemsFromPack(
+                ['Climbing', 'Jumping', 'Stealth', 'Throwing'],
+                'hm3.std-skills-physical', updateData.items);
+            await this._addItemsFromPack(
+                ['Awareness', 'Intrigue', 'Oratory', 'Rhetoric', 'Singing'],
+                'hm3.std-skills-communication', updateData.items);
+            await this._addItemsFromPack(
+                ['Initiative', 'Unarmed', 'Dodge'],
+                'hm3.std-skills-combat', updateData.items);
+
+            // Add standard armor locations
+            HarnMasterActor._createDefaultHumanoidLocations(updateData.items);
         } else if (createData.type === 'creature') {
             updateData['data.description'] = '';
             updateData['data.biography'] = '<h1>Data</h1>\n<table style=\"width: 95%;\" border=\"1\">\n<tbody>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Habitat</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Height</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Weight</strong></td>\n<td style=\"width: 432px;\"></td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Diet</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Lifespan</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Group</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n</tbody>\n</table>\n<h1>Special Abilities</h1>\n<p>Describe any special abilities.</p>\n<h1>Attacks</h1>\n<p>Describe methods of attack.</p>\n<h1>Behavior</h1>\n<p>Describe behavioral aspects.</p>';
             updateData['data.bioImage'] = 'systems/hm3/images/svg/monster-silhouette.svg';
+            updateData.items = [];
+
+            // Add standard skills
+            await this._addItemsFromPack(
+                ['Awareness'],
+                'hm3.hm3.std-skills-communication', updateData.items);
+            await this._addItemsFromPack(
+                ['Initiative', 'Unarmed', 'Dodge'],
+                'hm3.hm3.std-skills-combat', updateData.items);
         } else if (createData.type === 'container') {
             updateData['data.capacity.max'] = 1;
             updateData['data.description'] = '';
@@ -33,86 +58,74 @@ export class HarnMasterActor extends Actor {
         this.data.update(updateData);
     }
 
-    _onCreate(data, options, userid) {
-        // After an Actor has been created, add default skills and armor locations
-        if (data.type === 'character') {
-            HarnMasterActor._createDefaultCharacterSkills(this);
-            HarnMasterActor._createDefaultHumanoidLocations(this);
-        } else if (data.type === 'creature') {
-            HarnMasterActor._createDefaultCreatureSkills(this);
-        }
-        super._onCreate(data, options, userid);
+    /**
+     * Add all of the items from a pack with the specified names
+     * @param {*} itemNames Array of item names to include
+     * @param {*} packName Name of compendium pack containing items
+     * @param {*} items array of ItemData elements to populate
+     */
+    async _addItemsFromPack(itemNames, packName, items) {
+        await game.packs
+            .get(packName)
+            .getDocuments()
+            .then((result) => {
+                let chain = Promise.resolve()
+                result.forEach(async (ability, index) => {
+                    chain = await chain.then(async () => {
+                        if (itemNames.includes(ability.name)) {
+                            items.push(ability.data);
+                        }
+                    });
+                });
+            });
     }
 
-    static async _copySkill(skillList, skillName, actor) {
-        const itemData = skillList.find(i => i.name === skillName);
-        if (!itemData) return null;
-        return Item.create({name: itemData.name, type: itemData.type, img: itemData.img, data: itemData.data.data}, {parent: actor});
-    }
-
-    static async _createDefaultCharacterSkills(actor) {
-        const physicalSkills = await game.packs.find(p => p.collection === `hm3.std-skills-physical`).getDocuments();
-        await HarnMasterActor._copySkill(physicalSkills, 'Climbing', actor);
-        await HarnMasterActor._copySkill(physicalSkills, 'Jumping', actor);
-        await HarnMasterActor._copySkill(physicalSkills, 'Stealth', actor);
-        await HarnMasterActor._copySkill(physicalSkills, 'Throwing', actor);
-
-        const commSkills = await game.packs.find(p => p.collection === `hm3.std-skills-communication`).getDocuments();
-        await HarnMasterActor._copySkill(commSkills, 'Awareness', actor);
-        await HarnMasterActor._copySkill(commSkills, 'Intrigue', actor);
-        await HarnMasterActor._copySkill(commSkills, 'Oratory', actor);
-        await HarnMasterActor._copySkill(commSkills, 'Rhetoric', actor);
-        await HarnMasterActor._copySkill(commSkills, 'Singing', actor);
-
-        const combatSkills = await game.packs.find(p => p.collection === `hm3.std-skills-combat`).getDocuments();
-        await HarnMasterActor._copySkill(combatSkills, 'Initiative', actor);
-        await HarnMasterActor._copySkill(combatSkills, 'Unarmed', actor);
-        await HarnMasterActor._copySkill(combatSkills, 'Dodge', actor);
-    }
-
-    static async _createDefaultCreatureSkills(actor) {
-        const commSkills = await game.packs.find(p => p.collection === `hm3.std-skills-communication`).getDocuments();
-        await HarnMasterActor._copySkill(commSkills, 'Awareness', actor);
-
-        const combatSkills = await game.packs.find(p => p.collection === `hm3.std-skills-combat`).getDocuments();
-        await HarnMasterActor._copySkill(combatSkills, 'Initiative', actor);
-        await HarnMasterActor._copySkill(combatSkills, 'Unarmed', actor);
-        await HarnMasterActor._copySkill(combatSkills, 'Dodge', actor);
-    }
-
-    static async _setupLocation(locName, templateName, actor) {
+    /**
+     * Create an armorlocation ItemData element
+     * 
+     * @param {*} locName Location Name
+     * @param {*} templateName Location Template Name
+     * @returns an armorlocation ItemData
+     */
+    static _setupLocation(locName, templateName) {
         const armorLocationData = foundry.utils.deepClone(game.system.model.Item.armorlocation);
         mergeObject(armorLocationData, HM3.injuryLocations[templateName])
-        return await Item.create({name: locName, type: 'armorlocation', data: armorLocationData}, {parent: actor});
+        return {name: locName, type: 'armorlocation', data: armorLocationData};
     }
 
-    static async _createDefaultHumanoidLocations(actor) {
-        await HarnMasterActor._setupLocation('Skull', 'Skull', actor);
-        await HarnMasterActor._setupLocation('Face', 'Face', actor);
-        await HarnMasterActor._setupLocation('Neck', 'Neck', actor);
-        await HarnMasterActor._setupLocation('Left Shoulder', 'Shoulder', actor);
-        await HarnMasterActor._setupLocation('Right Shoulder', 'Shoulder', actor);
-        await HarnMasterActor._setupLocation('Left Upper Arm', 'Upper Arm', actor);
-        await HarnMasterActor._setupLocation('Right Upper Arm', 'Upper Arm', actor);
-        await HarnMasterActor._setupLocation('Left Elbow', 'Elbow', actor);
-        await HarnMasterActor._setupLocation('Right Elbow', 'Elbow', actor);
-        await HarnMasterActor._setupLocation('Left Forearm', 'Forearm', actor);
-        await HarnMasterActor._setupLocation('Right Forearm', 'Forearm', actor);
-        await HarnMasterActor._setupLocation('Left Hand', 'Hand', actor);
-        await HarnMasterActor._setupLocation('Right Hand', 'Hand', actor);
-        await HarnMasterActor._setupLocation('Thorax', 'Thorax', actor);
-        await HarnMasterActor._setupLocation('Abdomen', 'Abdomen', actor);
-        await HarnMasterActor._setupLocation('Groin', 'Groin', actor);
-        await HarnMasterActor._setupLocation('Left Hip', 'Hip', actor);
-        await HarnMasterActor._setupLocation('Right Hip', 'Hip', actor);
-        await HarnMasterActor._setupLocation('Left Thigh', 'Thigh', actor);
-        await HarnMasterActor._setupLocation('Right Thigh', 'Thigh', actor);
-        await HarnMasterActor._setupLocation('Left Knee', 'Knee', actor);
-        await HarnMasterActor._setupLocation('Right Knee', 'Knee', actor);
-        await HarnMasterActor._setupLocation('Left Calf', 'Calf', actor);
-        await HarnMasterActor._setupLocation('Right Calf', 'Calf', actor);
-        await HarnMasterActor._setupLocation('Left Foot', 'Foot', actor);
-        await HarnMasterActor._setupLocation('Right Foot', 'Foot', actor);
+    /**
+     * Add armorlocation items to the items array for all of the locations for
+     * a humanoid
+     * 
+     * @param {*} items Array of ItemData elements
+     */
+    static _createDefaultHumanoidLocations(items) {
+        items.push(HarnMasterActor._setupLocation('Skull', 'Skull'));
+        items.push(HarnMasterActor._setupLocation('Face', 'Face'));
+        items.push(HarnMasterActor._setupLocation('Neck', 'Neck'));
+        items.push(HarnMasterActor._setupLocation('Left Shoulder', 'Shoulder'));
+        items.push(HarnMasterActor._setupLocation('Right Shoulder', 'Shoulder'));
+        items.push(HarnMasterActor._setupLocation('Left Upper Arm', 'Upper Arm'));
+        items.push(HarnMasterActor._setupLocation('Right Upper Arm', 'Upper Arm'));
+        items.push(HarnMasterActor._setupLocation('Left Elbow', 'Elbow'));
+        items.push(HarnMasterActor._setupLocation('Right Elbow', 'Elbow'));
+        items.push(HarnMasterActor._setupLocation('Left Forearm', 'Forearm'));
+        items.push(HarnMasterActor._setupLocation('Right Forearm', 'Forearm'));
+        items.push(HarnMasterActor._setupLocation('Left Hand', 'Hand'));
+        items.push(HarnMasterActor._setupLocation('Right Hand', 'Hand'));
+        items.push(HarnMasterActor._setupLocation('Thorax', 'Thorax'));
+        items.push(HarnMasterActor._setupLocation('Abdomen', 'Abdomen'));
+        items.push(HarnMasterActor._setupLocation('Groin', 'Groin'));
+        items.push(HarnMasterActor._setupLocation('Left Hip', 'Hip'));
+        items.push(HarnMasterActor._setupLocation('Right Hip', 'Hip'));
+        items.push(HarnMasterActor._setupLocation('Left Thigh', 'Thigh'));
+        items.push(HarnMasterActor._setupLocation('Right Thigh', 'Thigh'));
+        items.push(HarnMasterActor._setupLocation('Left Knee', 'Knee'));
+        items.push(HarnMasterActor._setupLocation('Right Knee', 'Knee'));
+        items.push(HarnMasterActor._setupLocation('Left Calf', 'Calf'));
+        items.push(HarnMasterActor._setupLocation('Right Calf', 'Calf'));
+        items.push(HarnMasterActor._setupLocation('Left Foot', 'Foot'));
+        items.push(HarnMasterActor._setupLocation('Right Foot', 'Foot'));
     }
 
     /**
