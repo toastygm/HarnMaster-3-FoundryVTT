@@ -164,11 +164,11 @@ export class HarnMasterItem extends Item {
             switch (data.type) {
                 case 'Combat':
                 case 'Physical':
-                    data.effectiveMasteryLevel = Math.max(data.masteryLevel - pctPhysPen, 5);
+                    data.effectiveMasteryLevel = data.masteryLevel - pctPhysPen;
                     break;
 
                 default:
-                    data.effectiveMasteryLevel = Math.max(data.masteryLevel - pctUnivPen, 5);
+                    data.effectiveMasteryLevel = data.masteryLevel - pctUnivPen;
 
             }
 
@@ -181,10 +181,10 @@ export class HarnMasterItem extends Item {
             }
         } else if (itemData.type === 'psionic') {
             if (!data.masteryLevel || data.masteryLevel < 0) data.masteryLevel = 0; 
-            data.effectiveMasteryLevel = Math.max(data.masteryLevel - pctUnivPen, 5);
+            data.effectiveMasteryLevel = data.masteryLevel - pctUnivPen;
         } else if (itemData.type === 'injury') {
             // Just make sure if injuryLevel is negative, we set it to zero
-            if (!data.injuryLevel || data.injuryLevel < 0) data.injuryLevel = 0;
+            data.injuryLevel = Math.max(data.injuryLevel || 0, 0);
 
             if (data.injuryLevel === 0) {
                 data.severity = '';

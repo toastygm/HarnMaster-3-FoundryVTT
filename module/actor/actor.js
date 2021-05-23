@@ -305,6 +305,14 @@ export class HarnMasterActor extends Actor {
         // Calculate spell effective mastery level values
         this._refreshSpellsAndInvocations();
 
+        // Ensure all EMLs are >= 5                
+        this.items.forEach(it => {
+            const itemData = it.data;
+            if (['skill','spell','invocation','psionic'].includes(itemData.type)) {
+                itemData.data.effectiveMasteryLevel = Math.max(itemData.data.effectiveMasteryLevel || 5, 5);
+            }
+        });
+
         // Collect all combat skills into a map for use later
         let combatSkills = {};
         this.items.forEach(it => {
@@ -506,19 +514,21 @@ export class HarnMasterActor extends Actor {
             const itemData = it.data.data;
             if (it.data.type === 'missilegear') {
                 // Reset mastery levels in case nothing matches
-                itemData.attackMasteryLevel = Math.max(eph.missileAMLMod, 5);
+                itemData.attackMasteryLevel = 5;
 
                 // If the associated skill is in our combat skills list, get EML from there
                 // and then calculate AML.
                 let assocSkill = itemData.assocSkill;
                 if (typeof combatSkills[assocSkill] !== 'undefined') {
                     let skillEml = combatSkills[assocSkill].eml;
-                    itemData.attackMasteryLevel = Math.max((skillEml + itemData.attackModifier + eph.missileAMLMod) || 5, 5);
+                    itemData.attackMasteryLevel = (skillEml || 0) + (itemData.attackModifier || 0);
                 }
+                this.applyWeaponActiveEffect(it);
+                itemData.attackMasteryLevel = Math.max(itemData.attackMasteryLevel, 5);
             } else if (it.data.type === 'weapongear') {
                 // Reset mastery levels in case nothing matches
-                itemData.attackMasteryLevel = Math.max(eph.weaponAMLMod, 5);
-                itemData.defenseMasteryLevel = Math.max(eph.weaponDMLMod, 5);
+                itemData.attackMasteryLevel = 5
+                itemData.defenseMasteryLevel = 5
                 let weaponName = it.data.name;
 
                 // If associated skill is 'None', see if there is a skill with the
@@ -537,9 +547,12 @@ export class HarnMasterActor extends Actor {
                 let assocSkill = itemData.assocSkill;
                 if (typeof combatSkills[assocSkill] !== 'undefined') {
                     let skillEml = combatSkills[assocSkill].eml;
-                    itemData.attackMasteryLevel = Math.max((skillEml + itemData.attack + itemData.attackModifier + eph.meleeAMLMod) || 5, 5);
-                    itemData.defenseMasteryLevel = Math.max((skillEml + itemData.defense + eph.meleeDMLMod) || 5, 5);
+                    itemData.attackMasteryLevel = (skillEml || 0) + (itemData.attack || 0) + (itemData.attackModifier || 0);
+                    itemData.defenseMasteryLevel = (skillEml || 0) + (itemData.defense || 0);
                 }
+                this.applyWeaponActiveEffect(it);
+                itemData.attackMasteryLevel = Math.max(itemData.attackMasteryLevel || 5, 5);
+                itemData.defenseMasteryLevel = Math.max(itemData.defenseMasteryLevel || 5, 5);
             }
         });
     }
@@ -575,7 +588,7 @@ export class HarnMasterActor extends Actor {
         this.items.forEach(it => {
             const itemData = it.data;
             if (itemData.type === 'spell' && itemData.data.convocation && itemData.data.convocation.toLowerCase() === lcConvocation) {
-                itemData.data.effectiveMasteryLevel = Math.max(eml - (itemData.data.level * 5), 5);
+                itemData.data.effectiveMasteryLevel = eml - (itemData.data.level * 5);
                 itemData.data.skillIndex = Math.floor(ml / 10);
                 itemData.data.masteryLevel = ml;
                 itemData.data.skillBase = sb;
@@ -590,7 +603,7 @@ export class HarnMasterActor extends Actor {
         this.items.forEach(it => {
             const itemData = it.data;
             if (itemData.type === 'invocation' && itemData.data.diety && itemData.data.diety.toLowerCase() === lcDiety) {
-                itemData.data.effectiveMasteryLevel = Math.max(eml - (itemData.data.circle * 5), 5);
+                itemData.data.effectiveMasteryLevel = eml - (itemData.data.circle * 5);
                 itemData.data.skillIndex = Math.floor(ml / 10);
                 itemData.data.masteryLevel = ml;
                 itemData.data.skillBase = sb;
@@ -879,42 +892,27 @@ export class HarnMasterActor extends Actor {
         }
     }
 
-    /**
-     * If the actor is an unlinked actor for a token, then when an item on that unlinked
-     * actor is changed, it is considered an "Actor change" and this method gets called.
-     * In that case, data will contain an "items" element, which is what tells us that
-     * some embedded item changed.
-     * 
-     * @override 
-     */
-    // _onUpdate(data, options, userId, context) {
-    //     // Ensure we process the changes first, so the Actor.items map gets updated
-    //     const result = super._onUpdate(data, options, userId, context);
+    applyWeaponActiveEffect(weapon) {
+        // Organize non-disabled effects by their application priority
+        const changes = this.effects.reduce((chgs, e) => {
+            if (e.data.disabled) return chgs;
+            if (!['weapongear','missilegear'].includes(weapon.data.type)) return chgs;
+            const weaponChanges = e.data.changes.filter(
+                chg => ['data.eph.meleeAMLMod','data.eph.meleeDMLMod', 'data.eph.missileAMLMod'].includes(chg.key));
+            return chgs.concat(weaponChanges.map(c => {
+                c = foundry.utils.duplicate(c);
+                c.key = c.key === 'data.eph.meleeDMLMod' ? 'data.defenseMasteryLevel' : 'data.attackMasteryLevel';
+                c.effect = e;
+                c.priority = c.priority ?? (c.mode * 10);
+                return c;
+            }));
+        }, []);
+        changes.sort((a, b) => a.priority - b.priority);
 
-    //     // Now handle any actor updates if any embedded items were changed
-    //     if (data.items) {
-    //         this.calcTotalGearWeight();
-    //     }
-    //     return result;
-    // }
-
-    /**
-     * If the actor is either a linked actor for a token, or not associated with a token
-     * at all, then when any change to the embedded items occurs this method gets called.
-     * 
-     * @override 
-     */
-    // _onModifyEmbeddedEntity(embeddedName, changes, options, userId, context={}) {
-    //     // The Actor.items map should already be updated, so process actor updates
-    //     if (embeddedName === 'Item') {
-    //         this.calcTotalGearWeight().then(() => {
-    //             return super._onModifyEmbeddedEntity(embeddedName, changes, options, userId, context);
-    //         });
-    //         return;
-    //     }
-
-    //     return super._onModifyEmbeddedEntity(embeddedName, changes, options, userId, context);
-    // }
-
+        // Apply all changes
+        for (let change of changes) {
+            change.effect.apply(weapon, change);
+        }
+    }
 }
 
