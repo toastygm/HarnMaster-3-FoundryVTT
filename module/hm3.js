@@ -35,6 +35,11 @@ Hooks.once('init', async function () {
         decimals: 2
     };
 
+    // Set Combat Time Length
+    CONFIG.time.roundTime = 10;
+    CONFIG.time.turnTime = 0;
+
+    // Set System Globals
     CONFIG.HM3 = HM3;
 
     // Register system settings
