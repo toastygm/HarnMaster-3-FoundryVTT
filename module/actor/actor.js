@@ -45,10 +45,10 @@ export class HarnMasterActor extends Actor {
             // Add standard skills
             await this._addItemsFromPack(
                 ['Awareness'],
-                'hm3.hm3.std-skills-communication', updateData.items);
+                'hm3.std-skills-communication', updateData.items);
             await this._addItemsFromPack(
                 ['Initiative', 'Unarmed', 'Dodge'],
-                'hm3.hm3.std-skills-combat', updateData.items);
+                'hm3.std-skills-combat', updateData.items);
         } else if (createData.type === 'container') {
             updateData['data.capacity.max'] = 1;
             updateData['data.description'] = '';
