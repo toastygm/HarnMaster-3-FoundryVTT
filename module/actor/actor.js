@@ -846,7 +846,7 @@ export class HarnMasterActor extends Actor {
     _applyWeaponActiveEffects() {
         const changes = this.effects.reduce((chgs, e) => {
             if (e.data.disabled) return chgs;
-            const m = e.data.origin.match(/Item\.([a-zA-Z0-9]*)/);
+            const m = e.data.origin?.match(/Item\.([a-zA-Z0-9]*)/);
             if (!m) return chgs;
             const item = this.items.get(m[1]);
             if (!item) return chgs;
