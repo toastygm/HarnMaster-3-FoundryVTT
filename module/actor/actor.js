@@ -147,6 +147,18 @@ export class HarnMasterActor extends Actor {
         if (!data.eph) data.eph = {};
         const eph = data.eph;
 
+        data.totalWeight = 0;
+        
+        this.calcTotalGearWeight();
+
+        // Prepare data items unique to containers
+        if (actorData.type === 'container') {
+            data.capacity.value = data.totalWeight;
+            data.capacity.pct = Math.round(((data.capacity.max - data.capacity.value) / (data.capacity.max || 1)) * 100);
+            data.capacity.pct = Math.max(Math.min(data.capacity.pct, 100), 0);  // ensure value is between 0 and 100 inclusive)
+            return;
+        }
+
         // Initialize derived attributes
         data.abilities.strength.effective = 0;
         data.abilities.stamina.effective = 0;
@@ -170,16 +182,6 @@ export class HarnMasterActor extends Actor {
         data.physicalPenalty = 0;
         data.totalInjuryLevels = 0;
         data.encumbrance = 0;
-        data.totalWeight = 0;
-        
-        this.calcTotalGearWeight();
-
-        // Prepare data items unique to containers
-        if (actorData.type === 'container') {
-            data.capacity.value = data.totalWeight;
-            data.capacity.pct = Math.round(((data.capacity.max - data.capacity.value) / (data.capacity.max || 1)) * 100);
-            data.capacity.pct = Math.max(Math.min(data.capacity.pct, 100), 0);  // ensure value is between 0 and 100 inclusive)
-        }
 
         // Calculate endurance (in case Condition not present)
         data.endurance = Math.round((data.abilities.strength.base + data.abilities.stamina.base +
@@ -252,7 +254,6 @@ export class HarnMasterActor extends Actor {
         this._calcGearWeightTotals();
 
         if (actorData.type === 'container') {
-            this._prepareDerivedContainerData(actorData);
             return;
         }
         
