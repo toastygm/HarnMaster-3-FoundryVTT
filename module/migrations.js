@@ -262,19 +262,21 @@ function cleanActorData(actorData) {
 
 /**
  * Migrate a single Item entity to incorporate latest data model changes
- * @param item
+ * @param itemData
  */
-export const migrateItemData = function (item) {
+export const migrateItemData = function (itemData) {
   const updateData = {};
-  const data = item.data;
-  const itemData = item;
 
   /*
   * -------- ITEM UPDATES GO HERE -------------
   */
+  if (itemData.data.macros === {}) {
+    updateData['data.macros.command'] = '';
+    updateData['data.macros.type'] = 'script';
+  }
 
   // Remove deprecated fields
-  _migrateRemoveDeprecated(item, updateData);
+  _migrateRemoveDeprecated(itemData, updateData);
 
   // Return the migrated update data
   return updateData;
