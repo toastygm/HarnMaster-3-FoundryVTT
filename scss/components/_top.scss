@@ -200,3 +200,9 @@ label.checkbox.right > input[type="checkbox"] {
         border-bottom: 3px solid #44191A;
     }
 }
+
+.sheet-body .macro .command textarea {
+    width: 100%;
+    height: 100%; 
+    box-sizing: border-box;    
+}

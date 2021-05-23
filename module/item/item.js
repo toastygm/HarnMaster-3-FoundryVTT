@@ -241,6 +241,55 @@ export class HarnMasterItem extends Item {
         }
     }
 
+    /**
+     * Run a custom macro assigned to this item.
+     * 
+     * Returns an object with the following fields:
+     * 
+     * title: Chat label for Roll,
+     * origTarget: Unmodified target value,
+     * modifier: Modifier added to origTarget value,
+     * modifiedTarget: Final modified target value,
+     * rollValue: roll number,
+     * isSuccess: is roll successful,
+     * isCritical: is roll critical,
+     * result: 'MS', 'CS', 'MF', 'CF',
+     * description: textual description of roll success or failure,
+     * notes: rendered notes,
+     */
+    async runCustomMacro(rollInput, {actor, token}={}) {
+        const itemData = this.data;
+        const rollResult = {
+            title: rollInput.title,
+            origTarget: rollInput.origTarget,
+            modifier: (rollInput.plusMinus === '-' ? -1 : 1) * rollInput.modifier,
+            modifiedTarget: rollInput.modifiedTarget,
+            rollValue: rollInput.rollValue,
+            isSuccess: rollInput.isSuccess,
+            isCritical: rollInput.isCritical,
+            result: rollInput.isSuccess ? (rollInput.isCritical ? 'CS' : 'MS') : (rollInput.isCritical ? 'CF' : 'MF'),
+            description: rollInput.description,
+            notes: rollInput.notes
+        }
+        if (!itemData.data.macros.command) return rollResult;
+        let command = null;
+        if (itemData.data.macros.type === 'script') {
+            if (!game.user.can("MACRO_SCRIPT")) return rollResult;
+            const strRollResult = JSON.stringify(rollResult);
+            command = `const item=actor.items.get('${this.id}');const rollResult=${strRollResult};${itemData.data.macros.command}`;
+        } else {
+            command = itemdata.data.macros.command;
+        }
+
+        const macro = await Macro.create({
+            name: `${this.name} ${this.type} macro`,
+            type: itemData.data.macros.type,
+            scope: 'global',
+            command: command
+        });
+        return macro.execute({actor, token});
+    }
+
     _onDelete(options, userId) {
         super._onDelete(options, userId);
     }

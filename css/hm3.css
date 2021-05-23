@@ -392,6 +392,11 @@ section.highlight {
 .hm3 .sheet .sheet-navigation .item.active {
   border-bottom: 3px solid #44191A; }
 
+.hm3 .sheet-body .macro .command textarea {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box; }
+
 .hm3 .facade img.facade-image {
   flex: 0 0 200px;
   object-fit: contain;

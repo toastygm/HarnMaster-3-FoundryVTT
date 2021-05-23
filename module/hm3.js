@@ -35,6 +35,11 @@ Hooks.once('init', async function () {
         decimals: 2
     };
 
+    // Set Combat Time Length
+    CONFIG.time.roundTime = 10;
+    CONFIG.time.turnTime = 0;
+
+    // Set System Globals
     CONFIG.HM3 = HM3;
 
     // Register system settings
@@ -120,7 +125,7 @@ Hooks.on('updateCombat', async (combat, updateData) => {
 Hooks.once("ready", function () {
     // Determine whether a system migration is required
     const currentVersion = game.settings.get("hm3", "systemMigrationVersion");
-    const NEEDS_MIGRATION_VERSION = "1.2.0";  // Anything older than this must be migrated
+    const NEEDS_MIGRATION_VERSION = "1.2.6";  // Anything older than this must be migrated
 
     let needMigration = currentVersion === null || (isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion));
     if (needMigration && game.user.isGM) {
@@ -131,23 +136,14 @@ Hooks.once("ready", function () {
     HM3.ready = true;
     if (game.settings.get("hm3", "showWelcomeDialog")) {
         welcomeDialog().then(showAgain => {
-
             game.settings.set("hm3", "showWelcomeDialog", showAgain);
         });
     }
 
-    //refreshAllActors();
+    if (!game.user.can("MACRO_SCRIPT")) {
+        ui.notifications.warn('You do not have permission to run JavaScript macros, so all skill and esoterics macros have been disabled.');
+    }
 });
-
-// function refreshAllActors() {
-//     game.actors.forEach(actor => {
-//         actor.handleRefreshItems();
-//     });
-
-//     canvas.tokens.ownedTokens.forEach(token => {
-//         if (!token.data.actorLink) token.actor.handleRefreshItems();
-//     });
-// }
 
 // Since HM3 does not have the concept of rolling for initiative,
 // this hook simply prepopulates the initiative value. This ensures

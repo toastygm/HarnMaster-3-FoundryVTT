@@ -174,7 +174,9 @@ export async function skillRoll(itemName, noDialog = false, myActor=null) {
         stdRollData.actor = actor.id;
     }
     
-    return await DiceHM3.d100StdRoll(stdRollData);
+    const result = await DiceHM3.d100StdRoll(stdRollData);
+    item.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
+    return result;
 }
 
 export async function castSpellRoll(itemName, noDialog = false, myActor=null) {
@@ -217,7 +219,9 @@ export async function castSpellRoll(itemName, noDialog = false, myActor=null) {
         stdRollData.actor = actor.id;
     }
 
-    return await DiceHM3.d100StdRoll(stdRollData);
+    const result = await DiceHM3.d100StdRoll(stdRollData);
+    item.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
+    return result;
 }
 
 export async function invokeRitualRoll(itemName, noDialog = false, myActor = null) {
@@ -260,7 +264,9 @@ export async function invokeRitualRoll(itemName, noDialog = false, myActor = nul
         stdRollData.actor = actor.id;
     }
     
-    return await DiceHM3.d100StdRoll(stdRollData);
+    const result = await DiceHM3.d100StdRoll(stdRollData);
+    item.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
+    return result;
 }
 
 export async function usePsionicRoll(itemName, noDialog = false, myActor=null) {
@@ -302,7 +308,9 @@ export async function usePsionicRoll(itemName, noDialog = false, myActor=null) {
         stdRollData.actor = actor.id;
     }
     
-    return await DiceHM3.d100StdRoll(stdRollData);
+    const result = await DiceHM3.d100StdRoll(stdRollData);
+    item.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
+    return result;
 }
 
 export async function testAbilityD6Roll(ability, noDialog = false, myActor=null) {

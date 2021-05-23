@@ -83,7 +83,10 @@
         "notes": "",
         "description": "",
         "source": "",
-        "macros": {}
+        "macros": {
+          "type": "script",
+          "command": ""
+        }
       },
       "gear": {
         "quantity": 1,

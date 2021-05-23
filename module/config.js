@@ -150,9 +150,11 @@ HM3.stdSkills = {
 HM3.injuryLevels = ["NA", "M1", "S2", "S3", "G4", "G5", "K4", "K5"];
 
 HM3.activeEffectKey = {
-    'data.eph.meleeAMLMod': 'Melee Attack',
-    'data.eph.meleeDMLMod': 'Melee Defense',
-    'data.eph.missileAMLMod': 'Missile Attack',
+    'data.eph.meleeAMLMod': 'Melee Attacks',
+    'data.eph.meleeDMLMod': 'Melee Defenses',
+    'data.eph.missileAMLMod': 'Missile Attacks',
+    'data.eph.itemAMLMod': 'Weapon Attack ML',
+    'data.eph.itemDMLMod': 'Weapon Defense ML',
     'data.eph.commSkillsMod': 'Communication Skills EML',
     'data.eph.physicalSkillsMod': 'Physical Skills EML',
     'data.eph.combatSkillsMod': 'Combat Skills EML',

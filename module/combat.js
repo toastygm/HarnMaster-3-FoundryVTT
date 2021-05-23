@@ -178,8 +178,11 @@ export async function meleeAttack(attackToken, defendToken, weaponItem=null) {
         return null;
     }
 
-    if (rangeToTarget(attackToken, defendToken, true) > 1) {
-        ui.notifications.warn(`${defendToken.name} is outside of melee range.`);
+    const targetRange = rangeToTarget(attackToken, defendToken, true);
+    if (targetRange > 1) {
+        const msg = `Target ${defendToken.name} is outside of melee range for attacker ${attackToken.name}; range=${targetRange}.`;
+        console.warn(msg);
+        ui.notifications.warn(msg);
         return null;
     }
 
@@ -992,6 +995,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         attackWeapon: weaponName,
         defendWeapon: defWeapon ? defWeapon.name : "",
         effAML: effAML,
+        effDML: effDML,
         defense: `Block w/ ${dialogResult.weapon}`,
         addlModifierAbs: Math.abs(dialogResult.addlModifier),
         addlModifierSign: dialogResult.addlModifier < 0 ? '-':'+',

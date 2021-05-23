@@ -45,10 +45,10 @@ export class HarnMasterActor extends Actor {
             // Add standard skills
             await this._addItemsFromPack(
                 ['Awareness'],
-                'hm3.hm3.std-skills-communication', updateData.items);
+                'hm3.std-skills-communication', updateData.items);
             await this._addItemsFromPack(
                 ['Initiative', 'Unarmed', 'Dodge'],
-                'hm3.hm3.std-skills-combat', updateData.items);
+                'hm3.std-skills-combat', updateData.items);
         } else if (createData.type === 'container') {
             updateData['data.capacity.max'] = 1;
             updateData['data.description'] = '';
@@ -147,6 +147,18 @@ export class HarnMasterActor extends Actor {
         if (!data.eph) data.eph = {};
         const eph = data.eph;
 
+        data.totalWeight = 0;
+        
+        this.calcTotalGearWeight();
+
+        // Prepare data items unique to containers
+        if (actorData.type === 'container') {
+            data.capacity.value = data.totalWeight;
+            data.capacity.pct = Math.round(((data.capacity.max - data.capacity.value) / (data.capacity.max || 1)) * 100);
+            data.capacity.pct = Math.max(Math.min(data.capacity.pct, 100), 0);  // ensure value is between 0 and 100 inclusive)
+            return;
+        }
+
         // Initialize derived attributes
         data.abilities.strength.effective = 0;
         data.abilities.stamina.effective = 0;
@@ -170,16 +182,6 @@ export class HarnMasterActor extends Actor {
         data.physicalPenalty = 0;
         data.totalInjuryLevels = 0;
         data.encumbrance = 0;
-        data.totalWeight = 0;
-        
-        this.calcTotalGearWeight();
-
-        // Prepare data items unique to containers
-        if (actorData.type === 'container') {
-            data.capacity.value = data.totalWeight;
-            data.capacity.pct = Math.round(((data.capacity.max - data.capacity.value) / (data.capacity.max || 1)) * 100);
-            data.capacity.pct = Math.max(Math.min(data.capacity.pct, 100), 0);  // ensure value is between 0 and 100 inclusive)
-        }
 
         // Calculate endurance (in case Condition not present)
         data.endurance = Math.round((data.abilities.strength.base + data.abilities.stamina.base +
@@ -230,6 +232,8 @@ export class HarnMasterActor extends Actor {
         eph.ritualSkillsMod = 0;
         eph.magicSkillsMod = 0;
         eph.psionicTalentsMod = 0;
+        eph.itemAMLMod = 0;
+        eph.itemDMLMod = 0;
    }
 
     /** 
@@ -250,7 +254,6 @@ export class HarnMasterActor extends Actor {
         this._calcGearWeightTotals();
 
         if (actorData.type === 'container') {
-            this._prepareDerivedContainerData(actorData);
             return;
         }
         
@@ -326,6 +329,9 @@ export class HarnMasterActor extends Actor {
         });
 
         this._setupWeaponData(combatSkills);
+
+        // Apply the individual AML and DML active effects for each Melee or Missile Weapon
+        this._applyWeaponActiveEffects();
 
         this._generateArmorLocationMap(data);
 
@@ -835,6 +841,37 @@ export class HarnMasterActor extends Actor {
         }
 
         button.disabled = false;
+    }
+
+    _applyWeaponActiveEffects() {
+        const changes = this.effects.reduce((chgs, e) => {
+            if (e.data.disabled) return chgs;
+            const m = e.data.origin.match(/Item\.([a-zA-Z0-9]*)/);
+            if (!m) return chgs;
+            const item = this.items.get(m[1]);
+            if (!item) return chgs;
+            const itemChanges = e.data.changes.filter(chg =>
+                (chg.key === 'data.eph.itemAMLMod' && ['weapongear', 'missilegear'].includes(item.type)) ||
+                (chg.key === 'data.eph.itemDMLMod' && item.type === 'missilegear'));
+            return chgs.concat(itemChanges.map(c => {
+                c = foundry.utils.duplicate(c);
+                c.item = item;
+                if (c.key === 'data.eph.itemAMLMod') {
+                    c.key = 'data.attackMasteryLevel';
+                } else if (c.key === 'data.eph.itemDMLMod') {
+                    c.key = 'data.defenseMasteryLevel';
+                }
+                c.effect = e;
+                c.priority = c.priority ?? (c.mode * 10);
+                return c;
+            }));
+        }, []);
+        changes.sort((a, b) => a.priority - b.priority);
+
+        // Apply all changes
+        for (let change of changes) {
+            change.effect.apply(change.item, change);
+        }
     }
 
     applySpecificActiveEffect(property) {

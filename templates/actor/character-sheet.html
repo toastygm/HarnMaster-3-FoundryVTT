@@ -345,7 +345,7 @@
                             </div>
                         </li>
                         <ol class="item-list trait-list">
-                            {{#each actor.items as |item id|}}
+                            {{#each items as |item|}}
                                 {{#if (and (eq item.type "trait") (eq item.data.type "Physical"))}}
                                     <li class="item trait trait-item flexrow" data-item-id="{{item._id}}"
                                         data-item-name="{{item.name}}">
@@ -377,7 +377,7 @@
                             </div>
                         </li>
                         <ol class="item-list trait-list">
-                            {{#each actor.items as |item id|}}
+                            {{#each items as |item|}}
                                 {{#if (and (eq item.type "trait") (eq item.data.type "Psyche"))}}
                                     <li class="item trait trait-item flexrow" data-item-id="{{item._id}}"
                                         data-item-name="{{item.name}}">
