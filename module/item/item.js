@@ -286,7 +286,7 @@ export class HarnMasterItem extends Item {
             type: itemData.data.macros.type,
             scope: 'global',
             command: command
-        });
+        }, {temporary: true});
         return macro.execute({actor, token});
     }
 
