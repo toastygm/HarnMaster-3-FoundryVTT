@@ -834,108 +834,21 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 else if (dataset.type === 'spell') itemData.convocation = extraValue;
                 else if (dataset.type === 'invocation') itemData.diety = extraValue;
 
-                return this._createItem({
-                    name: itemName,
-                    type: dialogData.type,
-                    data: itemData,
-                    img: CONST.DEFAULT_TOKEN
-                });
+                // Finally, create the item!
+                const result = await Item.create(itemData, {parent: this.actor });
+
+                if (!result) {
+                    throw new Error(`Error creating item '${itemData.name}' of type '${itemData.type}' on character '${this.actor.data.name}'`);
+                }
+
+                // Bring up edit dialog to complete creating item
+                const item = this.actor.items.get(result.id);
+                item.sheet.render(true);
+
+                return result;
             },
             options: { jQuery: false }
         });
-    }
-
-    async _createItem(data) {
-        // If a weapon or a missile, get the associated skill
-        if (data.type === 'weapongear' || data.type === 'missilegear') {
-            data.data.assocSkill = utility.getAssocSkill(data.name, this.actor.itemTypes.skill, 'None');
-        }
-
-        // If it is a spell, initialize the convocation to the
-        // first magic skill found; it is really unimportant what the
-        // value is, so long as it is a valid skill for this character
-        if (data.type === 'spell') {
-            for (let skill of this.actor.itemTypes.skill.values()) {
-                if (skill.data.data.type === 'Magic') {
-                    data.data.convocation = skill.data.name;
-                    break;
-                }
-            }
-        }
-
-        // If it is a invocation, initialize the diety to the
-        // first ritual skill found; it is really unimportant what the
-        // value is, so long as it is a valid skill for this character
-        if (data.type === 'invocation') {
-            for (let skill of this.actor.itemTypes.skill.values()) {
-                if (skill.data.data.type === 'Ritual') {
-                    data.data.diety = skill.data.name;
-                    break;
-                }
-            }
-        }
-
-        if (data.img === CONST.DEFAULT_TOKEN) {
-            // Guess the icon from the name
-            data.img = utility.getImagePath(data.name);
-        }
-
-        if (data.img === CONST.DEFAULT_TOKEN) {
-            switch (data.type) {
-                case 'skill':
-                    if (data.type === 'Ritual') {
-                        data.img = utility.getImagePath('circle');
-                    } else if (data.type === 'Magic') {
-                        data.img = utility.getImagePath('pentacle');
-                    }
-                    break;
-
-                case 'psionic':
-                    data.img = utility.getImagePath("psionics");
-                    break;
-
-                case 'spell':
-                    data.img = utility.getImagePath(data.convocation);
-                    if (data.img === CONST.DEFAULT_TOKEN) {
-
-                        data.img = utility.getImagePath("pentacle");
-                    }
-                    break;
-
-                case 'invocation':
-                    data.img = utility.getImagePath(data.diety);
-                    if (data.img === CONST.DEFAULT_TOKEN) {
-                        data.img = utility.getImagePath("circle");
-                    }
-                    break;
-
-                case 'miscgear':
-                    data.img = utility.getImagePath("miscgear")
-                    break;
-
-                case 'containergear':
-                    data.img = utility.getImagePath("sack");
-                    break;
-
-                case 'weapongear':
-                case 'missilegear':
-                    data.img = utility.getImagePath(data.data.assocSkill)
-                    break;
-            }
-        }
-
-        // Finally, create the item!
-        const result = await Item.create(data, {parent: this.actor });
-
-        if (!result) {
-            throw new Error(`Error creating item '${data.name}' of type '${data.type}' on character '${this.actor.data.name}'`);
-        }
-
-        // Bring up edit dialog to complete creating item
-        const item = this.actor.items.get(result.id);
-        item.sheet.render(true);
-
-        return result;
     }
 
     /**

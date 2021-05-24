@@ -241,6 +241,111 @@ export class HarnMasterItem extends Item {
         }
     }
 
+    /** @override */
+    async _preCreate(data, options, user) {
+        super._preCreate(data, options, user);
+
+        // If this item is associated with a specific actor, then we can determine
+        // some values directly from the actor.
+        if (this.actor) {
+            // If a weapon or a missile, get the associated skill
+            if ((data.type === 'weapongear' || data.type === 'missilegear') && !data.data.assocSkill) {
+                data.data.assocSkill = utility.getAssocSkill(data.name, this.actor.itemTypes.skill, 'None');
+            }
+
+            // If it is a spell, initialize the convocation to the
+            // first magic skill found; it is really unimportant what the
+            // value is, so long as it is a valid skill for this character
+            if (data.type === 'spell' && !data.data.convocation) {
+
+                // Most spellcasters have two convocations: Neutral and another,
+                // maybe several others.  Most spells are going to be of the
+                // non-Neutral variety.  So, we want to prefer using the non-Neutral
+                // skill by default; if no non-Neutral skills exist, but Neutral does
+                // exist, then use that.
+
+                // In the case where the actor is adding a spell but they have no magic
+                // convocations, give up and don't make any changes.
+                let hasNeutral = false;
+                for (let skill of this.actor.itemTypes.skill.values()) {
+                    if (skill.data.data.type === 'Magic') {
+                        if (skill.data.name == 'Neutral') {
+                            hasNeutral = true;
+                            continue;
+                        }
+                        data.data.convocation = skill.data.name;
+                        break;
+                    }
+                }
+                if (!data.data.convocation && hasNeutral) {
+                    data.data.convocation = 'Neutral';
+                }
+            }
+
+            // If it is a invocation, initialize the diety to the
+            // first ritual skill found; it is really unimportant what the
+            // value is, so long as it is a valid skill for this character
+            if (data.type === 'invocation' && !data.data.diety) {
+                for (let skill of this.actor.itemTypes.skill.values()) {
+                    if (skill.data.data.type === 'Ritual') {
+                        data.data.diety = skill.data.name;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Setup Image Icon only if it is currently the default icon
+        if (data.img === CONST.DEFAULT_TOKEN) {
+            switch (currentData.type) {
+                case 'skill':
+                    if (data.data.type === 'Ritual') {
+                        data.img = utility.getImagePath(data.name);
+                        // If ritual skill name wasn't found, default to 'circle'
+                        if (data.img === CONST.DEFAULT_TOKEN) data.img = utility.getImagePath('circle');
+                    } else if (data.data.type === 'Magic') {
+                        data.img = utility.getImagePath(data.name);
+                        // If magic skill name wasn't found, default to 'pentacle'
+                        if (data.img === CONST.DEFAULT_TOKEN) data.img = utility.getImagePath('pentacle');
+                    }
+                    break;
+    
+                case 'psionic':
+                    data.img = utility.getImagePath("psionics");
+                    break;
+    
+                case 'spell':
+                    data.img = utility.getImagePath(data.data.convocation);
+                    if (data.img === CONST.DEFAULT_TOKEN) {
+                        // If convocation image wasn't found, default to "pentacle"
+                        data.img = utility.getImagePath("pentacle");
+                    }
+                    break;
+    
+                case 'invocation':
+                    data.img = utility.getImagePath(data.data.diety);
+                    if (data.img === CONST.DEFAULT_TOKEN) {
+                        // If ritual image wasn't found, default to "circle"
+                        data.img = utility.getImagePath("circle");
+                    }
+                    break;
+    
+                case 'miscgear':
+                    data.img = utility.getImagePath("miscgear")
+                    break;
+    
+                case 'containergear':
+                    data.img = utility.getImagePath("sack");
+                    break;
+    
+                case 'weapongear':
+                case 'missilegear':
+                    data.img = utility.getImagePath(data.data.assocSkill)
+                    break;
+            }    
+        }
+    }
+
     /**
      * Run a custom macro assigned to this item.
      * 
@@ -288,13 +393,5 @@ export class HarnMasterItem extends Item {
             command: command
         }, {temporary: true});
         return macro.execute({actor, token});
-    }
-
-    _onDelete(options, userId) {
-        super._onDelete(options, userId);
-    }
-
-    _onUpdate(changed, options, userId) {
-        super._onUpdate(changed, options, userId);
     }
 }
