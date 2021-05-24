@@ -14,11 +14,9 @@ export class HarnMasterItem extends Item {
 
         // Get the Item's data
         const itemData = this.data;
-        const actorData = this.actor ? this.actor.data : {};
         const data = itemData.data;
 
         let img = null;
-        let tempWeight = 0;
 
         // Handle marking gear as equipped or carried
         if (itemData.type.endsWith('gear')) {
@@ -42,27 +40,6 @@ export class HarnMasterItem extends Item {
             case 'skill':
                 utility.calcSkillBase(this);
 
-                // Determine Icon.  If the skill's current icon is not a standard icon
-                // then don't change it; if it is a standard icon, then we can safely
-                // change it if necessary.
-                if (data.type === 'Physical' && utility.isStdIcon(itemData.img, HM3.weaponSkillIcons)) img = utility.getImagePath(itemData.name);
-                else if (data.type === 'Communication' && utility.isStdIcon(itemData.img, HM3.commSkillIcons)) img = utility.getImagePath(itemData.name);
-                else if (data.type === 'Combat' && utility.isStdIcon(itemData.img, HM3.combatSkillIcons)) img = utility.getImagePath(itemData.name);
-                else if (data.type === 'Craft' && utility.isStdIcon(itemData.img, HM3.craftSkillIcons)) img = utility.getImagePath(itemData.name);
-                else if (data.type === 'Magic' && utility.isStdIcon(itemData.img, HM3.magicIcons)) {
-                    img = utility.getImagePath(itemData.name);
-                    if (img === CONST.DEFAULT_TOKEN) {
-                        img = utility.getImagePath(HM3.defaultMagicIconName);
-                    }
-                }
-                else if (data.type === 'Ritual' && utility.isStdIcon(itemData.img, HM3.ritualIcons)) {
-                    img = utility.getImagePath(itemData.name);
-                    if (img === CONST.DEFAULT_TOKEN) {
-                        img = utility.getImagePath(HM3.defaultRitualIconName);
-                    }
-                }
-
-                
                 // Handle using Condition Skill for Endurance if it is present
                 if (itemData.name.toLowerCase() === 'condition' && this.actor?.data) {
                     this.actor.data.data.hasCondition = true;
@@ -72,76 +49,6 @@ export class HarnMasterItem extends Item {
 
             case 'psionic':
                 utility.calcSkillBase(this);
-
-                if (utility.isStdIcon(itemData.img, HM3.psionicTalentIcons)) {
-                    img = utility.getImagePath(itemData.name);
-                    if (img === CONST.DEFAULT_TOKEN) {
-                        img = utility.getImagePath(HM3.defaultPsionicsIconName);
-                    }
-                }
-                break;
-
-            case 'spell':
-                if (utility.isStdIcon(itemData.img, HM3.magicIcons)) {
-                    img = utility.getImagePath(itemData.name);
-                    if (img === CONST.DEFAULT_TOKEN) {
-                        img = utility.getImagePath(data.convocation);
-                        if (img === CONST.DEFAULT_TOKEN) {
-                            img = utility.getImagePath(HM3.defaultMagicIconName);
-                        }
-                    }
-                }
-                break;
-
-            case 'invocation':
-                if (utility.isStdIcon(itemData.img, HM3.ritualIcons)) {
-                    img = utility.getImagePath(itemData.name);
-                    if (img === CONST.DEFAULT_TOKEN) {
-                        img = utility.getImagePath(data.diety);
-                        if (img === CONST.DEFAULT_TOKEN) {
-                            img = utility.getImagePath(HM3.defaultRitualIconName);
-                        }
-                    }
-                }
-                break;
-
-            case 'armorgear':
-                if (itemData.img === CONST.DEFAULT_TOKEN) {
-                    if (utility.isStdIcon(itemData.img, HM3.armorGearIcons)) {
-                        img = utility.getImagePath(itemData.name);
-                    }
-                }
-                break;
-
-            case 'weapongear':
-            case 'missilegear':
-                if (itemData.img === CONST.DEFAULT_TOKEN) {
-                    if (utility.isStdIcon(itemData.img, HM3.weaponSkillIcons)) {
-                        img = utility.getImagePath(itemData.name);
-                    }
-                }
-                break;
-
-            case 'miscgear':
-                if (itemData.img === CONST.DEFAULT_TOKEN) {
-                    if (utility.isStdIcon(itemData.img, HM3.miscGearIcons)) {
-                        img = utility.getImagePath(itemData.name);
-                        if (img === CONST.DEFAULT_TOKEN) {
-                            img = utility.getImagePath(HM3.defaultMiscItemIconName);
-                        }
-                    }
-                }
-                break;
-
-            case 'containergear':
-                if (itemData.img === CONST.DEFAULT_TOKEN) {
-                    if (utility.isStdIcon(itemData.img, HM3.miscGearIcons)) {
-                        img = utility.getImagePath(itemData.name);
-                        if (img === CONST.DEFAULT_TOKEN) {
-                            img = utility.getImagePath(HM3.defaultContainerIconName);
-                        }
-                    }
-                }
                 break;
         }
 
@@ -295,52 +202,59 @@ export class HarnMasterItem extends Item {
             }
         }
 
+
+        // If the image was not specified (or is default),
+        // then set it based on the item name
+        if (!data.img || data.img === CONST.DEFAULT_TOKEN) data.img = utility.getImagePath(data.name);
+
         // Setup Image Icon only if it is currently the default icon
         if (data.img === CONST.DEFAULT_TOKEN) {
             switch (currentData.type) {
                 case 'skill':
                     if (data.data.type === 'Ritual') {
-                        data.img = utility.getImagePath(data.name);
-                        // If ritual skill name wasn't found, default to 'circle'
-                        if (data.img === CONST.DEFAULT_TOKEN) data.img = utility.getImagePath('circle');
+                        data.img = utility.getImagePath(HM3.defaultRitualIconName);
                     } else if (data.data.type === 'Magic') {
-                        data.img = utility.getImagePath(data.name);
-                        // If magic skill name wasn't found, default to 'pentacle'
-                        if (data.img === CONST.DEFAULT_TOKEN) data.img = utility.getImagePath('pentacle');
+                        data.img = utility.getImagePath(HM3.defaultMagicIconName);
                     }
                     break;
     
                 case 'psionic':
-                    data.img = utility.getImagePath("psionics");
+                    data.img = utility.getImagePath(HM3.defaultPsionicsIconName);
                     break;
     
                 case 'spell':
+                    // Base image on convocation name
                     data.img = utility.getImagePath(data.data.convocation);
                     if (data.img === CONST.DEFAULT_TOKEN) {
-                        // If convocation image wasn't found, default to "pentacle"
-                        data.img = utility.getImagePath("pentacle");
+                        // If convocation image wasn't found, use default
+                        data.img = utility.getImagePath(HM3.defaultMagicIconName);
                     }
                     break;
     
                 case 'invocation':
+                    // Base image on diety name
                     data.img = utility.getImagePath(data.data.diety);
                     if (data.img === CONST.DEFAULT_TOKEN) {
-                        // If ritual image wasn't found, default to "circle"
-                        data.img = utility.getImagePath("circle");
+                        // If diety name wasn't found, use default
+                        data.img = utility.getImagePath(HM3.defaultRitualIconName);
                     }
                     break;
     
                 case 'miscgear':
-                    data.img = utility.getImagePath("miscgear")
+                    data.img = utility.getImagePath(HM3.defaultMiscItemIconName);
                     break;
     
                 case 'containergear':
-                    data.img = utility.getImagePath("sack");
+                    data.img = utility.getImagePath(HM3.defaultContainerIconName);
                     break;
     
+                case 'armorgear':
+                    data.img = utility.getImagePath(HM3.defaultArmorGearIconName);
+                    break;
+
                 case 'weapongear':
                 case 'missilegear':
-                    data.img = utility.getImagePath(data.data.assocSkill)
+                    data.img = utility.getImagePath(data.data.assocSkill);
                     break;
             }    
         }
