@@ -200,13 +200,13 @@ export async function meleeAttack(attackToken, defendToken, weaponItem=null) {
         if (weaponItem.data.data.isEquipped) {
             options['weapon'] = weaponItem;
         } else {
-            ui.notification.warn(`${weaponItem.name} is not equipped.`);
+            ui.notification.warn(`For ${attackToken.name} ${weaponItem.name} is not equipped.`);
             return null;
         }
     } else {
         const defWpns = defaultMeleeWeapon(attackToken);
         if (!defWpns.weapons || !defWpns.weapons.length) {
-            ui.notifications.warn(`${attackToken} does not have any equipped melee weapons.`);
+            ui.notifications.warn(`${attackToken.name} does not have any equipped melee weapons.`);
             return null;
         }
         options['weapons'] = defWpns.weapons;
@@ -288,6 +288,7 @@ async function selectWeaponDialog(options) {
     };
     dialogOptions.weapons = options.weapons.map(w => w.name);
     dialogOptions.defaultWeapon = options.defaultWeapon;
+    dialogOptions.defaultModifier = options.defaultModifier || 0;
     if (options.modifierType) {
         dialogOptions.modifierType = options.modifierType;
     }
@@ -348,14 +349,15 @@ async function attackDialog(options) {
     }
 
     if (!options.weapon) {
-        ui.notifications.warn(`No equipped weapons available for attack.`);
+        ui.notifications.warn(`${attackerName} has no equipped weapons available for attack.`);
         return null;
     }
 
     const dialogOptions = {
         weapon: options.weapon.name,
         aimLocations: ['Low', 'Mid', 'High'],
-        defaultAim: 'Mid'
+        defaultAim: 'Mid',
+        defaultModifier: options.defaultModifier || 0
     };
 
     if (options.weapon.data.type === 'weapongear') {
@@ -534,13 +536,18 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     const options = defaultMeleeWeapon(defToken);
 
     if (!options.weapons) {
-        ui.notifications.warn(`You have no equipped weapons, counterstrike defense refused.`);
+        ui.notifications.warn(`${defToken.name} has no equipped weapons, counterstrike defense refused.`);
         return null;
     }
 
     options.type = 'Counterstrike';
     options.attackerName = defToken.name;
     options.defenderName = atkToken.name;
+
+    if (defToken.actor?.data?.data?.eph?.outnumbered > 1) {
+        options.defaultModifier = Math.floor(defToken.actor.data.data.eph.outnumbered-1) * -10;
+    }
+
     const csDialogResult = await attackDialog(options);
     if (!csDialogResult) return null;
 
@@ -628,6 +635,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         atkTokenId: defToken.id,
         defender: atkToken.name,
         defTokenId: atkToken.id,
+        outnumbered: defToken.actor?.data?.data?.eph?.outnumbered > 1 ? defToken.actor.data.data.eph.outnumbered : 0,
         attackWeapon: csDialogResult.weapon.name,
         mlType: 'AML',
         addlModifierAbs: Math.abs(csDialogResult.addlModifier),
@@ -737,11 +745,16 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
 
     const effDML = defToken.actor.data.data.dodge;
 
+    let outnumberedMod = 0;
+    if (defToken.actor?.data?.data?.eph?.outnumbered > 1) {
+        outnumberedMod = Math.floor((defToken.actor.data.data.eph.outnumbered - 1) * -10);
+    }
+
     const defRoll = await DiceHM3.rollTest({
         data: {},
         diceSides: 100,
         diceNum: 1,
-        modifier: 0,
+        modifier: outnumberedMod,
         target: effDML
     });
 
@@ -776,9 +789,10 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         defender: defToken.name,
         defTokenId: defToken.id,
         attackWeapon: weaponName,
+        outnumbered: defToken.actor?.data?.data?.eph?.outnumbered > 1 ? defToken.actor.data.data.eph.outnumbered : null,
         effAML: effAML,
         defense: 'Dodge',
-        effDML: effDML,
+        effDML: effDML+outnumberedMod,
         attackRoll: atkRoll.rollObj.total,
         atkRollResult: atkRoll.description,
         defenseRoll: defRoll.rollObj.total,
@@ -903,14 +917,20 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
     })
     
     if (weapons.length === 0) {
-        return ui.notifications.warn("No weapons exist that can be used for blocking, block defense refused.");
+        return ui.notifications.warn(`${defToken.name} has no weapons that can be used for blocking, block defense refused.`);
     }
     
+    let outnumberedMod = 0;
+    if (defToken.actor?.data?.data?.eph?.outnumbered > 1) {
+        outnumberedMod = Math.floor(defToken.actor.data.data.eph.outnumbered - 1) * -10;
+    }
+
     const options = {
         name: defToken.name,
         prompt: prompt,
         weapons: weapons,
-        defaultWeapon: defaultWeapon, 
+        defaultWeapon: defaultWeapon,
+        defaultModifier: outnumberedMod,
         modifierType: 'Defense'
     };
     const dialogResult = await selectWeaponDialog(options);
@@ -991,11 +1011,12 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         atkTokenId: atkToken.id,
         defender: defToken.name,
         defTokenId: defToken.id,
+        outnumbered: defToken.actor?.data?.data?.eph?.outnumbered > 1 ? defToken.actor.data.data.eph.outnumbered : null,
         mlType: 'DML',
         attackWeapon: weaponName,
         defendWeapon: defWeapon ? defWeapon.name : "",
         effAML: effAML,
-        effDML: effDML,
+        effDML: effDML + dialogResult.addlModifier,
         defense: `Block w/ ${dialogResult.weapon}`,
         addlModifierAbs: Math.abs(dialogResult.addlModifier),
         addlModifierSign: dialogResult.addlModifier < 0 ? '-':'+',

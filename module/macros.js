@@ -727,7 +727,7 @@ export async function stumbleRoll(noDialog = false, myActor = null) {
     }
 
     const stdRollData = {
-        label: `Stumble Roll`,
+        label: `${actor.isToken ? actor.token.name : actor.name} Stumble Roll`,
         target: actor.data.data.eph.stumbleTarget,
         numdice: 3,
         notesData: {},
@@ -753,7 +753,7 @@ export async function fumbleRoll(noDialog = false, myActor = null) {
     }
 
     const stdRollData = {
-        label: `Fumble Roll`,
+        label: `${actor.isToken ? actor.token.name : actor.name} Fumble Roll`,
         target: actor.data.data.eph.fumbleTarget,
         numdice: 3,
         notesData: {},

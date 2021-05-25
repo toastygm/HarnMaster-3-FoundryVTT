@@ -387,7 +387,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     return false;
                 }
             }
-            return this._createItem(data);
+            return Item.create(data, {parent: this.actor});
         }
 
         return super._onDropItemCreate(data);
@@ -693,11 +693,12 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         const otherData = other.data;
         const updateData = {};
 
-        if (!data.notes || data.notes === '') updateData['data.notes'] = otherData.notes;
-        if (!data.source || data.source === '') updateData['data.source'] = otherData.source;
-        if (!data.description || data.description === '') updateData['data.description'] = otherData.description;
-        if (!data.macro || data.macro === '') updateData['data.macro'] = otherData.macro;
-        if (item.data.img === CONST.DEFAULT_TOKEN) updateData['img'] = other.img;
+        if (!data.notes) updateData['data.notes'] = otherData.notes;
+        if (!data.source) updateData['data.source'] = otherData.source;
+        if (!data.description) updateData['data.description'] = otherData.description;
+        if (!data.macro.type || data.macro.type !== otherData.macro.type) updateData['data.macro.type'] = otherData.macro.type;
+        if (!data.macro.command) updateData['data.macro.command'] = otherData.macro.command;
+        updateData['img'] = other.img;
 
         switch (item.data.type) {
             case 'skill':
@@ -737,9 +738,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 break;
         }
 
-        if (updateData) {
-            await item.update(updateData);
-        }
+        await item.update(updateData);
 
         return;
     }
@@ -818,124 +817,37 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 let itemName = formdata.name;
                 let extraValue = formdata.extra_value;
 
+                const updateData = {name: itemName, type: dataset.type};
                 if (dataset.type === 'gear') {
-                    if (extraValue === 'Container') dialogData.type = 'containergear';
-                    else if (extraValue === 'Armor') dialogData.type = 'armorgear';
-                    else if (extraValue === 'Melee Weapon') dialogData.type = 'weapongear';
-                    else if (extraValue === 'Missile Weapon') dialogData.type = 'missilegear';
-                    else dialogData.type = 'miscgear';
+                    if (extraValue === 'Container') updateData.type = 'containergear';
+                    else if (extraValue === 'Armor') updateData.type = 'armorgear';
+                    else if (extraValue === 'Melee Weapon') updateData.type = 'weapongear';
+                    else if (extraValue === 'Missile Weapon') updateData.type = 'missilegear';
+                    else updateData.type = 'miscgear';
                 }
 
                 // Item Data
-                const itemData = foundry.utils.deepClone(game.system.model.Item[dialogData.type]);
-                if (dataset.type === 'skill') itemData.type = dataset.skilltype;
-                else if (dataset.type === 'trait') itemData.type = dataset.traittype;
-                else if (dataset.type.endsWith('gear')) itemData.container = dataset.containerId;
-                else if (dataset.type === 'spell') itemData.convocation = extraValue;
-                else if (dataset.type === 'invocation') itemData.diety = extraValue;
+                if (dataset.type === 'skill') updateData['data.type'] = dataset.skilltype;
+                else if (dataset.type === 'trait') updateData['data.type'] = dataset.traittype;
+                else if (dataset.type.endsWith('gear')) updateData['data.container'] = dataset.containerId;
+                else if (dataset.type === 'spell') updateData['data.convocation'] = extraValue;
+                else if (dataset.type === 'invocation') updateData['data.diety'] = extraValue;
 
-                return this._createItem({
-                    name: itemName,
-                    type: dialogData.type,
-                    data: itemData,
-                    img: CONST.DEFAULT_TOKEN
-                });
+                // Finally, create the item!
+                const result = await Item.create(updateData, {parent: this.actor });
+
+                if (!result) {
+                    throw new Error(`Error creating item '${updateData.name}' of type '${updateData.type}' on character '${this.actor.data.name}'`);
+                }
+
+                // Bring up edit dialog to complete creating item
+                const item = this.actor.items.get(result.id);
+                item.sheet.render(true);
+
+                return result;
             },
             options: { jQuery: false }
         });
-    }
-
-    async _createItem(data) {
-        // If a weapon or a missile, get the associated skill
-        if (data.type === 'weapongear' || data.type === 'missilegear') {
-            data.data.assocSkill = utility.getAssocSkill(data.name, this.actor.itemTypes.skill, 'None');
-        }
-
-        // If it is a spell, initialize the convocation to the
-        // first magic skill found; it is really unimportant what the
-        // value is, so long as it is a valid skill for this character
-        if (data.type === 'spell') {
-            for (let skill of this.actor.itemTypes.skill.values()) {
-                if (skill.data.data.type === 'Magic') {
-                    data.data.convocation = skill.data.name;
-                    break;
-                }
-            }
-        }
-
-        // If it is a invocation, initialize the diety to the
-        // first ritual skill found; it is really unimportant what the
-        // value is, so long as it is a valid skill for this character
-        if (data.type === 'invocation') {
-            for (let skill of this.actor.itemTypes.skill.values()) {
-                if (skill.data.data.type === 'Ritual') {
-                    data.data.diety = skill.data.name;
-                    break;
-                }
-            }
-        }
-
-        if (data.img === CONST.DEFAULT_TOKEN) {
-            // Guess the icon from the name
-            data.img = utility.getImagePath(data.name);
-        }
-
-        if (data.img === CONST.DEFAULT_TOKEN) {
-            switch (data.type) {
-                case 'skill':
-                    if (data.type === 'Ritual') {
-                        data.img = utility.getImagePath('circle');
-                    } else if (data.type === 'Magic') {
-                        data.img = utility.getImagePath('pentacle');
-                    }
-                    break;
-
-                case 'psionic':
-                    data.img = utility.getImagePath("psionics");
-                    break;
-
-                case 'spell':
-                    data.img = utility.getImagePath(data.convocation);
-                    if (data.img === CONST.DEFAULT_TOKEN) {
-
-                        data.img = utility.getImagePath("pentacle");
-                    }
-                    break;
-
-                case 'invocation':
-                    data.img = utility.getImagePath(data.diety);
-                    if (data.img === CONST.DEFAULT_TOKEN) {
-                        data.img = utility.getImagePath("circle");
-                    }
-                    break;
-
-                case 'miscgear':
-                    data.img = utility.getImagePath("miscgear")
-                    break;
-
-                case 'containergear':
-                    data.img = utility.getImagePath("sack");
-                    break;
-
-                case 'weapongear':
-                case 'missilegear':
-                    data.img = utility.getImagePath(data.data.assocSkill)
-                    break;
-            }
-        }
-
-        // Finally, create the item!
-        const result = await Item.create(data, {parent: this.actor });
-
-        if (!result) {
-            throw new Error(`Error creating item '${data.name}' of type '${data.type}' on character '${this.actor.data.name}'`);
-        }
-
-        // Bring up edit dialog to complete creating item
-        const item = this.actor.items.get(result.id);
-        item.sheet.render(true);
-
-        return result;
     }
 
     /**

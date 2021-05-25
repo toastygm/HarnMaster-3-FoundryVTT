@@ -14,11 +14,9 @@ export class HarnMasterItem extends Item {
 
         // Get the Item's data
         const itemData = this.data;
-        const actorData = this.actor ? this.actor.data : {};
         const data = itemData.data;
 
         let img = null;
-        let tempWeight = 0;
 
         // Handle marking gear as equipped or carried
         if (itemData.type.endsWith('gear')) {
@@ -42,27 +40,6 @@ export class HarnMasterItem extends Item {
             case 'skill':
                 utility.calcSkillBase(this);
 
-                // Determine Icon.  If the skill's current icon is not a standard icon
-                // then don't change it; if it is a standard icon, then we can safely
-                // change it if necessary.
-                if (data.type === 'Physical' && utility.isStdIcon(itemData.img, HM3.weaponSkillIcons)) img = utility.getImagePath(itemData.name);
-                else if (data.type === 'Communication' && utility.isStdIcon(itemData.img, HM3.commSkillIcons)) img = utility.getImagePath(itemData.name);
-                else if (data.type === 'Combat' && utility.isStdIcon(itemData.img, HM3.combatSkillIcons)) img = utility.getImagePath(itemData.name);
-                else if (data.type === 'Craft' && utility.isStdIcon(itemData.img, HM3.craftSkillIcons)) img = utility.getImagePath(itemData.name);
-                else if (data.type === 'Magic' && utility.isStdIcon(itemData.img, HM3.magicIcons)) {
-                    img = utility.getImagePath(itemData.name);
-                    if (img === CONST.DEFAULT_TOKEN) {
-                        img = utility.getImagePath(HM3.defaultMagicIconName);
-                    }
-                }
-                else if (data.type === 'Ritual' && utility.isStdIcon(itemData.img, HM3.ritualIcons)) {
-                    img = utility.getImagePath(itemData.name);
-                    if (img === CONST.DEFAULT_TOKEN) {
-                        img = utility.getImagePath(HM3.defaultRitualIconName);
-                    }
-                }
-
-                
                 // Handle using Condition Skill for Endurance if it is present
                 if (itemData.name.toLowerCase() === 'condition' && this.actor?.data) {
                     this.actor.data.data.hasCondition = true;
@@ -72,76 +49,6 @@ export class HarnMasterItem extends Item {
 
             case 'psionic':
                 utility.calcSkillBase(this);
-
-                if (utility.isStdIcon(itemData.img, HM3.psionicTalentIcons)) {
-                    img = utility.getImagePath(itemData.name);
-                    if (img === CONST.DEFAULT_TOKEN) {
-                        img = utility.getImagePath(HM3.defaultPsionicsIconName);
-                    }
-                }
-                break;
-
-            case 'spell':
-                if (utility.isStdIcon(itemData.img, HM3.magicIcons)) {
-                    img = utility.getImagePath(itemData.name);
-                    if (img === CONST.DEFAULT_TOKEN) {
-                        img = utility.getImagePath(data.convocation);
-                        if (img === CONST.DEFAULT_TOKEN) {
-                            img = utility.getImagePath(HM3.defaultMagicIconName);
-                        }
-                    }
-                }
-                break;
-
-            case 'invocation':
-                if (utility.isStdIcon(itemData.img, HM3.ritualIcons)) {
-                    img = utility.getImagePath(itemData.name);
-                    if (img === CONST.DEFAULT_TOKEN) {
-                        img = utility.getImagePath(data.diety);
-                        if (img === CONST.DEFAULT_TOKEN) {
-                            img = utility.getImagePath(HM3.defaultRitualIconName);
-                        }
-                    }
-                }
-                break;
-
-            case 'armorgear':
-                if (itemData.img === CONST.DEFAULT_TOKEN) {
-                    if (utility.isStdIcon(itemData.img, HM3.armorGearIcons)) {
-                        img = utility.getImagePath(itemData.name);
-                    }
-                }
-                break;
-
-            case 'weapongear':
-            case 'missilegear':
-                if (itemData.img === CONST.DEFAULT_TOKEN) {
-                    if (utility.isStdIcon(itemData.img, HM3.weaponSkillIcons)) {
-                        img = utility.getImagePath(itemData.name);
-                    }
-                }
-                break;
-
-            case 'miscgear':
-                if (itemData.img === CONST.DEFAULT_TOKEN) {
-                    if (utility.isStdIcon(itemData.img, HM3.miscGearIcons)) {
-                        img = utility.getImagePath(itemData.name);
-                        if (img === CONST.DEFAULT_TOKEN) {
-                            img = utility.getImagePath(HM3.defaultMiscItemIconName);
-                        }
-                    }
-                }
-                break;
-
-            case 'containergear':
-                if (itemData.img === CONST.DEFAULT_TOKEN) {
-                    if (utility.isStdIcon(itemData.img, HM3.miscGearIcons)) {
-                        img = utility.getImagePath(itemData.name);
-                        if (img === CONST.DEFAULT_TOKEN) {
-                            img = utility.getImagePath(HM3.defaultContainerIconName);
-                        }
-                    }
-                }
                 break;
         }
 
@@ -241,6 +148,132 @@ export class HarnMasterItem extends Item {
         }
     }
 
+    /** @override */
+    async _preCreate(data, options, user) {
+        super._preCreate(data, options, user);
+        const itemData = this.data;
+
+        const updateData = {};
+        if (data.img) updateData.img = data.img;
+
+        // Get the default icon for Items
+        const DEFAULT_ICON = foundry.data.ItemData.schema.img.default();
+
+        // If this item is associated with a specific actor, then we can determine
+        // some values directly from the actor.
+        if (this.actor) {
+            // If a weapon or a missile, get the associated skill
+            if ((itemData.type === 'weapongear' || itemData.type === 'missilegear') && !itemData.data.assocSkill) {
+                updateData['data.assocSkill'] = utility.getAssocSkill(itemData.name, this.actor.itemTypes.skill, 'None');
+                itemData.data.assocSkill = updateData['data.assocSkill'];
+            }
+
+            // If it is a spell, initialize the convocation to the
+            // first magic skill found; it is really unimportant what the
+            // value is, so long as it is a valid skill for this character
+            if (itemData.type === 'spell' && !itemData.data.convocation) {
+
+                // Most spellcasters have two convocations: Neutral and another,
+                // maybe several others.  Most spells are going to be of the
+                // non-Neutral variety.  So, we want to prefer using the non-Neutral
+                // skill by default; if no non-Neutral skills exist, but Neutral does
+                // exist, then use that.
+
+                // In the case where the actor is adding a spell but they have no magic
+                // convocations, give up and don't make any changes.
+                let hasNeutral = false;
+                for (let skill of this.actor.itemTypes.skill.values()) {
+                    if (skill.data.data.type === 'Magic') {
+                        if (skill.data.name === 'Neutral') {
+                            hasNeutral = true;
+                            continue;
+                        }
+                        updateData['data.convocation'] = skill.data.name;
+                        itemData.data.convocation = skill.data.name;
+                        break;
+                    }
+                }
+                if (!updateData['data.convocation'] && hasNeutral) {
+                    updateData['data.convocation'] = 'Neutral';
+                    itemData.data.convocation = 'Neutral';
+                }
+            }
+
+            // If it is a invocation, initialize the diety to the
+            // first ritual skill found; it is really unimportant what the
+            // value is, so long as it is a valid skill for this character
+            if (itemData.type === 'invocation' && !itemData.data.diety) {
+                for (let skill of this.actor.itemTypes.skill.values()) {
+                    if (skill.data.data.type === 'Ritual') {
+                        updateData['data.diety'] = skill.data.name;
+                        itemData.data.diety = skill.data.name;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // If the image was not specified (or is default),
+        // then set it based on the item name
+        if (!updateData.img || updateData.img === DEFAULT_ICON) updateData.img = utility.getImagePath(itemData.name);
+
+        // Setup Image Icon only if it is currently the default icon
+        if (!updateData.img) {
+            switch (itemData.type) {
+                case 'skill':
+                    if (itemData.data.type === 'Ritual') {
+                        updateData.img = utility.getImagePath(HM3.defaultRitualIconName);
+                    } else if (itemData.data.type === 'Magic') {
+                        updateData.img = utility.getImagePath(HM3.defaultMagicIconName);
+                    }
+                    break;
+    
+                case 'psionic':
+                    updateData.img = utility.getImagePath(HM3.defaultPsionicsIconName);
+                    break;
+    
+                case 'spell':
+                    // Base image on convocation name
+                    updateData.img = utility.getImagePath(itemData.data.convocation);
+                    if (!updateData.img) {
+                        // If convocation image wasn't found, use default
+                        updateData.img = utility.getImagePath(HM3.defaultMagicIconName);
+                    }
+                    break;
+    
+                case 'invocation':
+                    // Base image on diety name
+                    updateData.img = utility.getImagePath(itemData.data.diety);
+                    if (!updateData.img) {
+                        // If diety name wasn't found, use default
+                        updateData.img = utility.getImagePath(HM3.defaultRitualIconName);
+                    }
+                    break;
+    
+                case 'miscgear':
+                    updateData.img = utility.getImagePath(HM3.defaultMiscItemIconName);
+                    break;
+    
+                case 'containergear':
+                    updateData.img = utility.getImagePath(HM3.defaultContainerIconName);
+                    break;
+    
+                case 'armorgear':
+                    updateData.img = utility.getImagePath(HM3.defaultArmorGearIconName);
+                    break;
+
+                case 'weapongear':
+                case 'missilegear':
+                    updateData.img = utility.getImagePath(itemData.data.assocSkill);
+                    break;
+            }
+
+            if (!updateData.img) delete updateData.img;
+        }
+
+        await this.data.update(updateData);
+    }
+
     /**
      * Run a custom macro assigned to this item.
      * 
@@ -286,15 +319,7 @@ export class HarnMasterItem extends Item {
             type: itemData.data.macros.type,
             scope: 'global',
             command: command
-        });
+        }, {temporary: true});
         return macro.execute({actor, token});
-    }
-
-    _onDelete(options, userId) {
-        super._onDelete(options, userId);
-    }
-
-    _onUpdate(changed, options, userId) {
-        super._onUpdate(changed, options, userId);
     }
 }
