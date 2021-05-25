@@ -387,7 +387,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     return false;
                 }
             }
-            return this._createItem(data);
+            return Item.create(data, {parent: this.actor});
         }
 
         return super._onDropItemCreate(data);
@@ -693,11 +693,12 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         const otherData = other.data;
         const updateData = {};
 
-        if (!data.notes || data.notes === '') updateData['data.notes'] = otherData.notes;
-        if (!data.source || data.source === '') updateData['data.source'] = otherData.source;
-        if (!data.description || data.description === '') updateData['data.description'] = otherData.description;
-        if (!data.macro || data.macro === '') updateData['data.macro'] = otherData.macro;
-        if (item.data.img === CONST.DEFAULT_TOKEN) updateData['img'] = other.img;
+        if (!data.notes) updateData['data.notes'] = otherData.notes;
+        if (!data.source) updateData['data.source'] = otherData.source;
+        if (!data.description) updateData['data.description'] = otherData.description;
+        if (!data.macro.type || data.macro.type !== otherData.macro.type) updateData['data.macro.type'] = otherData.macro.type;
+        if (!data.macro.command) updateData['data.macro.command'] = otherData.macro.command;
+        updateData['img'] = other.img;
 
         switch (item.data.type) {
             case 'skill':
@@ -737,9 +738,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 break;
         }
 
-        if (updateData) {
-            await item.update(updateData);
-        }
+        await item.update(updateData);
 
         return;
     }
@@ -818,27 +817,27 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 let itemName = formdata.name;
                 let extraValue = formdata.extra_value;
 
+                const updateData = {name: itemName, type: dataset.type};
                 if (dataset.type === 'gear') {
-                    if (extraValue === 'Container') dialogData.type = 'containergear';
-                    else if (extraValue === 'Armor') dialogData.type = 'armorgear';
-                    else if (extraValue === 'Melee Weapon') dialogData.type = 'weapongear';
-                    else if (extraValue === 'Missile Weapon') dialogData.type = 'missilegear';
-                    else dialogData.type = 'miscgear';
+                    if (extraValue === 'Container') updateData.type = 'containergear';
+                    else if (extraValue === 'Armor') updateData.type = 'armorgear';
+                    else if (extraValue === 'Melee Weapon') updateData.type = 'weapongear';
+                    else if (extraValue === 'Missile Weapon') updateData.type = 'missilegear';
+                    else updateData.type = 'miscgear';
                 }
 
                 // Item Data
-                const itemData = foundry.utils.deepClone(game.system.model.Item[dialogData.type]);
-                if (dataset.type === 'skill') itemData.type = dataset.skilltype;
-                else if (dataset.type === 'trait') itemData.type = dataset.traittype;
-                else if (dataset.type.endsWith('gear')) itemData.container = dataset.containerId;
-                else if (dataset.type === 'spell') itemData.convocation = extraValue;
-                else if (dataset.type === 'invocation') itemData.diety = extraValue;
+                if (dataset.type === 'skill') updateData['data.type'] = dataset.skilltype;
+                else if (dataset.type === 'trait') updateData['data.type'] = dataset.traittype;
+                else if (dataset.type.endsWith('gear')) updateData['data.container'] = dataset.containerId;
+                else if (dataset.type === 'spell') updateData['data.convocation'] = extraValue;
+                else if (dataset.type === 'invocation') updateData['data.diety'] = extraValue;
 
                 // Finally, create the item!
-                const result = await Item.create(itemData, {parent: this.actor });
+                const result = await Item.create(updateData, {parent: this.actor });
 
                 if (!result) {
-                    throw new Error(`Error creating item '${itemData.name}' of type '${itemData.type}' on character '${this.actor.data.name}'`);
+                    throw new Error(`Error creating item '${updateData.name}' of type '${updateData.type}' on character '${this.actor.data.name}'`);
                 }
 
                 // Bring up edit dialog to complete creating item

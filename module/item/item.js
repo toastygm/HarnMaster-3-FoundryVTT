@@ -151,19 +151,27 @@ export class HarnMasterItem extends Item {
     /** @override */
     async _preCreate(data, options, user) {
         super._preCreate(data, options, user);
+        const itemData = this.data;
+
+        const updateData = {};
+        if (data.img) updateData.img = data.img;
+
+        // Get the default icon for Items
+        const DEFAULT_ICON = foundry.data.ItemData.schema.img.default();
 
         // If this item is associated with a specific actor, then we can determine
         // some values directly from the actor.
         if (this.actor) {
             // If a weapon or a missile, get the associated skill
-            if ((data.type === 'weapongear' || data.type === 'missilegear') && !data.data.assocSkill) {
-                data.data.assocSkill = utility.getAssocSkill(data.name, this.actor.itemTypes.skill, 'None');
+            if ((itemData.type === 'weapongear' || itemData.type === 'missilegear') && !itemData.data.assocSkill) {
+                updateData['data.assocSkill'] = utility.getAssocSkill(itemData.name, this.actor.itemTypes.skill, 'None');
+                itemData.data.assocSkill = updateData['data.assocSkill'];
             }
 
             // If it is a spell, initialize the convocation to the
             // first magic skill found; it is really unimportant what the
             // value is, so long as it is a valid skill for this character
-            if (data.type === 'spell' && !data.data.convocation) {
+            if (itemData.type === 'spell' && !itemData.data.convocation) {
 
                 // Most spellcasters have two convocations: Neutral and another,
                 // maybe several others.  Most spells are going to be of the
@@ -176,88 +184,94 @@ export class HarnMasterItem extends Item {
                 let hasNeutral = false;
                 for (let skill of this.actor.itemTypes.skill.values()) {
                     if (skill.data.data.type === 'Magic') {
-                        if (skill.data.name == 'Neutral') {
+                        if (skill.data.name === 'Neutral') {
                             hasNeutral = true;
                             continue;
                         }
-                        data.data.convocation = skill.data.name;
+                        updateData['data.convocation'] = skill.data.name;
+                        itemData.data.convocation = skill.data.name;
                         break;
                     }
                 }
-                if (!data.data.convocation && hasNeutral) {
-                    data.data.convocation = 'Neutral';
+                if (!updateData['data.convocation'] && hasNeutral) {
+                    updateData['data.convocation'] = 'Neutral';
+                    itemData.data.convocation = 'Neutral';
                 }
             }
 
             // If it is a invocation, initialize the diety to the
             // first ritual skill found; it is really unimportant what the
             // value is, so long as it is a valid skill for this character
-            if (data.type === 'invocation' && !data.data.diety) {
+            if (itemData.type === 'invocation' && !itemData.data.diety) {
                 for (let skill of this.actor.itemTypes.skill.values()) {
                     if (skill.data.data.type === 'Ritual') {
-                        data.data.diety = skill.data.name;
+                        updateData['data.diety'] = skill.data.name;
+                        itemData.data.diety = skill.data.name;
                         break;
                     }
                 }
             }
         }
 
-
         // If the image was not specified (or is default),
         // then set it based on the item name
-        if (!data.img || data.img === CONST.DEFAULT_TOKEN) data.img = utility.getImagePath(data.name);
+        if (!updateData.img || updateData.img === DEFAULT_ICON) updateData.img = utility.getImagePath(itemData.name);
 
         // Setup Image Icon only if it is currently the default icon
-        if (data.img === CONST.DEFAULT_TOKEN) {
-            switch (currentData.type) {
+        if (!updateData.img) {
+            switch (itemData.type) {
                 case 'skill':
-                    if (data.data.type === 'Ritual') {
-                        data.img = utility.getImagePath(HM3.defaultRitualIconName);
-                    } else if (data.data.type === 'Magic') {
-                        data.img = utility.getImagePath(HM3.defaultMagicIconName);
+                    if (itemData.data.type === 'Ritual') {
+                        updateData.img = utility.getImagePath(HM3.defaultRitualIconName);
+                    } else if (itemData.data.type === 'Magic') {
+                        updateData.img = utility.getImagePath(HM3.defaultMagicIconName);
                     }
                     break;
     
                 case 'psionic':
-                    data.img = utility.getImagePath(HM3.defaultPsionicsIconName);
+                    updateData.img = utility.getImagePath(HM3.defaultPsionicsIconName);
                     break;
     
                 case 'spell':
                     // Base image on convocation name
-                    data.img = utility.getImagePath(data.data.convocation);
-                    if (data.img === CONST.DEFAULT_TOKEN) {
+                    updateData.img = utility.getImagePath(itemData.data.convocation);
+                    if (!updateData.img) {
                         // If convocation image wasn't found, use default
-                        data.img = utility.getImagePath(HM3.defaultMagicIconName);
+                        updateData.img = utility.getImagePath(HM3.defaultMagicIconName);
                     }
                     break;
     
                 case 'invocation':
                     // Base image on diety name
-                    data.img = utility.getImagePath(data.data.diety);
-                    if (data.img === CONST.DEFAULT_TOKEN) {
+                    updateData.img = utility.getImagePath(itemData.data.diety);
+                    if (!updateData.img) {
                         // If diety name wasn't found, use default
-                        data.img = utility.getImagePath(HM3.defaultRitualIconName);
+                        updateData.img = utility.getImagePath(HM3.defaultRitualIconName);
                     }
                     break;
     
                 case 'miscgear':
-                    data.img = utility.getImagePath(HM3.defaultMiscItemIconName);
+                    updateData.img = utility.getImagePath(HM3.defaultMiscItemIconName);
                     break;
     
                 case 'containergear':
-                    data.img = utility.getImagePath(HM3.defaultContainerIconName);
+                    updateData.img = utility.getImagePath(HM3.defaultContainerIconName);
                     break;
     
                 case 'armorgear':
-                    data.img = utility.getImagePath(HM3.defaultArmorGearIconName);
+                    updateData.img = utility.getImagePath(HM3.defaultArmorGearIconName);
                     break;
 
                 case 'weapongear':
                 case 'missilegear':
-                    data.img = utility.getImagePath(data.data.assocSkill);
+                    updateData.img = utility.getImagePath(itemData.data.assocSkill);
                     break;
-            }    
+            }
+
+            if (!updateData.img) delete updateData.img;
         }
+
+        await this.data.update(updateData);
     }
 
     /**
