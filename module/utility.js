@@ -224,7 +224,7 @@ export function createUniqueName(prefix, itemTypes) {
  * @param {String} name 
  */
 export function getImagePath(name) {
-    if (!name) return CONST.DEFAULT_TOKEN;
+    if (!name) return null;
 
     const lcName = name.toLowerCase();
     const re = /\(([^\)]+)\)/;
@@ -254,7 +254,7 @@ export function getImagePath(name) {
         }
     }
 
-    return CONST.DEFAULT_TOKEN;
+    return null;
 }
 
 export function getAssocSkill(name, skillsItemArray, defaultSkill) {
@@ -278,25 +278,6 @@ export function getAssocSkill(name, skillsItemArray, defaultSkill) {
     }
 
     return defaultSkill;
-}
-
-/**
- * Returns whether or not a icon path is one of the standard icons.
- * 
- * @param {String} iconPath Icon path to test
- * @param {Array} iconArray Array of standard icons
- */
-export function isStdIcon(iconPath, iconArray) {
-    if (!iconPath || !iconArray) return false;
-
-    if (iconPath === CONST.DEFAULT_TOKEN) return true;
-
-    let result = false;
-    iconArray.forEach(i => {
-        if (!result && i[1] === iconPath) result = true;
-    });
-
-    return result;
 }
 
 /**
