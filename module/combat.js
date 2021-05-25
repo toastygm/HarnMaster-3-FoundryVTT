@@ -200,13 +200,13 @@ export async function meleeAttack(attackToken, defendToken, weaponItem=null) {
         if (weaponItem.data.data.isEquipped) {
             options['weapon'] = weaponItem;
         } else {
-            ui.notification.warn(`${weaponItem.name} is not equipped.`);
+            ui.notification.warn(`For ${attackToken.name} ${weaponItem.name} is not equipped.`);
             return null;
         }
     } else {
         const defWpns = defaultMeleeWeapon(attackToken);
         if (!defWpns.weapons || !defWpns.weapons.length) {
-            ui.notifications.warn(`${attackToken} does not have any equipped melee weapons.`);
+            ui.notifications.warn(`${attackToken.name} does not have any equipped melee weapons.`);
             return null;
         }
         options['weapons'] = defWpns.weapons;
@@ -349,7 +349,7 @@ async function attackDialog(options) {
     }
 
     if (!options.weapon) {
-        ui.notifications.warn(`No equipped weapons available for attack.`);
+        ui.notifications.warn(`${attackerName} has no equipped weapons available for attack.`);
         return null;
     }
 
@@ -536,7 +536,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     const options = defaultMeleeWeapon(defToken);
 
     if (!options.weapons) {
-        ui.notifications.warn(`You have no equipped weapons, counterstrike defense refused.`);
+        ui.notifications.warn(`${defToken.name} has no equipped weapons, counterstrike defense refused.`);
         return null;
     }
 
@@ -917,7 +917,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
     })
     
     if (weapons.length === 0) {
-        return ui.notifications.warn("No weapons exist that can be used for blocking, block defense refused.");
+        return ui.notifications.warn(`${defToken.name} has no weapons that can be used for blocking, block defense refused.`);
     }
     
     const options = {
