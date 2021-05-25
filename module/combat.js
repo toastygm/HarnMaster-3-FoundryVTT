@@ -357,7 +357,7 @@ async function attackDialog(options) {
         weapon: options.weapon.name,
         aimLocations: ['Low', 'Mid', 'High'],
         defaultAim: 'Mid',
-        defaultModifier: dialogOptions.defaultModifier || 0
+        defaultModifier: options.defaultModifier || 0
     };
 
     if (options.weapon.data.type === 'weapongear') {
@@ -920,12 +920,17 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         return ui.notifications.warn(`${defToken.name} has no weapons that can be used for blocking, block defense refused.`);
     }
     
+    let outnumberedMod = 0;
+    if (defToken.actor?.data?.data?.eph?.outnumbered > 1) {
+        outnumberedMod = Math.floor(defToken.actor.data.data.eph.outnumbered - 1) * -10;
+    }
+
     const options = {
         name: defToken.name,
         prompt: prompt,
         weapons: weapons,
         defaultWeapon: defaultWeapon,
-        defaultModifier: 0,
+        defaultModifier: outnumberedMod,
         modifierType: 'Defense'
     };
     const dialogResult = await selectWeaponDialog(options);
@@ -1011,7 +1016,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         attackWeapon: weaponName,
         defendWeapon: defWeapon ? defWeapon.name : "",
         effAML: effAML,
-        effDML: effDML,
+        effDML: effDML + dialogResult.addlModifier,
         defense: `Block w/ ${dialogResult.weapon}`,
         addlModifierAbs: Math.abs(dialogResult.addlModifier),
         addlModifierSign: dialogResult.addlModifier < 0 ? '-':'+',
