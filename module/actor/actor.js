@@ -225,6 +225,7 @@ export class HarnMasterActor extends Actor {
         eph.meleeAMLMod = 0;
         eph.meleeDMLMod = 0;
         eph.missileAMLMod = 0;
+        eph.outnumbered = 0;
         eph.commSkillsMod = 0;
         eph.physicalSkillsMod = 0;
         eph.combatSkillsMod = 0;

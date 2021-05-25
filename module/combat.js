@@ -288,6 +288,7 @@ async function selectWeaponDialog(options) {
     };
     dialogOptions.weapons = options.weapons.map(w => w.name);
     dialogOptions.defaultWeapon = options.defaultWeapon;
+    dialogOptions.defaultModifier = options.defaultModifier || 0;
     if (options.modifierType) {
         dialogOptions.modifierType = options.modifierType;
     }
@@ -355,7 +356,8 @@ async function attackDialog(options) {
     const dialogOptions = {
         weapon: options.weapon.name,
         aimLocations: ['Low', 'Mid', 'High'],
-        defaultAim: 'Mid'
+        defaultAim: 'Mid',
+        defaultModifier: dialogOptions.defaultModifier || 0
     };
 
     if (options.weapon.data.type === 'weapongear') {
@@ -541,6 +543,11 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     options.type = 'Counterstrike';
     options.attackerName = defToken.name;
     options.defenderName = atkToken.name;
+
+    if (defToken.actor?.data?.data?.eph?.outnumbered > 1) {
+        options.defaultModifier = Math.floor(defToken.actor.data.data.eph.outnumbered-1) * -10;
+    }
+
     const csDialogResult = await attackDialog(options);
     if (!csDialogResult) return null;
 
@@ -628,6 +635,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         atkTokenId: defToken.id,
         defender: atkToken.name,
         defTokenId: atkToken.id,
+        outnumbered: defToken.actor?.data?.data?.eph?.outnumbered > 1 ? defToken.actor.data.data.eph.outnumbered : 0,
         attackWeapon: csDialogResult.weapon.name,
         mlType: 'AML',
         addlModifierAbs: Math.abs(csDialogResult.addlModifier),
@@ -737,11 +745,16 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
 
     const effDML = defToken.actor.data.data.dodge;
 
+    let outnumberedMod = 0;
+    if (defToken.actor?.data?.data?.eph?.outnumbered > 1) {
+        outnumberedMod = Math.floor((defToken.actor.data.data.eph.outnumbered - 1) * -10);
+    }
+
     const defRoll = await DiceHM3.rollTest({
         data: {},
         diceSides: 100,
         diceNum: 1,
-        modifier: 0,
+        modifier: outnumberedMod,
         target: effDML
     });
 
@@ -776,9 +789,10 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         defender: defToken.name,
         defTokenId: defToken.id,
         attackWeapon: weaponName,
+        outnumbered: defToken.actor?.data?.data?.eph?.outnumbered > 1 ? defToken.actor.data.data.eph.outnumbered : null,
         effAML: effAML,
         defense: 'Dodge',
-        effDML: effDML,
+        effDML: effDML+outnumberedMod,
         attackRoll: atkRoll.rollObj.total,
         atkRollResult: atkRoll.description,
         defenseRoll: defRoll.rollObj.total,
@@ -910,7 +924,8 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         name: defToken.name,
         prompt: prompt,
         weapons: weapons,
-        defaultWeapon: defaultWeapon, 
+        defaultWeapon: defaultWeapon,
+        defaultModifier: 0,
         modifierType: 'Defense'
     };
     const dialogResult = await selectWeaponDialog(options);
@@ -991,6 +1006,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         atkTokenId: atkToken.id,
         defender: defToken.name,
         defTokenId: defToken.id,
+        outnumbered: defToken.actor?.data?.data?.eph?.outnumbered > 1 ? defToken.actor.data.data.eph.outnumbered : null,
         mlType: 'DML',
         attackWeapon: weaponName,
         defendWeapon: defWeapon ? defWeapon.name : "",

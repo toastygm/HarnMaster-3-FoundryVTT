@@ -153,6 +153,7 @@ HM3.activeEffectKey = {
     'data.eph.meleeAMLMod': 'Melee Attacks',
     'data.eph.meleeDMLMod': 'Melee Defenses',
     'data.eph.missileAMLMod': 'Missile Attacks',
+    'data.eph.outnumbered': 'Outnumbered',
     'data.eph.itemAMLMod': 'Weapon Attack ML',
     'data.eph.itemDMLMod': 'Weapon Defense ML',
     'data.eph.commSkillsMod': 'Communication Skills EML',
