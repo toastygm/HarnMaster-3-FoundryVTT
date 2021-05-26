@@ -152,7 +152,8 @@ export async function skillRoll(itemName, noDialog = false, myActor=null) {
     }
 
     const stdRollData = {
-        label: `${item.data.name} Skill Test`,
+        type: `skill-${item.name}`,
+        label: `${item.name} Skill Test`,
         target: item.data.data.effectiveMasteryLevel,
         notesData: {
             up: actor.data.data.universalPenalty,
@@ -194,6 +195,7 @@ export async function castSpellRoll(itemName, noDialog = false, myActor=null) {
     }
 
     const stdRollData = {
+        type: `spell-${item.name}`,
         label: `Casting ${item.data.name}`,
         target: item.data.data.effectiveMasteryLevel,
         notesData: {
@@ -239,6 +241,7 @@ export async function invokeRitualRoll(itemName, noDialog = false, myActor = nul
     }
 
     const stdRollData = {
+        type: `invocation-${item.name}`,
         label: `Invoking ${item.data.name} Ritual`,
         target: item.data.data.effectiveMasteryLevel,
         notesData: {
@@ -284,6 +287,7 @@ export async function usePsionicRoll(itemName, noDialog = false, myActor=null) {
     }
 
     const stdRollData = {
+        type: `psionic-${item.name}`,
         label: `Using ${item.data.name} Talent`,
         target: item.data.data.effectiveMasteryLevel,
         notesData: {
@@ -334,6 +338,7 @@ export async function testAbilityD6Roll(ability, noDialog = false, myActor=null)
 
 
     const stdRollData = {
+        type: `${ability}-d6`,
         label: `d6 ${ability[0].toUpperCase()}${ability.slice(1)} Roll`,
         target: actor.data.data.abilities[ability].effective,
         numdice: 3,
@@ -348,7 +353,9 @@ export async function testAbilityD6Roll(ability, noDialog = false, myActor=null)
         stdRollData.actor = actor.id;
     }
     
-    return await DiceHM3.d6Roll(stdRollData);
+    const result = await DiceHM3.d6Roll(stdRollData);
+    actor.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
+    return result;
 }
 
 export async function testAbilityD100Roll(ability, noDialog = false, myActor = null) {
@@ -371,6 +378,7 @@ export async function testAbilityD100Roll(ability, noDialog = false, myActor = n
     if (!ability || !abilities.includes(ability)) return null;
 
     const stdRollData = {
+        type: `${ability}-d100`,
         label: `d100 ${ability[0].toUpperCase()}${ability.slice(1)} Roll`,
         target: Math.max(5, actor.data.data.abilities[ability].effective * 5),
         notesData: {},
@@ -384,7 +392,9 @@ export async function testAbilityD100Roll(ability, noDialog = false, myActor = n
         stdRollData.actor = actor.id;
     }
     
-    return await DiceHM3.d100StdRoll(stdRollData);
+    const result = await DiceHM3.d100StdRoll(stdRollData);
+    actor.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
+    return result;
 }
 
 export async function weaponDamageRoll(itemName, aspect=null, myActor = null) {
@@ -643,6 +653,7 @@ export async function healingRoll(itemName, noDialog = false, myActor = null) {
     }
 
     const stdRollData = {
+        type: 'injury',
         label: `${item.data.name} Healing Roll`,
         target: item.data.data.healRate*actor.data.data.endurance,
         notesData: {
@@ -664,7 +675,9 @@ export async function healingRoll(itemName, noDialog = false, myActor = null) {
         stdRollData.actor = actor.id;
     }
     
-    return await DiceHM3.d100StdRoll(stdRollData);
+    const result = await DiceHM3.d100StdRoll(stdRollData);
+    actor.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
+    return result;
 }
 
 export async function dodgeRoll(noDialog = false, myActor = null) {
@@ -676,6 +689,7 @@ export async function dodgeRoll(noDialog = false, myActor = null) {
     }
 
     const stdRollData = {
+        type: 'dodge',
         label: `Dodge Roll`,
         target: actor.data.data.dodge,
         notesData: {},
@@ -689,7 +703,9 @@ export async function dodgeRoll(noDialog = false, myActor = null) {
         stdRollData.actor = actor.id;
     }
     
-    return await DiceHM3.d100StdRoll(stdRollData);
+    const result = await DiceHM3.d100StdRoll(stdRollData);
+    actor.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
+    return result;
 }
 
 export async function shockRoll(noDialog = false, myActor = null) {
@@ -701,6 +717,7 @@ export async function shockRoll(noDialog = false, myActor = null) {
     }
 
     const stdRollData = {
+        type: 'shock',
         label: `Shock Roll`,
         target: actor.data.data.endurance,
         numdice: actor.data.data.universalPenalty,
@@ -715,7 +732,9 @@ export async function shockRoll(noDialog = false, myActor = null) {
         stdRollData.actor = actor.id;
     }
     
-    return await DiceHM3.d6Roll(stdRollData);
+    const result = await DiceHM3.d6Roll(stdRollData);
+    actor.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
+    return result;
 }
 
 export async function stumbleRoll(noDialog = false, myActor = null) {
@@ -727,6 +746,7 @@ export async function stumbleRoll(noDialog = false, myActor = null) {
     }
 
     const stdRollData = {
+        type: 'stumble',
         label: `${actor.isToken ? actor.token.name : actor.name} Stumble Roll`,
         target: actor.data.data.eph.stumbleTarget,
         numdice: 3,
@@ -741,7 +761,9 @@ export async function stumbleRoll(noDialog = false, myActor = null) {
         stdRollData.actor = actor.id;
     }
     
-    return await DiceHM3.d6Roll(stdRollData);
+    const result = await DiceHM3.d6Roll(stdRollData);
+    actor.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
+    return result;
 }
 
 export async function fumbleRoll(noDialog = false, myActor = null) {
@@ -753,6 +775,7 @@ export async function fumbleRoll(noDialog = false, myActor = null) {
     }
 
     const stdRollData = {
+        type: 'fumble',
         label: `${actor.isToken ? actor.token.name : actor.name} Fumble Roll`,
         target: actor.data.data.eph.fumbleTarget,
         numdice: 3,
@@ -767,7 +790,9 @@ export async function fumbleRoll(noDialog = false, myActor = null) {
         stdRollData.actor = actor.id;
     }
     
-    return await DiceHM3.d6Roll(stdRollData);
+    const result = await DiceHM3.d6Roll(stdRollData);
+    actor.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
+    return result;
 }
 
 export async function genericDamageRoll(myActor = null) {

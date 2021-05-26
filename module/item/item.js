@@ -279,6 +279,7 @@ export class HarnMasterItem extends Item {
      * 
      * Returns an object with the following fields:
      * 
+     * type: Type of roll
      * title: Chat label for Roll,
      * origTarget: Unmodified target value,
      * modifier: Modifier added to origTarget value,
@@ -293,6 +294,7 @@ export class HarnMasterItem extends Item {
     async runCustomMacro(rollInput, {actor, token}={}) {
         const itemData = this.data;
         const rollResult = {
+            type: rollInput.type,
             title: rollInput.title,
             origTarget: rollInput.origTarget,
             modifier: (rollInput.plusMinus === '-' ? -1 : 1) * rollInput.modifier,
@@ -320,6 +322,10 @@ export class HarnMasterItem extends Item {
             scope: 'global',
             command: command
         }, {temporary: true});
+        if (!macro) {
+            console.error(`HM3 | Failure initializing macro '${this.name} ${this.type} macro', type=${itemData.data.macros.type}, command='${command}'`);
+            return null;
+        }
         return macro.execute({actor, token});
     }
 }

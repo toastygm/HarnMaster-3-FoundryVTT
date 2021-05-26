@@ -948,5 +948,60 @@ export class HarnMasterActor extends Actor {
             change.effect.apply(weapon, change);
         }
     }
+
+    /**
+     * Run a custom macro assigned to this item.
+     * 
+     * Returns an object with the following fields:
+     * 
+     * type: type of roll (ability-d6, ability-d100, shock, stumble, fumble, dodge, healing)
+     * title: Chat label for Roll,
+     * origTarget: Unmodified target value,
+     * modifier: Modifier added to origTarget value,
+     * modifiedTarget: Final modified target value,
+     * rollValue: roll number,
+     * isSuccess: is roll successful,
+     * isCritical: is roll critical,
+     * result: 'MS', 'CS', 'MF', 'CF',
+     * description: textual description of roll success or failure,
+     * notes: rendered notes,
+     */
+     async runCustomMacro(rollInput, {actor, token}={}) {
+        const actorData = this.data;
+        const rollResult = {
+            type: rollInput.type,
+            title: rollInput.title,
+            origTarget: rollInput.origTarget,
+            modifier: (rollInput.plusMinus === '-' ? -1 : 1) * rollInput.modifier,
+            modifiedTarget: rollInput.modifiedTarget,
+            rollValue: rollInput.rollValue,
+            isSuccess: rollInput.isSuccess,
+            isCritical: rollInput.isCritical,
+            result: rollInput.isSuccess ? (rollInput.isCritical ? 'CS' : 'MS') : (rollInput.isCritical ? 'CF' : 'MF'),
+            description: rollInput.description,
+            notes: rollInput.notes
+        }
+        if (!actorData.data.macros.command) return rollResult;
+        let command = null;
+        if (actorData.data.macros.type === 'script') {
+            if (!game.user.can("MACRO_SCRIPT")) return rollResult;
+            const strRollResult = JSON.stringify(rollResult);
+            command = `const item=actor.items.get('${this.id}');const rollResult=${strRollResult};${actorData.data.macros.command}`;
+        } else {
+            command = itemdata.data.macros.command;
+        }
+
+        const macro = await Macro.create({
+            name: `${this.name} ${this.type} macro`,
+            type: actorData.data.macros.type,
+            scope: 'global',
+            command: command
+        }, {temporary: true});
+        if (!macro) {
+            console.error(`HM3 | Failure initializing macro '${this.name} ${this.type} macro', type=${actorData.data.macros.type}, command='${command}'`);
+            return null;
+        }
+        return macro.execute({actor, token});
+    }
 }
 

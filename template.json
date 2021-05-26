@@ -53,7 +53,10 @@
         },
         "description": "***INIT***",
         "biography": "",
-        "macros": {}
+        "macros": {
+          "type": "script",
+          "command": ""
+        }
       }
     },
     "character": {
