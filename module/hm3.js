@@ -125,7 +125,7 @@ Hooks.on('updateCombat', async (combat, updateData) => {
 Hooks.once("ready", function () {
     // Determine whether a system migration is required
     const currentVersion = game.settings.get("hm3", "systemMigrationVersion");
-    const NEEDS_MIGRATION_VERSION = "1.2.6";  // Anything older than this must be migrated
+    const NEEDS_MIGRATION_VERSION = "1.2.9";  // Anything older than this must be migrated
 
     let needMigration = currentVersion === null || (isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion));
     if (needMigration && game.user.isGM) {

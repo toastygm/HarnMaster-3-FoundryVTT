@@ -209,6 +209,11 @@ export const migrateActorData = function (actor) {
     updateData['data.totalWeight._deprecated'] = true
   }
 
+  if (actorData.data.macros === {}) {
+    updateData['data.macros.command'] = '';
+    updateData['data.macros.type'] = 'script';
+  }
+
   // Remove deprecated fields
   _migrateRemoveDeprecated(actor, updateData);
 
