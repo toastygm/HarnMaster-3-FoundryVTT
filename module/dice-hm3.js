@@ -28,6 +28,7 @@ export class DiceHM3 {
         const speaker = rollData.speaker || ChatMessage.getSpeaker();
 
         const dialogOptions = {
+            type: rollData.type,
             target: rollData.target,
             label: rollData.label,
             modifier: 0,
@@ -36,6 +37,7 @@ export class DiceHM3 {
 
         // Create the Roll instance
         const roll = rollData.fastforward ? await DiceHM3.rollTest({
+            type: rollData.type,
             data: rollData.data,
             diceSides: 100,
             diceNum: 1,
@@ -65,6 +67,7 @@ export class DiceHM3 {
         const renderedNotes = rollData.notes ? utility.stringReplacer(rollData.notes, notesData) : "";
 
         const chatTemplateData = {
+            type: roll.type,
             title: rollData.label,
             origTarget: rollData.target,
             modifier: Math.abs(roll.modifier),
@@ -127,6 +130,7 @@ export class DiceHM3 {
             callback: html => {
                 const formModifier = html[0].querySelector("form").modifier.value;
                 return DiceHM3.rollTest({
+                    type: dialogOptions.type,
                     target: dialogOptions.target,
                     data: dialogOptions.data,
                     diceSides: 100,
@@ -165,6 +169,7 @@ export class DiceHM3 {
         const speaker = rollData.speaker || ChatMessage.getSpeaker();
         
         const dialogOptions = {
+            type: rollData.type,
             target: Number(rollData.target),
             label: rollData.label,
             modifier: 0,
@@ -175,6 +180,7 @@ export class DiceHM3 {
 
         // Create the Roll instance
         const roll = rollData.fastforward ? await DiceHM3.rollTest({
+            type: rollData.type,
             data: rollData.data,
             diceSides: 6,
             diceNum: Number(rollData.numdice),
@@ -198,6 +204,8 @@ export class DiceHM3 {
         const renderedNotes = rollData.notes ? utility.stringReplacer(rollData.notes, notesData) : "";
 
         const chatTemplateData = {
+            type: roll.type,
+            type: rollData.type,
             title: rollData.label,
             origTarget: rollData.target,
             modifier: roll.modifier,
@@ -258,6 +266,7 @@ export class DiceHM3 {
             callback: html => {
                 const formModifier = html[0].querySelector("form").modifier.value;
                 return DiceHM3.rollTest({
+                    type: dialogOptions.type,
                     target: dialogOptions.target,
                     data: dialogOptions.data,
                     diceSides: 6,
@@ -869,6 +878,7 @@ export class DiceHM3 {
                 const formDamageDice = Number(form.damageDice.value);
                 const formWeaponAspect = form.weaponAspect.value;
                 let roll = await DiceHM3.rollTest({
+                    type: dialogOptions.type,
                     target: 0,
                     data: dialogOptions.data,
                     diceSides: 6,
@@ -876,6 +886,7 @@ export class DiceHM3 {
                     modifier: 0
                 });
                 let result = {
+                    type: roll.type,
                     chosenAspect: formWeaponAspect,
                     damageDice: formDamageDice,
                     addlWeaponImpact: formAddlWeaponImpact,
@@ -1007,6 +1018,7 @@ export class DiceHM3 {
                 }
 
                 let roll = await DiceHM3.rollTest({
+                    type: dialogOptions.type,
                     target: dialogOptions.target,
                     data: dialogOptions.data,
                     diceSides: 100,
@@ -1015,6 +1027,7 @@ export class DiceHM3 {
                 });
 
                 let result = {
+                    type: roll.type,
                     origTarget: dialogOptions.target,
                     range: formRange,
                     rangeModifier: rangeModifier,
@@ -1143,6 +1156,7 @@ export class DiceHM3 {
                 const formDamageDice = Number(form.damageDice.value);
                 const formRange = form.range.value;
                 let roll = await DiceHM3.rollTest({
+                    type: dialogOptions.type,
                     target: 0,
                     data: dialogOptions.data,
                     diceSides: 6,
@@ -1150,6 +1164,7 @@ export class DiceHM3 {
                     modifier: 0
                 });
                 let result = {
+                    type: roll.type,
                     range: formRange,
                     damageDice: formDamageDice,
                     addlImpact: formAddlImpact,
@@ -1197,6 +1212,7 @@ export class DiceHM3 {
         }
 
         let rollResults = {
+            "type": testData.type,
             "target": targetNum,
             "modifier": modifier,
             "rollObj": roll,
