@@ -16,6 +16,8 @@ export class HarnMasterItem extends Item {
         const itemData = this.data;
         const data = itemData.data;
 
+        data.goldMode = game.settings.get('hm3', 'goldMode');
+
         let img = null;
 
         // Handle marking gear as equipped or carried
@@ -61,8 +63,14 @@ export class HarnMasterItem extends Item {
         const itemData = this.data;
         const data = itemData.data;
 
-        const pctUnivPen = this.actor?.data?.data.universalPenalty * 5 || 0;
-        const pctPhysPen = this.actor?.data?.data.physicalPenalty * 5 || 0;
+        let pctUnivPen = 0;
+        let pctPhysPen = 0;
+        if (data.goldMode) {
+            pctPhysPen = this.actor?.data?.data.physicalPenalty;
+        } else {
+            pctUnivPen = this.actor?.data?.data.universalPenalty * 5 || 0;
+            pctPhysPen = this.actor?.data?.data.physicalPenalty * 5 || 0;    
+        }
 
         if (itemData.type === 'skill') {
             if (!data.masteryLevel || data.masteryLevel < 0) data.masteryLevel = 0; 
@@ -127,6 +135,10 @@ export class HarnMasterItem extends Item {
             itemData.data.probWeight['high'] = 0;
         }
 
+        if (isNaN(itemData.data.probWeight['arms'])) {
+            itemData.data.probWeight['arms'] = 0;
+        }
+
         if (isNaN(itemData.data.armorQuality)) {
             itemData.data.armorQuality = 0;
         }
@@ -145,6 +157,14 @@ export class HarnMasterItem extends Item {
 
         if (isNaN(itemData.data.fire)) {
             itemData.data.fire = 0;
+        }
+
+        if (isNaN(itemData.data.squeeze)) {
+            itemData.data.squeeze = 0;
+        }
+
+        if (isNaN(itemData.data.tear)) {
+            itemData.data.tear = 0;
         }
     }
 
@@ -292,6 +312,7 @@ export class HarnMasterItem extends Item {
      * notes: rendered notes,
      */
     async runCustomMacro(rollInput, {actor, token}={}) {
+        if (!rollInput) return null;
         const itemData = this.data;
         const rollResult = {
             type: rollInput.type,

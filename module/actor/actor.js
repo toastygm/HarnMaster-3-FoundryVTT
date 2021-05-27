@@ -3,6 +3,7 @@ import { DiceHM3 } from '../dice-hm3.js';
 import * as combat from '../combat.js';
 import * as macros from '../macros.js';
 import { HarnMasterBaseActorSheet } from './base-actor-sheet.js';
+import { registerSystemSettings } from '../settings.js';
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
@@ -27,6 +28,10 @@ export class HarnMasterActor extends Actor {
             await this._addItemsFromPack(
                 ['Climbing', 'Jumping', 'Stealth', 'Throwing'],
                 'hm3.std-skills-physical', updateData.items);
+            if (game.settings.get('hm3', 'goldMode')) {
+                // If we are in HMG mode, add Condition skill by default.
+                await this._addItemsFromPack(['Condition'], 'hm3.std-skills-physical', updateData.items);
+            }
             await this._addItemsFromPack(
                 ['Awareness', 'Intrigue', 'Oratory', 'Rhetoric', 'Singing'],
                 'hm3.std-skills-communication', updateData.items);
@@ -46,6 +51,10 @@ export class HarnMasterActor extends Actor {
             await this._addItemsFromPack(
                 ['Awareness'],
                 'hm3.std-skills-communication', updateData.items);
+            if (game.settings.get('hm3', 'goldMode')) {
+                // If we are in HMG mode, add Condition skill by default.
+                await this._addItemsFromPack(['Condition'], 'hm3.std-skills-physical', updateData.items);
+            }
             await this._addItemsFromPack(
                 ['Initiative', 'Unarmed', 'Dodge'],
                 'hm3.std-skills-combat', updateData.items);
@@ -142,6 +151,8 @@ export class HarnMasterActor extends Actor {
         const data = actorData.data;
         const items = actorData.items;
 
+        data.goldMode = game.settings.get('hm3', 'goldMode');
+
         // Ephemeral data is kept together with other actor data,
         // but it is not in the data model so it will not be saved.
         if (!data.eph) data.eph = {};
@@ -173,6 +184,10 @@ export class HarnMasterActor extends Actor {
         data.abilities.voice.effective = 0;
         data.abilities.comeliness.effective = 0;
         data.abilities.morality.effective = 0;
+        data.abilities.endurance.effective = 0;
+        data.abilities.speed.effective = 0;
+        data.abilities.touch.effective = 0;
+        data.abilities.frame.effective = 0;
         data.dodge = 0;
         data.initiative = 0;
         data.endurance = 0;
@@ -182,10 +197,15 @@ export class HarnMasterActor extends Actor {
         data.physicalPenalty = 0;
         data.totalInjuryLevels = 0;
         data.encumbrance = 0;
+        data.condition = 0;
 
         // Calculate endurance (in case Condition not present)
-        data.endurance = Math.round((data.abilities.strength.base + data.abilities.stamina.base +
-            data.abilities.will.base) / 3);    
+        if (data.goldMode) {
+            data.endurance = data.abilities.endurance.base;
+        } else {
+            data.endurance = Math.round((data.abilities.strength.base + data.abilities.stamina.base +
+                data.abilities.will.base) / 3);        
+        }
 
         // Calculate values based on items
         items.forEach(it => {
@@ -196,6 +216,7 @@ export class HarnMasterActor extends Actor {
             } else if (itemData.type === 'skill' && itemData.name.toLowerCase() === 'condition') {
                 // if Condition skill is present, use that for endurance instead
                 data.endurance = Math.round((itemData.data.masteryLevel || 0) / 5);
+                data.condition = itemData.data.masteryLevel;
             }
         });
 
@@ -220,6 +241,10 @@ export class HarnMasterActor extends Actor {
         eph.aura = data.abilities.aura.base;
         eph.morality = data.abilities.morality.base;
         eph.comeliness = data.abilities.comeliness.base;
+        eph.endurance = data.abilities.endurance.base;
+        eph.touch = data.abilities.touch.base;
+        eph.speed = data.abilities.speed.base;
+        eph.frame = data.abilities.frame.base;
         eph.totalInjuryLevels = data.totalInjuryLevels;
     
         eph.meleeAMLMod = 0;
@@ -271,15 +296,32 @@ export class HarnMasterActor extends Actor {
         // Universal Penalty and Physical Penalty are used to calculate many
         // things, including effectiveMasteryLevel for all skills,
         // endurance, move, etc.
-        data.universalPenalty = eph.totalInjuryLevels + eph.fatigue;
-        this.applySpecificActiveEffect('data.universalPenalty');
-        data.universalPenalty = Math.floor(Math.max(data.universalPenalty || 0, 0));
+        if (data.goldMode) {
+            data.universalPenalty = 0;
+            data.physicalPenalty = eph.totalInjuryLevels + eph.fatigue;
+            this.applySpecificActiveEffect('data.physicalPenalty');
+            data.physicalPenalty = Math.floor(Math.max(data.physicalPenalty || 0, 0));               
+        } else {
+            data.universalPenalty = eph.totalInjuryLevels + eph.fatigue;
+            this.applySpecificActiveEffect('data.universalPenalty');
+            data.universalPenalty = Math.floor(Math.max(data.universalPenalty || 0, 0));
+    
+            data.physicalPenalty = data.universalPenalty + data.encumbrance;
+            this.applySpecificActiveEffect('data.physicalPenalty');
+            data.physicalPenalty = Math.floor(Math.max(data.physicalPenalty || 0, 0));    
+        }
 
-        data.physicalPenalty = data.universalPenalty + data.encumbrance;
-        this.applySpecificActiveEffect('data.physicalPenalty');
-        data.physicalPenalty = Math.floor(Math.max(data.physicalPenalty || 0, 0));
+        if (data.goldMode) {
+            // SHock index really doesn't mean anything in HMG, since the shock roll is based directly on Condition; it doesn't
+            // vary, so calculating a shock index is not very useful.
+            data.shockIndex.value = 100;
+        } else {
+            data.shockIndex.value = HarnMasterActor._normProb(data.endurance, data.universalPenalty * 3.5, data.universalPenalty);
+        }
 
-        data.shockIndex.value = HarnMasterActor._normProb(data.endurance, data.universalPenalty * 3.5, data.universalPenalty);
+        if (data.goldMode) {
+            data.condition = Math.max(data.condition - data.physicalPenalty, 5);
+        }
 
         // Calculate current Move speed.  Cannot go below 0
         // HEURISTIC: Assume if base move < 25 that user is specifying hexes for movement (use PP as penalty);
@@ -292,8 +334,13 @@ export class HarnMasterActor extends Actor {
         this._setupEffectiveAbilities(data);
 
         // Calculate Important Roll Targets
-        eph.stumbleTarget = Math.max(data.abilities.agility.effective, 0);
-        eph.fumbleTarget = Math.max(data.abilities.dexterity.effective, 0);
+        if (data.goldMode) {
+            eph.stumbleTarget = Math.max(Math.max(data.abilities.agility.effective, data.dodge)-data.physicalPenalty, 5);
+            eph.fumbleTarget = Math.max((data.abilities.dexterity.effective * 5)-data.physicalPenalty, 5)
+        } else {
+            eph.stumbleTarget = Math.max(data.abilities.agility.effective, 0);
+            eph.fumbleTarget = Math.max(data.abilities.dexterity.effective, 0);    
+        }
 
         // Process all the final post activities for Items
         this.items.forEach(it => {
@@ -481,24 +528,44 @@ export class HarnMasterActor extends Actor {
     _setupEffectiveAbilities(data) {
         const eph = this.data.data.eph;
 
-        // Affected by physical penalty
-        data.abilities.strength.effective = Math.max(Math.round(eph.strength + Number.EPSILON) - data.physicalPenalty, 0);
-        data.abilities.stamina.effective = Math.max(Math.round(eph.stamina + Number.EPSILON) - data.physicalPenalty, 0);
-        data.abilities.agility.effective = Math.max(Math.round(eph.agility + Number.EPSILON) - data.physicalPenalty, 0);
-        data.abilities.dexterity.effective = Math.max(Math.round(eph.dexterity + Number.EPSILON) - data.physicalPenalty, 0);
-        data.abilities.eyesight.effective = Math.max(Math.round(eph.eyesight + Number.EPSILON) - data.physicalPenalty, 0);
-        data.abilities.hearing.effective = Math.max(Math.round(eph.hearing + Number.EPSILON) - data.physicalPenalty, 0);
-        data.abilities.smell.effective = Math.max(Math.round(eph.smell + Number.EPSILON) - data.physicalPenalty, 0);
-        data.abilities.voice.effective = Math.max(Math.round(eph.voice + Number.EPSILON) - data.physicalPenalty, 0);
+        if (this.data.goldMode) {
+            data.abilities.strength.effective = eph.strength;
+            data.abilities.stamina.effective = eph.stamina;
+            data.abilities.agility.effective = eph.agility;
+            data.abilities.dexterity.effective = eph.dexterity;
+            data.abilities.eyesight.effective = eph.eyesight;
+            data.abilities.hearing.effective = eph.hearing;
+            data.abilities.smell.effective = eph.smell;
+            data.abilities.voice.effective = eph.voice;
+            data.abilities.intelligence.effective = eph.intelligence;
+            data.abilities.aura.effective = eph.aura;
+            data.abilities.will.effective = eph.will;
+            data.abilities.comeliness.effective = eph.comeliness;
+            data.abilities.morality.effective = eph.morality;
+            data.abilities.endurance.effective = eph.endurance;
+            data.abilities.speed.effective = eph.speed;
+            data.abilities.touch.effective = eph.touch;
+            data.abilities.frame.effective = eph.frame;
+        } else {
+            // Affected by physical penalty
+            data.abilities.strength.effective = Math.max(Math.round(eph.strength + Number.EPSILON) - data.physicalPenalty, 0);
+            data.abilities.stamina.effective = Math.max(Math.round(eph.stamina + Number.EPSILON) - data.physicalPenalty, 0);
+            data.abilities.agility.effective = Math.max(Math.round(eph.agility + Number.EPSILON) - data.physicalPenalty, 0);
+            data.abilities.dexterity.effective = Math.max(Math.round(eph.dexterity + Number.EPSILON) - data.physicalPenalty, 0);
+            data.abilities.eyesight.effective = Math.max(Math.round(eph.eyesight + Number.EPSILON) - data.physicalPenalty, 0);
+            data.abilities.hearing.effective = Math.max(Math.round(eph.hearing + Number.EPSILON) - data.physicalPenalty, 0);
+            data.abilities.smell.effective = Math.max(Math.round(eph.smell + Number.EPSILON) - data.physicalPenalty, 0);
+            data.abilities.voice.effective = Math.max(Math.round(eph.voice + Number.EPSILON) - data.physicalPenalty, 0);
 
-        // Affected by universal penalty
-        data.abilities.intelligence.effective = Math.max(Math.round(eph.intelligence + Number.EPSILON) - data.universalPenalty, 0);
-        data.abilities.aura.effective = Math.max(Math.round(eph.aura + Number.EPSILON) - data.universalPenalty, 0);
-        data.abilities.will.effective = Math.max(Math.round(eph.will + Number.EPSILON) - data.universalPenalty, 0);
+            // Affected by universal penalty
+            data.abilities.intelligence.effective = Math.max(Math.round(eph.intelligence + Number.EPSILON) - data.universalPenalty, 0);
+            data.abilities.aura.effective = Math.max(Math.round(eph.aura + Number.EPSILON) - data.universalPenalty, 0);
+            data.abilities.will.effective = Math.max(Math.round(eph.will + Number.EPSILON) - data.universalPenalty, 0);
 
-        // Not affected by any penalties
-        data.abilities.comeliness.effective = Math.max(Math.round(eph.comeliness + Number.EPSILON), 0);
-        data.abilities.morality.effective = Math.max(Math.round(eph.morality + Number.EPSILON), 0);
+            // Not affected by any penalties
+            data.abilities.comeliness.effective = Math.max(Math.round(eph.comeliness + Number.EPSILON), 0);
+            data.abilities.morality.effective = Math.max(Math.round(eph.morality + Number.EPSILON), 0);
+        }
     }
 
     /**
@@ -640,7 +707,7 @@ export class HarnMasterActor extends Actor {
                 // applying this armor's settings to each location
 
                 // If locations doesn't exist, then just abandon and continue
-                if (typeof data.locations === 'undefined') {
+                if (!data.hasOwnProperty('locations')) {
                     return;
                 }
 
@@ -649,11 +716,13 @@ export class HarnMasterActor extends Actor {
                     if (typeof armorMap[l] != 'undefined') {
 
                         // Add this armor's protection to the location
-                        if (typeof data.protection != 'undefined') {
+                        if (!data.hasOwnProperty('protection')) {
                             armorMap[l].blunt += data.protection.blunt;
                             armorMap[l].edged += data.protection.edged;
                             armorMap[l].piercing += data.protection.piercing;
                             armorMap[l].fire += data.protection.fire;
+                            armorMap[l].squeeze += data.protection.squeeze;
+                            armorMap[l].tear += data.protection.tear;
                         }
 
                         // if a material has been specified, add it to the layers
@@ -688,6 +757,8 @@ export class HarnMasterActor extends Actor {
                     data.edged = armorProt.edged;
                     data.piercing = armorProt.piercing;
                     data.fire = armorProt.fire;
+                    data.squeeze = armorProt.squeeze;
+                    data.tear = armorProt.tear;
                     data.layers = armorProt.layers;
                 }
             }
@@ -967,6 +1038,7 @@ export class HarnMasterActor extends Actor {
      * notes: rendered notes,
      */
      async runCustomMacro(rollInput, {actor, token}={}) {
+        if (!rollInput) return null;
         const actorData = this.data;
         const rollResult = {
             type: rollInput.type,

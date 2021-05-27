@@ -398,6 +398,7 @@ export async function testAbilityD100Roll(ability, noDialog = false, myActor = n
 }
 
 export async function weaponDamageRoll(itemName, aspect=null, myActor = null) {
+    const goldMode = game.settings.get("hm3", "goldMode");
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
@@ -405,8 +406,14 @@ export async function weaponDamageRoll(itemName, aspect=null, myActor = null) {
         return null;
     }
 
+    const allowedAspects = ['Edged', 'Piercing', 'Blunt'];
+    if (goldMode) {
+        allowedAspects.push('Squeeze');
+        allowedAspects.push('Tear');
+    }
+
     if (aspect) {
-        if (!['Edged', 'Piercing', 'Blunt'].includes(aspect)) {
+        if (!allowedAspects.includes(aspect)) {
             ui.notifications.warn(`Invalid aspect requested on damage roll: ${aspect}`);
             return null;
         }
@@ -442,6 +449,7 @@ export async function weaponDamageRoll(itemName, aspect=null, myActor = null) {
 }
 
 export async function missileDamageRoll(itemName, range=null, myActor = null) {
+    const goldMode = game.settings.get("hm3", "goldMode");
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
@@ -456,7 +464,11 @@ export async function missileDamageRoll(itemName, range=null, myActor = null) {
     }
 
     if (range) {
-        if (!['Short', 'Medium', 'Long', 'Extreme'].includes(range)) {
+        let allowedRanges = ['Short', 'Medium', 'Long', 'Extreme'];
+        if (goldMode) {
+            allowedRanges = allowedRanges.concat(['Extreme64', 'Extreme128', 'Extreme256']);
+        }
+        if (!allowedRanges.includes(range)) {
             ui.notifications.warn(`Invalid range requested on damage roll: ${range}`);
             return null;
         }
@@ -478,6 +490,9 @@ export async function missileDamageRoll(itemName, range=null, myActor = null) {
         impactMedium: item.data.data.impact.medium,
         impactLong: item.data.data.impact.long,
         impactExtreme: item.data.data.impact.extreme,
+        impactExtreme64: item.data.data.impact.extreme64,
+        impactExtreme128: item.data.data.impact.extreme128,
+        impactExtreme256: item.data.data.impact.extreme256,
         data: actor.data,
         speaker: speaker,
         notes: item.data.data.notes
@@ -709,6 +724,7 @@ export async function dodgeRoll(noDialog = false, myActor = null) {
 }
 
 export async function shockRoll(noDialog = false, myActor = null) {
+    const goldMode = game.settings.get("hm3", "goldMode");
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
@@ -716,23 +732,43 @@ export async function shockRoll(noDialog = false, myActor = null) {
         return null;
     }
 
-    const stdRollData = {
-        type: 'shock',
-        label: `Shock Roll`,
-        target: actor.data.data.endurance,
-        numdice: actor.data.data.universalPenalty,
-        notesData: {},
-        speaker: speaker,
-        fastforward: noDialog,
-        notes: ''
-    };
-    if (actor.isToken) {
-        stdRollData.token = actor.token.id;
+    let result = null;
+    if (goldMode) {
+        const stdRollData = {
+            type: 'shock',
+            label: 'Shock Roll',
+            target: actor.data.data.condition,
+            notesData: {},
+            speaker: speaker,
+            fastforward: noDialog,
+            notes: ''
+        };
+        if (actor.isToken) {
+            stdRollData.token = actor.token.id;
+        } else {
+            stdRollData.actor = actor.id;
+        }
+
+        result = await DiceHM3.d100StdRoll(stdRollData);
     } else {
-        stdRollData.actor = actor.id;
+        const stdRollData = {
+            type: 'shock',
+            label: `Shock Roll`,
+            target: actor.data.data.endurance,
+            numdice: actor.data.data.universalPenalty,
+            notesData: {},
+            speaker: speaker,
+            fastforward: noDialog,
+            notes: ''
+        };
+        if (actor.isToken) {
+            stdRollData.token = actor.token.id;
+        } else {
+            stdRollData.actor = actor.id;
+        }
+        
+        result = await DiceHM3.d6Roll(stdRollData);
     }
-    
-    const result = await DiceHM3.d6Roll(stdRollData);
     actor.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
     return result;
 }
@@ -760,8 +796,13 @@ export async function stumbleRoll(noDialog = false, myActor = null) {
     } else {
         stdRollData.actor = actor.id;
     }
-    
-    const result = await DiceHM3.d6Roll(stdRollData);
+
+    let result = null;
+    if (goldMode) {
+        result = await DiceHM3.d100StdRoll(stdRollData);
+    } else {
+        result = await DiceHM3.d6Roll(stdRollData);
+    }
     actor.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
     return result;
 }
@@ -790,7 +831,12 @@ export async function fumbleRoll(noDialog = false, myActor = null) {
         stdRollData.actor = actor.id;
     }
     
-    const result = await DiceHM3.d6Roll(stdRollData);
+    let result = null;
+    if (goldMode) {
+        result = await DiceHM3.d100StdRoll(stdRollData);
+    } else {
+        result = await DiceHM3.d6Roll(stdRollData);
+    }
     actor.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
     return result;
 }
@@ -907,6 +953,11 @@ export async function setSkillDevelopmentFlag(skillName, myActor = null) {
 /*--------------------------------------------------------------*/
 
 export async function weaponAttack(itemName = null, noDialog = false, myToken = null, forceAllow=false) {
+    if (game.settings.get("hm3", "goldMode")) {
+        ui.notifications.warn('Automated Combat not available in HM Gold Mode');
+        return null;
+    }
+
     const combatant = getTokenInCombat(myToken, forceAllow);
     if (!combatant) return null;
 
@@ -922,6 +973,11 @@ export async function weaponAttack(itemName = null, noDialog = false, myToken = 
 }
 
 export async function missileAttack(itemName = null, noDialog = false, myToken = null, forceAllow=false) {
+    if (game.settings.get("hm3", "goldMode")) {
+        ui.notifications.warn('Automated Combat not available in HM Gold Mode');
+        return null;
+    }
+
     const combatant = getTokenInCombat(myToken, forceAllow);
     if (!combatant) return null;
     
@@ -949,6 +1005,11 @@ export async function missileAttack(itemName = null, noDialog = false, myToken =
  * @param {*} atkImpactMod Additional modifier to impact
  */
 export async function meleeCounterstrikeResume(atkTokenId, defTokenId, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod) {
+    if (game.settings.get("hm3", "goldMode")) {
+        ui.notifications.warn('Automated Combat not available in HM Gold Mode');
+        return null;
+    }
+
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
         ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
@@ -977,6 +1038,11 @@ export async function meleeCounterstrikeResume(atkTokenId, defTokenId, atkWeapon
  * @param {*} impactMod Additional modifier to impact
  */
 export async function dodgeResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod) {
+    if (game.settings.get("hm3", "goldMode")) {
+        ui.notifications.warn('Automated Combat not available in HM Gold Mode');
+        return null;
+    }
+
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
         ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
@@ -1005,6 +1071,11 @@ export async function dodgeResume(atkTokenId, defTokenId, type, weaponName, effA
  * @param {*} impactMod Additional modifier to impact
  */
 export async function blockResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod) {
+    if (game.settings.get("hm3", "goldMode")) {
+        ui.notifications.warn('Automated Combat not available in HM Gold Mode');
+        return null;
+    }
+
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
         ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
@@ -1033,6 +1104,11 @@ export async function blockResume(atkTokenId, defTokenId, type, weaponName, effA
  * @param {*} impactMod Additional modifier to impact
  */
 export async function ignoreResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod) {
+    if (game.settings.get("hm3", "goldMode")) {
+        ui.notifications.warn('Automated Combat not available in HM Gold Mode');
+        return null;
+    }
+
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
         ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);

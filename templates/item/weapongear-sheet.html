@@ -81,8 +81,19 @@
                     <label class="resource-label">Piercing</label>
                     <input type="number" name="data.piercing" value="{{data.piercing}}" data-dtype="Number" />
                 </div>
+                {{#if goldMode}}
+                <div class="resource">
+                    <label class="resource-label">Squeeze</label>
+                    <input type="number" name="data.squeeze" value="{{data.squeeze}}" data-dtype="Number" />
+                </div>
+                <div class="resource">
+                    <label class="resource-label">Tear</label>
+                    <input type="number" name="data.tear" value="{{data.tear}}" data-dtype="Number" />
+                </div>
+                {{else}}
                 <div></div>
                 <div></div>
+                {{/if}}
                 <div></div>
                 <div class="resource">
                     <label class="resource-label" for="data.assocSkill">Associated Skill</label>

@@ -9,15 +9,19 @@
                     <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
                     <div class="header-stat-block">
                         <div class="penalties flexrow">
+                            {{#unless goldMode}}
                             <div class="stat">UP: {{data.universalPenalty}}</div>
+                            {{/unless}}
                             <div class="statend">PP: {{data.physicalPenalty}}</div>
                         </div>
+                        {{#unless goldMode}}
                         <div class="endurance flexrow">
                             <span class="label">Shock Index: {{data.shockIndex.value}}</span>
                         </div>
                         <div class="endbar">
                             <span class="bar" style="width: {{data.shockIndex.value}}%"></span>
                         </div>
+                        {{/unless}}
                     </div>
                 </div>
                 <div class="header-attributes">
@@ -195,6 +199,44 @@
                             </div>
                         </div>
                     </li>
+                    {{#if goldMode}}
+                    <li class="ability" data-ability="will">
+                        <h4 class="ability-name box-title rollable">Endurance</h4>
+                        <h3 class="ability-value">{{data.abilities.endurance.effective}}</h3>
+                        <div class="ability-modifiers flexrow">
+                            <div class="item-dice">
+                                <a class="ability-d6-roll" data-ability="endurance" title="d6 Endurance Roll"><i
+                                        class="fas fa-dice-d6"></i></a>
+                            </div>
+                            <div class="ability-box">
+                                <input class="ability-base" type="number" name="data.abilities.endurance.base"
+                                    value="{{data.abilities.endurance.base}}" data-dtype="Number" />
+                            </div>
+                            <div class="item-dice">
+                                <a class="ability-d100-roll" data-ability="endurance" title="d100 Endurance Roll"><i
+                                        class="fas fa-dice-d20"></i></a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="ability" data-ability="will">
+                        <h4 class="ability-name box-title rollable">Speed</h4>
+                        <h3 class="ability-value">{{data.abilities.speed.effective}}</h3>
+                        <div class="ability-modifiers flexrow">
+                            <div class="item-dice">
+                                <a class="ability-d6-roll" data-ability="speed" title="d6 Speed Roll"><i
+                                        class="fas fa-dice-d6"></i></a>
+                            </div>
+                            <div class="ability-box">
+                                <input class="ability-base" type="number" name="data.abilities.speed.base"
+                                    value="{{data.abilities.speed.base}}" data-dtype="Number" />
+                            </div>
+                            <div class="item-dice">
+                                <a class="ability-d100-roll" data-ability="speed" title="d100 Speed Roll"><i
+                                        class="fas fa-dice-d20"></i></a>
+                            </div>
+                        </div>
+                    </li>
+                    {{/if}}
                 </ul>
                 <ul class="flexrow ability-scores">
                     <li class="ability" data-ability="eyesight">
@@ -269,6 +311,44 @@
                             </div>
                         </div>
                     </li>
+                    {{#if goldMode}}
+                    <li class="ability" data-ability="touch">
+                        <h4 class="ability-name box-title rollable">Touch</h4>
+                        <h3 class="ability-value">{{data.abilities.touch.effective}}</h3>
+                        <div class="ability-modifiers flexrow">
+                            <div class="item-dice">
+                                <a class="ability-d6-roll" data-ability="touch" title="d6 Touch Roll"><i
+                                        class="fas fa-dice-d6"></i></a>
+                            </div>
+                            <div class="ability-box">
+                                <input class="ability-base" type="number" name="data.abilities.touch.base"
+                                    value="{{data.abilities.touch.base}}" data-dtype="Number" />
+                            </div>
+                            <div class="item-dice">
+                                <a class="ability-d100-roll" data-ability="touch" title="d100 Touch Roll"><i
+                                        class="fas fa-dice-d20"></i></a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="ability" data-ability="frame">
+                        <h4 class="ability-name box-title rollable">Frame</h4>
+                        <h3 class="ability-value">{{data.abilities.frame.effective}}</h3>
+                        <div class="ability-modifiers flexrow">
+                            <div class="item-dice">
+                                <a class="ability-d6-roll" data-ability="frame" title="d6 Frame Roll"><i
+                                        class="fas fa-dice-d6"></i></a>
+                            </div>
+                            <div class="ability-box">
+                                <input class="ability-base" type="number" name="data.abilities.frame.base"
+                                    value="{{data.abilities.frame.base}}" data-dtype="Number" />
+                            </div>
+                            <div class="item-dice">
+                                <a class="ability-d100-roll" data-ability="frame" title="d100 Frame Roll"><i
+                                        class="fas fa-dice-d20"></i></a>
+                            </div>
+                        </div>
+                    </li>
+                    {{/if}}
                 </ul>
                 <div class="profile-params">
                     <div class="flexrow profile-item">
@@ -556,10 +636,14 @@
             <div class="combat-stat flexrow"></div>
             <div class="items-list combat-stats grid grid-fixed-row grid-5col">
                 <div class="combat-stat flexrow">
+                    {{#if goldMode}}
+                    <span></span>
+                    {{else}}
                     <div class="item-dice">
                         <i class="active fas fa-dice-d20"></i>
                     </div>
                     <label class="combat-stat-label tooltip"><a class="injury-roll" title="Injury Roll">Injury</a><span class="tooltiptext">Calculate my hit location and injury level</span></label>
+                    {{/if}}
                 </div>
                 <div class="combat-stat flexrow">
                     <div class="item-dice">
@@ -600,6 +684,10 @@
                     <div class="item-detail weapon-blunt">B</div>
                     <div class="item-detail weapon-edged">E</div>
                     <div class="item-detail weapon-piercing">P</div>
+                    {{#if goldMode}}
+                    <div class="item-detail weapon-squeeze">S</div>
+                    <div class="item-detail weapon-tear">T</div>
+                    {{/if}}
                     <div class="item-detail weapon-attack">AML</div>
                     <div class="item-detail weapon-defense">DML</div>
                     <div class="item-detail weapon-notes">Notes</div>
@@ -631,6 +719,28 @@
                                 {{else}}
                                 <div class="item-detail weapon-piercing {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="weapon-damage-roll" title="{{item.name}} Piercing Damage Roll" data-weapon="{{item.name}}" data-aspect="Piercing">{{data.piercing}}</a>{{else}}{{data.piercing}}{{/if}}</div>
                                 {{/if}}
+                                {{#if ../goldMode}}
+                                    {{#if (lt data.squeeze 0)}}
+                                        <div class="item-detail weapon-squeeze"><i class="fas fa-times"></i></div>
+                                    {{else}}
+                                        <div
+                                            class="item-detail weapon-squeeze {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">
+                                            {{#if (and data.isEquipped data.isCarried)}}<a class="weapon-damage-roll"
+                                                    title="{{item.name}} Squeeze Damage Roll" data-weapon="{{item.name}}"
+                                                    data-aspect="Squeeze">{{data.squeeze}}</a>
+                                            {{else}}{{data.squeeze}}{{/if}}</div>
+                                    {{/if}}
+                                    {{#if (lt data.tear 0)}}
+                                        <div class="item-detail weapon-tear"><i class="fas fa-times"></i></div>
+                                    {{else}}
+                                        <div
+                                            class="item-detail weapon-tear {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">
+                                            {{#if (and data.isEquipped data.isCarried)}}<a class="weapon-damage-roll"
+                                                    title="{{item.name}} Tear Damage Roll" data-weapon="{{item.name}}"
+                                                    data-aspect="Tear">{{data.tear}}</a>
+                                            {{else}}{{data.tear}}{{/if}}</div>
+                                    {{/if}}
+                                {{/if}}
                                 <div class="item-detail weapon-attack {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="weapon-attack-roll" title="{{item.name}} Attack Roll">{{data.attackMasteryLevel}}</a>{{else}}{{data.attackMasteryLevel}}{{/if}}</div>
                                 <div class="item-detail weapon-defense {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="weapon-defend-roll" title="{{item.name}} Defense Roll">{{data.defenseMasteryLevel}}</a>{{else}}{{data.defenseMasteryLevel}}{{/if}}</div>
                                 <div class="item-detail weapon-notes">{{data.notes}}</div>
@@ -648,10 +758,20 @@
                             class="far fa-question-circle"></i></a></h3>
                     <div class="item-detail missile-qty">Qty</div>
                     <div class="item-detail missile-skill">Skill</div>
+                    {{#if goldMode}}
+                    <div class="item-detail missile-short">4</div>
+                    <div class="item-detail missile-medium">8</div>
+                    <div class="item-detail missile-long">16</div>
+                    <div class="item-detail missile-extreme">32</div>
+                    <div class="item-detail missile-extreme64">64</div>
+                    <div class="item-detail missile-extreme128">128</div>
+                    <div class="item-detail missile-extreme256">256</div>
+                    {{else}}
                     <div class="item-detail missile-short">Short</div>
                     <div class="item-detail missile-medium">Med</div>
                     <div class="item-detail missile-long">Long</div>
                     <div class="item-detail missile-extreme">Ext</div>
+                    {{/if}}
                     <div class="item-detail missile-attack">AML</div>
                     <div class="item-detail missile-notes">Notes</div>
                 </li>
@@ -684,6 +804,41 @@
                                 <div class="item-detail missile-extreme"><i class="fas fa-times"></i></div>
                                 {{else}}
                                 <div class="item-detail missile-extreme {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="missile-damage-roll" title="{{item.name}} Extreme-Range Damage Roll" data-weapon="{{item.name}}" data-range="Extreme">{{data.range.extreme}}/{{data.impact.extreme}}</a>{{else}}{{data.range.extreme}}/{{data.impact.extreme}}{{/if}}</div>
+                                {{/if}}
+                                {{#if ../goldMode}}
+                                    {{#if (lt data.range.extreme64 0)}}
+                                        <div class="item-detail missile-extreme"><i class="fas fa-times"></i></div>
+                                    {{else}}
+                                        <div
+                                            class="item-detail missile-extreme {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">
+                                            {{#if (and data.isEquipped data.isCarried)}}<a class="missile-damage-roll"
+                                                    title="{{item.name}} 64-Range Damage Roll"
+                                                    data-weapon="{{item.name}}"
+                                                    data-range="Extreme64">{{data.range.extreme64}}/{{data.impact.extreme64}}</a>
+                                            {{else}}{{data.range.extreme64}}/{{data.impact.extreme64}}{{/if}}</div>
+                                    {{/if}}
+                                    {{#if (lt data.range.extreme128 0)}}
+                                        <div class="item-detail missile-extreme"><i class="fas fa-times"></i></div>
+                                    {{else}}
+                                        <div
+                                            class="item-detail missile-extreme {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">
+                                            {{#if (and data.isEquipped data.isCarried)}}<a class="missile-damage-roll"
+                                                    title="{{item.name}} 128-Range Damage Roll"
+                                                    data-weapon="{{item.name}}"
+                                                    data-range="Extreme128">{{data.range.extreme128}}/{{data.impact.extreme128}}</a>
+                                            {{else}}{{data.range.extreme128}}/{{data.impact.extreme128}}{{/if}}</div>
+                                    {{/if}}
+                                    {{#if (lt data.range.extreme256 0)}}
+                                        <div class="item-detail missile-extreme"><i class="fas fa-times"></i></div>
+                                    {{else}}
+                                        <div
+                                            class="item-detail missile-extreme {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">
+                                            {{#if (and data.isEquipped data.isCarried)}}<a class="missile-damage-roll"
+                                                    title="{{item.name}} 256-Range Damage Roll"
+                                                    data-weapon="{{item.name}}"
+                                                    data-range="Extreme256">{{data.range.extreme256}}/{{data.impact.extreme256}}</a>
+                                            {{else}}{{data.range.extreme256}}/{{data.impact.extreme256}}{{/if}}</div>
+                                    {{/if}}
                                 {{/if}}
                                 <div class="item-detail missile-attack {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="missile-attack-roll" title="Missile Attack Roll">{{data.attackMasteryLevel}}</a>{{else}}{{data.attackMasteryLevel}}{{/if}}</div>
                                 <div class="item-detail missile-notes">{{data.notes}}</div>
@@ -739,6 +894,10 @@
                     <div class="item-detail armorlocation-edged">E</div>
                     <div class="item-detail armorlocation-piercing">P</div>
                     <div class="item-detail armorlocation-fire">F</div>
+                    {{#if goldMode}}
+                    <div class="item-detail armorlocation-fire">S</div>
+                    <div class="item-detail armorlocation-fire">T</div>
+                    {{/if}}
                     <div class="item-detail armorlocation-notes">Notes</div>
                     <div class="item-controls">
                         <a class="item-control item-create active" title="Create Location" data-type="armorlocation"><i
@@ -758,6 +917,10 @@
                                 <div class="item-detail armorlocation-edged">{{data.edged}}</div>
                                 <div class="item-detail armorlocation-piercing">{{data.piercing}}</div>
                                 <div class="item-detail armorlocation-fire">{{data.fire}}</div>
+                                {{#if ../goldMode}}
+                                <div class="item-detail armorlocation-fire">{{data.squeeze}}</div>
+                                <div class="item-detail armorlocation-fire">{{data.tear}}</div>
+                                {{/if}}
                                 <div class="item-detail armorlocation-notes">{{data.notes}}</div>
                                 <div class="item-controls">
                                     <a class="item-control item-edit" title="Edit Location"><i class="active fas fa-edit"></i></a>
