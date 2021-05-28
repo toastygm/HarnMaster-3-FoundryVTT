@@ -4,6 +4,7 @@
  */
 export const migrateWorld = async function () {
   ui.notifications.info(`Applying HM3 System Migration for version ${game.system.data.version}. Please be patient and do not close your game or shut down your server.`, { permanent: true });
+  console.log(`HM3 | Starting Migration`);
 
   // Migrate World Actors
   for (let a of game.actors.contents) {
@@ -45,15 +46,17 @@ export const migrateWorld = async function () {
   }
 
   // Migrate World Compendium Packs
-  const packs = game.packs.filter(p => {
-    return (p.metadata.package === "world") && ["Actor", "Item", "Scene"].includes(p.metadata.document)
-  });
-  for (let p of packs) {
+  console.log(`HM3 | Migrating Compendium Packs`);
+  for (let p of game.packs) {
+    if (p.metadata.package !== 'world') continue;
+    if (!['Actor', 'Item', 'Scene'].includes(p.metadata.entity)) continue;
+    console.log(`HM3 | Starting Migration for Pack ${p.metadata.label}`);
     await migrateCompendium(p);
   }
 
   // Set the migration as complete
   game.settings.set("hm3", "systemMigrationVersion", game.system.data.version);
+  console.log(`HM3 | Migration Complete`)
   ui.notifications.info(`HM3 System Migration to version ${game.system.data.version} completed!`, { permanent: true });
 };
 
@@ -65,12 +68,12 @@ export const migrateWorld = async function () {
  * @return {Promise}
  */
 export const migrateCompendium = async function (pack) {
-  const entity = pack.metadata.document;
+  const entity = pack.metadata.entity;
   if (!["Actor", "Item", "Scene"].includes(entity)) return;
 
   // Begin by requesting server-side data model migration and get the migrated content
   await pack.migrate();
-  const content = await pack.getContent();
+  const content = await pack.getDocuments();
 
   // Iterate over compendium entries - applying fine-tuned migration functions
   for (let ent of content) {
@@ -81,8 +84,8 @@ export const migrateCompendium = async function (pack) {
       else if (entity === "Scene") updateData = migrateSceneData(ent.data);
       if (!isObjectEmpty(updateData)) {
         expandObject(updateData);
-        updateData["_id"] = ent._id;
-        await pack.updateEntity(updateData);
+        updateData["_id"] = ent.id;
+        await ent.update(updateData);
         console.log(`HM3 | Migrated ${entity} entity ${ent.name} in Compendium ${pack.collection}`);
       }
     } catch (err) {
@@ -181,7 +184,7 @@ export const migrateActorData = function (actor) {
     updateData['data.abilities.frame.base'] = 0;
   }
 
-  if (actorData.hasOwnProperty('shockInde')) {
+  if (actorData.hasOwnProperty('shockIndex')) {
     updateData['data.shockIndex._deprecated'] = true
   }
 
@@ -225,7 +228,7 @@ export const migrateActorData = function (actor) {
     updateData['data.totalWeight._deprecated'] = true
   }
 
-  if (actorData.data.macros === {}) {
+  if (!actorData.hasOwnProperty('macros') || !actorData.macros.hasOwnProperty('type')) {
     updateData['data.macros.command'] = '';
     updateData['data.macros.type'] = 'script';
   }
@@ -285,79 +288,80 @@ function cleanActorData(actorData) {
  * Migrate a single Item entity to incorporate latest data model changes
  * @param itemData
  */
-export const migrateItemData = function (itemData) {
+export const migrateItemData = function (item) {
+  const itemData = item.data;
   const updateData = {};
 
   /*
   * -------- ITEM UPDATES GO HERE -------------
   */
-  if (itemData.data.macros === {}) {
+  if (!itemData.hasOwnProperty('macros') || !itemData.macros.hasOwnProperty('type')) {
     updateData['data.macros.command'] = '';
     updateData['data.macros.type'] = 'script';
   }
 
   if (itemData.type === 'weapongear') {
-    if (itemData.data.hasOwnProperty('squeeze')) {
+    if (!itemData.data.hasOwnProperty('squeeze')) {
       updateData['data.squeeze'] = 0;
     }
 
-    if (itemData.data.hasOwnProperty('tear')) {
+    if (!itemData.data.hasOwnProperty('tear')) {
       updateData['data.tear'] = 0;
     }
   }
 
   if (itemData.type === 'missilegear') {
-    if (itemData.data.range.hasOwnProperty('extreme64')) {
+    if (!itemData.data.range.hasOwnProperty('extreme64')) {
       updateData['data.range.extreme64'] = 0;
     }
 
-    if (itemData.data.range.hasOwnProperty('extreme128')) {
+    if (!itemData.data.range.hasOwnProperty('extreme128')) {
       updateData['data.range.extreme128'] = 0;
     }
 
-    if (itemData.data.range.hasOwnProperty('extreme256')) {
+    if (!itemData.data.range.hasOwnProperty('extreme256')) {
       updateData['data.range.extreme256'] = 0;
     }
 
-    if (itemData.data.impact.hasOwnProperty('extreme64')) {
+    if (!itemData.data.impact.hasOwnProperty('extreme64')) {
       updateData['data.impact.extreme64'] = 0;
     }
-
-    if (itemData.data.impact.hasOwnProperty('extreme128')) {
+  
+    if (!itemData.data.impact.hasOwnProperty('extreme128')) {
       updateData['data.impact.extreme128'] = 0;
     }
 
-    if (itemData.data.impact.hasOwnProperty('extreme256')) {
+    if (!itemData.data.impact.hasOwnProperty('extreme256')) {
       updateData['data.impact.extreme256'] = 0;
-    }
+    }  
   }
 
   if (itemData.type === 'armorgear') {
-    if (itemData.data.protection.hasOwnProperty('squeeze')) {
+    if (!itemData.data.protection.hasOwnProperty('squeeze')) {
       updateData['data.protection.squeeze'] = 0;
     }
 
-    if (itemData.data.protection.hasOwnProperty('tear')) {
+    if (!itemData.data.protection.hasOwnProperty('tear')) {
       updateData['data.protection.tear'] = 0;
     }
   }
 
   if (itemData.type === 'armorlocation') {
-    if (itemData.data.hasOwnProperty('squeeze')) {
+    if (!itemData.data.hasOwnProperty('squeeze')) {
       updateData['data.squeeze'] = 0;
     }
 
-    if (itemData.data.hasOwnProperty('tear')) {
+    if (!itemData.data.hasOwnProperty('tear')) {
       updateData['data.tear'] = 0;
     }
 
-    if (itemData.data.probWeight.hasOwnProperty('arms')) {
+    if (!itemData.data.probWeight.hasOwnProperty('arms')) {
       updateData['data.probWeight.arms'] = 1;
     }
   }
 
   // Remove deprecated fields
-  _migrateRemoveDeprecated(itemData, updateData);
+  _migrateRemoveDeprecated(item, updateData);
 
   // Return the migrated update data
   return updateData;
