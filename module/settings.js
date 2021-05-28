@@ -19,6 +19,15 @@ export const registerSystemSettings = function () {
 
     });
 
+    game.settings.register("hm3", "goldMode", {
+        name: "HMG Mode",
+        hint: "Enable HarnMaster Gold Mode (Experimental)",
+        scope: "world",
+        config: true,
+        default: false,
+        type: Boolean
+    });
+
     game.settings.register("hm3", "weaponDamage", {
         name: "Weapon Damage",
         hint: "Enable optional combat rule that allows weapons to be damaged or destroyed on successful block (Combat 12)",

@@ -4,6 +4,7 @@
  */
 export const migrateWorld = async function () {
   ui.notifications.info(`Applying HM3 System Migration for version ${game.system.data.version}. Please be patient and do not close your game or shut down your server.`, { permanent: true });
+  console.log(`HM3 | Starting Migration`);
 
   // Migrate World Actors
   for (let a of game.actors.contents) {
@@ -45,15 +46,17 @@ export const migrateWorld = async function () {
   }
 
   // Migrate World Compendium Packs
-  const packs = game.packs.filter(p => {
-    return (p.metadata.package === "world") && ["Actor", "Item", "Scene"].includes(p.metadata.document)
-  });
-  for (let p of packs) {
+  console.log(`HM3 | Migrating Compendium Packs`);
+  for (let p of game.packs) {
+    if (p.metadata.package !== 'world') continue;
+    if (!['Actor', 'Item', 'Scene'].includes(p.metadata.entity)) continue;
+    console.log(`HM3 | Starting Migration for Pack ${p.metadata.label}`);
     await migrateCompendium(p);
   }
 
   // Set the migration as complete
   game.settings.set("hm3", "systemMigrationVersion", game.system.data.version);
+  console.log(`HM3 | Migration Complete`)
   ui.notifications.info(`HM3 System Migration to version ${game.system.data.version} completed!`, { permanent: true });
 };
 
@@ -65,12 +68,12 @@ export const migrateWorld = async function () {
  * @return {Promise}
  */
 export const migrateCompendium = async function (pack) {
-  const entity = pack.metadata.document;
+  const entity = pack.metadata.entity;
   if (!["Actor", "Item", "Scene"].includes(entity)) return;
 
   // Begin by requesting server-side data model migration and get the migrated content
   await pack.migrate();
-  const content = await pack.getContent();
+  const content = await pack.getDocuments();
 
   // Iterate over compendium entries - applying fine-tuned migration functions
   for (let ent of content) {
@@ -81,8 +84,8 @@ export const migrateCompendium = async function (pack) {
       else if (entity === "Scene") updateData = migrateSceneData(ent.data);
       if (!isObjectEmpty(updateData)) {
         expandObject(updateData);
-        updateData["_id"] = ent._id;
-        await pack.updateEntity(updateData);
+        updateData["_id"] = ent.id;
+        await ent.update(updateData);
         console.log(`HM3 | Migrated ${entity} entity ${ent.name} in Compendium ${pack.collection}`);
       }
     } catch (err) {
@@ -111,102 +114,123 @@ export const migrateActorData = function (actor) {
   * -------- ACTOR UPDATES GO HERE -------------
   */
 
-  if (actorData.abilities.strength.effective !== 'undefined') {
+  if (actorData.abilities.strength.hasOwnProperty('effective')) {
     updateData['data.abilities.strength.effective._deprecated'] = true
   }
 
-  if (actorData.abilities.stamina.effective !== 'undefined') {
+  if (actorData.abilities.stamina.hasOwnProperty('effective')) {
     updateData['data.abilities.stamina.effective._deprecated'] = true
   }
 
-  if (actorData.abilities.dexterity.effective !== 'undefined') {
+  if (actorData.abilities.dexterity.hasOwnProperty('effective')) {
     updateData['data.abilities.dexterity.effective._deprecated'] = true
   }
 
-  if (actorData.abilities.agility.effective !== 'undefined') {
+  if (actorData.abilities.agility.hasOwnProperty('effective')) {
     updateData['data.abilities.agility.effective._deprecated'] = true
   }
 
-  if (actorData.abilities.intelligence.effective !== 'undefined') {
+  if (actorData.abilities.intelligence.hasOwnProperty('effective')) {
     updateData['data.abilities.intelligence.effective._deprecated'] = true
   }
 
-  if (actorData.abilities.aura.effective !== 'undefined') {
+  if (actorData.abilities.aura.hasOwnProperty('effective')) {
     updateData['data.abilities.aura.effective._deprecated'] = true
   }
 
-  if (actorData.abilities.will.effective !== 'undefined') {
+  if (actorData.abilities.will.hasOwnProperty('effective')) {
     updateData['data.abilities.will.effective._deprecated'] = true
   }
 
-  if (actorData.abilities.eyesight.effective !== 'undefined') {
+  if (actorData.abilities.eyesight.hasOwnProperty('effective')) {
     updateData['data.abilities.eyesight.effective._deprecated'] = true
   }
 
-  if (actorData.abilities.hearing.effective !== 'undefined') {
+  if (actorData.abilities.hearing.hasOwnProperty('effective')) {
     updateData['data.abilities.hearing.effective._deprecated'] = true
   }
 
-  if (actorData.abilities.smell.effective !== 'undefined') {
+  if (actorData.abilities.smell.hasOwnProperty('effective')) {
     updateData['data.abilities.smell.effective._deprecated'] = true
   }
 
-  if (actorData.abilities.voice.effective !== 'undefined') {
+  if (actorData.abilities.voice.hasOwnProperty('effective')) {
     updateData['data.abilities.voice.effective._deprecated'] = true
   }
 
-  if (actorData.abilities.comliness !== 'undefined') {
+  if (actorData.abilities.hasOwnProperty('comliness')) {
     // Rename 'comliness' to 'comeliness'
     updateData['data.abilities.comeliness.base'] = actorData.abilities.comliness.base;
     updateData['data.abilities.-=comliness'] = null;
   }
 
-  if (actorData.abilities.morality.effective !== 'undefined') {
+  if (actorData.abilities.morality.hasOwnProperty('effective')) {
     updateData['data.abilities.morality.effective._deprecated'] = true
   }
 
-  if (actorData.shockIndex !== 'undefined') {
+  if (!actorData.abilities.hasOwnProperty('endurance')) {
+    updateData['data.abilities.endurance.base'] = 0;
+  }
+
+  if (!actorData.abilities.hasOwnProperty('speed')) {
+    updateData['data.abilities.speed.base'] = 0;
+  }
+
+  if (!actorData.abilities.hasOwnProperty('touch')) {
+    updateData['data.abilities.touch.base'] = 0;
+  }
+
+  if (!actorData.abilities.hasOwnProperty('frame')) {
+    updateData['data.abilities.frame.base'] = 0;
+  }
+
+  if (actorData.hasOwnProperty('shockIndex')) {
     updateData['data.shockIndex._deprecated'] = true
   }
 
-  if (actorData.dodge !== 'undefined') {
+  if (actorData.hasOwnProperty('dodge')) {
     updateData['data.dodge._deprecated'] = true
   }
 
-  if (actorData.initiative !== 'undefined') {
+  if (actorData.hasOwnProperty('initiative')) {
     updateData['data.initiative._deprecated'] = true
   }
 
-  if (actorData.endurance !== 'undefined') {
+  if (actorData.hasOwnProperty('endurance')) {
     updateData['data.endurance._deprecated'] = true
   }
 
-  if (actorData.move.effective !== 'undefined') {
+  if (actorData.move.hasOwnProperty('effective')) {
     updateData['data.move.effective._deprecated'] = true
   }
 
-  if (actorData.universalPenalty !== 'undefined') {
+  if (actorData.hasOwnProperty('universalPenalty')) {
     updateData['data.universalPenalty._deprecated'] = true
   }
 
-  if (actorData.physicalPenalty !== 'undefined') {
+  if (actorData.hasOwnProperty('physicalPenalty')) {
     updateData['data.physicalPenalty._deprecated'] = true
   }
 
-  if (actorData.totalInjuryLevels !== 'undefined') {
+  if (actorData.hasOwnProperty('totalInjuryLevels')) {
     updateData['data.totalInjuryLevels._deprecated'] = true
   }
 
-  if (actorData.hasCondition !== 'undefined') {
+  if (actorData.hasOwnProperty('hasCondition')) {
     updateData['data.hasCondition._deprecated'] = true
   }
 
-  if (actorData.encumbrance !== 'undefined') {
+  if (actorData.hasOwnProperty('encumbrance')) {
     updateData['data.encumbrance._deprecated'] = true
   }
 
-  if (actorData.totalWeight !== 'undefined') {
+  if (actorData.hasOwnProperty('totalWeight')) {
     updateData['data.totalWeight._deprecated'] = true
+  }
+
+  if (!actorData.hasOwnProperty('macros') || !actorData.macros.hasOwnProperty('type')) {
+    updateData['data.macros.command'] = '';
+    updateData['data.macros.type'] = 'script';
   }
 
   // Remove deprecated fields
@@ -264,19 +288,80 @@ function cleanActorData(actorData) {
  * Migrate a single Item entity to incorporate latest data model changes
  * @param itemData
  */
-export const migrateItemData = function (itemData) {
+export const migrateItemData = function (item) {
+  const itemData = item.data;
   const updateData = {};
 
   /*
   * -------- ITEM UPDATES GO HERE -------------
   */
-  if (itemData.data.macros === {}) {
+  if (!itemData.hasOwnProperty('macros') || !itemData.macros.hasOwnProperty('type')) {
     updateData['data.macros.command'] = '';
     updateData['data.macros.type'] = 'script';
   }
 
+  if (itemData.type === 'weapongear') {
+    if (!itemData.data.hasOwnProperty('squeeze')) {
+      updateData['data.squeeze'] = 0;
+    }
+
+    if (!itemData.data.hasOwnProperty('tear')) {
+      updateData['data.tear'] = 0;
+    }
+  }
+
+  if (itemData.type === 'missilegear') {
+    if (!itemData.data.range.hasOwnProperty('extreme64')) {
+      updateData['data.range.extreme64'] = 0;
+    }
+
+    if (!itemData.data.range.hasOwnProperty('extreme128')) {
+      updateData['data.range.extreme128'] = 0;
+    }
+
+    if (!itemData.data.range.hasOwnProperty('extreme256')) {
+      updateData['data.range.extreme256'] = 0;
+    }
+
+    if (!itemData.data.impact.hasOwnProperty('extreme64')) {
+      updateData['data.impact.extreme64'] = 0;
+    }
+  
+    if (!itemData.data.impact.hasOwnProperty('extreme128')) {
+      updateData['data.impact.extreme128'] = 0;
+    }
+
+    if (!itemData.data.impact.hasOwnProperty('extreme256')) {
+      updateData['data.impact.extreme256'] = 0;
+    }  
+  }
+
+  if (itemData.type === 'armorgear') {
+    if (!itemData.data.protection.hasOwnProperty('squeeze')) {
+      updateData['data.protection.squeeze'] = 0;
+    }
+
+    if (!itemData.data.protection.hasOwnProperty('tear')) {
+      updateData['data.protection.tear'] = 0;
+    }
+  }
+
+  if (itemData.type === 'armorlocation') {
+    if (!itemData.data.hasOwnProperty('squeeze')) {
+      updateData['data.squeeze'] = 0;
+    }
+
+    if (!itemData.data.hasOwnProperty('tear')) {
+      updateData['data.tear'] = 0;
+    }
+
+    if (!itemData.data.probWeight.hasOwnProperty('arms')) {
+      updateData['data.probWeight.arms'] = 1;
+    }
+  }
+
   // Remove deprecated fields
-  _migrateRemoveDeprecated(itemData, updateData);
+  _migrateRemoveDeprecated(item, updateData);
 
   // Return the migrated update data
   return updateData;

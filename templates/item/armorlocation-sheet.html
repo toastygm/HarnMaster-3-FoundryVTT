@@ -53,11 +53,22 @@
                         <label class="label">Fire</label>
                         <input class="value" type="number" name="data.fire" value="{{data.fire}}" data-dtype="Number" />
                     </div>
+                    {{#if goldMode}}
+                    <div class="protection">
+                        <label class="label">Squeeze</label>
+                        <input class="value" type="number" name="data.squeeze" value="{{data.squeeze}}"
+                            data-dtype="Number" />
+                    </div>
+                    <div class="protection">
+                        <label class="label">Tear</label>
+                        <input class="value" type="number" name="data.tear" value="{{data.tear}}" data-dtype="Number" />
+                    </div>
+                    {{/if}}
                 </div>
             </fieldset>
             <fieldset>
                 <legend>Hit Probability Weights</legend>
-                <div class="weight grid grid-fixed-row grid-3col">
+                <div class="weight grid grid-fixed-row {{#if goldMode}}grid-4col{{else}}grid-3col{{/if}}">
                     <div class="prob-weight">
                         <label class="label">High Aim</label>
                         <input class="value" type="number" name="data.probWeight.high" value="{{data.probWeight.high}}"
@@ -73,6 +84,13 @@
                         <input class="value" type="number" name="data.probWeight.low" value="{{data.probWeight.low}}"
                             data-dtype="Number" />
                     </div>
+                    {{#if goldMode}}
+                    <div class="prob-weight">
+                        <label class="label">Arms Aim</label>
+                        <input class="value" type="number" name="data.probWeight.arms" value="{{data.probWeight.arms}}"
+                            data-dtype="Number" />
+                    </div>
+                    {{/if}}
                 </div>
             </fieldset>
             <fieldset>

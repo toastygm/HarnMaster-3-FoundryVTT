@@ -28,6 +28,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             config: CONFIG.HM3
         }
 
+        data.goldMode = game.settings.get('hm3', 'goldMode');
         data.actor = foundry.utils.deepClone(this.actor.data);
         data.items = this.actor.items.map(i => {
             i.data.labels = i.labels;
@@ -38,6 +39,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         data.labels = this.actor.labels || {};
         data.filters = this._filters;
         
+        data.macroTypes = foundry.utils.deepClone(game.system.entityTypes.Macro);
+    
         data.dtypes = ["String", "Number", "Boolean"];
         let capacityMax = 0;
         let capacityVal = 0;

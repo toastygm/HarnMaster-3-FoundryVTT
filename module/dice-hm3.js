@@ -28,6 +28,7 @@ export class DiceHM3 {
         const speaker = rollData.speaker || ChatMessage.getSpeaker();
 
         const dialogOptions = {
+            type: rollData.type,
             target: rollData.target,
             label: rollData.label,
             modifier: 0,
@@ -36,6 +37,7 @@ export class DiceHM3 {
 
         // Create the Roll instance
         const roll = rollData.fastforward ? await DiceHM3.rollTest({
+            type: rollData.type,
             data: rollData.data,
             diceSides: 100,
             diceNum: 1,
@@ -65,6 +67,7 @@ export class DiceHM3 {
         const renderedNotes = rollData.notes ? utility.stringReplacer(rollData.notes, notesData) : "";
 
         const chatTemplateData = {
+            type: roll.type,
             title: rollData.label,
             origTarget: rollData.target,
             modifier: Math.abs(roll.modifier),
@@ -127,6 +130,7 @@ export class DiceHM3 {
             callback: html => {
                 const formModifier = html[0].querySelector("form").modifier.value;
                 return DiceHM3.rollTest({
+                    type: dialogOptions.type,
                     target: dialogOptions.target,
                     data: dialogOptions.data,
                     diceSides: 100,
@@ -165,6 +169,7 @@ export class DiceHM3 {
         const speaker = rollData.speaker || ChatMessage.getSpeaker();
         
         const dialogOptions = {
+            type: rollData.type,
             target: Number(rollData.target),
             label: rollData.label,
             modifier: 0,
@@ -175,6 +180,7 @@ export class DiceHM3 {
 
         // Create the Roll instance
         const roll = rollData.fastforward ? await DiceHM3.rollTest({
+            type: rollData.type,
             data: rollData.data,
             diceSides: 6,
             diceNum: Number(rollData.numdice),
@@ -198,6 +204,8 @@ export class DiceHM3 {
         const renderedNotes = rollData.notes ? utility.stringReplacer(rollData.notes, notesData) : "";
 
         const chatTemplateData = {
+            type: roll.type,
+            type: rollData.type,
             title: rollData.label,
             origTarget: rollData.target,
             modifier: roll.modifier,
@@ -258,6 +266,7 @@ export class DiceHM3 {
             callback: html => {
                 const formModifier = html[0].querySelector("form").modifier.value;
                 return DiceHM3.rollTest({
+                    type: dialogOptions.type,
                     target: dialogOptions.target,
                     data: dialogOptions.data,
                     diceSides: 6,
@@ -797,6 +806,7 @@ export class DiceHM3 {
      * @param {*} items List of items containing 'weapongear' items.
      */
     static _calcWeaponAspect(weapon, items) {
+        const goldMode = game.settings.get("hm3", "goldMode");
 
         // Note that although "Fire" is in this list, because it is a
         // type of damage, no normal weapon uses it as its aspect.
@@ -813,21 +823,35 @@ export class DiceHM3 {
             }
         }
 
+        if (goldMode) {
+            result.aspects['Squeeze'] = 0;
+            result.aspects['Tear'] = 0;
+        }
+
         // Search for the specified weapon, and then choose the aspect with
         // the greatest impact (this will become the default aspect)
         items.forEach(it => {
             const itemData = it.data;
             if (itemData.type === 'weapongear' && itemData.name === weapon) {
-                const maxImpact = Math.max(itemData.data.blunt, itemData.data.piercing, itemData.data.edged, 0);
+                let maxImpact = Math.max(itemData.data.blunt, itemData.data.piercing, itemData.data.edged, 0);
                 result.aspects["Blunt"] = itemData.data.blunt;
                 result.aspects["Edged"] = itemData.data.edged;
                 result.aspects["Piercing"] = itemData.data.piercing;
+                if (goldMode) {
+                    result.aspects['Squeeze'] = itemData.data.squeeze;
+                    result.aspects['Tear'] = itemData.data.tear;
+                    maxImpact = Math.max(maxImpact, itemData.data.squeeze, itemData.data.tear, 0);
+                }
                 if (maxImpact === itemData.data.piercing) {
                     result.defaultAspect = "Piercing";
                 } else if (maxImpact === itemData.data.edged) {
                     result.defaultAspect = "Edged";
                 } else if (maxImpact === itemData.data.blunt) {
                     result.defaultAspect = "Blunt";
+                } else if (goldMode && maxImpact === itemData.data.squeeze) {
+                    result.defaultAspect = "Squeeze";
+                } else if (goldMode && maxImpact === itemData.data.tear) {
+                    result.defaultAspect = "Tear";
                 } else {
                     // This shouldn't happen, but if all else fails, choose "Other"
                     result.defaultAspect = "Other"
@@ -869,6 +893,7 @@ export class DiceHM3 {
                 const formDamageDice = Number(form.damageDice.value);
                 const formWeaponAspect = form.weaponAspect.value;
                 let roll = await DiceHM3.rollTest({
+                    type: dialogOptions.type,
                     target: 0,
                     data: dialogOptions.data,
                     diceSides: 6,
@@ -876,6 +901,7 @@ export class DiceHM3 {
                     modifier: 0
                 });
                 let result = {
+                    type: roll.type,
                     chosenAspect: formWeaponAspect,
                     damageDice: formDamageDice,
                     addlWeaponImpact: formAddlWeaponImpact,
@@ -1007,6 +1033,7 @@ export class DiceHM3 {
                 }
 
                 let roll = await DiceHM3.rollTest({
+                    type: dialogOptions.type,
                     target: dialogOptions.target,
                     data: dialogOptions.data,
                     diceSides: 100,
@@ -1015,6 +1042,7 @@ export class DiceHM3 {
                 });
 
                 let result = {
+                    type: roll.type,
                     origTarget: dialogOptions.target,
                     range: formRange,
                     rangeModifier: rangeModifier,
@@ -1035,6 +1063,7 @@ export class DiceHM3 {
     /*--------------------------------------------------------------------------------*/
 
     static async missileDamageRoll(rollData) {
+        const goldMode = game.settings.get("hm3", "goldMode");
         const speaker = rollData.speaker || ChatMessage.getSpeaker();
 
         const dialogOptions = {
@@ -1049,6 +1078,11 @@ export class DiceHM3 {
             data: rollData.data
         };
 
+        if (goldMode) {
+            dialogOptions.ranges['Extreme64'] = rollData.impactExtreme64;
+            dialogOptions.ranges['Extreme128'] = rollData.impactExtreme128;
+            dialogOptions.ranges['Extreme256'] = rollData.impactExtreme256;
+        }
         // Create the Roll instance
         const roll = await DiceHM3.missileDamageDialog(dialogOptions);
 
@@ -1063,13 +1097,25 @@ export class DiceHM3 {
             title = `${rollData.name} Damage`; 
         }
 
-        let rangeImpact = rollData.impactExtreme;
-        if (roll.range === 'short') {
+        let rangeImpact = 0;
+        if (roll.range === 'Short') {
             rangeImpact = rollData.impactShort;
-        } else if (roll.range === 'medium') {
+        } else if (roll.range === 'Medium') {
             rangeImpact = rollData.impactMedium;
-        } else if (roll.range === 'long') {
+        } else if (roll.range === 'Long') {
             rangeImpact = rollData.impactLong;
+        } else if (roll.range === 'Extreme') {
+            rangeImpact = rollData.impactExtreme;
+        }
+
+        if (goldMode && !rangeImpact) {
+            if (roll.range === 'Extreme64') {
+                rangeImpact = rollData.impactExtreme64;
+            } else if (roll.range === 'Extreme128') {
+                rangeImpact = rollData.impactExtreme128;
+            } else if (roll.range === 'Extreme256') {
+                rangeImpact = rollData.impactExtreme256
+            }
         }
 
         const totalImpact = Number(rangeImpact) + Number(roll.addlImpact) + Number(roll.rollObj.total);
@@ -1143,6 +1189,7 @@ export class DiceHM3 {
                 const formDamageDice = Number(form.damageDice.value);
                 const formRange = form.range.value;
                 let roll = await DiceHM3.rollTest({
+                    type: dialogOptions.type,
                     target: 0,
                     data: dialogOptions.data,
                     diceSides: 6,
@@ -1150,6 +1197,7 @@ export class DiceHM3 {
                     modifier: 0
                 });
                 let result = {
+                    type: roll.type,
                     range: formRange,
                     damageDice: formDamageDice,
                     addlImpact: formAddlImpact,
@@ -1197,6 +1245,7 @@ export class DiceHM3 {
         }
 
         let rollResults = {
+            "type": testData.type,
             "target": targetNum,
             "modifier": modifier,
             "rollObj": roll,

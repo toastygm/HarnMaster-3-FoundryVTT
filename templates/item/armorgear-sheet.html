@@ -88,6 +88,19 @@
                         <input class="value" type="number" name="data.protection.fire" value="{{data.protection.fire}}"
                             data-dtype="Number" />
                     </div>
+                    {{#if goldMode}}
+                    <div class="armorgear-protection-item">
+                        <label class="label">Squeeze</label>
+                        <input class="value" type="number" name="data.protection.squeeze"
+                            value="{{data.protection.squeeze}}" data-dtype="Number" />
+                    </div>
+                    <div class="armorgear-protection-item">
+                        <label class="label">Tear</label>
+                        <input class="value" type="number" name="data.protection.tear" value="{{data.protection.tear}}"
+                            data-dtype="Number" />
+                    </div>
+
+                    {{/if}}
                 </div>
             </fieldset>
             <fieldset class="armor-locations-list">

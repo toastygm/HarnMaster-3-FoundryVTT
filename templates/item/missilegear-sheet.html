@@ -84,10 +84,20 @@
             <ol class="range-table">
                 <li class="flexrow range-header">
                     <div class="range-label"></div>
+                    {{#if goldMode}}
+                    <div class="range-value">4</div>
+                    <div class="range-value">8</div>
+                    <div class="range-value">16</div>
+                    <div class="range-value">32</div>
+                    <div class="range-value">64</div>
+                    <div class="range-value">128</div>
+                    <div class="range-value">256</div>
+                    {{else}}
                     <div class="range-value">Short</div>
                     <div class="range-value">Medium</div>
                     <div class="range-value">Long</div>
                     <div class="range-value">Extreme</div>
+                    {{/if}}
                 </li>
                 <li class="flexrow">
                     <div class="range-label">Range</div>
@@ -99,6 +109,11 @@
                             data-dtype="Number" /></div>
                     <div class="range-value"><input type="text" name="data.range.extreme" value="{{data.range.extreme}}"
                             data-dtype="Number" /></div>
+                    {{#if goldMode}}
+                    <div class="range-value"><input type="text" name="data.range.extreme64" value="{{data.range.extreme64}}" data-dtype="Number" /></div>
+                    <div class="range-value"><input type="text" name="data.range.extreme128" value="{{data.range.extreme128}}" data-dtype="Number" /></div>
+                    <div class="range-value"><input type="text" name="data.range.extreme256" value="{{data.range.extreme256}}" data-dtype="Number" /></div>
+                    {{/if}}
                 </li>
                 <li class="flexrow">
                     <div class="range-label">Impact</div>
@@ -110,6 +125,11 @@
                             data-dtype="Number" /></div>
                     <div class="range-value"><input type="text" name="data.impact.extreme"
                             value="{{data.impact.extreme}}" data-dtype="Number" /></div>
+                    {{#if goldMode}}
+                    <div class="range-value"><input type="text" name="data.impact.extreme64" value="{{data.impact.extreme64}}" data-dtype="Number" /></div>
+                    <div class="range-value"><input type="text" name="data.impact.extreme128" value="{{data.impact.extreme128}}" data-dtype="Number" /></div>
+                    <div class="range-value"><input type="text" name="data.impact.extreme256" value="{{data.impact.extreme256}}" data-dtype="Number" /></div>
+                    {{/if}}
                 </li>
             </ol>
             <div class="resource artifact flexrow">

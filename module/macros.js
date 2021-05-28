@@ -152,7 +152,8 @@ export async function skillRoll(itemName, noDialog = false, myActor=null) {
     }
 
     const stdRollData = {
-        label: `${item.data.name} Skill Test`,
+        type: `skill-${item.name}`,
+        label: `${item.name} Skill Test`,
         target: item.data.data.effectiveMasteryLevel,
         notesData: {
             up: actor.data.data.universalPenalty,
@@ -174,9 +175,14 @@ export async function skillRoll(itemName, noDialog = false, myActor=null) {
         stdRollData.actor = actor.id;
     }
     
-    const result = await DiceHM3.d100StdRoll(stdRollData);
-    item.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
-    return result;
+    const hooksOk = Hooks.call("hm3.preSkillRoll", actor, item, stdRollData);
+    if (hooksOk) {
+        const result = await DiceHM3.d100StdRoll(stdRollData);
+        item.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
+        Hooks.callAll("hm3.onSkillRoll", actor, item, stdRollData, result);
+        return result;
+    }
+    return null;
 }
 
 export async function castSpellRoll(itemName, noDialog = false, myActor=null) {
@@ -194,6 +200,7 @@ export async function castSpellRoll(itemName, noDialog = false, myActor=null) {
     }
 
     const stdRollData = {
+        type: `spell-${item.name}`,
         label: `Casting ${item.data.name}`,
         target: item.data.data.effectiveMasteryLevel,
         notesData: {
@@ -219,9 +226,14 @@ export async function castSpellRoll(itemName, noDialog = false, myActor=null) {
         stdRollData.actor = actor.id;
     }
 
-    const result = await DiceHM3.d100StdRoll(stdRollData);
-    item.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
-    return result;
+    const hooksOk = Hooks.call("hm3.preSpellRoll", actor, item, stdRollData);
+    if (hooksOk) {
+        const result = await DiceHM3.d100StdRoll(stdRollData);
+        item.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
+        Hooks.callAll("hm3.onSpellRoll", actor, item, stdRollData, result);
+        return result;
+    }
+    return null;
 }
 
 export async function invokeRitualRoll(itemName, noDialog = false, myActor = null) {
@@ -239,6 +251,7 @@ export async function invokeRitualRoll(itemName, noDialog = false, myActor = nul
     }
 
     const stdRollData = {
+        type: `invocation-${item.name}`,
         label: `Invoking ${item.data.name} Ritual`,
         target: item.data.data.effectiveMasteryLevel,
         notesData: {
@@ -264,9 +277,14 @@ export async function invokeRitualRoll(itemName, noDialog = false, myActor = nul
         stdRollData.actor = actor.id;
     }
     
-    const result = await DiceHM3.d100StdRoll(stdRollData);
-    item.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
-    return result;
+    const hooksOk = Hooks.call("hm3.preInvocationRoll", actor, item, stdRollData);
+    if (hooksOk) {
+        const result = await DiceHM3.d100StdRoll(stdRollData);
+        item.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
+        Hooks.callAll("hm3.onInvocationRoll", actor, item, stdRollData, result);
+        return result;
+    }
+    return null;
 }
 
 export async function usePsionicRoll(itemName, noDialog = false, myActor=null) {
@@ -284,6 +302,7 @@ export async function usePsionicRoll(itemName, noDialog = false, myActor=null) {
     }
 
     const stdRollData = {
+        type: `psionic-${item.name}`,
         label: `Using ${item.data.name} Talent`,
         target: item.data.data.effectiveMasteryLevel,
         notesData: {
@@ -308,9 +327,14 @@ export async function usePsionicRoll(itemName, noDialog = false, myActor=null) {
         stdRollData.actor = actor.id;
     }
     
-    const result = await DiceHM3.d100StdRoll(stdRollData);
-    item.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
-    return result;
+    const hooksOk = Hooks.call("hm3.prePsionicsRoll", actor, item, stdRollData);
+    if (hooksOk) {
+        const result = await DiceHM3.d100StdRoll(stdRollData);
+        item.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
+        Hooks.callAll("hm3.onPsionicsRoll", actor, item, stdRollData, result);
+        return result;
+    }
+    return null;
 }
 
 export async function testAbilityD6Roll(ability, noDialog = false, myActor=null) {
@@ -334,6 +358,7 @@ export async function testAbilityD6Roll(ability, noDialog = false, myActor=null)
 
 
     const stdRollData = {
+        type: `${ability}-d6`,
         label: `d6 ${ability[0].toUpperCase()}${ability.slice(1)} Roll`,
         target: actor.data.data.abilities[ability].effective,
         numdice: 3,
@@ -348,7 +373,14 @@ export async function testAbilityD6Roll(ability, noDialog = false, myActor=null)
         stdRollData.actor = actor.id;
     }
     
-    return await DiceHM3.d6Roll(stdRollData);
+    const hooksOk = Hooks.call("hm3.preAbilityRollD6", actor, stdRollData);
+    if (hooksOk) {
+        const result = await DiceHM3.d6Roll(stdRollData);
+        item.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
+        Hooks.callAll("hm3.onAbilityRollD6", actor, stdRollData, result);
+        return result;
+    }
+    return null;
 }
 
 export async function testAbilityD100Roll(ability, noDialog = false, myActor = null) {
@@ -371,6 +403,7 @@ export async function testAbilityD100Roll(ability, noDialog = false, myActor = n
     if (!ability || !abilities.includes(ability)) return null;
 
     const stdRollData = {
+        type: `${ability}-d100`,
         label: `d100 ${ability[0].toUpperCase()}${ability.slice(1)} Roll`,
         target: Math.max(5, actor.data.data.abilities[ability].effective * 5),
         notesData: {},
@@ -384,10 +417,18 @@ export async function testAbilityD100Roll(ability, noDialog = false, myActor = n
         stdRollData.actor = actor.id;
     }
     
-    return await DiceHM3.d100StdRoll(stdRollData);
+    const hooksOk = Hooks.call("hm3.preAbilityRollD100", actor, stdRollData);
+    if (hooksOk) {
+        const result = await DiceHM3.d100StdRoll(stdRollData);
+        item.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
+        Hooks.callAll("hm3.onAbilityRollD100", actor, stdRollData, result);
+        return result;
+    }
+    return null;
 }
 
 export async function weaponDamageRoll(itemName, aspect=null, myActor = null) {
+    const goldMode = game.settings.get("hm3", "goldMode");
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
@@ -395,8 +436,14 @@ export async function weaponDamageRoll(itemName, aspect=null, myActor = null) {
         return null;
     }
 
+    const allowedAspects = ['Edged', 'Piercing', 'Blunt'];
+    if (goldMode) {
+        allowedAspects.push('Squeeze');
+        allowedAspects.push('Tear');
+    }
+
     if (aspect) {
-        if (!['Edged', 'Piercing', 'Blunt'].includes(aspect)) {
+        if (!allowedAspects.includes(aspect)) {
             ui.notifications.warn(`Invalid aspect requested on damage roll: ${aspect}`);
             return null;
         }
@@ -428,10 +475,17 @@ export async function weaponDamageRoll(itemName, aspect=null, myActor = null) {
         rollData.actor = actor.id;
     }
     
-    return await DiceHM3.damageRoll(rollData);
+    const hooksOk = Hooks.call("hm3.preDamageRoll", actor, rollData);
+    if (hooksOk) {
+        const result = await DiceHM3.damageRoll(rollData);
+        Hooks.callAll("hm3.onDamageRoll", actor, rollData, result);
+        return result;
+    }
+    return null;
 }
 
 export async function missileDamageRoll(itemName, range=null, myActor = null) {
+    const goldMode = game.settings.get("hm3", "goldMode");
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
@@ -446,7 +500,11 @@ export async function missileDamageRoll(itemName, range=null, myActor = null) {
     }
 
     if (range) {
-        if (!['Short', 'Medium', 'Long', 'Extreme'].includes(range)) {
+        let allowedRanges = ['Short', 'Medium', 'Long', 'Extreme'];
+        if (goldMode) {
+            allowedRanges = allowedRanges.concat(['Extreme64', 'Extreme128', 'Extreme256']);
+        }
+        if (!allowedRanges.includes(range)) {
             ui.notifications.warn(`Invalid range requested on damage roll: ${range}`);
             return null;
         }
@@ -468,6 +526,9 @@ export async function missileDamageRoll(itemName, range=null, myActor = null) {
         impactMedium: item.data.data.impact.medium,
         impactLong: item.data.data.impact.long,
         impactExtreme: item.data.data.impact.extreme,
+        impactExtreme64: item.data.data.impact.extreme64,
+        impactExtreme128: item.data.data.impact.extreme128,
+        impactExtreme256: item.data.data.impact.extreme256,
         data: actor.data,
         speaker: speaker,
         notes: item.data.data.notes
@@ -478,7 +539,13 @@ export async function missileDamageRoll(itemName, range=null, myActor = null) {
         rollData.actor = actor.id;
     }
     
-    return await DiceHM3.missileDamageRoll(rollData);
+    const hooksOk = Hooks.call("hm3.preMissileDamageRoll", actor, rollData);
+    if (hooksOk) {
+        const result = await DiceHM3.missileDamageRoll(rollData);
+        Hooks.callAll("hm3.onMissileDamageRoll", actor, rollData, result);
+        return result;
+    }
+    return null;
 }
 
 export async function weaponAttackRoll(itemName, noDialog = false, myActor = null) {
@@ -521,7 +588,13 @@ export async function weaponAttackRoll(itemName, noDialog = false, myActor = nul
         stdRollData.actor = actor.id;
     }
     
-    return await DiceHM3.d100StdRoll(stdRollData);
+    const hooksOk = Hooks.call("hm3.preWeaponAttackRoll", actor, item, stdRollData);
+    if (hooksOk) {
+        const result = await DiceHM3.d100StdRoll(stdRollData);
+        Hooks.callAll("hm3.onWeaponAttackRoll", actor, item, stdRollData, result);
+        return result;
+    }
+    return null;
 }
 
 export async function weaponDefendRoll(itemName, noDialog = false, myActor = null) {
@@ -563,7 +636,13 @@ export async function weaponDefendRoll(itemName, noDialog = false, myActor = nul
         stdRollData.actor = actor.id;
     }
     
-    return await DiceHM3.d100StdRoll(stdRollData);
+    const hooksOk = Hooks.call("hm3.preWeaponDefendRoll", actor, item, stdRollData);
+    if (hooksOk) {
+        const result = await DiceHM3.d100StdRoll(stdRollData);
+        Hooks.callAll("hm3.onWeaponDefendRoll", actor, item, stdRollData, result);
+        return result;
+    }
+    return null;
 }
 
 export async function missileAttackRoll(itemName, myActor = null) {
@@ -607,7 +686,13 @@ export async function missileAttackRoll(itemName, myActor = null) {
         rollData.actor = actor.id;
     }
     
-    return await DiceHM3.missileAttackRoll(rollData);
+    const hooksOk = Hooks.call("hm3.preMissileAttackRoll", actor, item, rollData);
+    if (hooksOk) {
+        const result = await DiceHM3.missileAttackRoll(rollData);
+        Hooks.callAll("hm3.onMissileAttackRoll", actor, item, rollData, result);
+        return result;
+    }
+    return null;
 }
 
 export async function injuryRoll(myActor = null) {
@@ -625,7 +710,13 @@ export async function injuryRoll(myActor = null) {
         name: actor.token ? actor.token.name : actor.name,
         notes: ''
     };
-    return DiceHM3.injuryRoll(rollData);
+    const hooksOk = Hooks.call("hm3.preInjuryRoll", actor, item, rollData);
+    if (hooksOk) {
+        const result = await DiceHM3.injuryRoll(rollData);
+        Hooks.callAll("hm3.onInjuryRoll", actor, rollData, result);
+        return result;
+    }
+    return null;
 }
 
 export async function healingRoll(itemName, noDialog = false, myActor = null) {
@@ -643,6 +734,7 @@ export async function healingRoll(itemName, noDialog = false, myActor = null) {
     }
 
     const stdRollData = {
+        type: 'healing',
         label: `${item.data.name} Healing Roll`,
         target: item.data.data.healRate*actor.data.data.endurance,
         notesData: {
@@ -664,7 +756,14 @@ export async function healingRoll(itemName, noDialog = false, myActor = null) {
         stdRollData.actor = actor.id;
     }
     
-    return await DiceHM3.d100StdRoll(stdRollData);
+    const hooksOk = Hooks.call("hm3.preHealingRoll", actor, item, stdRollData);
+    if (hooksOk) {
+        const result = await DiceHM3.d100StdRoll(stdRollData);
+        item.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
+        Hooks.callAll("hm3.onHealingRoll", actor, item, stdRollData, result);
+        return result;
+    }
+    return null;
 }
 
 export async function dodgeRoll(noDialog = false, myActor = null) {
@@ -676,6 +775,7 @@ export async function dodgeRoll(noDialog = false, myActor = null) {
     }
 
     const stdRollData = {
+        type: 'dodge',
         label: `Dodge Roll`,
         target: actor.data.data.dodge,
         notesData: {},
@@ -689,10 +789,18 @@ export async function dodgeRoll(noDialog = false, myActor = null) {
         stdRollData.actor = actor.id;
     }
     
-    return await DiceHM3.d100StdRoll(stdRollData);
+    const hooksOk = Hooks.call("hm3.preDodgeRoll", actor, stdRollData);
+    if (hooksOk) {
+        const result = await DiceHM3.d100StdRoll(stdRollData);
+        actor.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
+        Hooks.callAll("hm3.onDodgeRoll", actor, stdRollData, result);
+        return result;
+    }
+    return null;
 }
 
 export async function shockRoll(noDialog = false, myActor = null) {
+    const goldMode = game.settings.get("hm3", "goldMode");
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
@@ -700,22 +808,52 @@ export async function shockRoll(noDialog = false, myActor = null) {
         return null;
     }
 
-    const stdRollData = {
-        label: `Shock Roll`,
-        target: actor.data.data.endurance,
-        numdice: actor.data.data.universalPenalty,
-        notesData: {},
-        speaker: speaker,
-        fastforward: noDialog,
-        notes: ''
-    };
-    if (actor.isToken) {
-        stdRollData.token = actor.token.id;
+    let hooksOk = false;
+    let result = null;
+    if (goldMode) {
+        const stdRollData = {
+            type: 'shock',
+            label: 'Shock Roll',
+            target: actor.data.data.condition,
+            notesData: {},
+            speaker: speaker,
+            fastforward: noDialog,
+            notes: ''
+        };
+        if (actor.isToken) {
+            stdRollData.token = actor.token.id;
+        } else {
+            stdRollData.actor = actor.id;
+        }
+
+        hooksOk = Hooks.call("hm3.preShockRoll", actor, stdRollData);
+        if (hooksOk) result = await DiceHM3.d100StdRoll(stdRollData);
     } else {
-        stdRollData.actor = actor.id;
+        const stdRollData = {
+            type: 'shock',
+            label: `Shock Roll`,
+            target: actor.data.data.endurance,
+            numdice: actor.data.data.universalPenalty,
+            notesData: {},
+            speaker: speaker,
+            fastforward: noDialog,
+            notes: ''
+        };
+        if (actor.isToken) {
+            stdRollData.token = actor.token.id;
+        } else {
+            stdRollData.actor = actor.id;
+        }
+        
+        hooksOk = Hooks.call("hm3.preShockRoll", actor, stdRollData);
+        if (hooksOk) result = await DiceHM3.d6Roll(stdRollData);
     }
-    
-    return await DiceHM3.d6Roll(stdRollData);
+    if (hooksOk) {
+        actor.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
+        Hooks.callAll("hm3.onShockRoll", actor, stdRollData, result);
+        return result;
+    }
+    return null;
 }
 
 export async function stumbleRoll(noDialog = false, myActor = null) {
@@ -727,6 +865,7 @@ export async function stumbleRoll(noDialog = false, myActor = null) {
     }
 
     const stdRollData = {
+        type: 'stumble',
         label: `${actor.isToken ? actor.token.name : actor.name} Stumble Roll`,
         target: actor.data.data.eph.stumbleTarget,
         numdice: 3,
@@ -740,8 +879,20 @@ export async function stumbleRoll(noDialog = false, myActor = null) {
     } else {
         stdRollData.actor = actor.id;
     }
-    
-    return await DiceHM3.d6Roll(stdRollData);
+
+    const hooksOk = Hooks.call("hm3.preStumbleRoll", actor, stdRollData);
+    if (hooksOk) {
+        let result = null;
+        if (goldMode) {
+            result = await DiceHM3.d100StdRoll(stdRollData);
+        } else {
+            result = await DiceHM3.d6Roll(stdRollData);
+        }
+        actor.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
+        Hooks.callAll("hm3.onStumbleRoll", actor, stdRollData, result);
+        return result;
+    }
+    return null;
 }
 
 export async function fumbleRoll(noDialog = false, myActor = null) {
@@ -753,6 +904,7 @@ export async function fumbleRoll(noDialog = false, myActor = null) {
     }
 
     const stdRollData = {
+        type: 'fumble',
         label: `${actor.isToken ? actor.token.name : actor.name} Fumble Roll`,
         target: actor.data.data.eph.fumbleTarget,
         numdice: 3,
@@ -767,7 +919,19 @@ export async function fumbleRoll(noDialog = false, myActor = null) {
         stdRollData.actor = actor.id;
     }
     
-    return await DiceHM3.d6Roll(stdRollData);
+    const hooksOk = Hooks.call("hm3.preFumbleRoll", actor, stdRollData);
+    if (hooksOk) {
+        let result = null;
+        if (goldMode) {
+            result = await DiceHM3.d100StdRoll(stdRollData);
+        } else {
+            result = await DiceHM3.d6Roll(stdRollData);
+        }
+        actor.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
+        Hooks.callAll("hm3.onFumbleRoll", actor, stdRollData, result);
+        return result;
+    }
+    return null;
 }
 
 export async function genericDamageRoll(myActor = null) {
@@ -791,8 +955,13 @@ export async function genericDamageRoll(myActor = null) {
         rollData.actor = actor.id;
     }
     
-    const result = await DiceHM3.damageRoll(rollData);
-    return result;
+    const hooksOk = Hooks.call("hm3.preDamageRoll", actor, rollData);
+    if (hooksOk) {
+        const result = await DiceHM3.damageRoll(rollData);
+        Hooks.callAll("hm3.onDamageRoll", actor, rollData, result);
+        return result;
+    }
+    return null;
 }
 
 export async function changeFatigue(newValue, myActor = null) {
@@ -882,6 +1051,11 @@ export async function setSkillDevelopmentFlag(skillName, myActor = null) {
 /*--------------------------------------------------------------*/
 
 export async function weaponAttack(itemName = null, noDialog = false, myToken = null, forceAllow=false) {
+    if (game.settings.get("hm3", "goldMode")) {
+        ui.notifications.warn('Automated Combat not available in HM Gold Mode');
+        return null;
+    }
+
     const combatant = getTokenInCombat(myToken, forceAllow);
     if (!combatant) return null;
 
@@ -897,6 +1071,11 @@ export async function weaponAttack(itemName = null, noDialog = false, myToken = 
 }
 
 export async function missileAttack(itemName = null, noDialog = false, myToken = null, forceAllow=false) {
+    if (game.settings.get("hm3", "goldMode")) {
+        ui.notifications.warn('Automated Combat not available in HM Gold Mode');
+        return null;
+    }
+
     const combatant = getTokenInCombat(myToken, forceAllow);
     if (!combatant) return null;
     
@@ -924,6 +1103,11 @@ export async function missileAttack(itemName = null, noDialog = false, myToken =
  * @param {*} atkImpactMod Additional modifier to impact
  */
 export async function meleeCounterstrikeResume(atkTokenId, defTokenId, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod) {
+    if (game.settings.get("hm3", "goldMode")) {
+        ui.notifications.warn('Automated Combat not available in HM Gold Mode');
+        return null;
+    }
+
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
         ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
@@ -952,6 +1136,11 @@ export async function meleeCounterstrikeResume(atkTokenId, defTokenId, atkWeapon
  * @param {*} impactMod Additional modifier to impact
  */
 export async function dodgeResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod) {
+    if (game.settings.get("hm3", "goldMode")) {
+        ui.notifications.warn('Automated Combat not available in HM Gold Mode');
+        return null;
+    }
+
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
         ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
@@ -980,6 +1169,11 @@ export async function dodgeResume(atkTokenId, defTokenId, type, weaponName, effA
  * @param {*} impactMod Additional modifier to impact
  */
 export async function blockResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod) {
+    if (game.settings.get("hm3", "goldMode")) {
+        ui.notifications.warn('Automated Combat not available in HM Gold Mode');
+        return null;
+    }
+
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
         ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
@@ -1008,6 +1202,11 @@ export async function blockResume(atkTokenId, defTokenId, type, weaponName, effA
  * @param {*} impactMod Additional modifier to impact
  */
 export async function ignoreResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod) {
+    if (game.settings.get("hm3", "goldMode")) {
+        ui.notifications.warn('Automated Combat not available in HM Gold Mode');
+        return null;
+    }
+
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
         ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);

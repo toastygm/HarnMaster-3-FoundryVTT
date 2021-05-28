@@ -30,6 +30,8 @@ export class HarnMasterItemSheet extends ItemSheet {
     const data = super.getData();
     const itemData = data.data;
 
+    data.goldMode = game.settings.get('hm3', 'goldMode');
+    
     // Re-define the template data references (backwards compatible)
     data.item = itemData;
     data.data = itemData.data;
