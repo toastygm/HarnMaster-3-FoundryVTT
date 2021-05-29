@@ -736,7 +736,7 @@ export class HarnMasterActor extends Actor {
                     if (typeof armorMap[l] != 'undefined') {
 
                         // Add this armor's protection to the location
-                        if (!data.hasOwnProperty('protection')) {
+                        if (data.hasOwnProperty('protection')) {
                             armorMap[l].blunt += data.protection.blunt;
                             armorMap[l].edged += data.protection.edged;
                             armorMap[l].piercing += data.protection.piercing;
