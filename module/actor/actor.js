@@ -15,6 +15,10 @@ export class HarnMasterActor extends Actor {
     async _preCreate(createData, options, user) {
         await super._preCreate(createData, options, user);
 
+        // if "skipDefaults" option is true, don't do anything more: no default items
+        // or values
+        if (options.skipDefaults) return;
+
         // Setup default Actor type specific data.
 
         const updateData = {};
@@ -361,6 +365,22 @@ export class HarnMasterActor extends Actor {
             const itemData = it.data;
             if (['skill','spell','invocation','psionic'].includes(itemData.type)) {
                 itemData.data.effectiveMasteryLevel = Math.max(itemData.data.effectiveMasteryLevel || 5, 5);
+            }
+
+            if (itemData.type === 'skill') {
+                switch (itemData.name.toLowerCase()) {
+                    case 'dodge':
+                        data.dodge = itemData.data.effectiveMasteryLevel;
+                        break;
+
+                    case 'initiative':
+                        data.initiative = itemData.data.effectiveMasteryLevel;
+                        break;
+
+                    case 'condition':
+                        data.condition = itemData.data.effectiveMasteryLevel;
+                        break;
+                }
             }
         });
 
