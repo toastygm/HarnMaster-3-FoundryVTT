@@ -810,8 +810,9 @@ export async function shockRoll(noDialog = false, myActor = null) {
 
     let hooksOk = false;
     let result = null;
+    let stdRollData = null;
     if (goldMode) {
-        const stdRollData = {
+        stdRollData = {
             type: 'shock',
             label: 'Shock Roll',
             target: actor.data.data.condition,
@@ -829,7 +830,7 @@ export async function shockRoll(noDialog = false, myActor = null) {
         hooksOk = Hooks.call("hm3.preShockRoll", actor, stdRollData);
         if (hooksOk) result = await DiceHM3.d100StdRoll(stdRollData);
     } else {
-        const stdRollData = {
+        stdRollData = {
             type: 'shock',
             label: `Shock Roll`,
             target: actor.data.data.endurance,
@@ -857,6 +858,7 @@ export async function shockRoll(noDialog = false, myActor = null) {
 }
 
 export async function stumbleRoll(noDialog = false, myActor = null) {
+    const goldMode = game.settings.get("hm3", "goldMode");
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
@@ -896,6 +898,7 @@ export async function stumbleRoll(noDialog = false, myActor = null) {
 }
 
 export async function fumbleRoll(noDialog = false, myActor = null) {
+    const goldMode = game.settings.get("hm3", "goldMode");
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
