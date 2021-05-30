@@ -453,7 +453,7 @@ export async function purgeFlags(pack) {
     return flagshm3 ? { hm3: flagshm3 } : {};
   };
   await pack.configure({ locked: false });
-  const content = await pack.getContent();
+  const content = await pack.getDocuments();
   for (let entity of content) {
     const update = { _id: entity.id, flags: cleanFlags(entity.data.flags) };
     if (pack.document === "Actor") {
