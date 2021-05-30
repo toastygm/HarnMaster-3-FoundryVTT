@@ -989,7 +989,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
     // If there was a block, check whether a weapon broke
     let weaponBroke = {attackWeaponBroke: false, defendWeaponBroke: false};
     if (game.settings.get('hm3', 'weaponDamage') && combatResult.outcome.block) {
-        weaponBroke = checkWeaponBreak(atkWeapon, defWeapon);
+        weaponBroke = await checkWeaponBreak(atkWeapon, defWeapon);
 
         // If either of the weapons has broken, then mark the appropriate
         // weapon as "unequipped"
