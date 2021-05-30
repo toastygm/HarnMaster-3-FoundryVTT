@@ -995,12 +995,12 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         // weapon as "unequipped"
 
         if (weaponBroke.attackWeaponBroke) {
-            const item = atkToken.actor.get(atkWeapon.id);
+            const item = atkToken.actor.items.get(atkWeapon.id);
             await item.update({'data.isEquipped': false});
         }
 
         if (weaponBroke.defendWeaponBroke) {
-            const item = defToken.actor.get(defWeapon.id);
+            const item = defToken.actor.items.get(defWeapon.id);
             await item.update({'data.isEquipped': false});
         }
     }
