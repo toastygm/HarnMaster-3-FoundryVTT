@@ -711,7 +711,7 @@ export async function injuryRoll(myActor = null) {
         name: actor.token ? actor.token.name : actor.name,
         notes: ''
     };
-    const hooksOk = Hooks.call("hm3.preInjuryRoll", rollData, actor, item);
+    const hooksOk = Hooks.call("hm3.preInjuryRoll", rollData, actor);
     if (hooksOk) {
         const result = await DiceHM3.injuryRoll(rollData);
         callOnHooks("hm3.onInjuryRoll", rollData, result, actor);
