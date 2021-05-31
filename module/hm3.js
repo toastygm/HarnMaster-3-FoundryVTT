@@ -54,7 +54,9 @@ Hooks.once('init', async function () {
     CONFIG.Actor.documentClass = HarnMasterActor;
     CONFIG.Item.documentClass = HarnMasterItem;
     CONFIG.Combat.documentClass = HarnMasterCombat;
-    CONFIG.Macro.documentClass = HM3Macro;
+    if (!(game.modules.get("furnace")?.active || game.modules.get("advanced-macros")?.active)) {
+        CONFIG.Macro.documentClass = HM3Macro;
+    }
     CONFIG.TinyMCE.style_formats[0].items.push({
         title: 'Highlight',
         block: 'section',
