@@ -7,6 +7,7 @@ import { HarnMasterCombat } from "./hm3-combat.js";
 import { HarnMasterItem } from "./item/item.js";
 import { HarnMasterItemSheet } from "./item/item-sheet.js";
 import { HM3ActiveEffectConfig } from "./hm3-active-effect-config.js";
+import { HM3Macro } from "./hm3-macro.js";
 import { HM3 } from "./config.js";
 import { registerSystemSettings } from "./settings.js";
 import * as migrations from "./migrations.js";
@@ -53,6 +54,7 @@ Hooks.once('init', async function () {
     CONFIG.Actor.documentClass = HarnMasterActor;
     CONFIG.Item.documentClass = HarnMasterItem;
     CONFIG.Combat.documentClass = HarnMasterCombat;
+    CONFIG.Macro.documentClass = HM3Macro;
     CONFIG.TinyMCE.style_formats[0].items.push({
         title: 'Highlight',
         block: 'section',
