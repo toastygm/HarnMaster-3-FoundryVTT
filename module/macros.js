@@ -1,4 +1,5 @@
 import { DiceHM3 } from './dice-hm3.js';
+import { HM3Macro } from './hm3-macro.js';
 import * as combat from './combat.js';
 
 /**
@@ -175,11 +176,11 @@ export async function skillRoll(itemName, noDialog = false, myActor=null) {
         stdRollData.actor = actor.id;
     }
     
-    const hooksOk = Hooks.call("hm3.preSkillRoll", actor, item, stdRollData);
+    const hooksOk = callPreHooks("hm3.preSkillRoll", stdRollData, actor, item);
     if (hooksOk) {
         const result = await DiceHM3.d100StdRoll(stdRollData);
         item.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
-        Hooks.callAll("hm3.onSkillRoll", actor, item, stdRollData, result);
+        callOnHooks("hm3.onSkillRoll", stdRollData, result, actor, item);
         return result;
     }
     return null;
@@ -226,11 +227,11 @@ export async function castSpellRoll(itemName, noDialog = false, myActor=null) {
         stdRollData.actor = actor.id;
     }
 
-    const hooksOk = Hooks.call("hm3.preSpellRoll", actor, item, stdRollData);
+    const hooksOk = callPreHooks("hm3.preSpellRoll", stdRollData, actor, item);
     if (hooksOk) {
         const result = await DiceHM3.d100StdRoll(stdRollData);
         item.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
-        Hooks.callAll("hm3.onSpellRoll", actor, item, stdRollData, result);
+        callOnHooks("hm3.onSpellRoll", stdRollData, result, actor, item);
         return result;
     }
     return null;
@@ -277,11 +278,11 @@ export async function invokeRitualRoll(itemName, noDialog = false, myActor = nul
         stdRollData.actor = actor.id;
     }
     
-    const hooksOk = Hooks.call("hm3.preInvocationRoll", actor, item, stdRollData);
+    const hooksOk = callPreHooks("hm3.preInvocationRoll", stdRollData, actor, item);
     if (hooksOk) {
         const result = await DiceHM3.d100StdRoll(stdRollData);
         item.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
-        Hooks.callAll("hm3.onInvocationRoll", actor, item, stdRollData, result);
+        callOnHooks("hm3.onInvocationRoll", stdRollData, result, actor, item);
         return result;
     }
     return null;
@@ -327,11 +328,11 @@ export async function usePsionicRoll(itemName, noDialog = false, myActor=null) {
         stdRollData.actor = actor.id;
     }
     
-    const hooksOk = Hooks.call("hm3.prePsionicsRoll", actor, item, stdRollData);
+    const hooksOk = callPreHooks("hm3.prePsionicsRoll", stdRollData, actor, item);
     if (hooksOk) {
         const result = await DiceHM3.d100StdRoll(stdRollData);
         item.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
-        Hooks.callAll("hm3.onPsionicsRoll", actor, item, stdRollData, result);
+        callOnHooks("hm3.onPsionicsRoll", stdRollData, result, actor, item);
         return result;
     }
     return null;
@@ -373,11 +374,11 @@ export async function testAbilityD6Roll(ability, noDialog = false, myActor=null)
         stdRollData.actor = actor.id;
     }
     
-    const hooksOk = Hooks.call("hm3.preAbilityRollD6", actor, stdRollData);
+    const hooksOk = callPreHooks("hm3.preAbilityRollD6", stdRollData, actor);
     if (hooksOk) {
         const result = await DiceHM3.d6Roll(stdRollData);
         item.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
-        Hooks.callAll("hm3.onAbilityRollD6", actor, stdRollData, result);
+        callOnHooks("hm3.onAbilityRollD6", stdRollData, result, actor);
         return result;
     }
     return null;
@@ -417,11 +418,11 @@ export async function testAbilityD100Roll(ability, noDialog = false, myActor = n
         stdRollData.actor = actor.id;
     }
     
-    const hooksOk = Hooks.call("hm3.preAbilityRollD100", actor, stdRollData);
+    const hooksOk = callPreHooks("hm3.preAbilityRollD100", stdRollData, actor);
     if (hooksOk) {
         const result = await DiceHM3.d100StdRoll(stdRollData);
         item.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
-        Hooks.callAll("hm3.onAbilityRollD100", actor, stdRollData, result);
+        callOnHooks("hm3.onAbilityRollD100", stdRollData, result, actor);
         return result;
     }
     return null;
@@ -475,10 +476,10 @@ export async function weaponDamageRoll(itemName, aspect=null, myActor = null) {
         rollData.actor = actor.id;
     }
     
-    const hooksOk = Hooks.call("hm3.preDamageRoll", actor, rollData);
+    const hooksOk = callPreHooks("hm3.preDamageRoll", rollData, actor);
     if (hooksOk) {
         const result = await DiceHM3.damageRoll(rollData);
-        Hooks.callAll("hm3.onDamageRoll", actor, rollData, result);
+        callOnHooks("hm3.onDamageRoll", rollData, result, actor);
         return result;
     }
     return null;
@@ -539,10 +540,10 @@ export async function missileDamageRoll(itemName, range=null, myActor = null) {
         rollData.actor = actor.id;
     }
     
-    const hooksOk = Hooks.call("hm3.preMissileDamageRoll", actor, rollData);
+    const hooksOk = callPreHooks("hm3.preMissileDamageRoll", rollData, actor);
     if (hooksOk) {
         const result = await DiceHM3.missileDamageRoll(rollData);
-        Hooks.callAll("hm3.onMissileDamageRoll", actor, rollData, result);
+        callOnHooks("hm3.onMissileDamageRoll", rollData, result, actor);
         return result;
     }
     return null;
@@ -588,10 +589,10 @@ export async function weaponAttackRoll(itemName, noDialog = false, myActor = nul
         stdRollData.actor = actor.id;
     }
     
-    const hooksOk = Hooks.call("hm3.preWeaponAttackRoll", actor, item, stdRollData);
+    const hooksOk = callPreHooks("hm3.preWeaponAttackRoll", stdRollData, actor, item);
     if (hooksOk) {
         const result = await DiceHM3.d100StdRoll(stdRollData);
-        Hooks.callAll("hm3.onWeaponAttackRoll", actor, item, stdRollData, result);
+        callOnHooks("hm3.onWeaponAttackRoll", stdRollData, result, actor, item);
         return result;
     }
     return null;
@@ -636,10 +637,10 @@ export async function weaponDefendRoll(itemName, noDialog = false, myActor = nul
         stdRollData.actor = actor.id;
     }
     
-    const hooksOk = Hooks.call("hm3.preWeaponDefendRoll", actor, item, stdRollData);
+    const hooksOk = callPreHooks("hm3.preWeaponDefendRoll", stdRollData, actor, item);
     if (hooksOk) {
         const result = await DiceHM3.d100StdRoll(stdRollData);
-        Hooks.callAll("hm3.onWeaponDefendRoll", actor, item, stdRollData, result);
+        callOnHooks("hm3.onWeaponDefendRoll", tdRollData, result, actor, item);
         return result;
     }
     return null;
@@ -686,10 +687,10 @@ export async function missileAttackRoll(itemName, myActor = null) {
         rollData.actor = actor.id;
     }
     
-    const hooksOk = Hooks.call("hm3.preMissileAttackRoll", actor, item, rollData);
+    const hooksOk = callPreHooks("hm3.preMissileAttackRoll", rollData, actor, item);
     if (hooksOk) {
         const result = await DiceHM3.missileAttackRoll(rollData);
-        Hooks.callAll("hm3.onMissileAttackRoll", actor, item, rollData, result);
+        callOnHooks("hm3.onMissileAttackRoll", rollData, result, actor, item);
         return result;
     }
     return null;
@@ -710,10 +711,10 @@ export async function injuryRoll(myActor = null) {
         name: actor.token ? actor.token.name : actor.name,
         notes: ''
     };
-    const hooksOk = Hooks.call("hm3.preInjuryRoll", actor, item, rollData);
+    const hooksOk = callPreHooks("hm3.preInjuryRoll", rollData, actor, item);
     if (hooksOk) {
         const result = await DiceHM3.injuryRoll(rollData);
-        Hooks.callAll("hm3.onInjuryRoll", actor, rollData, result);
+        callOnHooks("hm3.onInjuryRoll", rollData, result, actor);
         return result;
     }
     return null;
@@ -756,11 +757,11 @@ export async function healingRoll(itemName, noDialog = false, myActor = null) {
         stdRollData.actor = actor.id;
     }
     
-    const hooksOk = Hooks.call("hm3.preHealingRoll", actor, item, stdRollData);
+    const hooksOk = callPreHooks("hm3.preHealingRoll", stdRollData, actor, item);
     if (hooksOk) {
         const result = await DiceHM3.d100StdRoll(stdRollData);
         item.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
-        Hooks.callAll("hm3.onHealingRoll", actor, item, stdRollData, result);
+        callOnHooks("hm3.onHealingRoll", stdRollData, result, actor, item);
         return result;
     }
     return null;
@@ -789,11 +790,11 @@ export async function dodgeRoll(noDialog = false, myActor = null) {
         stdRollData.actor = actor.id;
     }
     
-    const hooksOk = Hooks.call("hm3.preDodgeRoll", actor, stdRollData);
+    const hooksOk = callPreHooks("hm3.preDodgeRoll", stdRollData, actor);
     if (hooksOk) {
         const result = await DiceHM3.d100StdRoll(stdRollData);
         actor.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
-        Hooks.callAll("hm3.onDodgeRoll", actor, stdRollData, result);
+        callOnHooks("hm3.onDodgeRoll", stdRollData, result, actor);
         return result;
     }
     return null;
@@ -827,7 +828,7 @@ export async function shockRoll(noDialog = false, myActor = null) {
             stdRollData.actor = actor.id;
         }
 
-        hooksOk = Hooks.call("hm3.preShockRoll", actor, stdRollData);
+        hooksOk = callPreHooks("hm3.preShockRoll", stdRollData, actor);
         if (hooksOk) result = await DiceHM3.d100StdRoll(stdRollData);
     } else {
         stdRollData = {
@@ -846,12 +847,12 @@ export async function shockRoll(noDialog = false, myActor = null) {
             stdRollData.actor = actor.id;
         }
         
-        hooksOk = Hooks.call("hm3.preShockRoll", actor, stdRollData);
+        hooksOk = callPreHooks("hm3.preShockRoll", stdRollData, actor);
         if (hooksOk) result = await DiceHM3.d6Roll(stdRollData);
     }
     if (hooksOk) {
         actor.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
-        Hooks.callAll("hm3.onShockRoll", actor, stdRollData, result);
+        callOnHooks("hm3.onShockRoll", stdRollData, result, actor);
         return result;
     }
     return null;
@@ -882,7 +883,7 @@ export async function stumbleRoll(noDialog = false, myActor = null) {
         stdRollData.actor = actor.id;
     }
 
-    const hooksOk = Hooks.call("hm3.preStumbleRoll", actor, stdRollData);
+    const hooksOk = callPreHooks("hm3.preStumbleRoll", stdRollData, actor);
     if (hooksOk) {
         let result = null;
         if (goldMode) {
@@ -891,7 +892,7 @@ export async function stumbleRoll(noDialog = false, myActor = null) {
             result = await DiceHM3.d6Roll(stdRollData);
         }
         actor.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
-        Hooks.callAll("hm3.onStumbleRoll", actor, stdRollData, result);
+        callOnHooks("hm3.onStumbleRoll", stdRollData, result, actor);
         return result;
     }
     return null;
@@ -922,7 +923,7 @@ export async function fumbleRoll(noDialog = false, myActor = null) {
         stdRollData.actor = actor.id;
     }
     
-    const hooksOk = Hooks.call("hm3.preFumbleRoll", actor, stdRollData);
+    const hooksOk = callPreHooks("hm3.preFumbleRoll", stdRollData, actor);
     if (hooksOk) {
         let result = null;
         if (goldMode) {
@@ -931,7 +932,7 @@ export async function fumbleRoll(noDialog = false, myActor = null) {
             result = await DiceHM3.d6Roll(stdRollData);
         }
         actor.runCustomMacro(result, {actor: actor, token: actor.isToken ? actor.token : null});
-        Hooks.callAll("hm3.onFumbleRoll", actor, stdRollData, result);
+        callOnHooks("hm3.onFumbleRoll", stdRollData, result, actor);
         return result;
     }
     return null;
@@ -958,10 +959,10 @@ export async function genericDamageRoll(myActor = null) {
         rollData.actor = actor.id;
     }
     
-    const hooksOk = Hooks.call("hm3.preDamageRoll", actor, rollData);
+    const hooksOk = callPreHooks("hm3.preDamageRoll", rollData, actor);
     if (hooksOk) {
         const result = await DiceHM3.damageRoll(rollData);
-        Hooks.callAll("hm3.onDamageRoll", actor, rollData, result);
+        callOnHooks("hm3.onDamageRoll", rollData, result, actor);
         return result;
     }
     return null;
@@ -1346,3 +1347,54 @@ function getActor(actor, speaker) {
     return resultActor;
 }
 
+function callOnHooks(hook, ...args) {
+    const result = args[1];
+    const actor = args[2];
+
+    const rollResult = {
+        type: result.type,
+        title: result.title,
+        origTarget: result.origTarget,
+        modifier: (result.plusMinus === '-' ? -1 : 1) * result.modifier,
+        modifiedTarget: result.modifiedTarget,
+        rollValue: result.rollValue,
+        isSuccess: result.isSuccess,
+        isCritical: result.isCritical,
+        result: result.isSuccess ? (result.isCritical ? 'CS' : 'MS') : (result.isCritical ? 'CF' : 'MF'),
+        description: result.description,
+        notes: result.notes
+    };
+
+    args[1] = rollResult;
+
+    const foundMacro = game.macros.getName(hook);
+
+    if (foundMacro && !foundMacro.hasPlayerOwner) {
+        if (foundMacro instanceof HM3Macro) {
+            foundMacro.args = args;
+            foundMacro.execute({actor: actor, token: actor?.token});
+        } else {
+            foundMacro.execute(args);
+        }
+    }
+
+    //return Hooks.callAll(hook, actor, item, rollData, result);
+    return Hooks.callAll(hook, ...args);
+}
+
+function callPreHooks(hook, ...args) {
+    const actor = args[1];
+    const foundMacro = game.macros.getName(hook);
+
+    if (foundMacro && !foundMacro.hasPlayerOwner) {
+        if (foundMacro instanceof HM3Macro) {
+            foundMacro.args = args;
+            foundMacro.execute({actor: actor, token: actor?.token});
+        } else {
+            foundMacro.execute(args);
+        }
+    }
+
+    //return Hooks.call(hook, actor, item, rollData);
+    return Hooks.call(hook, ...args);
+}

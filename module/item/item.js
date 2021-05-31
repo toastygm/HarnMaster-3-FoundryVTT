@@ -1,5 +1,6 @@
 import { HM3 } from "../config.js";
 import * as utility from '../utility.js';
+import { HM3Macro } from "../hm3-macro.js";
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -311,9 +312,9 @@ export class HarnMasterItem extends Item {
      * description: textual description of roll success or failure,
      * notes: rendered notes,
      */
-    async runCustomMacro(rollInput, {actor, token}={}) {
+     async runCustomMacro(rollInput, {actor, token}={}) {
         if (!rollInput) return null;
-        const itemData = this.data;
+        const actorData = this.data;
         const rollResult = {
             type: rollInput.type,
             title: rollInput.title,
@@ -327,26 +328,35 @@ export class HarnMasterItem extends Item {
             description: rollInput.description,
             notes: rollInput.notes
         }
-        if (!itemData.data.macros.command) return rollResult;
-        let command = null;
-        if (itemData.data.macros.type === 'script') {
-            if (!game.user.can("MACRO_SCRIPT")) return rollResult;
-            const strRollResult = JSON.stringify(rollResult);
-            command = `const item=actor.items.get('${this.id}');const rollResult=${strRollResult};${itemData.data.macros.command}`;
-        } else {
-            command = itemdata.data.macros.command;
-        }
 
-        const macro = await Macro.create({
-            name: `${this.name} ${this.type} macro`,
-            type: itemData.data.macros.type,
-            scope: 'global',
-            command: command
-        }, {temporary: true});
-        if (!macro) {
-            console.error(`HM3 | Failure initializing macro '${this.name} ${this.type} macro', type=${itemData.data.macros.type}, command='${command}'`);
-            return null;
+        if (!actorData.data.macros.command) return null;
+
+        if (game.modules.get("furnace")?.active || game.modules.get("advanced-macros")?.active) {
+            const macro = await Macro.create({
+                name: `${this.name} ${this.type} macro`,
+                type: actorData.data.macros.type,
+                scope: 'global',
+                command: actorData.data.macros.command
+            }, {temporary: true});
+            if (!macro) {
+                console.error(`HM3 | Failure initializing macro '${this.name} ${this.type} macro', type=${actorData.data.macros.type}, command='${command}'`);
+                return null;
+            }
+            return macro.execute(rollResult, this);
+        } else {
+            const macro = await HM3Macro.create({
+                name: `${this.name} ${this.type} macro`,
+                type: actorData.data.macros.type,
+                scope: 'global',
+                command: actorData.data.macros.command
+            }, {temporary: true});
+            if (!macro) {
+                console.error(`HM3 | Failure initializing macro '${this.name} ${this.type} macro', type=${actorData.data.macros.type}, command='${command}'`);
+                return null;
+            }
+            macro.args.push(rollResult);
+            macro.args.push(this);
+            return macro.execute({actor, token});    
         }
-        return macro.execute({actor, token});
     }
 }
