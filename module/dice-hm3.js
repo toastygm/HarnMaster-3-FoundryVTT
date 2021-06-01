@@ -31,7 +31,7 @@ export class DiceHM3 {
             type: rollData.type,
             target: rollData.target,
             label: rollData.label,
-            modifier: 0,
+            modifier: rollData.modifier || 0,
             data: rollData.actorData
         };
 
@@ -41,7 +41,7 @@ export class DiceHM3 {
             data: rollData.data,
             diceSides: 100,
             diceNum: 1,
-            modifier: 0,
+            modifier: rollData.modifier || 0,
             target: rollData.target
         }) : await DiceHM3.d100StdDialog(dialogOptions);
 
@@ -172,7 +172,7 @@ export class DiceHM3 {
             type: rollData.type,
             target: Number(rollData.target),
             label: rollData.label,
-            modifier: 0,
+            modifier: rollData.modifier || 0,
             numdice: Number(rollData.numdice),
             data: rollData.actorData,
             items: rollData.items
@@ -184,7 +184,7 @@ export class DiceHM3 {
             data: rollData.data,
             diceSides: 6,
             diceNum: Number(rollData.numdice),
-            modifier: 0,
+            modifier: rollData.modifier || 0,
             target: rollData.target
         }) : await DiceHM3.d6Dialog(dialogOptions);
 
