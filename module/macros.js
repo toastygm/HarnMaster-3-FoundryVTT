@@ -809,6 +809,7 @@ export async function shockRoll(noDialog = false, myActor = null) {
         return null;
     }
 
+    console.log(`shockRoll: actor=${actor.name}, token=${actor.isToken?actor.token:"none"}`);
     let hooksOk = false;
     let result = null;
     let stdRollData = null;
@@ -1369,11 +1370,15 @@ function callOnHooks(hook, actor, ...args) {
     const foundMacro = game.macros.getName(hook);
 
     if (foundMacro && !foundMacro.hasPlayerOwner) {
+        const token = actor?.isToken ? actor.token: null;
+        const actorSpec = {actor: actor, token: token};
+        const newArgs = [actorSpec].append(args);
+        
         if (foundMacro instanceof HM3Macro) {
-            foundMacro.args = args;
-            foundMacro.execute({actor: actor, token: actor?.isToken ? actor.token: null});
+            foundMacro.args = newArgs;
+            foundMacro.execute(actorSpec);
         } else {
-            foundMacro.execute(args);
+            foundMacro.execute(...newArgs);
         }
     }
 
