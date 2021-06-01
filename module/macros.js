@@ -612,9 +612,15 @@ export async function weaponDefendRoll(itemName, noDialog = false, myActor = nul
         return null;
     }
 
+    let outnumberedMod = 0;
+    if (actor.data?.data?.eph?.outnumbered > 1) {
+        outnumberedMod = Math.floor(actor.data.data.eph.outnumbered - 1) * -10;
+    }
+
     const stdRollData = {
         label: `${item.data.name} Defense`,
         target: item.data.data.defenseMasteryLevel,
+        modifier: outnumberedMod,
         notesData: {
             up: actor.data.data.universalPenalty,
             pp: actor.data.data.physicalPenalty,
@@ -1373,7 +1379,7 @@ function callOnHooks(hook, actor, ...args) {
         const token = actor?.isToken ? actor.token: null;
         const actorSpec = {actor: actor, token: token};
         const newArgs = [actorSpec].append(args);
-        
+
         if (foundMacro instanceof HM3Macro) {
             foundMacro.args = newArgs;
             foundMacro.execute(actorSpec);
