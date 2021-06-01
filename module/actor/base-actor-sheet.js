@@ -699,8 +699,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         if (!data.notes) updateData['data.notes'] = otherData.notes;
         if (!data.source) updateData['data.source'] = otherData.source;
         if (!data.description) updateData['data.description'] = otherData.description;
-        if (!data.macro.type || data.macro.type !== otherData.macro.type) updateData['data.macro.type'] = otherData.macro.type;
-        if (!data.macro.command) updateData['data.macro.command'] = otherData.macro.command;
+        if (!data.macros.type || data.macros.type !== otherData.macros.type) updateData['data.macros.type'] = otherData.macros.type;
+        if (!data.macros.command) updateData['data.macros.command'] = otherData.macros.command;
         updateData['img'] = other.img;
 
         switch (item.data.type) {
