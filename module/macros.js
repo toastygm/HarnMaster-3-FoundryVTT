@@ -1354,9 +1354,7 @@ function getActor(actor, speaker) {
     return resultActor;
 }
 
-function callOnHooks(hook, actor, ...args) {
-    const result = args[0];
-
+function callOnHooks(hook, actor, result, rollData, item=null) {
     const rollResult = {
         type: result.type,
         title: result.title,
@@ -1371,17 +1369,17 @@ function callOnHooks(hook, actor, ...args) {
         notes: result.notes
     };
 
-    args[0] = rollResult;
-
     const foundMacro = game.macros.getName(hook);
 
     if (foundMacro && !foundMacro.hasPlayerOwner) {
         const token = actor?.isToken ? actor.token: null;
-        const actorSpec = {actor: actor, token: token};
-        const newArgs = [actorSpec].concat(args);
 
-        utility.executeMacroScript(foundMacro, {actor: actor, args: newArgs});
+        utility.executeMacroScript(foundMacro, {actor: actor, token: token, rollResult: rollResult, rollData: rollData, item: item});
     }
 
-    return Hooks.callAll(hook, ...args);
+    if (item) {
+        return Hooks.callAll(hook, actor, rollResult, rollData, item);
+    } else {
+        return Hooks.callAll(hook, actor, rollResult, rollData);
+    }
 }

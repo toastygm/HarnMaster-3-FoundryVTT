@@ -352,7 +352,8 @@ export class HarnMasterItem extends Item {
         return utility.executeMacroScript(macro, {
             actor: actor, 
             token: token, 
-            args: [ {actor: actor, token: token}, rollResult, this ]
+            rollResult: rollResult,
+            item: this
         });
     }
 }

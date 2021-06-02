@@ -424,7 +424,7 @@ function toNormTime(seconds) {
     return `${normHours}:${normMinutes}:${normSeconds}`;
 }
 
-export function executeMacroScript(macro, {actor, token, args}={}) {
+export function executeMacroScript(macro, {actor, token, rollResult, rollData, item}={}) {
     let speaker = null;
     if (!actor) {
         if (!token) {
@@ -441,23 +441,27 @@ export function executeMacroScript(macro, {actor, token, args}={}) {
 
     token = actor.isToken && !token ? actor.token : token;
     token = token || (canvas.ready ? canvas.tokens.get(speaker.token) : null);
-    args = args || {};
 
     const context = {
         speaker: speaker,
         actor: actor,
         token: token,
         character: game.user.character,
-        args: args,
+        rollResult: rollResult,
         scene: canvas.scene
     }
 
+    if (rollData) context.rollData = rollData;
+    if (item) context.item = item;
+
     // Attempt script execution
     const asyncFunction = macro.data.command.includes("await") ? "async" : "";
+    const itemParam = item ? ", item" : "";
+    const rollDataParam = rollData ? ", rollData" : ""
     let result = null;
     try {
         result = (new Function(`"use strict";
-            return (${asyncFunction} function ({speaker, actor, token, character, args, scene}={}) {
+            return (${asyncFunction} function ({speaker, actor, token, character, rollResult ${itemParam} ${rollDataParam}}={}) {
                 ${macro.data.command}
                 });`))().call(macro, context);
     } catch (err) {

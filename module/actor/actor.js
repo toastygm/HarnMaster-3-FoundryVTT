@@ -2,6 +2,7 @@ import { HM3 } from '../config.js';
 import { DiceHM3 } from '../dice-hm3.js';
 import * as combat from '../combat.js';
 import * as macros from '../macros.js';
+import * as utility from '../utility.js';
 import { HarnMasterBaseActorSheet } from './base-actor-sheet.js';
 import { registerSystemSettings } from '../settings.js';
 import { HM3Macro } from '../hm3-macro.js';
@@ -1094,7 +1095,7 @@ export class HarnMasterActor extends Actor {
         return utility.executeMacroScript(macro, {
             actor: this, 
             token: token, 
-            args: [ {actor: this, token: token}, rollResult ]
+            rollResult: rollResult
         });
     }
 }
