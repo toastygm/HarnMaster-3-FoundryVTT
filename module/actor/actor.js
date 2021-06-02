@@ -1,11 +1,7 @@
 import { HM3 } from '../config.js';
 import { DiceHM3 } from '../dice-hm3.js';
-import * as combat from '../combat.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
-import { HarnMasterBaseActorSheet } from './base-actor-sheet.js';
-import { registerSystemSettings } from '../settings.js';
-import { HM3Macro } from '../hm3-macro.js';
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.

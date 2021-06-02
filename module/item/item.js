@@ -1,6 +1,5 @@
 import { HM3 } from "../config.js";
 import * as utility from '../utility.js';
-import { HM3Macro } from "../hm3-macro.js";
 
 /**
  * Extend the basic Item with some very simple modifications.
