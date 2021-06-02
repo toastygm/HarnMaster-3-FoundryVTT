@@ -7,7 +7,6 @@ import { HarnMasterCombat } from "./hm3-combat.js";
 import { HarnMasterItem } from "./item/item.js";
 import { HarnMasterItemSheet } from "./item/item-sheet.js";
 import { HM3ActiveEffectConfig } from "./hm3-active-effect-config.js";
-import { HM3Macro } from "./hm3-macro.js";
 import { HM3 } from "./config.js";
 import { registerSystemSettings } from "./settings.js";
 import * as migrations from "./migrations.js";
@@ -47,16 +46,12 @@ Hooks.once('init', async function () {
     registerSystemSettings();
 
     // Define custom ActiveEffect class
-//    CONFIG.ActiveEffect.documentClass = HM3ActiveEffect;
     CONFIG.ActiveEffect.sheetClass = HM3ActiveEffectConfig;
 
     // Define custom Entity classes
     CONFIG.Actor.documentClass = HarnMasterActor;
     CONFIG.Item.documentClass = HarnMasterItem;
     CONFIG.Combat.documentClass = HarnMasterCombat;
-    if (!(game.modules.get("furnace")?.active || game.modules.get("advanced-macros")?.active)) {
-        CONFIG.Macro.documentClass = HM3Macro;
-    }
     CONFIG.TinyMCE.style_formats[0].items.push({
         title: 'Highlight',
         block: 'section',
@@ -129,7 +124,7 @@ Hooks.on('updateCombat', async (combat, updateData) => {
 Hooks.once("ready", function () {
     // Determine whether a system migration is required
     const currentVersion = game.settings.get("hm3", "systemMigrationVersion");
-    const NEEDS_MIGRATION_VERSION = "1.2.9";  // Anything older than this must be migrated
+    const NEEDS_MIGRATION_VERSION = "1.2.15";  // Anything older than this must be migrated
 
     let needMigration = currentVersion === null || (isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion));
     if (needMigration && game.user.isGM) {

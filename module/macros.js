@@ -1,5 +1,4 @@
 import { DiceHM3 } from './dice-hm3.js';
-import { HM3Macro } from './hm3-macro.js';
 import * as combat from './combat.js';
 import * as utility from './utility.js';
 

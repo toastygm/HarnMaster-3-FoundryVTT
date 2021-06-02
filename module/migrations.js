@@ -115,47 +115,47 @@ export const migrateActorData = function (actor) {
   */
 
   if (actorData.abilities.strength.hasOwnProperty('effective')) {
-    updateData['data.abilities.strength.effective._deprecated'] = true
+    updateData['data.abilities.strength.-=effective'] = true
   }
 
   if (actorData.abilities.stamina.hasOwnProperty('effective')) {
-    updateData['data.abilities.stamina.effective._deprecated'] = true
+    updateData['data.abilities.stamina.-=effective'] = true
   }
 
   if (actorData.abilities.dexterity.hasOwnProperty('effective')) {
-    updateData['data.abilities.dexterity.effective._deprecated'] = true
+    updateData['data.abilities.dexterity.-=effective'] = true
   }
 
   if (actorData.abilities.agility.hasOwnProperty('effective')) {
-    updateData['data.abilities.agility.effective._deprecated'] = true
+    updateData['data.abilities.agility.-=effective'] = true
   }
 
   if (actorData.abilities.intelligence.hasOwnProperty('effective')) {
-    updateData['data.abilities.intelligence.effective._deprecated'] = true
+    updateData['data.abilities.intelligence.-=effective'] = true
   }
 
   if (actorData.abilities.aura.hasOwnProperty('effective')) {
-    updateData['data.abilities.aura.effective._deprecated'] = true
+    updateData['data.abilities.aura.-=effective'] = true
   }
 
   if (actorData.abilities.will.hasOwnProperty('effective')) {
-    updateData['data.abilities.will.effective._deprecated'] = true
+    updateData['data.abilities.will.-=effective'] = true
   }
 
   if (actorData.abilities.eyesight.hasOwnProperty('effective')) {
-    updateData['data.abilities.eyesight.effective._deprecated'] = true
+    updateData['data.abilities.eyesight.-=effective'] = true
   }
 
   if (actorData.abilities.hearing.hasOwnProperty('effective')) {
-    updateData['data.abilities.hearing.effective._deprecated'] = true
+    updateData['data.abilities.hearing.-=effective'] = true
   }
 
   if (actorData.abilities.smell.hasOwnProperty('effective')) {
-    updateData['data.abilities.smell.effective._deprecated'] = true
+    updateData['data.abilities.smell.-=effective'] = true
   }
 
   if (actorData.abilities.voice.hasOwnProperty('effective')) {
-    updateData['data.abilities.voice.effective._deprecated'] = true
+    updateData['data.abilities.voice.-=effective'] = true
   }
 
   if (actorData.abilities.hasOwnProperty('comliness')) {
@@ -165,7 +165,7 @@ export const migrateActorData = function (actor) {
   }
 
   if (actorData.abilities.morality.hasOwnProperty('effective')) {
-    updateData['data.abilities.morality.effective._deprecated'] = true
+    updateData['data.abilities.morality.-=effective'] = true
   }
 
   if (!actorData.abilities.hasOwnProperty('endurance')) {
@@ -185,47 +185,47 @@ export const migrateActorData = function (actor) {
   }
 
   if (actorData.hasOwnProperty('shockIndex')) {
-    updateData['data.shockIndex._deprecated'] = true
+    updateData['data.-=shockIndex'] = true
   }
 
   if (actorData.hasOwnProperty('dodge')) {
-    updateData['data.dodge._deprecated'] = true
+    updateData['data.-=dodge'] = true
   }
 
   if (actorData.hasOwnProperty('initiative')) {
-    updateData['data.initiative._deprecated'] = true
+    updateData['data.-=initiative'] = true
   }
 
   if (actorData.hasOwnProperty('endurance')) {
-    updateData['data.endurance._deprecated'] = true
+    updateData['data.-=endurance'] = true
   }
 
   if (actorData.move.hasOwnProperty('effective')) {
-    updateData['data.move.effective._deprecated'] = true
+    updateData['data.move.-=effective'] = true
   }
 
   if (actorData.hasOwnProperty('universalPenalty')) {
-    updateData['data.universalPenalty._deprecated'] = true
+    updateData['data.-=universalPenalty'] = true
   }
 
   if (actorData.hasOwnProperty('physicalPenalty')) {
-    updateData['data.physicalPenalty._deprecated'] = true
+    updateData['data.-=physicalPenalty'] = true
   }
 
   if (actorData.hasOwnProperty('totalInjuryLevels')) {
-    updateData['data.totalInjuryLevels._deprecated'] = true
+    updateData['data.-=totalInjuryLevels'] = true
   }
 
   if (actorData.hasOwnProperty('hasCondition')) {
-    updateData['data.hasCondition._deprecated'] = true
+    updateData['data.-=hasCondition'] = true
   }
 
   if (actorData.hasOwnProperty('encumbrance')) {
-    updateData['data.encumbrance._deprecated'] = true
+    updateData['data.-=encumbrance'] = true
   }
 
   if (actorData.hasOwnProperty('totalWeight')) {
-    updateData['data.totalWeight._deprecated'] = true
+    updateData['data.-=totalWeight'] = true
   }
 
   if (!actorData.hasOwnProperty('macros') || !actorData.macros.hasOwnProperty('type')) {
@@ -423,6 +423,7 @@ export const migrateSceneData = function (scene) {
 const _migrateRemoveDeprecated = function (ent, updateData) {
   const flat = flattenObject(ent.data);
 
+  const toPreDep = Object.entries(updateData).filter(e => e[0])
   // Identify objects to deprecate
   const toDeprecate = Object.entries(flat).filter(e => e[0].endsWith("_deprecated") && (e[1] === true)).map(e => {
     let parent = e[0].split(".");
