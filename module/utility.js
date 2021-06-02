@@ -423,3 +423,47 @@ function toNormTime(seconds) {
     const normSeconds = Number(remSeconds % 60).toString().padStart(2, '0');
     return `${normHours}:${normMinutes}:${normSeconds}`;
 }
+
+export function executeMacroScript(macro, {actor, token, args}={}) {
+    let speaker = null;
+    if (!actor) {
+        if (!token) {
+            speaker = ChatMessage.getSpeaker();
+            actor = game.actors.get(speaker.actor);
+            token = actor.isToken ? actor.token : null;
+        } else {
+            actor = token.actor;
+            speaker = ChatMessage.getSpeaker({token: token});
+        }
+    }
+
+    speaker = speaker || ChatMessage.getSpeaker({actor: actor});
+
+    token = actor.isToken && !token ? actor.token : token;
+    token = token || (canvas.ready ? canvas.tokens.get(speaker.token) : null);
+    args = args || {};
+
+    const context = {
+        speaker: speaker,
+        actor: actor,
+        token: token,
+        character: game.user.character,
+        args: args,
+        scene: canvas.scene
+    }
+
+    // Attempt script execution
+    const asyncFunction = macro.data.command.includes("await") ? "async" : "";
+    let result = null;
+    try {
+        result = (new Function(`"use strict";
+            return (${asyncFunction} function ({speaker, actor, token, character, args, scene}={}) {
+                ${macro.data.command}
+                });`))().call(macro, context);
+    } catch (err) {
+        ui.notifications.error(`There was an error in your macro syntax. See the console (F12) for details`);
+        console.error(err);
+    }
+
+    return result;
+}
