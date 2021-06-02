@@ -115,47 +115,47 @@ export const migrateActorData = function (actor) {
   */
 
   if (actorData.abilities.strength.hasOwnProperty('effective')) {
-    updateData['data.abilities.strength.-=effective'] = true
+    updateData['data.abilities.strength.-=effective'] = null
   }
 
   if (actorData.abilities.stamina.hasOwnProperty('effective')) {
-    updateData['data.abilities.stamina.-=effective'] = true
+    updateData['data.abilities.stamina.-=effective'] = null
   }
 
   if (actorData.abilities.dexterity.hasOwnProperty('effective')) {
-    updateData['data.abilities.dexterity.-=effective'] = true
+    updateData['data.abilities.dexterity.-=effective'] = null
   }
 
   if (actorData.abilities.agility.hasOwnProperty('effective')) {
-    updateData['data.abilities.agility.-=effective'] = true
+    updateData['data.abilities.agility.-=effective'] = null
   }
 
   if (actorData.abilities.intelligence.hasOwnProperty('effective')) {
-    updateData['data.abilities.intelligence.-=effective'] = true
+    updateData['data.abilities.intelligence.-=effective'] = null
   }
 
   if (actorData.abilities.aura.hasOwnProperty('effective')) {
-    updateData['data.abilities.aura.-=effective'] = true
+    updateData['data.abilities.aura.-=effective'] = null
   }
 
   if (actorData.abilities.will.hasOwnProperty('effective')) {
-    updateData['data.abilities.will.-=effective'] = true
+    updateData['data.abilities.will.-=effective'] = null
   }
 
   if (actorData.abilities.eyesight.hasOwnProperty('effective')) {
-    updateData['data.abilities.eyesight.-=effective'] = true
+    updateData['data.abilities.eyesight.-=effective'] = null
   }
 
   if (actorData.abilities.hearing.hasOwnProperty('effective')) {
-    updateData['data.abilities.hearing.-=effective'] = true
+    updateData['data.abilities.hearing.-=effective'] = null
   }
 
   if (actorData.abilities.smell.hasOwnProperty('effective')) {
-    updateData['data.abilities.smell.-=effective'] = true
+    updateData['data.abilities.smell.-=effective'] = null
   }
 
   if (actorData.abilities.voice.hasOwnProperty('effective')) {
-    updateData['data.abilities.voice.-=effective'] = true
+    updateData['data.abilities.voice.-=effective'] = null
   }
 
   if (actorData.abilities.hasOwnProperty('comliness')) {
@@ -165,7 +165,7 @@ export const migrateActorData = function (actor) {
   }
 
   if (actorData.abilities.morality.hasOwnProperty('effective')) {
-    updateData['data.abilities.morality.-=effective'] = true
+    updateData['data.abilities.morality.-=effective'] = null
   }
 
   if (!actorData.abilities.hasOwnProperty('endurance')) {
@@ -185,47 +185,47 @@ export const migrateActorData = function (actor) {
   }
 
   if (actorData.hasOwnProperty('shockIndex')) {
-    updateData['data.-=shockIndex'] = true
+    updateData['data.-=shockIndex'] = null
   }
 
   if (actorData.hasOwnProperty('dodge')) {
-    updateData['data.-=dodge'] = true
+    updateData['data.-=dodge'] = null
   }
 
   if (actorData.hasOwnProperty('initiative')) {
-    updateData['data.-=initiative'] = true
+    updateData['data.-=initiative'] = null
   }
 
   if (actorData.hasOwnProperty('endurance')) {
-    updateData['data.-=endurance'] = true
+    updateData['data.-=endurance'] = null
   }
 
   if (actorData.move.hasOwnProperty('effective')) {
-    updateData['data.move.-=effective'] = true
+    updateData['data.move.-=effective'] = null
   }
 
   if (actorData.hasOwnProperty('universalPenalty')) {
-    updateData['data.-=universalPenalty'] = true
+    updateData['data.-=universalPenalty'] = null
   }
 
   if (actorData.hasOwnProperty('physicalPenalty')) {
-    updateData['data.-=physicalPenalty'] = true
+    updateData['data.-=physicalPenalty'] = null
   }
 
   if (actorData.hasOwnProperty('totalInjuryLevels')) {
-    updateData['data.-=totalInjuryLevels'] = true
+    updateData['data.-=totalInjuryLevels'] = null
   }
 
   if (actorData.hasOwnProperty('hasCondition')) {
-    updateData['data.-=hasCondition'] = true
+    updateData['data.-=hasCondition'] = null
   }
 
   if (actorData.hasOwnProperty('encumbrance')) {
-    updateData['data.-=encumbrance'] = true
+    updateData['data.-=encumbrance'] = null
   }
 
   if (actorData.hasOwnProperty('totalWeight')) {
-    updateData['data.-=totalWeight'] = true
+    updateData['data.-=totalWeight'] = null
   }
 
   if (!actorData.hasOwnProperty('macros') || !actorData.macros.hasOwnProperty('type')) {
