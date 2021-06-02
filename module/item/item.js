@@ -312,9 +312,14 @@ export class HarnMasterItem extends Item {
      * description: textual description of roll success or failure,
      * notes: rendered notes,
      */
-     async runCustomMacro(rollInput, {actor, token}={}) {
+     async runCustomMacro(rollInput) {
         if (!rollInput) return null;
-        const actorData = this.data;
+
+        if (!this.parent) return null;
+
+        const actor = this.parent;
+
+        const itemData = this.data;
         const rollResult = {
             type: rollInput.type,
             title: rollInput.title,
@@ -329,34 +334,25 @@ export class HarnMasterItem extends Item {
             notes: rollInput.notes
         }
 
-        if (!actorData.data.macros.command) return null;
+        if (!itemData.data.macros.command) return null;
 
-        if (game.modules.get("furnace")?.active || game.modules.get("advanced-macros")?.active) {
-            const macro = await Macro.create({
-                name: `${this.name} ${this.type} macro`,
-                type: actorData.data.macros.type,
-                scope: 'global',
-                command: actorData.data.macros.command
-            }, {temporary: true});
-            if (!macro) {
-                console.error(`HM3 | Failure initializing macro '${this.name} ${this.type} macro', type=${actorData.data.macros.type}, command='${command}'`);
-                return null;
-            }
-            return macro.execute(rollResult, this);
-        } else {
-            const macro = await HM3Macro.create({
-                name: `${this.name} ${this.type} macro`,
-                type: actorData.data.macros.type,
-                scope: 'global',
-                command: actorData.data.macros.command
-            }, {temporary: true});
-            if (!macro) {
-                console.error(`HM3 | Failure initializing macro '${this.name} ${this.type} macro', type=${actorData.data.macros.type}, command='${command}'`);
-                return null;
-            }
-            macro.args.push(rollResult);
-            macro.args.push(this);
-            return macro.execute({actor, token});    
+        const macro = await Macro.create({
+            name: `${this.name} ${this.type} macro`,
+            type: itemData.data.macros.type,
+            scope: 'global',
+            command: itemData.data.macros.command
+        }, {temporary: true});
+        if (!macro) {
+            console.error(`HM3 | Failure initializing macro '${this.name} ${this.type} macro', type=${itemData.data.macros.type}, command='${itemData.data.macros.command}'`);
+            return null;
         }
+
+        const token = actor.isToken ? actor.token: null;
+        
+        return utility.executeMacroScript(macro, {
+            actor: actor, 
+            token: token, 
+            args: [ {actor: actor, token: token}, rollResult, this ]
+        });
     }
 }
