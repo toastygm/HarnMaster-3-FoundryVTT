@@ -1378,7 +1378,7 @@ function callOnHooks(hook, actor, ...args) {
     if (foundMacro && !foundMacro.hasPlayerOwner) {
         const token = actor?.isToken ? actor.token: null;
         const actorSpec = {actor: actor, token: token};
-        const newArgs = [actorSpec].append(args);
+        const newArgs = [actorSpec].concat(args);
 
         if (foundMacro instanceof HM3Macro) {
             foundMacro.args = newArgs;
