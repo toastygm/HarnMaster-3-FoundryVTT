@@ -28,6 +28,15 @@ export const registerSystemSettings = function () {
         type: Boolean
     });
 
+    game.settings.register("hm3", "createDefaultItems", {
+        name: "Add Default Skills and Locations",
+        hint: "Add default skills and armor locations when creating a character or creature",
+        scope: "client",
+        config: true,
+        default: true,
+        type: Boolean
+    });
+
     game.settings.register("hm3", "weaponDamage", {
         name: "Weapon Damage",
         hint: "Enable optional combat rule that allows weapons to be damaged or destroyed on successful block (Combat 12)",

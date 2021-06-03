@@ -17,6 +17,8 @@ export class HarnMasterActor extends Actor {
         // or values
         if (options.skipDefaults) return;
 
+        const skipItems = options.skipItems || !game.settings.get('hm3', 'createDefaultItems');
+
         // Setup default Actor type specific data.
 
         const updateData = {};
@@ -26,40 +28,44 @@ export class HarnMasterActor extends Actor {
             updateData['data.bioImage'] = 'systems/hm3/images/svg/knight-silhouette.svg';
             updateData.items = [];
 
-            // Add standard skills
-            await this._addItemsFromPack(
-                ['Climbing', 'Jumping', 'Stealth', 'Throwing'],
-                'hm3.std-skills-physical', updateData.items);
-            if (game.settings.get('hm3', 'goldMode')) {
-                // If we are in HMG mode, add Condition skill by default.
-                await this._addItemsFromPack(['Condition'], 'hm3.std-skills-physical', updateData.items);
-            }
-            await this._addItemsFromPack(
-                ['Awareness', 'Intrigue', 'Oratory', 'Rhetoric', 'Singing'],
-                'hm3.std-skills-communication', updateData.items);
-            await this._addItemsFromPack(
-                ['Initiative', 'Unarmed', 'Dodge'],
-                'hm3.std-skills-combat', updateData.items);
+            if (!skipItems) {
+                // Add standard skills
+                await this._addItemsFromPack(
+                    ['Climbing', 'Jumping', 'Stealth', 'Throwing'],
+                    'hm3.std-skills-physical', updateData.items);
+                if (game.settings.get('hm3', 'goldMode')) {
+                    // If we are in HMG mode, add Condition skill by default.
+                    await this._addItemsFromPack(['Condition'], 'hm3.std-skills-physical', updateData.items);
+                }
+                await this._addItemsFromPack(
+                    ['Awareness', 'Intrigue', 'Oratory', 'Rhetoric', 'Singing'],
+                    'hm3.std-skills-communication', updateData.items);
+                await this._addItemsFromPack(
+                    ['Initiative', 'Unarmed', 'Dodge'],
+                    'hm3.std-skills-combat', updateData.items);
 
-            // Add standard armor locations
-            HarnMasterActor._createDefaultHumanoidLocations(updateData.items);
+                // Add standard armor locations
+                HarnMasterActor._createDefaultHumanoidLocations(updateData.items);
+            }
         } else if (createData.type === 'creature') {
             updateData['data.description'] = '';
             updateData['data.biography'] = '<h1>Data</h1>\n<table style=\"width: 95%;\" border=\"1\">\n<tbody>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Habitat</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Height</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Weight</strong></td>\n<td style=\"width: 432px;\"></td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Diet</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Lifespan</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n<tr>\n<td style=\"width: 143.6px;\"><strong>Group</strong></td>\n<td style=\"width: 432px;\">&nbsp;</td>\n</tr>\n</tbody>\n</table>\n<h1>Special Abilities</h1>\n<p>Describe any special abilities.</p>\n<h1>Attacks</h1>\n<p>Describe methods of attack.</p>\n<h1>Behavior</h1>\n<p>Describe behavioral aspects.</p>';
             updateData['data.bioImage'] = 'systems/hm3/images/svg/monster-silhouette.svg';
             updateData.items = [];
 
-            // Add standard skills
-            await this._addItemsFromPack(
-                ['Awareness'],
-                'hm3.std-skills-communication', updateData.items);
-            if (game.settings.get('hm3', 'goldMode')) {
-                // If we are in HMG mode, add Condition skill by default.
-                await this._addItemsFromPack(['Condition'], 'hm3.std-skills-physical', updateData.items);
+            if (!skipItems) {
+                // Add standard skills
+                await this._addItemsFromPack(
+                    ['Awareness'],
+                    'hm3.std-skills-communication', updateData.items);
+                if (game.settings.get('hm3', 'goldMode')) {
+                    // If we are in HMG mode, add Condition skill by default.
+                    await this._addItemsFromPack(['Condition'], 'hm3.std-skills-physical', updateData.items);
+                }
+                await this._addItemsFromPack(
+                    ['Initiative', 'Unarmed', 'Dodge'],
+                    'hm3.std-skills-combat', updateData.items);
             }
-            await this._addItemsFromPack(
-                ['Initiative', 'Unarmed', 'Dodge'],
-                'hm3.std-skills-combat', updateData.items);
         } else if (createData.type === 'container') {
             updateData['data.capacity.max'] = 1;
             updateData['data.description'] = '';
