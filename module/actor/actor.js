@@ -9,16 +9,57 @@ import * as utility from '../utility.js';
  */
 export class HarnMasterActor extends Actor {
 
+    static async createDialog(data = {}, options = {}) {
+
+        // Collect data
+        const documentName = this.metadata.name;
+        const types = game.system.entityTypes[documentName];
+        const folders = game.folders.filter(f => (f.data.type === documentName) && f.displayed);
+        const label = game.i18n.localize(this.metadata.label);
+        const title = game.i18n.format("ENTITY.Create", { entity: label });
+
+        // Render the entity creation form
+        const html = await renderTemplate(`systems/hm3/templates/dialog/actor-create.html`, {
+            name: data.name || game.i18n.format("ENTITY.New", { entity: label }),
+            folder: data.folder,
+            folders: folders,
+            hasFolders: folders.length > 1,
+            type: data.type || types[0],
+            types: types.reduce((obj, t) => {
+                const label = CONFIG[documentName]?.typeLabels?.[t] ?? t;
+                obj[t] = game.i18n.has(label) ? game.i18n.localize(label) : t;
+                return obj;
+            }, {}),
+            hasTypes: types.length > 1
+        });
+
+        // Render the confirmation dialog window
+        return Dialog.prompt({
+            title: title,
+            content: html,
+            label: title,
+            callback: html => {
+                const createOptions = { renderSheet: true };
+                const form = html[0].querySelector("form");
+                const fd = new FormDataExtended(form);
+                data = foundry.utils.mergeObject(data, fd.toObject());
+                if (!data.initDefaults) createOptions.skipDefaults = true;
+                delete data["initDefaults"];
+                if (!data.folder) delete data["folder"];
+                if (types.length === 1) data.type = types[0];
+                return this.create(data, createOptions);
+            },
+            rejectClose: false,
+            options: options
+        });
+    }
+
     /** @override */
     async _preCreate(createData, options, user) {
         await super._preCreate(createData, options, user);
 
         // If the created actor has items (only applicable to duplicated actors) bypass the new actor creation logic
-        if (createData.items) return;
-
-        // if "skipDefaults" option is true, don't do anything more: no default items
-        // or values
-        if (options.skipDefaults || !game.settings.get('hm3', 'createDefaultItems')) return;
+        if (options.skipDefaults || createData.items) return;
 
         // Setup default Actor type specific data.
 
@@ -104,7 +145,7 @@ export class HarnMasterActor extends Actor {
     static _setupLocation(locName, templateName) {
         const armorLocationData = foundry.utils.deepClone(game.system.model.Item.armorlocation);
         mergeObject(armorLocationData, HM3.injuryLocations[templateName])
-        return {name: locName, type: 'armorlocation', data: armorLocationData};
+        return { name: locName, type: 'armorlocation', data: armorLocationData };
     }
 
     /**
@@ -164,7 +205,7 @@ export class HarnMasterActor extends Actor {
         const eph = data.eph;
 
         data.totalWeight = 0;
-        
+
         this.calcTotalGearWeight();
 
         // Prepare data items unique to containers
@@ -209,7 +250,7 @@ export class HarnMasterActor extends Actor {
             data.endurance = data.abilities.endurance.base;
         } else {
             data.endurance = Math.round((data.abilities.strength.base + data.abilities.stamina.base +
-                data.abilities.will.base) / 3);        
+                data.abilities.will.base) / 3);
         }
 
         // Calculate values based on items
@@ -251,7 +292,7 @@ export class HarnMasterActor extends Actor {
         eph.speed = data.abilities.speed.base;
         eph.frame = data.abilities.frame.base;
         eph.totalInjuryLevels = data.totalInjuryLevels;
-    
+
         eph.meleeAMLMod = 0;
         eph.meleeDMLMod = 0;
         eph.missileAMLMod = 0;
@@ -265,7 +306,7 @@ export class HarnMasterActor extends Actor {
         eph.psionicTalentsMod = 0;
         eph.itemAMLMod = 0;
         eph.itemDMLMod = 0;
-   }
+    }
 
     /** 
      * Perform data preparation after Items preparation and Active Effects have
@@ -281,13 +322,13 @@ export class HarnMasterActor extends Actor {
         const data = actorData.data;
 
         const eph = data.eph;
-        
+
         this._calcGearWeightTotals();
 
         if (actorData.type === 'container') {
             return;
         }
-        
+
         // All common character and creature derived data below here
 
         // Since active effects may have modified these values, we must ensure
@@ -305,15 +346,15 @@ export class HarnMasterActor extends Actor {
             data.universalPenalty = 0;
             data.physicalPenalty = eph.totalInjuryLevels + eph.fatigue;
             this.applySpecificActiveEffect('data.physicalPenalty');
-            data.physicalPenalty = Math.floor(Math.max(data.physicalPenalty || 0, 0));               
+            data.physicalPenalty = Math.floor(Math.max(data.physicalPenalty || 0, 0));
         } else {
             data.universalPenalty = eph.totalInjuryLevels + eph.fatigue;
             this.applySpecificActiveEffect('data.universalPenalty');
             data.universalPenalty = Math.floor(Math.max(data.universalPenalty || 0, 0));
-    
+
             data.physicalPenalty = data.universalPenalty + data.encumbrance;
             this.applySpecificActiveEffect('data.physicalPenalty');
-            data.physicalPenalty = Math.floor(Math.max(data.physicalPenalty || 0, 0));    
+            data.physicalPenalty = Math.floor(Math.max(data.physicalPenalty || 0, 0));
         }
 
         if (data.goldMode) {
@@ -340,11 +381,11 @@ export class HarnMasterActor extends Actor {
 
         // Calculate Important Roll Targets
         if (data.goldMode) {
-            eph.stumbleTarget = Math.max(Math.max(data.abilities.agility.effective, data.dodge)-data.physicalPenalty, 5);
-            eph.fumbleTarget = Math.max((data.abilities.dexterity.effective * 5)-data.physicalPenalty, 5)
+            eph.stumbleTarget = Math.max(Math.max(data.abilities.agility.effective, data.dodge) - data.physicalPenalty, 5);
+            eph.fumbleTarget = Math.max((data.abilities.dexterity.effective * 5) - data.physicalPenalty, 5)
         } else {
             eph.stumbleTarget = Math.max(data.abilities.agility.effective, 0);
-            eph.fumbleTarget = Math.max(data.abilities.dexterity.effective, 0);    
+            eph.fumbleTarget = Math.max(data.abilities.dexterity.effective, 0);
         }
 
         // Process all the final post activities for Items
@@ -364,7 +405,7 @@ export class HarnMasterActor extends Actor {
         // Ensure all EMLs are >= 5                
         this.items.forEach(it => {
             const itemData = it.data;
-            if (['skill','spell','invocation','psionic'].includes(itemData.type)) {
+            if (['skill', 'spell', 'invocation', 'psionic'].includes(itemData.type)) {
                 itemData.data.effectiveMasteryLevel = Math.max(itemData.data.effectiveMasteryLevel || 5, 5);
             }
 
@@ -479,9 +520,9 @@ export class HarnMasterActor extends Actor {
         this.items.forEach(it => {
             const itemData = it.data;
             const data = itemData.data;
-            
+
             tempWeight = 0;
-            
+
             if (itemData.type.endsWith('gear')) {
                 // If the gear is inside of a container, then the "carried"
                 // flag is inherited from the container.
@@ -523,7 +564,7 @@ export class HarnMasterActor extends Actor {
                 if (cid && cid != 'on-person') {
                     const container = this.items.get(cid);
                     if (container) {
-                        container.data.data.capacity.value = 
+                        container.data.data.capacity.value =
                             Math.round((container.data.data.capacity.value + tempWeight + Number.EPSILON) * 100) / 100;
                     } else {
                         // If container is set and is not 'on-person', but if we can't find the container,
@@ -968,23 +1009,23 @@ export class HarnMasterActor extends Actor {
 
         // Organize non-disabled effects by their application priority
         const changes = this.effects.reduce((chgs, e) => {
-          if ( e.data.disabled) return chgs;
-          const chgList = e.data.changes.filter(chg => chg.key === property);
-          return chgs.concat(chgList.map(c => {
-            c = foundry.utils.duplicate(c);
-            c.effect = e;
-            c.priority = c.priority ?? (c.mode * 10);
-            return c;
-          }));
+            if (e.data.disabled) return chgs;
+            const chgList = e.data.changes.filter(chg => chg.key === property);
+            return chgs.concat(chgList.map(c => {
+                c = foundry.utils.duplicate(c);
+                c.effect = e;
+                c.priority = c.priority ?? (c.mode * 10);
+                return c;
+            }));
         }, []);
         changes.sort((a, b) => a.priority - b.priority);
-    
+
         // Apply all changes
-        for ( let change of changes ) {
-          const result = change.effect.apply(this, change);
-          if ( result !== null ) overrides[change.key] = result;
+        for (let change of changes) {
+            const result = change.effect.apply(this, change);
+            if (result !== null) overrides[change.key] = result;
         }
-    
+
         // Expand the set of final overrides
         mergeObject(this.overrides, foundry.utils.expandObject(overrides));
     }
@@ -994,7 +1035,7 @@ export class HarnMasterActor extends Actor {
         const changes = this.effects.reduce((chgs, e) => {
             if (e.data.disabled) return chgs;
             if (!['skill', 'psionic'].includes(skill.data.type)) return chgs;
-            const skillChanges = e.data.changes.filter(chg => 
+            const skillChanges = e.data.changes.filter(chg =>
                 (chg.key === 'data.eph.commSkillsMod' && skill.data.data.type === 'Communication') ||
                 (chg.key === 'data.eph.physicalSkillsMod' && skill.data.data.type === 'Physical') ||
                 (chg.key === 'data.eph.combatSkillsMod' && skill.data.data.type === 'Combat') ||
@@ -1022,9 +1063,9 @@ export class HarnMasterActor extends Actor {
         // Organize non-disabled effects by their application priority
         const changes = this.effects.reduce((chgs, e) => {
             if (e.data.disabled) return chgs;
-            if (!['weapongear','missilegear'].includes(weapon.data.type)) return chgs;
+            if (!['weapongear', 'missilegear'].includes(weapon.data.type)) return chgs;
             const weaponChanges = e.data.changes.filter(
-                chg => ['data.eph.meleeAMLMod','data.eph.meleeDMLMod', 'data.eph.missileAMLMod'].includes(chg.key));
+                chg => ['data.eph.meleeAMLMod', 'data.eph.meleeDMLMod', 'data.eph.missileAMLMod'].includes(chg.key));
             return chgs.concat(weaponChanges.map(c => {
                 c = foundry.utils.duplicate(c);
                 c.key = c.key === 'data.eph.meleeDMLMod' ? 'data.defenseMasteryLevel' : 'data.attackMasteryLevel';
@@ -1058,7 +1099,7 @@ export class HarnMasterActor extends Actor {
      * description: textual description of roll success or failure,
      * notes: rendered notes,
      */
-     async runCustomMacro(rollInput) {
+    async runCustomMacro(rollInput) {
         if (!rollInput) return null;
 
         const actorData = this.data;
@@ -1083,17 +1124,17 @@ export class HarnMasterActor extends Actor {
             type: actorData.data.macros.type,
             scope: 'global',
             command: actorData.data.macros.command
-        }, {temporary: true});
+        }, { temporary: true });
         if (!macro) {
             console.error(`HM3 | Failure initializing macro '${this.name} ${this.type} macro', type=${actorData.data.macros.type}, command='${actorData.data.macros.command}'`);
             return null;
         }
 
-        const token = this.isToken ? this.token: null;
+        const token = this.isToken ? this.token : null;
 
         return utility.executeMacroScript(macro, {
-            actor: this, 
-            token: token, 
+            actor: this,
+            token: token,
             rollResult: rollResult
         });
     }
