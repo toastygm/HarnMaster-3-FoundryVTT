@@ -34,10 +34,12 @@ The HarnMaster system comes with a number of compendium packs providing details 
 
 | Name | Project URL | Manifest URL |
 |---|---|---|
-| Harn Friends, Foes, and Followers V1 | [hm3-fffv1](https://github.com/toastygm/hm3-fffv1) | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm3-fffv1/master/module.json) |
-| Harn Comprehensive Price Lists | [hm3-cpl](https://github.com/toastygm/hm3-cpl) | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm3-cpl/master/module.json) |
-| Harn Ensemble of Characters | [hm-ensemble](https://github.com/toastygm/hm-ensemble) | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm-ensemble/master/module.json)
+| Harn Friends, Foes, and Followers V1 | https://github.com/toastygm/hm3-fffv1 | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm3-fffv1/master/module.json) |
+| Harn Comprehensive Price Lists | https://github.com/toastygm/hm3-cpl | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm3-cpl/master/module.json) |
+| Harn Ensemble of Characters | https://github.com/toastygm/hm-ensemble | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm-ensemble/master/module.json)
 | Harn Bestiary | Coming Soon | Coming Soon |
+
+To install these modules: go to the "Configuration and Setup" screen, then select the "Add-on Modules" tab, and click "Install Module"; enter the "Manifest URL" (above) into the text box at the bottom of the dialog and click "Install".
 
 # Character Sheet Walkthrough
 
