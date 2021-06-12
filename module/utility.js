@@ -130,6 +130,22 @@ export function calcSkillBase(item) {
                             sumAbilities += actorData.abilities.morality.base;
                             break;
 
+                        case 'end':
+                            sumAbilities += actorData.abilities.endurance.base;
+                            break;
+
+                        case 'spd':
+                            sumAbilities += actorData.abilities.speed.base;
+                            break;
+
+                        case 'tch':
+                            sumAbilities += actorData.abilities.touch.base;
+                            break;
+
+                        case 'frm':
+                            sumAbilities += actorData.abilities.frame.base;
+                            break;
+
                         default:
                             sb.isFormulaValid = false;
                             return;
@@ -399,9 +415,9 @@ export function aeChanges(effect) {
         const modes = CONST.ACTIVE_EFFECT_MODES;
         const key = ch.key;
         const val = ch.value;
-        switch ( ch.mode ) {
+        switch (ch.mode) {
             case modes.ADD:
-                return `${HM3.activeEffectKey[key]} ${val<0?'-':'+'} ${Math.abs(val)}`;
+                return `${HM3.activeEffectKey[key]} ${val < 0 ? '-' : '+'} ${Math.abs(val)}`;
             case modes.MULTIPLY:
                 return `${HM3.activeEffectKey[key]} x ${val}`;
             case modes.OVERRIDE:
@@ -412,7 +428,7 @@ export function aeChanges(effect) {
                 return `${HM3.activeEffectKey[key]} <= ${val}`;
             default:
                 return `${HM3.activeEffectKey[key]} custom`;
-        }     
+        }
     }).join(', ');
 }
 
@@ -424,7 +440,7 @@ function toNormTime(seconds) {
     return `${normHours}:${normMinutes}:${normSeconds}`;
 }
 
-export function executeMacroScript(macro, {actor, token, rollResult, rollData, item}={}) {
+export function executeMacroScript(macro, { actor, token, rollResult, rollData, item } = {}) {
     let speaker = null;
     if (!actor) {
         if (!token) {
@@ -433,11 +449,11 @@ export function executeMacroScript(macro, {actor, token, rollResult, rollData, i
             token = actor.isToken ? actor.token : null;
         } else {
             actor = token.actor;
-            speaker = ChatMessage.getSpeaker({token: token});
+            speaker = ChatMessage.getSpeaker({ token: token });
         }
     }
 
-    speaker = speaker || ChatMessage.getSpeaker({actor: actor});
+    speaker = speaker || ChatMessage.getSpeaker({ actor: actor });
 
     token = actor.isToken && !token ? actor.token : token;
     token = token || (canvas.ready ? canvas.tokens.get(speaker.token) : null);
