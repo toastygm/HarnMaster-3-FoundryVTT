@@ -57,6 +57,7 @@ export class HarnMasterActor extends Actor {
     /** @override */
     async _preCreate(createData, options, user) {
         await super._preCreate(createData, options, user);
+        const goldMode = game.settings.get('hm3', 'goldMode')
 
         // If the created actor has items (only applicable to duplicated actors) bypass the new actor creation logic
         if (options.skipDefaults || createData.items) return;
@@ -74,7 +75,7 @@ export class HarnMasterActor extends Actor {
             await this._addItemsFromPack(
                 ['Climbing', 'Jumping', 'Stealth', 'Throwing'],
                 'hm3.std-skills-physical', updateData.items);
-            if (game.settings.get('hm3', 'goldMode')) {
+            if (goldMode) {
                 // If we are in HMG mode, add Condition skill by default.
                 await this._addItemsFromPack(['Condition'], 'hm3.std-skills-physical', updateData.items);
             }
@@ -97,7 +98,7 @@ export class HarnMasterActor extends Actor {
             await this._addItemsFromPack(
                 ['Awareness'],
                 'hm3.std-skills-communication', updateData.items);
-            if (game.settings.get('hm3', 'goldMode')) {
+            if (goldMode) {
                 // If we are in HMG mode, add Condition skill by default.
                 await this._addItemsFromPack(['Condition'], 'hm3.std-skills-physical', updateData.items);
             }
@@ -590,7 +591,7 @@ export class HarnMasterActor extends Actor {
     _setupEffectiveAbilities(data) {
         const eph = this.data.data.eph;
 
-        if (this.data.goldMode) {
+        if (data.goldMode) {
             data.abilities.strength.effective = eph.strength;
             data.abilities.stamina.effective = eph.stamina;
             data.abilities.agility.effective = eph.agility;
