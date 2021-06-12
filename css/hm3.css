@@ -278,6 +278,13 @@ section.highlight {
 .hm3 label.checkbox.right > input[type="checkbox"] {
   margin: 0 0 0 2px; }
 
+.hm3 label.init-checkbox {
+  flex: auto;
+  padding: 0;
+  margin: 0 0 0 2px;
+  height: 22px;
+  line-height: 22px; }
+
 .hm3 .sheet .window-content {
   overflow-y: hidden;
   padding: 5px;

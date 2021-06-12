@@ -15,7 +15,7 @@ H&acirc;rn, H&acirc;rnMaster, and H&acirc;rnWorld are all &copy; 1987-2020 N. Ro
 
 The following features are included in this system.
 
-* Characters and Creatures sheets
+* Characters, Creatures, and Containers sheets
 * Tracking of all abilities and functional characteristics
 * Separate tracking of Description (publicly apparent information) and Biography (private information and backstory)
 * Tracking of all skills, convocations, religion(s), spells, ritual invocations, psionics, etc.
@@ -24,6 +24,22 @@ The following features are included in this system.
 * Automatic calculation of EML based on UP and PP
 * Automatic dice rolls (skills, spells, ritual invocations, healing, shock, fumble, stumble, attack/defend, weapon damage, and injury)
 * Compatible with "Dice So Nice" module.
+* Automated combat system to make running combats much easier
+* Effects allowing use of "buffs" and "debuffs" (such as Outnumbered, melee attack modifiers, UP/PP modifiers, etc) for either indefinite or a specified duration, that can be enabled/disabled as desired
+* Flexible macro support for extending with your own custom capabilities
+
+# Associated Modules
+
+The HarnMaster system comes with a number of compendium packs providing details on standard skills, weapons, armor, spells, invocations, and psionics.  The following modules (highly recommended) extend HarnMaster by providing additional compendium packs for new characters, creatures, and items:
+
+| Name | Project URL | Manifest URL |
+|---|---|---|
+| Harn Friends, Foes, and Followers V1 | https://github.com/toastygm/hm3-fffv1 | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm3-fffv1/master/module.json) |
+| Harn Comprehensive Price Lists | https://github.com/toastygm/hm3-cpl | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm3-cpl/master/module.json) |
+| Harn Ensemble of Characters | https://github.com/toastygm/hm-ensemble | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm-ensemble/master/module.json)
+| Harn Bestiary | Coming Soon | Coming Soon |
+
+To install these modules: go to the "Configuration and Setup" screen, then select the "Add-on Modules" tab, and click "Install Module"; enter the "Manifest URL" (above) into the text box at the bottom of the dialog and click "Install".
 
 # Character Sheet Walkthrough
 
@@ -165,7 +181,7 @@ There are separate probability weights for High, Mid, and Low aiming points.  Fo
 
 # Credits
 
-The following images were taken from [The Noun Project](https://thenounproject.com/) under the Creative Commons (CC BY 2.0) license:
+The following images were taken from [The Noun Project](https://thenounproject.com/) and [Game-Icons](https://game-icons.net/) under the Creative Commons (CC BY 3.0) license:
 
 * Agriculture by Made
 * Anvil by Nico Ilk

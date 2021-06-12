@@ -334,7 +334,11 @@ HM3.weaponSkillIcons = [
     ['sling', 'systems/hm3/images/icons/svg/sling.svg'],
     ['bolt', 'systems/hm3/images/icons/svg/arrow.svg'],
     ['stone', 'systems/hm3/images/icons/svg/stones.svg'],
-    ['bullet', 'systems/hm3/images/icons/svg/stones.svg']
+    ['bullet', 'systems/hm3/images/icons/svg/stones.svg'],
+    ['fangs', 'systems/hm3/images/icons/svg/fangs.svg'],
+    ['claw', 'systems/hm3/images/icons/svg/claw.svg'],
+    ['hoof', 'systems/hm3/images/icons/svg/hoof.svg'],
+    ['horns', 'systems/hm3/images/icons/svg/horns.svg']
 ];
 
 HM3.craftSkillIcons = [
@@ -388,6 +392,48 @@ HM3.craftSkillIcons = [
 
 HM3.armorGearIcons = [
     ['armorgear', 'systems/hm3/images/icons/svg/armor.svg'],
+    ['abdominal armor', 'systems/hm3/images/icons/svg/abdominal-armor.svg'],
+    ['armor vest', 'systems/hm3/images/icons/svg/armor-vest.svg'],
+    ['barbute', 'systems/hm3/images/icons/svg/barbute.svg'],
+    ['black knight helm', 'systems/hm3/images/icons/svg/black-knight-helm.svg'],
+    ['bracer', 'systems/hm3/images/icons/svg/bracer.svg'],
+    ['breastplate', 'systems/hm3/images/icons/svg/breastplate.svg'],
+    ['cap', 'systems/hm3/images/icons/svg/cap.svg'],
+    ['chainmail', 'systems/hm3/images/icons/svg/chain-mail.svg'],
+    ['chest armor', 'systems/hm3/images/icons/svg/chest-armor.svg'],
+    ['closed barbute', 'systems/hm3/images/icons/svg/closed-barbute.svg'],
+    ['crested helm', 'systems/hm3/images/icons/svg/crested-helm.svg'],
+    ['dorsal scales', 'systems/hm3/images/icons/svg/dorsal-scales.svg'],
+    ['elbow pad', 'systems/hm3/images/icons/svg/elbow-pad.svg'],
+    ['fish scales', 'systems/hm3/images/icons/svg/fish-scales.svg'],
+    ['gloves', 'systems/hm3/images/icons/svg/gloves.svg'],
+    ['greaves', 'systems/hm3/images/icons/svg/greaves.svg'],
+    ['guantlet', 'systems/hm3/images/icons/svg/gauntlet.svg'],
+    ['heavy helm', 'systems/hm3/images/icons/svg/heavy-helm.svg'],
+    ['helm', 'systems/hm3/images/icons/svg/helm.svg'],
+    ['hood', 'systems/hm3/images/icons/svg/hood.svg'],
+    ['knee pad', 'systems/hm3/images/icons/svg/knee-pad.svg'],
+    ['lamellar', 'systems/hm3/images/icons/svg/lamellar.svg'],
+    ['leather armor', 'systems/hm3/images/icons/svg/leather-armor.svg'],
+    ['leather boot', 'systems/hm3/images/icons/svg/leather-boot.svg'],
+    ['leather vest', 'systems/hm3/images/icons/svg/leather-vest.svg'],
+    ['leg armor', 'systems/hm3/images/icons/svg/leg-armor.svg'],
+    ['leggings', 'systems/hm3/images/icons/svg/leggings.svg'],
+    ['light helm', 'systems/hm3/images/icons/svg/light-helm.svg'],
+    ['mail shirt', 'systems/hm3/images/icons/svg/mail-shirt.svg'],
+    ['mailed fist', 'systems/hm3/images/icons/svg/mailed-fist.svg'],
+    ['metal skirt', 'systems/hm3/images/icons/svg/metal-skirt.svg'],
+    ['pauldrons', 'systems/hm3/images/icons/svg/pauldrons.svg'],
+    ['robe', 'systems/hm3/images/icons/svg/robe.svg'],
+    ['scale mail', 'systems/hm3/images/icons/svg/scale-mail.svg'],
+    ['scales', 'systems/hm3/images/icons/svg/scales.svg'],
+    ['shirt', 'systems/hm3/images/icons/svg/shirt.svg'],
+    ['shoe', 'systems/hm3/images/icons/svg/shoe.svg'],
+    ['shoulder scales', 'systems/hm3/images/icons/svg/shoulder-scales.svg'],
+    ['steeltoe boots', 'systems/hm3/images/icons/svg/steeltoe-boots.svg'],
+    ['trousers', 'systems/hm3/images/icons/svg/trousers.svg'],
+    ['tunic', 'systems/hm3/images/icons/svg/tunic.svg'],
+    ['visored helm', 'systems/hm3/images/icons/svg/visored-helm.svg']
 ];
 
 HM3.miscGearIcons = [
