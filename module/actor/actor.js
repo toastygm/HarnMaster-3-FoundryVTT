@@ -756,7 +756,7 @@ export class HarnMasterActor extends Actor {
         Object.keys(ilMap).forEach(ilName => {
             const name = ilMap[ilName].impactType;
             if (name != 'base' && name != 'custom') {
-                armorMap[ilName] = { name: name, blunt: 0, edged: 0, piercing: 0, fire: 0, layers: '' };
+                armorMap[ilName] = { name: name, blunt: 0, edged: 0, piercing: 0, fire: 0, squeeze: 0, tear: 0, layers: '' };
             }
         });
 
