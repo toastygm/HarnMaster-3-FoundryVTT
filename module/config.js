@@ -334,7 +334,11 @@ HM3.weaponSkillIcons = [
     ['sling', 'systems/hm3/images/icons/svg/sling.svg'],
     ['bolt', 'systems/hm3/images/icons/svg/arrow.svg'],
     ['stone', 'systems/hm3/images/icons/svg/stones.svg'],
-    ['bullet', 'systems/hm3/images/icons/svg/stones.svg']
+    ['bullet', 'systems/hm3/images/icons/svg/stones.svg'],
+    ['fangs', 'systems/hm3/images/icons/svg/fangs.svg'],
+    ['claw', 'systems/hm3/images/icons/svg/claw.svg'],
+    ['hoof', 'systems/hm3/images/icons/svg/hoof.svg'],
+    ['horns', 'systems/hm3/images/icons/svg/horns.svg']
 ];
 
 HM3.craftSkillIcons = [
