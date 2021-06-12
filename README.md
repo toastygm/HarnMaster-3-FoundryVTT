@@ -181,7 +181,7 @@ There are separate probability weights for High, Mid, and Low aiming points.  Fo
 
 # Credits
 
-The following images were taken from [The Noun Project](https://thenounproject.com/) under the Creative Commons (CC BY 2.0) license:
+The following images were taken from [The Noun Project](https://thenounproject.com/) and [Game-Icons](https://game-icons.net/) under the Creative Commons (CC BY 3.0) license:
 
 * Agriculture by Made
 * Anvil by Nico Ilk
