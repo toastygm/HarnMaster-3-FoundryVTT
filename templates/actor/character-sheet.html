@@ -1084,7 +1084,7 @@
                             data-journal-entry="Sheet - Combat Tab"><i
                                 class="far fa-question-circle"></i></a></h3>
                     <div class="item-detail injury-healrate">HR</div>
-                    <div class="item-detail injury-severity">IL</div>
+                    <div class="item-detail injury-severity">{{#if goldMode}}IP{{else}}IL{{/if}}</div>
                     <div class="item-detail injury-notes">Notes</div>
                     <div class="item-controls">
                         <a class="item-control item-create active" title="Create Injury" data-type="injury"><i

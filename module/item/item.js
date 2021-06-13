@@ -101,14 +101,18 @@ export class HarnMasterItem extends Item {
             // Just make sure if injuryLevel is negative, we set it to zero
             data.injuryLevel = Math.max(data.injuryLevel || 0, 0);
 
-            if (data.injuryLevel === 0) {
-                data.severity = '';
-            } else if (data.injuryLevel == 1) {
-                data.severity = 'M1';
-            } else if (data.injuryLevel <= 3) {
-                data.severity = `S${data.injuryLevel}`;
+            if (data.goldMode) {
+                data.severity = `${data.injuryLevel}`;
             } else {
-                data.severity = `G${data.injuryLevel}`;
+                if (data.injuryLevel === 0) {
+                    data.severity = '';
+                } else if (data.injuryLevel == 1) {
+                    data.severity = 'M1';
+                } else if (data.injuryLevel <= 3) {
+                    data.severity = `S${data.injuryLevel}`;
+                } else {
+                    data.severity = `G${data.injuryLevel}`;
+                }    
             }
         }
     }
