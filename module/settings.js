@@ -28,6 +28,15 @@ export const registerSystemSettings = function () {
         type: Boolean
     });
 
+    game.settings.register("hm3", "customSunSign", {
+        name: "Custom SunSigns",
+        hint: "Enable custom SunSigns (no dropdown)",
+        scope: "world",
+        config: true,
+        default: false,
+        type: Boolean
+    });
+
     game.settings.register("hm3", "weaponDamage", {
         name: "Weapon Damage",
         hint: "Enable optional combat rule that allows weapons to be damaged or destroyed on successful block (Combat 12)",

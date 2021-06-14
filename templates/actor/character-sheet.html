@@ -395,13 +395,17 @@
                     <div class="flexrow profile-item">
                         <div class="attribute sunsign flexrow">
                             <label class="label">Sunsign</label>
+                            {{#if customSunSign}}
+                            <input class="value" type="text" name="data.sunsign" value="{{data.sunsign}}" data-dtype="String" />
+                            {{else}}
                             <select class="value" name="data.sunsign" data-dtype="String">
                                 {{#select data.sunsign}}
                                     {{#each config.sunsigns}}
                                         <option value="{{this}}">{{this}}</option>
                                     {{/each}}
                                 {{/select}}
-                            </select>    
+                            </select>
+                            {{/if}}
                         </div>
                         <div class="attribute species flexrow">
                             <label class="label">Race</label>
