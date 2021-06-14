@@ -27,6 +27,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         }
 
         data.goldMode = game.settings.get('hm3', 'goldMode');
+        data.customSunSign = game.settings.get('hm3', 'customSunSign');
         data.actor = foundry.utils.deepClone(this.actor.data);
         data.items = this.actor.items.map(i => {
             i.data.labels = i.labels;

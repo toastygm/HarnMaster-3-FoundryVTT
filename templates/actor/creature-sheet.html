@@ -622,6 +622,10 @@
                     <label class="combat-stat-label"><a class="dodge-roll" title="Dodge Roll">Dodge</a></label>
                     <div class="combat-stat-value">{{data.dodge}}</div>
                 </div>
+                {{#if goldMode}}
+                <div></div>
+                <div></div>
+                {{else}}
                 <div class="combat-stat flexrow">
                     <div class="item-dice"></div>
                     <label class="combat-stat-label">Encumb.</label>
@@ -632,6 +636,7 @@
                     <label class="combat-stat-label">Endur.</label>
                     <div class="combat-stat-value">{{data.endurance}}</div>                    
                 </div>
+                {{/if}}
             </div>
             <div class="combat-stat flexrow"></div>
             <div class="items-list combat-stats grid grid-fixed-row grid-5col">
@@ -854,9 +859,9 @@
                     <h3 class="item-name injury-name">Injuries<a class="more-info"
                         data-journal-entry="Sheet - Combat Tab"><i
                             class="far fa-question-circle"></i></a></h3>
-                    <div class="item-detail injury-healrate">HR</div>
-                    <div class="item-detail injury-severity">IL</div>
-                    <div class="item-detail injury-notes">Notes</div>
+                            <div class="item-detail injury-healrate">HR</div>
+                            <div class="item-detail injury-severity">{{#if goldMode}}IP{{else}}IL{{/if}}</div>
+                            <div class="item-detail injury-notes">Notes</div>
                     <div class="item-controls">
                         <a class="item-control item-create active" title="Create Injury" data-type="injury"><i
                                 class="fas fa-plus"></i> Add</a>
@@ -869,7 +874,12 @@
                                 <div class="item-name injury-name flexrow">
                                     <h4>{{item.name}}</h4>
                                 </div>
-                                <div class="item-detail injury-healrate active"><a class="healing-roll" title="{{item.name}} Healing Roll">{{data.healRate}}</a></div>
+                                {{#if ../goldMode}}
+                                <div class="item-detail injury-healrate">{{data.healRate}}</div>
+                                {{else}}
+                                <div class="item-detail injury-healrate active"><a class="healing-roll"
+                                    title="{{item.name}} Healing Roll">{{data.healRate}}</a></div>
+                                {{/if}}
                                 <div class="item-detail injury-severity">{{data.severity}}</div>
                                 <div class="item-detail injury-notes">{{data.notes}}</div>
                                 <div class="item-controls">
@@ -1015,9 +1025,12 @@
                         <div class="item-detail gear-qty">Qty</div>
                         <div class="item-detail gear-weight">Weight</div>
                         <div class="item-detail gear-notes">Notes</div>
-                        <div
-                            class="item detail gear-capacity {{#if (gt citem.data.data.capacity.value citem.data.data.capacity.max)}}overcapacity{{/if}}">
+                        {{#if (and ../goldMode (eq citem.data.name "On Person"))}}
+                        <div class="item detail gear-capacity">Capacity: {{citem.data.data.capacity.value}}</div>
+                        {{else}}
+                        <div class="item detail gear-capacity {{#if (gt citem.data.data.capacity.value citem.data.data.capacity.max)}}overcapacity{{/if}}">
                             Capacity: {{citem.data.data.capacity.value}}/{{citem.data.data.capacity.max}}</div>
+                        {{/if}}
                         <div class="item-controls">
                             <a class="item-control item-create active" title="Add Gear" data-type="gear"
                                 data-container-id="{{cid}}" data-container-name="{{citem.data.name}}"><i
