@@ -1061,10 +1061,7 @@ export async function setSkillDevelopmentFlag(skillName, myActor = null) {
 /*--------------------------------------------------------------*/
 
 export async function weaponAttack(itemName = null, noDialog = false, myToken = null, forceAllow=false) {
-    if (game.settings.get("hm3", "goldMode")) {
-        ui.notifications.warn('Automated Combat not available in HM Gold Mode');
-        return null;
-    }
+    const goldMode = game.settings.get("hm3", "goldMode");
 
     const combatant = getTokenInCombat(myToken, forceAllow);
     if (!combatant) return null;
@@ -1077,14 +1074,24 @@ export async function weaponAttack(itemName = null, noDialog = false, myToken = 
         weapon = combat.getItem(itemName, 'weapongear', combatant.actor);
     }
 
-    return await combat.meleeAttack(combatant.token, targetToken, weapon);
+    const hooksOk = Hooks.call("hm3.preMeleeAttack", combatant, targetToken, weapon);
+    if (hooksOk) {
+        let result = null;
+        if (goldMode) {
+            ui.notifications.warn('Automated Combat not availalbe in HarnMaster Gold Mode');
+            return null;
+        } else {
+            result = await combat.meleeAttack(combatant.token, targetToken, weapon);
+        }
+        actor.runCustomMacro(result);
+        Hooks.call("hm3.onMeleeAttack", result, combatant, targetToken, weapon);
+        return result;
+    }
+    return null;
 }
 
 export async function missileAttack(itemName = null, noDialog = false, myToken = null, forceAllow=false) {
-    if (game.settings.get("hm3", "goldMode")) {
-        ui.notifications.warn('Automated Combat not available in HM Gold Mode');
-        return null;
-    }
+    const goldMode = game.settings.get("hm3", "goldMode");
 
     const combatant = getTokenInCombat(myToken, forceAllow);
     if (!combatant) return null;
@@ -1097,7 +1104,20 @@ export async function missileAttack(itemName = null, noDialog = false, myToken =
         missile = combat.getItem(itemName, 'missilegear', combatant.actor);
     }
 
-    return await combat.missileAttack(combatant.token, targetToken, missile);
+    const hooksOk = Hooks.call("hm3.preMissileAttack", combatant, targetToken, missile);
+    if (hooksOk) {
+        let result = null;
+        if (goldMode) {
+            ui.notifications.error('Automated Combat not availalbe in HarnMaster Gold Mode, ignoring request');
+            return null;
+        } else {
+            result = await combat.missileAttack(combatant.token, targetToken, missile);
+        }
+        actor.runCustomMacro(result);
+        Hooks.call("hm3.onMissileAttack", result, combatant, targetToken, missile);
+        return result;
+    }
+    return null;
 }
 
 /**
@@ -1113,10 +1133,7 @@ export async function missileAttack(itemName = null, noDialog = false, myToken =
  * @param {*} atkImpactMod Additional modifier to impact
  */
 export async function meleeCounterstrikeResume(atkTokenId, defTokenId, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod) {
-    if (game.settings.get("hm3", "goldMode")) {
-        ui.notifications.warn('Automated Combat not available in HM Gold Mode');
-        return null;
-    }
+    const goldMode = game.settings.get("hm3", "goldMode");
 
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
@@ -1130,7 +1147,20 @@ export async function meleeCounterstrikeResume(atkTokenId, defTokenId, atkWeapon
         return null;
     }
 
-    return await combat.meleeCounterstrikeResume(atkToken, defToken, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod);
+    const hooksOk = Hooks.call("hm3.preMeleeCounterstrikeResume", atkToken, defToken, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod);
+    if (hooksOk) {
+        let result = null;
+        if (goldMode) {
+            ui.notifications.warn('Automated Combat not availalbe in HarnMaster Gold Mode, ignoring request');
+            return null;
+        } else {
+            result = await combat.meleeCounterstrikeResume(atkToken, defToken, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod);
+        }
+        actor.runCustomMacro(result);
+        Hooks.call("hm3.onMeleeCounterstrikeResume", result, atkToken, defToken, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod);
+        return result;
+    }
+    return null;
 }
 
 /**
@@ -1146,10 +1176,7 @@ export async function meleeCounterstrikeResume(atkTokenId, defTokenId, atkWeapon
  * @param {*} impactMod Additional modifier to impact
  */
 export async function dodgeResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod) {
-    if (game.settings.get("hm3", "goldMode")) {
-        ui.notifications.warn('Automated Combat not available in HM Gold Mode');
-        return null;
-    }
+    const goldMode = game.settings.get("hm3", "goldMode");
 
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
@@ -1163,7 +1190,20 @@ export async function dodgeResume(atkTokenId, defTokenId, type, weaponName, effA
         return null;
     }
 
-    return await combat.dodgeResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
+    const hooksOk = Hooks.call("hm3.preDodgeResume", atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
+    if (hooksOk) {
+        let result = null;
+        if (goldMode) {
+            ui.notifications.warn('Automated Combat not availalbe in HarnMaster Gold Mode, ignoring request');
+            return null;
+        } else {
+            result = await combat.dodgeResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
+        }
+        actor.runCustomMacro(result);
+        Hooks.call("hm3.onDodgeResume", result, atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
+        return result;
+    }
+    return null;
 }
 
 /**
@@ -1179,10 +1219,7 @@ export async function dodgeResume(atkTokenId, defTokenId, type, weaponName, effA
  * @param {*} impactMod Additional modifier to impact
  */
 export async function blockResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod) {
-    if (game.settings.get("hm3", "goldMode")) {
-        ui.notifications.warn('Automated Combat not available in HM Gold Mode');
-        return null;
-    }
+    const goldMode = game.settings.get("hm3", "goldMode");
 
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
@@ -1196,7 +1233,20 @@ export async function blockResume(atkTokenId, defTokenId, type, weaponName, effA
         return null;
     }
 
-    return await combat.blockResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
+    const hooksOk = Hooks.call("hm3.preBlockResume", atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
+    if (hooksOk) {
+        let result = null;
+        if (goldMode) {
+            ui.notifications.warn('Automated Combat not availalbe in HarnMaster Gold Mode, ignoring request');
+            return null;
+        } else {
+            result = await combat.blockResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod)
+        }
+        actor.runCustomMacro(result);
+        Hooks.call("hm3.onBlockResume", result, atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
+        return result;
+    }
+    return null;
 }
 
 /**
@@ -1212,10 +1262,7 @@ export async function blockResume(atkTokenId, defTokenId, type, weaponName, effA
  * @param {*} impactMod Additional modifier to impact
  */
 export async function ignoreResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod) {
-    if (game.settings.get("hm3", "goldMode")) {
-        ui.notifications.warn('Automated Combat not available in HM Gold Mode');
-        return null;
-    }
+    const goldMode = game.settings.get("hm3", "goldMode");
 
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
@@ -1229,7 +1276,20 @@ export async function ignoreResume(atkTokenId, defTokenId, type, weaponName, eff
         return null;
     }
 
-    return await combat.ignoreResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
+    const hooksOk = Hooks.call("hm3.preIgnoreResume", atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
+    if (hooksOk) {
+        let result = null;
+        if (goldMode) {
+            ui.notifications.warn('Automated Combat not availalbe in HarnMaster Gold Mode, ignoring request');
+            return null;
+        } else {
+            result = await combat.ignoreResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
+        }
+        actor.runCustomMacro(result);
+        Hooks.call("hm3.onIgnoreResume", result, atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
+        return result;
+    }
+    return null;
 }
 
 /*--------------------------------------------------------------*/
@@ -1377,8 +1437,8 @@ function callOnHooks(hook, actor, result, rollData, item=null) {
     }
 
     if (item) {
-        return Hooks.callAll(hook, actor, rollResult, rollData, item);
+        return Hooks.call(hook, actor, rollResult, rollData, item);
     } else {
-        return Hooks.callAll(hook, actor, rollResult, rollData);
+        return Hooks.call(hook, actor, rollResult, rollData);
     }
 }
