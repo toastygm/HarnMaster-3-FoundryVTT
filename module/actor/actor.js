@@ -307,6 +307,8 @@ export class HarnMasterActor extends Actor {
         eph.psionicTalentsMod = 0;
         eph.itemAMLMod = 0;
         eph.itemDMLMod = 0;
+
+        Hooks.call("hm3.onActorPrepareBaseData", this);
     }
 
     /** 
@@ -445,6 +447,8 @@ export class HarnMasterActor extends Actor {
         this._applyWeaponActiveEffects();
 
         this._generateArmorLocationMap(data);
+
+        Hooks.call("hm3.onActorPrepareDerivedData", this);
 
         return;
     }
