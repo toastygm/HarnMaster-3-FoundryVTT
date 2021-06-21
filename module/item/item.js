@@ -57,6 +57,8 @@ export class HarnMasterItem extends Item {
         if (img && img != itemData.img) {
             itemData.img = img;
         }
+
+        Hooks.call("hm3.onItemPrepareData", this);
     }
 
     prepareDerivedData() {

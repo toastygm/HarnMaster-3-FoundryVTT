@@ -13,6 +13,7 @@ import * as migrations from "./migrations.js";
 import * as macros from "./macros.js";
 import * as combat from "./combat.js";
 import * as effect from "./effect.js";
+import { DiceHM3 } from "./dice-hm3.js";
 
 Hooks.once('init', async function () {
 
@@ -21,6 +22,7 @@ Hooks.once('init', async function () {
     game.hm3 = {
         HarnMasterActor,
         HarnMasterItem,
+        DiceHM3,
         config: HM3,
         macros: macros,
         migrations: migrations
