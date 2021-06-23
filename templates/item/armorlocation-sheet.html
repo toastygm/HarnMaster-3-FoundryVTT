@@ -18,104 +18,84 @@
             <fieldset>
                 <legend>Basic Armor Settings</legend>
                 <div class="grid grid-fixed-row grid-2col">
-                    <div class="basic-setting">
+                    <div class="basic-setting" id="armorlocation-layers">
                         <label class="label">Layers</label>
                         <input class="value" type="text" name="data.layers" value="{{data.layers}}"
                             data-dtype="String" />
                     </div>
-                    <div class="basic-setting">
+                    <div class="basic-setting" id="armorlocation-quality">
                         <label class="label">Armor Quality (AQ)</label>
                         <input class="value" type="number" name="data.armorQuality" value="{{data.armorQuality}}"
                             data-dtype="Number" />
                     </div>
                 </div>
-                <div class="resource">
+                <div class="resource" id="armorlocation-note">
                     <label class="resource-label">Note</label>
                     <input type="text" name="data.notes" value="{{data.notes}}" data-dtype="String" />
                 </div>
                 <div class="grid grid-row grid-4col">
-                    <div class="protection">
+                    <div class="protection" id="armorlocation-blunt">
                         <label class="label">Blunt</label>
                         <input class="value" type="number" name="data.blunt" value="{{data.blunt}}"
                             data-dtype="Number" />
                     </div>
-                    <div class="protection">
+                    <div class="protection" id="armorlocation-edged">
                         <label class="label">Edged</label>
                         <input class="value" type="number" name="data.edged" value="{{data.edged}}"
                             data-dtype="Number" />
                     </div>
-                    <div class="protection">
+                    <div class="protection" id="armorlocation-piercing">
                         <label class="label">Piercing</label>
                         <input class="value" type="number" name="data.piercing" value="{{data.piercing}}"
                             data-dtype="Number" />
                     </div>
-                    <div class="protection">
+                    <div class="protection" id="armorlocation-fire">
                         <label class="label">Fire</label>
                         <input class="value" type="number" name="data.fire" value="{{data.fire}}" data-dtype="Number" />
                     </div>
-                    {{#if goldMode}}
-                    <div class="protection">
-                        <label class="label">Squeeze</label>
-                        <input class="value" type="number" name="data.squeeze" value="{{data.squeeze}}"
-                            data-dtype="Number" />
-                    </div>
-                    <div class="protection">
-                        <label class="label">Tear</label>
-                        <input class="value" type="number" name="data.tear" value="{{data.tear}}" data-dtype="Number" />
-                    </div>
-                    <div></div>
-                    <div></div>
-                    {{/if}}
                 </div>
             </fieldset>
-            <fieldset>
+            <fieldset id="armorlocation-probweight">
                 <legend>Hit Probability Weights</legend>
-                <div class="weight grid grid-fixed-row {{#if goldMode}}grid-4col{{else}}grid-3col{{/if}}">
-                    <div class="prob-weight">
+                <div class="weight grid grid-fixed-row grid-3col">
+                    <div class="prob-weight" id="armorlocation-probweight-high">
                         <label class="label">High Aim</label>
                         <input class="value" type="number" name="data.probWeight.high" value="{{data.probWeight.high}}"
                             data-dtype="Number" />
                     </div>
-                    <div class="prob-weight">
+                    <div class="prob-weight" id="armorlocation-probweight-mid">
                         <label class="label">Medium Aim</label>
                         <input class="value" type="number" name="data.probWeight.mid" value="{{data.probWeight.mid}}"
                             data-dtype="Number" />
                     </div>
-                    <div class="prob-weight">
+                    <div class="prob-weight" id="armorlocation-probweight-low">
                         <label class="label">Low Aim</label>
                         <input class="value" type="number" name="data.probWeight.low" value="{{data.probWeight.low}}"
                             data-dtype="Number" />
                     </div>
-                    {{#if goldMode}}
-                    <div class="prob-weight">
-                        <label class="label">Arms Aim</label>
-                        <input class="value" type="number" name="data.probWeight.arms" value="{{data.probWeight.arms}}"
-                            data-dtype="Number" />
-                    </div>
-                    {{/if}}
                 </div>
             </fieldset>
             <fieldset>
                 <legend>Hit Location Settings</legend>
                 <div class="flexrow">
                     <div class="flexcol">
-                        <div class="adv-setting">
+                        <div class="adv-setting" id="armorlocation-isfumble">
                             <input class="value" type="checkbox" name="data.isFumble" value="{{data.isFumble}}"
                                 data-dtype="Boolean" {{checked data.isFumble}} />
                             <label for="data.isFumble" class="label">Fumble Risk</label>
                         </div>
-                        <div class="adv-setting">
+                        <div class="adv-setting" id="armorlocation-isstumble">
                             <input class="value" type="checkbox" name="data.isStumble" value="{{data.isStumble}}"
                                 data-dtype="Boolean" {{checked data.isStumble}} />
                             <label for="data.isStumble" class="label">Stumble Risk</label>
                         </div>
-                        <div class="adv-setting">
+                        <div class="adv-setting" id="armorlocation-isamputate">
                             <input class="value" type="checkbox" name="data.isAmputate" value="{{data.isAmputate}}"
                                 data-dtype="Boolean" {{checked data.isAmputate}} />
                             <label for="data.isAmputate" class="label">Amputate Risk</label>
                         </div>
                     </div>
-                    <div class="adv-setting">
+                    <div class="adv-setting" id="armorlocation-impacttype">
                         <label class="label" for="data.impactType">Location Type</label>
                         <select class="value" name="data.impactType">
                             {{#select data.impactType}}
@@ -126,7 +106,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="item flexrow">
+                <div class="item flexrow" id="armorlocation-effimp-header">
                     <span class="armorlocation-effimp-label">1&plus;</span>
                     <span class="armorlocation-effimp-label">5&plus;</span>
                     <span class="armorlocation-effimp-label">9&plus;</span>
@@ -134,35 +114,40 @@
                     <span class="armorlocation-effimp-label">17&plus;</span>
                 </div>
                 <div class="item flexrow">
-                    <select class="armorlocation-effimp-item" name="data.effectiveImpact.ei1" data-dtype="String">
+                    <select class="armorlocation-effimp-item" id="armorlocation-effimp-ei1"
+                        name="data.effectiveImpact.ei1" data-dtype="String">
                         {{#select data.effectiveImpact.ei1}}
                             {{#each config.injuryLevels}}
                                 <option value="{{this}}">{{this}}</option>
                             {{/each}}
                         {{/select}}
                     </select>
-                    <select class="armorlocation-effimp-item" name="data.effectiveImpact.ei5" data-dtype="String">
+                    <select class="armorlocation-effimp-item" id="armorlocation-effimp-ei5"
+                        name="data.effectiveImpact.ei5" data-dtype="String">
                         {{#select data.effectiveImpact.ei5}}
                             {{#each config.injuryLevels}}
                                 <option value="{{this}}">{{this}}</option>
                             {{/each}}
                         {{/select}}
                     </select>
-                    <select class="armorlocation-effimp-item" name="data.effectiveImpact.ei9" data-dtype="String">
+                    <select class="armorlocation-effimp-item" id="armorlocation-effimp-ei9"
+                        name="data.effectiveImpact.ei9" data-dtype="String">
                         {{#select data.effectiveImpact.ei9}}
                             {{#each config.injuryLevels}}
                                 <option value="{{this}}">{{this}}</option>
                             {{/each}}
                         {{/select}}
                     </select>
-                    <select class="armorlocation-effimp-item" name="data.effectiveImpact.ei13" data-dtype="String">
+                    <select class="armorlocation-effimp-item" id="armorlocation-effimp-ei13"
+                        name="data.effectiveImpact.ei13" data-dtype="String">
                         {{#select data.effectiveImpact.ei13}}
                             {{#each config.injuryLevels}}
                                 <option value="{{this}}">{{this}}</option>
                             {{/each}}
                         {{/select}}
                     </select>
-                    <select class="armorlocation-effimp-item" name="data.effectiveImpact.ei17" data-dtype="String">
+                    <select class="armorlocation-effimp-item" id="armorlocation-effimp-ei17"
+                        name="data.effectiveImpact.ei17" data-dtype="String">
                         {{#select data.effectiveImpact.ei17}}
                             {{#each config.injuryLevels}}
                                 <option value="{{this}}">{{this}}</option>
@@ -174,7 +159,7 @@
         </div>
 
         {{!-- Description Tab --}}
-        <div class="tab description" data-group="primary" data-tab="description">
+        <div class="tab description" id="armorlocation-desc" data-group="primary" data-tab="description">
             {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
         </div>
 

@@ -1,6 +1,7 @@
 import { DiceHM3 } from './dice-hm3.js';
 import * as combat from './combat.js';
 import * as utility from './utility.js';
+import { HM3 } from './config.js';
 
 /**
  * Create a script macro from an Item drop.
@@ -429,7 +430,6 @@ export async function testAbilityD100Roll(ability, noDialog = false, myActor = n
 }
 
 export async function weaponDamageRoll(itemName, aspect=null, myActor = null) {
-    const goldMode = game.settings.get("hm3", "goldMode");
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
@@ -437,14 +437,8 @@ export async function weaponDamageRoll(itemName, aspect=null, myActor = null) {
         return null;
     }
 
-    const allowedAspects = ['Edged', 'Piercing', 'Blunt'];
-    if (goldMode) {
-        allowedAspects.push('Squeeze');
-        allowedAspects.push('Tear');
-    }
-
     if (aspect) {
-        if (!allowedAspects.includes(aspect)) {
+        if (!HM3.allowedAspects.includes(aspect)) {
             ui.notifications.warn(`Invalid aspect requested on damage roll: ${aspect}`);
             return null;
         }
@@ -486,7 +480,6 @@ export async function weaponDamageRoll(itemName, aspect=null, myActor = null) {
 }
 
 export async function missileDamageRoll(itemName, range=null, myActor = null) {
-    const goldMode = game.settings.get("hm3", "goldMode");
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
@@ -501,11 +494,7 @@ export async function missileDamageRoll(itemName, range=null, myActor = null) {
     }
 
     if (range) {
-        let allowedRanges = ['Short', 'Medium', 'Long', 'Extreme'];
-        if (goldMode) {
-            allowedRanges = allowedRanges.concat(['Extreme64', 'Extreme128', 'Extreme256']);
-        }
-        if (!allowedRanges.includes(range)) {
+        if (!HM3.allowedRanges.includes(range)) {
             ui.notifications.warn(`Invalid range requested on damage roll: ${range}`);
             return null;
         }
@@ -540,7 +529,7 @@ export async function missileDamageRoll(itemName, range=null, myActor = null) {
         rollData.actor = actor.id;
     }
     
-    const hooksOk = Hooks.call("hm3.preMissileDamageRoll", rollData, actor);
+    const hooksOk = Hooks.call("hm3.preMissileDamageRoll", rollData, actor, item);
     if (hooksOk) {
         const result = await DiceHM3.missileDamageRoll(rollData);
         callOnHooks("hm3.onMissileDamageRoll", actor, result, rollData);
@@ -807,7 +796,6 @@ export async function dodgeRoll(noDialog = false, myActor = null) {
 }
 
 export async function shockRoll(noDialog = false, myActor = null) {
-    const goldMode = game.settings.get("hm3", "goldMode");
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
@@ -816,47 +804,26 @@ export async function shockRoll(noDialog = false, myActor = null) {
     }
 
     let hooksOk = false;
-    let result = null;
     let stdRollData = null;
-    if (goldMode) {
-        stdRollData = {
-            type: 'shock',
-            label: 'Shock Roll',
-            target: actor.data.data.condition,
-            notesData: {},
-            speaker: speaker,
-            fastforward: noDialog,
-            notes: ''
-        };
-        if (actor.isToken) {
-            stdRollData.token = actor.token.id;
-        } else {
-            stdRollData.actor = actor.id;
-        }
-
-        hooksOk = Hooks.call("hm3.preShockRoll", stdRollData, actor);
-        if (hooksOk) result = await DiceHM3.d100StdRoll(stdRollData);
+    stdRollData = {
+        type: 'shock',
+        label: `Shock Roll`,
+        target: actor.data.data.endurance,
+        numdice: actor.data.data.universalPenalty,
+        notesData: {},
+        speaker: speaker,
+        fastforward: noDialog,
+        notes: ''
+    };
+    if (actor.isToken) {
+        stdRollData.token = actor.token.id;
     } else {
-        stdRollData = {
-            type: 'shock',
-            label: `Shock Roll`,
-            target: actor.data.data.endurance,
-            numdice: actor.data.data.universalPenalty,
-            notesData: {},
-            speaker: speaker,
-            fastforward: noDialog,
-            notes: ''
-        };
-        if (actor.isToken) {
-            stdRollData.token = actor.token.id;
-        } else {
-            stdRollData.actor = actor.id;
-        }
-        
-        hooksOk = Hooks.call("hm3.preShockRoll", stdRollData, actor);
-        if (hooksOk) result = await DiceHM3.d6Roll(stdRollData);
+        stdRollData.actor = actor.id;
     }
+    
+    hooksOk = Hooks.call("hm3.preShockRoll", stdRollData, actor);
     if (hooksOk) {
+        const result = await DiceHM3.d6Roll(stdRollData);
         actor.runCustomMacro(result);
         callOnHooks("hm3.onShockRoll", actor, result, stdRollData);
         return result;
@@ -865,7 +832,6 @@ export async function shockRoll(noDialog = false, myActor = null) {
 }
 
 export async function stumbleRoll(noDialog = false, myActor = null) {
-    const goldMode = game.settings.get("hm3", "goldMode");
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
@@ -891,12 +857,7 @@ export async function stumbleRoll(noDialog = false, myActor = null) {
 
     const hooksOk = Hooks.call("hm3.preStumbleRoll", stdRollData, actor);
     if (hooksOk) {
-        let result = null;
-        if (goldMode) {
-            result = await DiceHM3.d100StdRoll(stdRollData);
-        } else {
-            result = await DiceHM3.d6Roll(stdRollData);
-        }
+        const result = await DiceHM3.d6Roll(stdRollData);
         actor.runCustomMacro(result);
         callOnHooks("hm3.onStumbleRoll", actor, result, stdRollData);
         return result;
@@ -905,7 +866,6 @@ export async function stumbleRoll(noDialog = false, myActor = null) {
 }
 
 export async function fumbleRoll(noDialog = false, myActor = null) {
-    const goldMode = game.settings.get("hm3", "goldMode");
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
@@ -931,12 +891,7 @@ export async function fumbleRoll(noDialog = false, myActor = null) {
     
     const hooksOk = Hooks.call("hm3.preFumbleRoll", stdRollData, actor);
     if (hooksOk) {
-        let result = null;
-        if (goldMode) {
-            result = await DiceHM3.d100StdRoll(stdRollData);
-        } else {
-            result = await DiceHM3.d6Roll(stdRollData);
-        }
+        const result = await DiceHM3.d6Roll(stdRollData);
         actor.runCustomMacro(result);
         callOnHooks("hm3.onFumbleRoll", actor, result, stdRollData);
         return result;
@@ -1061,8 +1016,6 @@ export async function setSkillDevelopmentFlag(skillName, myActor = null) {
 /*--------------------------------------------------------------*/
 
 export async function weaponAttack(itemName = null, noDialog = false, myToken = null, forceAllow=false) {
-    const goldMode = game.settings.get("hm3", "goldMode");
-
     const combatant = getTokenInCombat(myToken, forceAllow);
     if (!combatant) return null;
 
@@ -1076,13 +1029,7 @@ export async function weaponAttack(itemName = null, noDialog = false, myToken = 
 
     const hooksOk = Hooks.call("hm3.preMeleeAttack", combatant, targetToken, weapon);
     if (hooksOk) {
-        let result = null;
-        if (goldMode) {
-            ui.notifications.warn('Automated Combat not availalbe in HarnMaster Gold Mode');
-            return null;
-        } else {
-            result = await combat.meleeAttack(combatant.token, targetToken, weapon);
-        }
+        const result = await combat.meleeAttack(combatant.token, targetToken, weapon);
         actor.runCustomMacro(result);
         Hooks.call("hm3.onMeleeAttack", result, combatant, targetToken, weapon);
         return result;
@@ -1091,8 +1038,6 @@ export async function weaponAttack(itemName = null, noDialog = false, myToken = 
 }
 
 export async function missileAttack(itemName = null, noDialog = false, myToken = null, forceAllow=false) {
-    const goldMode = game.settings.get("hm3", "goldMode");
-
     const combatant = getTokenInCombat(myToken, forceAllow);
     if (!combatant) return null;
     
@@ -1106,13 +1051,7 @@ export async function missileAttack(itemName = null, noDialog = false, myToken =
 
     const hooksOk = Hooks.call("hm3.preMissileAttack", combatant, targetToken, missile);
     if (hooksOk) {
-        let result = null;
-        if (goldMode) {
-            ui.notifications.error('Automated Combat not availalbe in HarnMaster Gold Mode, ignoring request');
-            return null;
-        } else {
-            result = await combat.missileAttack(combatant.token, targetToken, missile);
-        }
+        const result = await combat.missileAttack(combatant.token, targetToken, missile);
         actor.runCustomMacro(result);
         Hooks.call("hm3.onMissileAttack", result, combatant, targetToken, missile);
         return result;
@@ -1133,8 +1072,6 @@ export async function missileAttack(itemName = null, noDialog = false, myToken =
  * @param {*} atkImpactMod Additional modifier to impact
  */
 export async function meleeCounterstrikeResume(atkTokenId, defTokenId, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod) {
-    const goldMode = game.settings.get("hm3", "goldMode");
-
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
         ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
@@ -1149,13 +1086,7 @@ export async function meleeCounterstrikeResume(atkTokenId, defTokenId, atkWeapon
 
     const hooksOk = Hooks.call("hm3.preMeleeCounterstrikeResume", atkToken, defToken, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod);
     if (hooksOk) {
-        let result = null;
-        if (goldMode) {
-            ui.notifications.warn('Automated Combat not availalbe in HarnMaster Gold Mode, ignoring request');
-            return null;
-        } else {
-            result = await combat.meleeCounterstrikeResume(atkToken, defToken, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod);
-        }
+        const result = await combat.meleeCounterstrikeResume(atkToken, defToken, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod);
         actor.runCustomMacro(result);
         Hooks.call("hm3.onMeleeCounterstrikeResume", result, atkToken, defToken, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod);
         return result;
@@ -1176,8 +1107,6 @@ export async function meleeCounterstrikeResume(atkTokenId, defTokenId, atkWeapon
  * @param {*} impactMod Additional modifier to impact
  */
 export async function dodgeResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod) {
-    const goldMode = game.settings.get("hm3", "goldMode");
-
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
         ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
@@ -1192,13 +1121,7 @@ export async function dodgeResume(atkTokenId, defTokenId, type, weaponName, effA
 
     const hooksOk = Hooks.call("hm3.preDodgeResume", atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
     if (hooksOk) {
-        let result = null;
-        if (goldMode) {
-            ui.notifications.warn('Automated Combat not availalbe in HarnMaster Gold Mode, ignoring request');
-            return null;
-        } else {
-            result = await combat.dodgeResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
-        }
+        const result = await combat.dodgeResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
         actor.runCustomMacro(result);
         Hooks.call("hm3.onDodgeResume", result, atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
         return result;
@@ -1219,8 +1142,6 @@ export async function dodgeResume(atkTokenId, defTokenId, type, weaponName, effA
  * @param {*} impactMod Additional modifier to impact
  */
 export async function blockResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod) {
-    const goldMode = game.settings.get("hm3", "goldMode");
-
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
         ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
@@ -1235,13 +1156,7 @@ export async function blockResume(atkTokenId, defTokenId, type, weaponName, effA
 
     const hooksOk = Hooks.call("hm3.preBlockResume", atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
     if (hooksOk) {
-        let result = null;
-        if (goldMode) {
-            ui.notifications.warn('Automated Combat not availalbe in HarnMaster Gold Mode, ignoring request');
-            return null;
-        } else {
-            result = await combat.blockResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod)
-        }
+        const result = await combat.blockResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod)
         actor.runCustomMacro(result);
         Hooks.call("hm3.onBlockResume", result, atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
         return result;
@@ -1262,8 +1177,6 @@ export async function blockResume(atkTokenId, defTokenId, type, weaponName, effA
  * @param {*} impactMod Additional modifier to impact
  */
 export async function ignoreResume(atkTokenId, defTokenId, type, weaponName, effAML, aim, aspect, impactMod) {
-    const goldMode = game.settings.get("hm3", "goldMode");
-
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
         ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
@@ -1278,13 +1191,7 @@ export async function ignoreResume(atkTokenId, defTokenId, type, weaponName, eff
 
     const hooksOk = Hooks.call("hm3.preIgnoreResume", atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
     if (hooksOk) {
-        let result = null;
-        if (goldMode) {
-            ui.notifications.warn('Automated Combat not availalbe in HarnMaster Gold Mode, ignoring request');
-            return null;
-        } else {
-            result = await combat.ignoreResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
-        }
+        const result = await combat.ignoreResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
         actor.runCustomMacro(result);
         Hooks.call("hm3.onIgnoreResume", result, atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod);
         return result;
@@ -1413,7 +1320,7 @@ function getActor(actor, speaker) {
     return resultActor;
 }
 
-function callOnHooks(hook, actor, result, rollData, item=null) {
+export function callOnHooks(hook, actor, result, rollData, item=null) {
     const rollResult = {
         type: result.type,
         title: result.title,

@@ -19,15 +19,6 @@ export const registerSystemSettings = function () {
 
     });
 
-    game.settings.register("hm3", "goldMode", {
-        name: "HMG Mode",
-        hint: "Enable HarnMaster Gold Mode (Experimental)",
-        scope: "world",
-        config: true,
-        default: false,
-        type: Boolean
-    });
-
     game.settings.register("hm3", "customSunSign", {
         name: "Custom SunSigns",
         hint: "Enable custom SunSigns (no dropdown)",

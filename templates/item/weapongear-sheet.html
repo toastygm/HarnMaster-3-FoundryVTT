@@ -29,37 +29,37 @@
         {{!-- Properties Tab --}}
         <div class="tab properties" data-group="primary" data-tab="properties">
             <div class="grid grid-fixed-row grid-3col">
-                <div class="resource">
+                <div class="resource" id="weapongear-qty">
                     <label class="resource-label">Quantity</label>
                     <input type="number" name="data.quantity" value="{{data.quantity}}" data-dtype="Number" />
                 </div>
-                <div class="resource">
+                <div class="resource" id="weapongear-weight">
                     <label class="resource-label">Weight</label>
                     <input type="number" name="data.weight" value="{{data.weight}}" data-dtype="Number" />
                 </div>
-                <div class="resource">
+                <div class="resource" id="weapongear-value">
                     <label class="resource-label">Value</label>
                     <input type="number" name="data.value" value="{{data.value}}" data-dtype="Number" />
                 </div>
                 <div></div>
                 <div></div>
                 <div></div>
-                <div class="resource">
+                <div class="resource" id="weapongear-quality">
                     <label class="resource-label">Weapon Quality</label>
                     <input type="number" name="data.weaponQuality" value="{{data.weaponQuality}}" data-dtype="Number" />
                 </div>
-                <div class="resource">
+                <div class="resource" id="weapongear-attack">
                     <label class="resource-label">Attack</label>
                     <input type="number" name="data.attack" value="{{data.attack}}" data-dtype="Number" />
                 </div>
-                <div class="resource">
+                <div class="resource" id="weapongear-defense">
                     <label class="resource-label">Defense</label>
                     <input type="number" name="data.defense" value="{{data.defense}}" data-dtype="Number" />
                 </div>
                 <div></div>
                 <div></div>
                 <div></div>
-                <div class="resource">
+                <div class="resource" id="weapongear-attack-mod">
                     <label class="resource-label">Attack Modifier</label>
                     <input type="number" name="data.attackModifier" value="{{data.attackModifier}}"
                         data-dtype="Number" />
@@ -69,33 +69,19 @@
                 <div></div>
                 <div></div>
                 <div></div>
-                <div class="resource">
+                <div class="resource" id="weapongear-blunt">
                     <label class="resource-label">Blunt</label>
                     <input type="number" name="data.blunt" value="{{data.blunt}}" data-dtype="Number" />
                 </div>
-                <div class="resource">
+                <div class="resource" id="weapongear-edged">
                     <label class="resource-label">Edged</label>
                     <input type="number" name="data.edged" value="{{data.edged}}" data-dtype="Number" />
                 </div>
-                <div class="resource">
+                <div class="resource" id="weapongear-piercing">
                     <label class="resource-label">Piercing</label>
                     <input type="number" name="data.piercing" value="{{data.piercing}}" data-dtype="Number" />
                 </div>
-                {{#if goldMode}}
-                <div class="resource">
-                    <label class="resource-label">Squeeze</label>
-                    <input type="number" name="data.squeeze" value="{{data.squeeze}}" data-dtype="Number" />
-                </div>
-                <div class="resource">
-                    <label class="resource-label">Tear</label>
-                    <input type="number" name="data.tear" value="{{data.tear}}" data-dtype="Number" />
-                </div>
-                {{else}}
-                <div></div>
-                <div></div>
-                {{/if}}
-                <div></div>
-                <div class="resource">
+               <div class="resource" id="weapongear-assocskill">
                     <label class="resource-label" for="data.assocSkill">Associated Skill</label>
                     {{#if hasCombatSkills}}
                         <select class="resource-value" name="data.assocSkill" data-dtype="String">
@@ -110,34 +96,34 @@
                     {{/if}}
                 </div>
             </div>
-            <div class="resource">
+            <div class="resource" id="weapongear-source">
                 <label class="resource-label">Source</label>
                 <input type="text" name="data.source" value="{{data.source}}" data-dtype="String" />
             </div>
-            <div class="resource">
+            <div class="resource" id="weapongear-note">
                 <label class="resource-label">Note</label>
                 <input type="text" name="data.notes" value="{{data.notes}}" data-dtype="String" />
             </div>
-            <div class="resource artifact flexrow">
+            <div class="resource artifact flexrow" id="weapongear-isartifact">
                 <input type="checkbox" name="data.arcane.isArtifact" value="{{data.arcane.isArtifact}}"
                     data-dtype="Boolean" {{checked data.arcane.isArtifact}} />
                 <label class="resource-label">Artifact</label>
             </div>
             {{#if data.arcane.isArtifact}}
-                <fieldset>
+                <fieldset id="weapongear-artifact">
                     <legend>Artifact Properties</legend>
                     <div class="grid grid-fixed-row grid-3col">
-                        <div class="resource">
+                        <div class="resource" id="weapongear-artifact-isattuned">
                             <input type="checkbox" name="data.arcane.isAttuned" value="{{data.arcane.isAttuned}}"
                                 data-dtype="Boolean" {{checked data.arcane.isAttuned}} />
                             <label class="resource-label">Attuned</label>
                         </div>
-                        <div class="resource">
+                        <div class="resource" id="weapongear-artifact-charges">
                             <label class="resource-label">Charges</label>
                             <input type="number" name="data.arcane.charges" value="{{data.arcane.charges}}"
                                 data-dtype="Number" />
                         </div>
-                        <div class="resource">
+                        <div class="resource" id="weapongear-artifact-ego">
                             <label class="resource-label">Ego/Will</label>
                             <input type="number" name="data.arcane.ego" value="{{data.arcane.ego}}"
                                 data-dtype="Number" />
@@ -148,12 +134,12 @@
         </div>
 
         {{!-- Description Tab --}}
-        <div class="tab description" data-group="primary" data-tab="description">
+        <div class="tab description" id="weapongear-desc" data-group="primary" data-tab="description">
             {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
         </div>
 
         {{!-- Effects Tab --}}
-        <div class="tab effects" data-group="primary" data-tab="effects">
+        <div class="tab effects" id="weapongear-effects" data-group="primary" data-tab="effects">
             <ol class="effects-list">
                 <li class="effects-header flexrow">
                     <h3 class="effect-name flexrow">Effect</h3>

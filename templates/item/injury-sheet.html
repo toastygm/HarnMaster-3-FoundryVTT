@@ -18,29 +18,29 @@
         {{!-- Properties Tab --}}
         <div class="tab properties" data-group="primary" data-tab="properties">
             <div class="grid grid-fixed-row grid-2col">
-                <div class="resource">
+                <div class="resource" id="injury-healrate">
                     <label class="resource-label">Heal Rate (HR)</label>
                     <input type="number" name="data.healRate" value="{{data.healRate}}" data-dtype="Number" />
                 </div>
-                <div class="resource">
-                    <label class="resource-label">{{#if goldMode}}Injury Points{{else}}Injury Level (IL){{/if}}</label>
+                <div class="resource" id="injury-level">
+                    <label class="resource-label">Injury Level (IL)</label>
                     <input type="number" name="data.injuryLevel" value="{{data.injuryLevel}}" data-dtype="Number" />
                 </div>
             </div>
             <div></div>
             <div></div>
-            <div class="resource">
+            <div class="resource" id="injury-source">
                 <label class="resource-label">Source</label>
                 <input type="text" name="data.source" value="{{data.source}}" data-dtype="String" />
             </div>
-            <div class="resource">
+            <div class="resource" id="injury-notes">
                 <label class="resource-label">Note</label>
                 <input type="text" name="data.notes" value="{{data.notes}}" data-dtype="String" />
             </div>
         </div>
 
         {{!-- Description Tab --}}
-        <div class="tab description" data-group="primary" data-tab="description">
+        <div class="tab description" id="injury-desc" data-group="primary" data-tab="description">
             {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
         </div>
 

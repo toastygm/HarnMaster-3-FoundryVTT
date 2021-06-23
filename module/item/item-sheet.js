@@ -11,7 +11,7 @@ export class HarnMasterItemSheet extends ItemSheet {
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       classes: ["hm3", "sheet", "item"],
-      width: 530,
+      width: 560,
       height: 550,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "properties" }]
     });
@@ -30,8 +30,6 @@ export class HarnMasterItemSheet extends ItemSheet {
     const data = super.getData();
     const itemData = data.data;
 
-    data.goldMode = game.settings.get('hm3', 'goldMode');
-    
     // Re-define the template data references (backwards compatible)
     data.item = itemData;
     data.data = itemData.data;

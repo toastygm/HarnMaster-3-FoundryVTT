@@ -14,6 +14,10 @@ HM3.ready = false;
 
 HM3.allowedActorFlags = [];
 
+HM3.allowedAspects = ['Edged', 'Piercing', 'Blunt'];
+
+HM3.allowedRanges = ['Short', 'Medium', 'Long', 'Extreme'];
+
 HM3.skillTypes = ["Craft", "Physical", "Communication", "Combat", "Magic", "Ritual"];
 
 HM3.traitTypes = ["Physical", "Psyche"];
