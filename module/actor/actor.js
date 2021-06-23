@@ -71,15 +71,9 @@ export class HarnMasterActor extends Actor {
             updateData.items = [];
 
             // Add standard skills
-            await this._addItemsFromPack(
-                ['Climbing', 'Jumping', 'Stealth', 'Throwing'],
-                'hm3.std-skills-physical', updateData.items);
-            await this._addItemsFromPack(
-                ['Awareness', 'Intrigue', 'Oratory', 'Rhetoric', 'Singing'],
-                'hm3.std-skills-communication', updateData.items);
-            await this._addItemsFromPack(
-                ['Initiative', 'Unarmed', 'Dodge'],
-                'hm3.std-skills-combat', updateData.items);
+            for (let pack in HM3.defaultCharacterSkills) {
+                await HarnMasterActor.addItemsFromPack(HM3.defaultCharacterSkills[pack], pack, updateData.items);
+            }
 
             // Add standard armor locations
             HarnMasterActor._createDefaultHumanoidLocations(updateData.items);
@@ -90,12 +84,9 @@ export class HarnMasterActor extends Actor {
             updateData.items = [];
 
             // Add standard skills
-            await this._addItemsFromPack(
-                ['Awareness'],
-                'hm3.std-skills-communication', updateData.items);
-            await this._addItemsFromPack(
-                ['Initiative', 'Unarmed', 'Dodge'],
-                'hm3.std-skills-combat', updateData.items);
+            for (let pack in HM3.defaultCreatureSkills) {
+                await HarnMasterActor.addItemsFromPack(HM3.defaultCharacterSkills[pack], pack, updateData.items);
+            }
         } else if (createData.type === 'container') {
             updateData['data.capacity.max'] = 1;
             updateData['data.description'] = '';
@@ -111,7 +102,7 @@ export class HarnMasterActor extends Actor {
      * @param {*} packName Name of compendium pack containing items
      * @param {*} items array of ItemData elements to populate
      */
-    async _addItemsFromPack(itemNames, packName, items) {
+    static async addItemsFromPack(itemNames, packName, items) {
         await game.packs
             .get(packName)
             .getDocuments()
