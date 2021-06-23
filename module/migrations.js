@@ -168,20 +168,32 @@ export const migrateActorData = function (actor) {
     updateData['data.abilities.morality.-=effective'] = null
   }
 
-  if (!actorData.abilities.hasOwnProperty('endurance')) {
-    updateData['data.abilities.endurance.base'] = 0;
+  if (actorData.abilities.hasOwnProperty('endurance')) {
+    if (actorData.abilities.endurance.base) {
+      updateData['flags.hm-gold.ability-endurance'] = actorData.abilities.endurance.base;
+    }
+    updateData['data.abilities.-=endurance'] = null;
   }
 
-  if (!actorData.abilities.hasOwnProperty('speed')) {
-    updateData['data.abilities.speed.base'] = 0;
+  if (actorData.abilities.hasOwnProperty('speed')) {
+    if (actorData.abilities.speed.base) {
+      updateData['flags.hm-gold.ability-speed'] = actorData.abilities.speed.base;
+    }
+    updateData['data.abilities.-=speed'] = null;
   }
 
-  if (!actorData.abilities.hasOwnProperty('touch')) {
-    updateData['data.abilities.touch.base'] = 0;
+  if (actorData.abilities.hasOwnProperty('touch')) {
+    if (actorData.abilities.touch.base) {
+      updateData['flags.hm-gold.ability-touch'] = actorData.abilities.touch.base;
+    }
+    updateData['data.abilities.-=touch'] = null;
   }
 
-  if (!actorData.abilities.hasOwnProperty('frame')) {
-    updateData['data.abilities.frame.base'] = 0;
+  if (actorData.abilities.hasOwnProperty('frame')) {
+    if (actorData.abilities.frame.base) {
+      updateData['flags.hm-gold.ability-frame'] = actorData.abilities.frame.base;
+    }
+    updateData['data.abilities.-=frame'] = null;
   }
 
   if (actorData.hasOwnProperty('shockIndex')) {
@@ -301,62 +313,96 @@ export const migrateItemData = function (item) {
   }
 
   if (itemData.type === 'weapongear') {
-    if (!itemData.data.hasOwnProperty('squeeze')) {
-      updateData['data.squeeze'] = 0;
+    if (itemData.data.hasOwnProperty('squeeze')) {
+      if (itemData.data.squeeze) {
+        updateData['flags.hm-gold.squeeze-impact'] = itemData.data.squeeze;
+      }
+      updateData['data.-=squeeze'] = null;
     }
 
-    if (!itemData.data.hasOwnProperty('tear')) {
-      updateData['data.tear'] = 0;
+    if (itemData.data.hasOwnProperty('tear')) {
+      if (itemData.data.squeeze) {
+        updateData['flags.hm-gold.tear-impact'] = itemData.data.tear;
+      }
+      updateData['data.-=tear'] = null;
     }
   }
 
   if (itemData.type === 'missilegear') {
-    if (!itemData.data.range.hasOwnProperty('extreme64')) {
-      updateData['data.range.extreme64'] = 0;
+    if (itemData.data.range.hasOwnProperty('extreme64')) {
+      updateData['data.range.-=extreme64'] = null;
     }
 
-    if (!itemData.data.range.hasOwnProperty('extreme128')) {
-      updateData['data.range.extreme128'] = 0;
+    if (itemData.data.range.hasOwnProperty('extreme128')) {
+      updateData['data.range.-=extreme128'] = null;
     }
 
-    if (!itemData.data.range.hasOwnProperty('extreme256')) {
-      updateData['data.range.extreme256'] = 0;
+    if (itemData.data.range.hasOwnProperty('extreme256')) {
+      updateData['data.range.-=extreme256'] = null;
     }
 
-    if (!itemData.data.impact.hasOwnProperty('extreme64')) {
-      updateData['data.impact.extreme64'] = 0;
+    if (itemData.data.impact.hasOwnProperty('extreme64')) {
+      if (itemData.data.impact.extreme64) {
+        updateData['flags.hm-gold.range4-impact'] = itemData.data.impact.short;
+        updateData['flags.hm-gold.range8-impact'] = itemData.data.impact.medium;
+        updateData['flags.hm-gold.range16-impact'] = itemData.data.impact.long;
+        updateData['flags.hm-gold.range32-impact'] = itemData.data.impact.extreme;
+        updateData['flags.hm-gold.range64-impact'] = itemData.data.impact.extreme64;
+      }
+      updateData['data.impact.-=extreme64'] = null;
     }
   
-    if (!itemData.data.impact.hasOwnProperty('extreme128')) {
-      updateData['data.impact.extreme128'] = 0;
+    if (itemData.data.impact.hasOwnProperty('extreme128')) {
+      if (itemData.data.impact.extreme128) {
+        updateData['flags.hm-gold.range128-impact'] = itemData.data.impact.extreme128;
+      }
+      updateData['data.impact.-=extreme128'] = null;
     }
 
-    if (!itemData.data.impact.hasOwnProperty('extreme256')) {
-      updateData['data.impact.extreme256'] = 0;
+    if (itemData.data.impact.hasOwnProperty('extreme256')) {
+      if (itemData.data.impact.extreme256) {
+        updateData['flags.hm-gold.range256-impact'] = itemData.data.impact.extreme256;
+      }
+      updateData['data.impact.-=extreme256'] = null;
     }  
   }
 
   if (itemData.type === 'armorgear') {
     if (!itemData.data.protection.hasOwnProperty('squeeze')) {
-      updateData['data.protection.squeeze'] = 0;
+      if (itemData.data.protection.squeeze) {
+        updateData['flags.hm-gold.squeeze'] = itemData.data.protection.squeeze;
+      }
+      updateData['data.protection.-=squeeze'] = 0;
     }
 
-    if (!itemData.data.protection.hasOwnProperty('tear')) {
-      updateData['data.protection.tear'] = 0;
+    if (itemData.data.protection.hasOwnProperty('tear')) {
+      if (itemData.data.protection.tear) {
+        updateData['flags.hm-gold.tear'] = itemData.data.protection.tear;
+      }
+      updateData['data.protection.-=tear'] = 0;
     }
   }
 
   if (itemData.type === 'armorlocation') {
-    if (!itemData.data.hasOwnProperty('squeeze')) {
-      updateData['data.squeeze'] = 0;
+    if (itemData.data.hasOwnProperty('squeeze')) {
+      if (itemData.data.squeeze) {
+        updateData['flags.hm-gold.squeeze'] = itemData.data.squeeze;
+      }      
+      updateData['data.-=squeeze'] = 0;
     }
 
-    if (!itemData.data.hasOwnProperty('tear')) {
-      updateData['data.tear'] = 0;
+    if (itemData.data.hasOwnProperty('tear')) {
+      if (itemData.data.tear) {
+        updateData['flags.hm-gold.tear'] = itemData.data.tear;
+      }
+      updateData['data.-=tear'] = 0;
     }
 
-    if (!itemData.data.probWeight.hasOwnProperty('arms')) {
-      updateData['data.probWeight.arms'] = 1;
+    if (itemData.data.probWeight.hasOwnProperty('arms')) {
+      if (itemData.data.probWeight.arms) {
+        updateData['flags.hm-gold.probweight-arms'] = itemData.data.probWeight.arms;
+      }
+      updateData['data.probWeight.-=arms'] = 1;
     }
   }
 
