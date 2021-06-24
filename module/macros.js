@@ -516,9 +516,6 @@ export async function missileDamageRoll(itemName, range=null, myActor = null) {
         impactMedium: item.data.data.impact.medium,
         impactLong: item.data.data.impact.long,
         impactExtreme: item.data.data.impact.extreme,
-        impactExtreme64: item.data.data.impact.extreme64,
-        impactExtreme128: item.data.data.impact.extreme128,
-        impactExtreme256: item.data.data.impact.extreme256,
         data: actor.data,
         speaker: speaker,
         notes: item.data.data.notes
