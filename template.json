@@ -46,18 +46,6 @@
           },
           "morality": {
             "base": 0
-          },
-          "endurance": {
-            "base": 0
-          },
-          "speed": {
-            "base": 0
-          },
-          "touch": {
-            "base": 0
-          },
-          "frame": {
-            "base": 0
           }
         },
         "move": {
@@ -170,8 +158,6 @@
       "blunt": 0,
       "edged": 0,
       "piercing": 0,
-      "squeeze": 0,
-      "tear": 0,
       "defenseMasteryLevel": 0
     },
     "missilegear": {
@@ -182,19 +168,13 @@
         "short": 0,
         "medium": 0,
         "long": 0,
-        "extreme": 0,
-        "extreme64": 0,
-        "extreme128": 0,
-        "extreme256": 0
+        "extreme": 0
       },
       "impact": {
         "short": 0,
         "medium": 0,
         "long": 0,
-        "extreme": 0,
-        "extreme64": 0,
-        "extreme128": 0,
-        "extreme256": 0
+        "extreme": 0
       }
     },
     "armorgear": {
@@ -206,9 +186,7 @@
         "blunt": 0,
         "edged": 0,
         "piercing": 0,
-        "fire": 0,
-        "squeeze": 0,
-        "tear": 0
+        "fire": 0
       },
       "size": 6
     },
@@ -236,8 +214,6 @@
       "edged": 0,
       "piercing": 0,
       "fire": 0,
-      "squeeze": 0,
-      "tear": 0,
       "isFumble": false,
       "isStumble": false,
       "isAmputate": false,
@@ -251,7 +227,6 @@
       },
       "probWeight": {
         "high": 1,
-        "arms": 1,
         "mid": 1,
         "low": 1
       }

@@ -14,6 +14,10 @@ HM3.ready = false;
 
 HM3.allowedActorFlags = [];
 
+HM3.allowedAspects = ['Edged', 'Piercing', 'Blunt'];
+
+HM3.allowedRanges = ['Short', 'Medium', 'Long', 'Extreme'];
+
 HM3.skillTypes = ["Craft", "Physical", "Communication", "Combat", "Magic", "Ritual"];
 
 HM3.traitTypes = ["Physical", "Psyche"];
@@ -22,6 +26,17 @@ HM3.sunsigns = ['Ulandus', 'Ulandus-Aralius', 'Aralius', 'Aralius-Feniri', 'Feni
     'Ahnu', 'Ahnu-Angberelius', 'Angberelius', 'Angberelius-Nadai', 'Nadai', 'Nadai-Hirin',
     'Hirin', 'Hirin-Tarael', 'Tarael', 'Tarael-Tai', 'Tai', 'Tai-Skorus', 'Skorus',
     'Skorus-Masara', 'Masara', 'Masara-Lado', 'Lado', 'Lado-Ulandus'];
+
+HM3.defaultCharacterSkills = {
+    'hm3.std-skills-physical': ['Climbing', 'Jumping', 'Stealth', 'Throwing'],
+    'hm3.std-skills-communication': ['Awareness', 'Intrigue', 'Oratory', 'Rhetoric', 'Singing'],
+    'hm3.std-skills-combat': ['Initiative', 'Unarmed', 'Dodge']
+};
+
+HM3.defaultCreatureSkills = {
+    'hm3.std-skills-communication': ['Awareness'],
+    'hm3.std-skills-combat': ['Initiative', 'Unarmed', 'Dodge']
+};
 
 HM3.injuryLocations = {
     "Custom": { impactType: "custom", probWeight: { "high": 1, "mid": 1, "low": 1 }, isStumble: false, isFumble: false, isAmputate: false, effectiveImpact: { ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "G5" } },

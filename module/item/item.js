@@ -16,8 +16,6 @@ export class HarnMasterItem extends Item {
         const itemData = this.data;
         const data = itemData.data;
 
-        data.goldMode = game.settings.get('hm3', 'goldMode');
-
         let img = null;
 
         // Handle marking gear as equipped or carried
@@ -65,14 +63,8 @@ export class HarnMasterItem extends Item {
         const itemData = this.data;
         const data = itemData.data;
 
-        let pctUnivPen = 0;
-        let pctPhysPen = 0;
-        if (data.goldMode) {
-            pctPhysPen = this.actor?.data?.data.physicalPenalty;
-        } else {
-            pctUnivPen = this.actor?.data?.data.universalPenalty * 5 || 0;
-            pctPhysPen = this.actor?.data?.data.physicalPenalty * 5 || 0;    
-        }
+        let pctUnivPen = HarnMasterItem.calcPenaltyPct(this.actor?.data?.data.universalPenalty);
+        let pctPhysPen = HarnMasterItem.calcPenaltyPct(this.actor?.data?.data.physicalPenalty);
 
         if (itemData.type === 'skill') {
             if (!data.masteryLevel || data.masteryLevel < 0) data.masteryLevel = 0; 
@@ -102,24 +94,13 @@ export class HarnMasterItem extends Item {
         } else if (itemData.type === 'injury') {
             // Just make sure if injuryLevel is negative, we set it to zero
             data.injuryLevel = Math.max(data.injuryLevel || 0, 0);
-
-            if (data.goldMode) {
-                data.severity = `${data.injuryLevel}`;
-            } else {
-                if (data.injuryLevel === 0) {
-                    data.severity = '';
-                } else if (data.injuryLevel == 1) {
-                    data.severity = 'M1';
-                } else if (data.injuryLevel <= 3) {
-                    data.severity = `S${data.injuryLevel}`;
-                } else {
-                    data.severity = `G${data.injuryLevel}`;
-                }    
-            }
+            HarnMasterItem.calcInjurySeverity(this);
         }
     }
 
     _prepareArmorLocationData(itemData) {
+        const data = itemData.data;
+
         // If impactType isn't custom, then set all properties from the selected impactType
         if (itemData.data.impactType != "custom") {
             Object.keys(HM3.injuryLocations).forEach(key => {
@@ -129,49 +110,14 @@ export class HarnMasterItem extends Item {
             });
         }
 
-        if (isNaN(itemData.data.probWeight['low'])) {
-            itemData.data.probWeight['low'] = 0;
-        }
-
-        if (isNaN(itemData.data.probWeight['mid'])) {
-            itemData.data.probWeight['mid'] = 0;
-        }
-
-        if (isNaN(itemData.data.probWeight['high'])) {
-            itemData.data.probWeight['high'] = 0;
-        }
-
-        if (isNaN(itemData.data.probWeight['arms'])) {
-            itemData.data.probWeight['arms'] = 0;
-        }
-
-        if (isNaN(itemData.data.armorQuality)) {
-            itemData.data.armorQuality = 0;
-        }
-
-        if (isNaN(itemData.data.blunt)) {
-            itemData.data.blunt = 0;
-        }
-
-        if (isNaN(itemData.data.piercing)) {
-            itemData.data.piercing = 0;
-        }
-
-        if (isNaN(itemData.data.edged)) {
-            itemData.data.edged = 0;
-        }
-
-        if (isNaN(itemData.data.fire)) {
-            itemData.data.fire = 0;
-        }
-
-        if (isNaN(itemData.data.squeeze)) {
-            itemData.data.squeeze = 0;
-        }
-
-        if (isNaN(itemData.data.tear)) {
-            itemData.data.tear = 0;
-        }
+        data.probWeight.low = data.probWeight?.low || 0;
+        data.probWeight.mid = data.probWeight?.mid || 0;
+        data.probWeight.high = data.probWeight?.high || 0;
+        data.armorQuality = data.armorQuality || 0;
+        data.blunt = data.blunt || 0;
+        data.edged = data.edged || 0;
+        data.piercing = data.piercing || 0;
+        data.fire = data.fire || 0;
     }
 
     /** @override */
@@ -360,5 +306,30 @@ export class HarnMasterItem extends Item {
             rollResult: rollResult,
             item: this
         });
+    }
+
+    static calcInjurySeverity(injury) {
+        const data = injury.data.data;
+    
+        if (data.injuryLevel === 0) {
+            data.severity = '';
+        } else if (data.injuryLevel == 1) {
+            data.severity = 'M1';
+        } else if (data.injuryLevel <= 3) {
+            data.severity = `S${data.injuryLevel}`;
+        } else {
+            data.severity = `G${data.injuryLevel}`;
+        }
+    }
+    
+    /**
+     * In HM3, PP and UP are low integer values, so we must multiply them by 5 in order to use them for
+     * EML calculations.  This function does that.
+     * 
+     * @param {*} value 
+     * @returns 
+     */
+    static calcPenaltyPct(value) {
+        return (value || 0) * 5;
     }
 }
