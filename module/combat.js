@@ -1446,14 +1446,8 @@ export function rangeToTarget(sourceToken, targetToken, gridUnits=false) {
     const tToken = canvas.tokens.get(targetToken.id);
 
     const segments = [];
-    const source = {};
-    const dest = {}
-    const s = canvas.grid.getCenter(sToken.x, sToken.y);
-    source.x = Math.round(s[0]);
-    source.y = Math.round(s[1]);
-    const d = canvas.grid.getCenter(tToken.x, tToken.y);
-    dest.x = Math.round(d[0]);
-    dest.y = Math.round(d[1]);
+    const source = sToken.center;
+    const dest = tToken.center;
     const ray = new Ray(source, dest);
     segments.push({ray});
     const distances = canvas.grid.measureDistances(segments, {gridSpaces: true});
