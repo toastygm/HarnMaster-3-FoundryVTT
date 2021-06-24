@@ -728,7 +728,7 @@ export class DiceHM3 {
     static async damageRoll (rollData) {
         const speaker = rollData.speaker || ChatMessage.getSpeaker();
 
-        let weapon = DiceHM3._calcWeaponAspect(rollData.weapon, rollData.data.items);
+        let weapon = DiceHM3.calcWeaponAspect(rollData.weapon, rollData.data.items);
 
         const dialogOptions = {
             weapon: rollData.weapon,
@@ -805,7 +805,7 @@ export class DiceHM3 {
      * @param {*} weapon Name of weapon
      * @param {*} items List of items containing 'weapongear' items.
      */
-    static _calcWeaponAspect(weapon, items) {
+    static calcWeaponAspect(weapon, items) {
         // Note that although "Fire" is in this list, because it is a
         // type of damage, no normal weapon uses it as its aspect.
         // It is here so that it can be selected (no default impact
@@ -936,7 +936,8 @@ export class DiceHM3 {
             origTarget: rollData.target,
             rangeModifier: Math.abs(roll.rangeModifier),
             addlModifier: Math.abs(roll.addlModifier),
-            plusMinus: roll.addlModifier < 0 ? '-' : '+',
+            amPlusMinus: roll.addlModifier < 0 ? '-' : '+',
+            rmPlusMinus: roll.rangeModifier < 0 ? '-' : '+',
             modifiedTarget: roll.modifiedTarget,
             isSuccess: roll.isSuccess,
             isCritical: roll.isCritical,

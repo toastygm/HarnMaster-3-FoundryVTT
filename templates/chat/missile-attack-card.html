@@ -39,12 +39,12 @@
 
     <div class="card-content">
         <span class="label">Effective Target:</span>
-        <span class="value">{{origTarget}}{{#if rangeModifier}} - {{rangeModifier}}{{/if}} {{plusMinus}} {{addlModifier}} = <strong>{{modifiedTarget}}</strong></span>
+        <span class="value">{{origTarget}}{{#if rangeModifier}} {{rmPlusMinus}} {{rangeModifier}}{{/if}} {{amPlusMinus}} {{addlModifier}} = <strong>{{modifiedTarget}}</strong></span>
     </div>
     {{else}}
     <div class="card-content">
         <span class="label">Effective Target:</span>
-        <span class="value">{{#if rangeModifier}}{{origTarget}} - {{rangeModifier}} = {{/if}}<strong>{{modifiedTarget}}</strong></span>
+        <span class="value">{{#if rangeModifier}}{{origTarget}} {{rmPlusMinus}} {{rangeModifier}} = {{/if}}<strong>{{modifiedTarget}}</strong></span>
     </div>
     {{/if}}
 
