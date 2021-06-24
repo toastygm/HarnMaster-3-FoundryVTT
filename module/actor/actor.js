@@ -211,10 +211,6 @@ export class HarnMasterActor extends Actor {
         data.abilities.voice.effective = 0;
         data.abilities.comeliness.effective = 0;
         data.abilities.morality.effective = 0;
-        data.abilities.endurance.effective = 0;
-        data.abilities.speed.effective = 0;
-        data.abilities.touch.effective = 0;
-        data.abilities.frame.effective = 0;
         data.dodge = 0;
         data.initiative = 0;
         data.endurance = 0;
@@ -264,7 +260,7 @@ export class HarnMasterActor extends Actor {
         eph.aura = data.abilities.aura.base;
         eph.morality = data.abilities.morality.base;
         eph.comeliness = data.abilities.comeliness.base;
-        eph.endurance = data.abilities.endurance.base;
+        eph.endurance = data.endurance;
         eph.totalInjuryLevels = data.totalInjuryLevels;
 
         eph.meleeAMLMod = 0;
