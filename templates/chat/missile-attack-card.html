@@ -22,7 +22,7 @@
     {{else}}
     <div class="card-content">
         <span class="label">Range (Modifier):</span>
-        <span class="value">{{range}} (-{{rangeModifier}})</span>
+        <span class="value">{{range}} ({{rmPlusMinus}}{{rangeModifier}})</span>
     </div>
     {{/if}}
 
@@ -34,17 +34,17 @@
     {{#if (gt addlModifier 0)}}
     <div class="card-content">
         <span class="label">Additional Modifier:</span>
-        <span class="value">{{plusMinus}}{{addlModifier}}</span>
+        <span class="value">{{amPlusMinus}}{{addlModifier}}</span>
     </div>
 
     <div class="card-content">
         <span class="label">Effective Target:</span>
-        <span class="value">{{origTarget}}{{#if rangeModifier}} - {{rangeModifier}}{{/if}} {{plusMinus}} {{addlModifier}} = <strong>{{modifiedTarget}}</strong></span>
+        <span class="value">{{origTarget}}{{#if rangeModifier}} {{rmPlusMinus}} {{rangeModifier}}{{/if}} {{amPlusMinus}} {{addlModifier}} = <strong>{{modifiedTarget}}</strong></span>
     </div>
     {{else}}
     <div class="card-content">
         <span class="label">Effective Target:</span>
-        <span class="value">{{#if rangeModifier}}{{origTarget}} - {{rangeModifier}} = {{/if}}<strong>{{modifiedTarget}}</strong></span>
+        <span class="value">{{#if rangeModifier}}{{origTarget}} {{rmPlusMinus}} {{rangeModifier}} = {{/if}}<strong>{{modifiedTarget}}</strong></span>
     </div>
     {{/if}}
 
