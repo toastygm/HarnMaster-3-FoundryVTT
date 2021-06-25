@@ -309,7 +309,7 @@ export class HarnMasterActor extends Actor {
         data.endurance = Math.round(data.endurance + Number.EPSILON);
         data.move.effective = Math.round(eph.move + Number.EPSILON);
         eph.totalInjuryLevels = Math.round(eph.totalInjuryLevels + Number.EPSILON);
-        eph.fatigue = Math.round(eph.fatigue + Number.EPSILON);
+        eph.fatigue = Math.max(Math.round(eph.fatigue + Number.EPSILON), 0);
 
         // Universal Penalty and Physical Penalty are used to calculate many
         // things, including effectiveMasteryLevel for all skills,

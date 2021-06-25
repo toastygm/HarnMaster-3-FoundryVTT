@@ -180,7 +180,7 @@ HM3.activeEffectKey = {
     'data.eph.psionicTalentsMod': 'Psionic Talents EML',
     'data.universalPenalty': 'Universal Penalty',
     'data.physicalPenalty': 'Physical Penalty',
-    'data.fatigue': 'Fatigue',
+    'data.eph.fatigue': 'Fatigue',
     'data.encumbrance': 'Encumbrance',
     'data.endurance': 'Endurance',
     'data.eph.totalInjuryLevels': 'Injury Level',
