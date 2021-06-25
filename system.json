@@ -4,9 +4,14 @@
   "description": "The HarnMaster system for FoundryVTT!",
   "version": "1.2.19",
   "minimumCoreVersion": "0.8.6",
-  "compatibleCoreVersion": "0.8.6",
+  "compatibleCoreVersion": "0.8.8",
   "templateVersion": 2,
-  "author": "Tom Rodriguez",
+  "authors": [
+    {
+      "name": "Tom Rodriguez",
+      "discord": "toasty#8538"
+    }
+  ],
   "esmodules": ["module/hm3.js"],
   "styles": ["css/hm3.css"],
   "scripts": [],
