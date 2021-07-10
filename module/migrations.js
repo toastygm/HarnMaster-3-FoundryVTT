@@ -217,9 +217,9 @@ export const migrateActorData = function (actor) {
     updateData['data.abilities.-=frame'] = null;
   }
 
-  if (actorData.hasOwnProperty('shockIndex')) {
-    updateData['data.-=shockIndex'] = null
-  }
+  // if (actorData.hasOwnProperty('shockIndex')) {
+  //   updateData['data.-=shockIndex'] = null
+  // }
 
   if (actorData.hasOwnProperty('dodge')) {
     updateData['data.-=dodge'] = null
