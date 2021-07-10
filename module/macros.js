@@ -696,13 +696,12 @@ export async function injuryRoll(myActor = null, rollData = {}) {
         return null;
     }
 
-    foundry.utils.mergeObject(rollData, {
-        notesData: {},
-        actor: actor,
-        speaker: speaker,
-        name: actor.token ? actor.token.name : actor.name,
-        notes: ''
-    });
+    rollData.notesData = {};
+    rollData.actor = actor;
+    rollData.speaker = speaker;
+    rollData.name = actor.token ? actor.token.name : actor.name;
+    rollData.notes = '';
+
     const hooksOk = Hooks.call("hm3.preInjuryRoll", rollData, actor);
     if (hooksOk) {
         const result = await DiceHM3.injuryRoll(rollData);
