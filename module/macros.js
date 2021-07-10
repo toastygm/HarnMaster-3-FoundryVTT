@@ -688,7 +688,7 @@ export async function missileAttackRoll(itemName, myActor = null) {
     return null;
 }
 
-export async function injuryRoll(myActor = null) {
+export async function injuryRoll(myActor = null, rollData = {}) {
     const speaker = typeof myActor === 'object' ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
@@ -696,13 +696,13 @@ export async function injuryRoll(myActor = null) {
         return null;
     }
 
-    const rollData = {
+    foundry.utils.mergeObject(rollData, {
         notesData: {},
         actor: actor,
         speaker: speaker,
         name: actor.token ? actor.token.name : actor.name,
         notes: ''
-    };
+    });
     const hooksOk = Hooks.call("hm3.preInjuryRoll", rollData, actor);
     if (hooksOk) {
         const result = await DiceHM3.injuryRoll(rollData);
