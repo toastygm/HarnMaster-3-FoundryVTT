@@ -829,7 +829,7 @@ export class HarnMasterActor extends Actor {
         }
         switch (action) {
             case 'injury':
-                DiceHM3.injuryRoll({
+                macros.injuryRoll(token.actor, {
                     items: token.actor.items,
                     name: token.name,
                     actor: token.actor,

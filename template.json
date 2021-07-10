@@ -51,6 +51,10 @@
         "move": {
           "base": 0
         },
+        "shockIndex": {
+          "max": 100,
+          "value": 100
+        },
         "description": "***INIT***",
         "biography": "",
         "macros": {

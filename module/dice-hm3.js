@@ -342,7 +342,7 @@ export class DiceHM3 {
      * @param {Object} rollData 
      */
     static async injuryRoll (rollData) {
-        const speaker = rollData.speaker || ChatMessage.getSpeaker();
+        const speaker = rollData.speaker || ChatMessage.getSpeaker({actor: rollData.actor});
 
         let result = null;
         if (typeof rollData.impact == 'undefined') {
