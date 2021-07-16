@@ -30,16 +30,52 @@ The following features are included in this system.
 
 # Associated Modules
 
-The HarnMaster system comes with a number of compendium packs providing details on standard skills, weapons, armor, spells, invocations, and psionics.  The following modules (highly recommended) extend HarnMaster by providing additional compendium packs for new characters, creatures, and items:
+The HarnMaster system comes with a number of compendium packs providing details on standard skills, weapons, armor, spells, invocations, and psionics.  The following modules (highly recommended) extend HarnMaster.
 
-| Name | Project URL | Manifest URL |
-|---|---|---|
-| Harn Friends, Foes, and Followers V1 | https://github.com/toastygm/hm3-fffv1 | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm3-fffv1/master/module.json) |
-| Harn Comprehensive Price Lists | https://github.com/toastygm/hm3-cpl | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm3-cpl/master/module.json) |
-| Harn Ensemble of Characters | https://github.com/toastygm/hm-ensemble | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm-ensemble/master/module.json)
-| Harn Bestiary | Coming Soon | Coming Soon |
+To install these modules: go to the "Configuration and Setup" screen, then select the "Add-on Modules" tab, and click "Install Module"; enter the "Manifest URL" (see below) into the text box at the bottom of the dialog and click "Install".
 
-To install these modules: go to the "Configuration and Setup" screen, then select the "Add-on Modules" tab, and click "Install Module"; enter the "Manifest URL" (above) into the text box at the bottom of the dialog and click "Install".
+## Core Functionality
+
+These modules provide new or modify existing functionality of the H&acirc;rnMaster system.
+
+| Name | Project URL | Manifest URL | Description |
+|---|---|---|---|
+| H&acirc;rnMaster Gold | https://github.com/TimoLemburg/hm-gold | [Manifest URL](https://raw.githubusercontent.com/TimoLemburg/hm-gold/master/module.json) | Provides support for H&acirc;rnMaster Gold rules |
+
+## Characters and creatures
+
+These modules provide additional Characters and Creatures for use in your campaigns
+
+| Name | Project URL | Manifest URL | Description |
+|---|---|---|---|
+| Harn Friends, Foes, and Followers V1 | https://github.com/toastygm/hm3-fffv1 | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm3-fffv1/master/module.json) | Provides 144 fully-described characters from Friends, Foes, and Followers V1 |
+| Harn Ensemble of Characters | https://github.com/toastygm/hm-ensemble | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm-ensemble/master/module.json) | Over a thousand characters of various types: guilded, unguilded, nobles, Shek-Pvar, clerics, and Gargun |
+| Harn Bestiary | https://github.com/toastygm/hm-bestiary | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm-bestiary/master/module.json) | Creature stats for many different denizens of Harn |
+
+## Items
+
+These modules provide additional item compendiums to represent gear, skills, spells, invocations, and other items.
+
+| Name | Project URL | Manifest URL | Description |
+|---|---|---|---|
+| Harn Comprehensive Price Lists | https://github.com/toastygm/hm3-cpl | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm3-cpl/master/module.json) | Hundreds of misc items; if its not here, you don't need it! |
+
+## Locations
+
+These modules provide detailed location information, such as taverns, keeps, manors, etc.  Some of these may be usable with other game systems as well.
+
+| Name | Project URL | Manifest URL | Description |
+|---|---|---|---|
+| Harn Standing Bear Inn | https://github.com/toastygm/hm-loc-sbi | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm-loc-sbi/master/module.json) | The bustling and famous Standing Bear Inn located in Olokand, kingdom of Kaldor |
+
+## Adventures
+
+These modules provide pre-generated adventures that can be used with HarnMaster rules; some of these may be usable with other game systems as well.
+
+| Name | Project URL | Manifest URL | Description |
+|---|---|---|---|
+| A Shower of Silver | Coming Soon | Coming Soon | An introductory murdur-mystery adventure for H&acirc;rn, located around Jedes keep in the kingdom of Kaldor |
+
 
 # Character Sheet Walkthrough
 
