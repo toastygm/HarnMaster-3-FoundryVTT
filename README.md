@@ -74,7 +74,7 @@ These modules provide pre-generated adventures that can be used with HarnMaster 
 
 | Name | Project URL | Manifest URL | Description |
 |---|---|---|---|
-| A Shower of Silver | Coming Soon | Coming Soon | An introductory murdur-mystery adventure for H&acirc;rn, located around Jedes keep in the kingdom of Kaldor |
+| A Shower of Silver | Coming Soon | Coming Soon | An introductory murder-mystery adventure for H&acirc;rn, located around Jedes keep in the kingdom of Kaldor |
 
 
 # Character Sheet Walkthrough
