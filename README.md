@@ -67,6 +67,8 @@ These modules provide detailed location information, such as taverns, keeps, man
 | Name | Project URL | Manifest URL | Description |
 |---|---|---|---|
 | Harn Standing Bear Inn | https://github.com/toastygm/hm-loc-sbi | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm-loc-sbi/master/module.json) | The bustling and famous Standing Bear Inn located in Olokand, kingdom of Kaldor |
+| Jedes Keep | https://github.com/toastygm/hm-loc-jedes | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm-loc-jedes/master/module.json) | The primary settlement of Asolade Hundred, located in the SW of the kingdom of Kaldor |
+| Chewintin Manor | https://github.com/toastygm/hm-loc-chewintin | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm-loc-chewintin/master/module.json) | A prime example of a "£10 tower", Chewintin is located on the frontier of Asolade Hundred, in SW kingdom of Kaldor |
 
 ## Adventures
 
@@ -74,7 +76,7 @@ These modules provide pre-generated adventures that can be used with HarnMaster 
 
 | Name | Project URL | Manifest URL | Description |
 |---|---|---|---|
-| A Shower of Silver | Coming Soon | Coming Soon | An introductory murder-mystery adventure for H&acirc;rn, located around Jedes keep in the kingdom of Kaldor |
+| A Shower of Silver |  https://github.com/toastygm/hm-adv-sos | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm-adv-sos/master/module.json) | An introductory murder-mystery adventure for H&acirc;rn, located around Jedes keep in the kingdom of Kaldor |
 
 
 # Character Sheet Walkthrough
