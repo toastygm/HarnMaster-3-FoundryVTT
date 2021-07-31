@@ -85,7 +85,7 @@ export class HarnMasterActor extends Actor {
 
             // Add standard skills
             for (let pack in HM3.defaultCreatureSkills) {
-                await HarnMasterActor.addItemsFromPack(HM3.defaultCharacterSkills[pack], pack, updateData.items);
+                await HarnMasterActor.addItemsFromPack(HM3.defaultCreatureSkills[pack], pack, updateData.items);
             }
         } else if (createData.type === 'container') {
             updateData['data.capacity.max'] = 1;
