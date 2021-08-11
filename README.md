@@ -331,3 +331,7 @@ A number of icons were also produced by:
 * lorc
 * skol
 * willdabeast
+
+Lakise and Runic Fonts are copyright N. Robin Crossby, redistributed under the terms of the [CC BY-NC-SA 3.0 AU](https://creativecommons.org/licenses/by-nc-sa/3.0/au/legalcode) license.
+
+Lankorian Blackhand font is copyright 2020 by Mitch Gore, redistributed under the terms of [CC BY-NC-SA 3.0 AU](https://creativecommons.org/licenses/by-nc-sa/3.0/au/legalcode) license
