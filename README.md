@@ -69,6 +69,8 @@ These modules provide detailed location information, such as taverns, keeps, man
 | Harn Standing Bear Inn | https://github.com/toastygm/hm-loc-sbi | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm-loc-sbi/master/module.json) | The bustling and famous Standing Bear Inn located in Olokand, kingdom of Kaldor |
 | Jedes Keep | https://github.com/toastygm/hm-loc-jedes | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm-loc-jedes/master/module.json) | The primary settlement of Asolade Hundred, located in the SW of the kingdom of Kaldor |
 | Chewintin Manor | https://github.com/toastygm/hm-loc-chewintin | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm-loc-chewintin/master/module.json) | A prime example of a "£10 tower", Chewintin is located on the frontier of Asolade Hundred, in SW kingdom of Kaldor |
+| Three Brothers' Barrow | https://github.com/toastygm/hm-loc-tbb | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm-loc-tbb/master/module.json) | A fun location module with a new creature, a cave, and a hidden tomb, suitable for a single session play. |
+| Charmic Manor | https://github.com/toastygm/hm-loc-charmic | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm-loc-charmic/master/module.json) | A relatively new manor with huge potential, it grew very prosperous under its original bailiff. But in recent years, it has become a dark and dangerous place. |
 
 ## Adventures
 
