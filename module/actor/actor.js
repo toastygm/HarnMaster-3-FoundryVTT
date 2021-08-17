@@ -276,6 +276,7 @@ export class HarnMasterActor extends Actor {
         eph.psionicTalentsMod = 0;
         eph.itemAMLMod = 0;
         eph.itemDMLMod = 0;
+        eph.itemEMLMod = 0;
 
         Hooks.call("hm3.onActorPrepareBaseData", this);
     }
@@ -305,10 +306,10 @@ export class HarnMasterActor extends Actor {
 
         // Since active effects may have modified these values, we must ensure
         // that they are integers and not floating values. Round to nearest integer.
-        data.encumbrance = Math.round(data.encumbrance + Number.EPSILON);
-        data.endurance = Math.round(data.endurance + Number.EPSILON);
-        data.move.effective = Math.round(eph.move + Number.EPSILON);
-        eph.totalInjuryLevels = Math.round(eph.totalInjuryLevels + Number.EPSILON);
+        data.encumbrance = Math.max(Math.round(data.encumbrance + Number.EPSILON), 0);
+        data.endurance = Math.max(Math.round(data.endurance + Number.EPSILON), 0);
+        data.move.effective = Math.max(Math.round(eph.move + Number.EPSILON), 0);
+        eph.totalInjuryLevels = Math.max(Math.round(eph.totalInjuryLevels + Number.EPSILON), 0);
         eph.fatigue = Math.max(Math.round(eph.fatigue + Number.EPSILON), 0);
 
         // Universal Penalty and Physical Penalty are used to calculate many
@@ -391,7 +392,7 @@ export class HarnMasterActor extends Actor {
         this._setupWeaponData(combatSkills);
 
         // Apply the individual AML and DML active effects for each Melee or Missile Weapon
-        this._applyWeaponActiveEffects();
+        this._applyItemActiveEffects();
 
         this._generateArmorLocationMap(data);
 
@@ -884,7 +885,17 @@ export class HarnMasterActor extends Actor {
         button.disabled = false;
     }
 
-    _applyWeaponActiveEffects() {
+    /**
+     * This method implements Item-based effects.  It applies three types of AE:
+     *   Weapon Attack ML - Modifies the AML of a single weapon
+     *   Weapon Defense ML - Modifies the DML of a single weapon
+     *   Skill EML - Modifies the EML of a specific Skill (or Psionic talent)
+     * 
+     * Note that unlike normal Active Effects, these effects apply to the Itens data model,
+     * not the Actor's data model.  The Item to be affected is indicated by the
+     * AE origin field, which should be an Item in this case.
+     */
+    _applyItemActiveEffects() {
         const changes = this.effects.reduce((chgs, e) => {
             if (e.data.disabled) return chgs;
             const m = e.data.origin?.match(/Item\.([a-zA-Z0-9]*)/);
@@ -893,14 +904,23 @@ export class HarnMasterActor extends Actor {
             if (!item) return chgs;
             const itemChanges = e.data.changes.filter(chg =>
                 (chg.key === 'data.eph.itemAMLMod' && ['weapongear', 'missilegear'].includes(item.type)) ||
-                (chg.key === 'data.eph.itemDMLMod' && item.type === 'missilegear'));
+                (chg.key === 'data.eph.itemDMLMod' && item.type === 'weapongear') ||
+                (chg.key === 'data.eph.itemEMLMod' && ['skill', 'psionic'].includes(item.type)));
             return chgs.concat(itemChanges.map(c => {
                 c = foundry.utils.duplicate(c);
                 c.item = item;
-                if (c.key === 'data.eph.itemAMLMod') {
-                    c.key = 'data.attackMasteryLevel';
-                } else if (c.key === 'data.eph.itemDMLMod') {
-                    c.key = 'data.defenseMasteryLevel';
+                switch (c.key) {
+                    case 'data.eph.itemAMLMod':
+                        c.key = 'data.attackMasteryLevel';
+                        break;
+
+                    case 'data.eph.itemDMLMod':
+                        c.key = 'data.defenseMasteryLevel';
+                        break;
+
+                    case 'data.eph.itemEMLMod':
+                        c.key = 'data.effectiveMasteryLevel';
+                        break;
                 }
                 c.effect = e;
                 c.priority = c.priority ?? (c.mode * 10);
@@ -915,6 +935,15 @@ export class HarnMasterActor extends Actor {
         }
     }
 
+    /**
+     * This method searches through all the active effects on this actor and applies
+     * only that active effect whose key matches the specified 'property' value.
+     * 
+     * The purpose is to allow an active effect to be applied after normal active effect
+     * processing is complete.
+     * 
+     * @param {String} property The Actor data model property to apply
+     */
     applySpecificActiveEffect(property) {
         const overrides = {};
 
@@ -941,6 +970,13 @@ export class HarnMasterActor extends Actor {
         mergeObject(this.overrides, foundry.utils.expandObject(overrides));
     }
 
+    /**
+     * This method applys a blanket skill AE modifier to all skills of a particular type.
+     * For instance, if the skill is a communication skill, then it will apply the
+     * data.eph.commSkillsMod modifier to the effectiveMasteryLevel for that skill.
+     * 
+     * @param {Item} skill The item representing the skill to apply the active effect to. 
+     */
     applySkillActiveEffect(skill) {
         // Organize non-disabled effects by their application priority
         const changes = this.effects.reduce((chgs, e) => {
