@@ -1078,12 +1078,15 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
 }
 
 export async function checkWeaponBreak(atkWeapon, defWeapon) {
-    if (!atkWeapon) {
+    const atkToken = atkWeapon?.parent?.token;
+    const defToken = defWeapon?.parent?.token;
+
+    if (!atkWeapon || !atkToken) {
         console.error(`Attack weapon was not specified`);
         return {attackWeaponBroke: false, defendWeaponBroke: false};
     }
 
-    if (!defWeapon) {
+    if (!defWeapon || !defToken) {
         console.error(`Defend weapon was not specified`);
         return {attackWeaponBroke: false, defendWeaponBroke: false};
     }
@@ -1107,6 +1110,54 @@ export async function checkWeaponBreak(atkWeapon, defWeapon) {
         defWeaponBroke = defBreakRoll.total > defWeaponQuality;
         atkWeaponBroke = !defWeaponBroke && atkBreakRoll.total > atkWeaponQuality;
     }
+
+    const chatData = {};
+
+    const messageData = {
+        user: game.user.id,
+        type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+        sound: CONFIG.sounds.dice
+    };
+
+    const chatTemplate = "systems/hm3/templates/chat/weapon-break-card.html";
+
+    // Prepare and generate Attack Weapon Break chat message
+
+    chatData.tokenName = atkToken.name;
+    chatData.weaponName = atkWeapon.data.name;
+    chatData.weaponQuality = atkWeapon.data.data.weaponQuality;
+    chatData.weaponBroke = atkWeaponBroke;
+    chatData.rollValue = atkBreakRoll.total;
+    chatData.actorId = atkWeapon.parent;
+    chatData.title = "Attack Weapon Break Check";
+
+    let html = await renderTemplate(chatTemplate, chatData);
+
+    messageData.content = html.trim();
+    messageData.speaker = ChatMessage.getSpeaker({token: defToken});
+    messageData.roll = atkBreakRoll;
+
+    const messageOptions = {};
+
+    await ChatMessage.create(messageData, messageOptions)
+
+    // Prepare and generate Defend Weapon Break chat message
+
+    chatData.tokenName = defToken.name;
+    chatData.weaponName = defWeapon.data.name;
+    chatData.weaponQuality = defWeapon.data.data.weaponQuality;
+    chatData.weaponBroke = defWeaponBroke;
+    chatData.rollValue = defBreakRoll.total;
+    chatData.actorId = defWeapon.parent;
+    chatData.title = "Defend Weapon Break Check";
+
+    html = await renderTemplate(chatTemplate, chatData);
+
+    messageData.content = html.trim();
+    messageData.speaker = ChatMessage.getSpeaker({token: defToken});
+    messageData.roll = defBreakRoll;
+
+    await ChatMessage.create(messageData, messageOptions);
 
     return {attackWeaponBroke: atkWeaponBroke, defendWeaponBroke: defWeaponBroke};
 }
