@@ -1242,6 +1242,10 @@
 
         {{!-- Effects Tab --}}
         <div class="tab effects" data-group="primary" data-tab="effects">
+            <div class="flexrow">
+                <input class="effects-name-filter" type="text" name="data.effectsNameFilter"
+                    placeholder="Filter effects by name..." data-dtype="String" />
+            </div>
             <ol class="effects-list">
                 <li class="effects-header flexrow">
                     <h3 class="effect-name flexrow">Effect<a class="more-info"
@@ -1255,7 +1259,8 @@
                 </li>
                 <ol class="effect-list item-list">
                 {{#each effects as |effect id|}}
-                    <li class="effect {{#if effect.data.disabled}}disabled{{/if}} flexrow" data-effect-id="{{effect.data._id}}">
+                    <li class="effect {{#if effect.data.disabled}}disabled{{/if}} flexrow" data-effect-name="{{effect.data.label}}"
+                        data-effect-id="{{effect.data._id}}">
                         <div class="effect-name flexrow">
                             <div class="effect-image" style="background-image: url('{{effect.data.icon}}')"></div>
                             <h4>{{effect.data.label}}</h4>

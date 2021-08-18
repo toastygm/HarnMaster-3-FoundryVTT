@@ -463,6 +463,25 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             }
         });
 
+        // Filter on name for effects
+        html.on("keyup", ".effects-name-filter", ev => {
+            this.effectsNameFilter = $(ev.currentTarget).val();
+            const lcEffectsNameFilter = this.effectsNameFilter.toLowerCase();
+            let effectItems = html.find('.effect');
+            for (let effect of effectItems) {
+                const effectName = gear.getAttribute('data-effect-name');
+                if (lcEffectsNameFilter) {
+                    if (effectName.toLowerCase().includes(lcEffectsNameFilter)) {
+                        $(effect).show()
+                    } else {
+                        $(effect).hide()
+                    }
+                } else {
+                    $(effect).show();
+                }
+            }
+        });
+
         // Standard 1d100 Skill Roll
         html.find('.skill-roll').click(ev => {
             const li = $(ev.currentTarget).parents(".item");
