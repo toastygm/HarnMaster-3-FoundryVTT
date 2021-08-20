@@ -171,6 +171,7 @@ HM3.activeEffectKey = {
     'data.eph.outnumbered': 'Outnumbered',
     'data.eph.itemAMLMod': 'Weapon Attack ML',
     'data.eph.itemDMLMod': 'Weapon Defense ML',
+    'data.eph.itemEMLMod': 'Skill EML',
     'data.eph.commSkillsMod': 'Communication Skills EML',
     'data.eph.physicalSkillsMod': 'Physical Skills EML',
     'data.eph.combatSkillsMod': 'Combat Skills EML',

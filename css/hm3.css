@@ -1786,3 +1786,14 @@ section.highlight {
       color: #9a998f; }
     .hm3 .effects .effects-list .effect-controls-wide .active {
       color: #4b4a44; }
+
+.hm3 .effects input[type="text"].effects-name-filter {
+  background-image: url("../images/png/searchicon.png");
+  background-size: contain;
+  background-position: 5px -1px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 15px;
+  padding: 5px 0px 5px 40px;
+  border: 2px groove #eeede0;
+  margin-top: 5px; }

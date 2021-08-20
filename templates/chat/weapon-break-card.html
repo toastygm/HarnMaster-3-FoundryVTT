@@ -1,0 +1,25 @@
+<div class="hm3 chat-card item-card" data-actor-id="{{actorId}}">
+    <header class="card-header flexrow">
+        <h3 class="title">{{title}}</h3>
+        <h4 class="subtitle">{{tokenName}}'s {{weaponName}}</h4>
+    </header>
+
+    <div class="grid grid-2col">
+        <div class="card-content center">
+            <div class="flexrow">
+                <span class="label">Weapon Quality / Roll:</span>
+                <span class="value">{{weaponQuality}} / {{rollValue}}</span>
+            </div>
+        </div>
+    </div>
+
+    {{#if weaponBroke}}
+    <div class="card-content center">
+        <span class="weapon-broke">{{tokenName}}'s {{weaponName}} broke!</span>
+    </div>
+    {{else}}
+    <div class="card-content center">
+        <span class="value">{{tokenName}}'s {{weaponName}} OK</span>
+    </div>
+    {{/if}}
+</div>

@@ -354,7 +354,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         }
 
         if (result) {
-            if (moveQuantity >= data.data.data.quantity) {
+            if (moveQuantity >= sourceQuantity) {
                 await Item.deleteDocuments([data.data._id], {parent: sourceActor});
             } else {
                 const newSourceQuantity = sourceQuantity - moveQuantity;
@@ -459,6 +459,25 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     }
                 } else {
                     $(gear).show();
+                }
+            }
+        });
+
+        // Filter on name for effects
+        html.on("keyup", ".effects-name-filter", ev => {
+            this.effectsNameFilter = $(ev.currentTarget).val();
+            const lcEffectsNameFilter = this.effectsNameFilter.toLowerCase();
+            let effectItems = html.find('.effect');
+            for (let effect of effectItems) {
+                const effectName = gear.getAttribute('data-effect-name');
+                if (lcEffectsNameFilter) {
+                    if (effectName.toLowerCase().includes(lcEffectsNameFilter)) {
+                        $(effect).show()
+                    } else {
+                        $(effect).hide()
+                    }
+                } else {
+                    $(effect).show();
                 }
             }
         });
