@@ -354,7 +354,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         }
 
         if (result) {
-            if (moveQuantity >= data.data.data.quantity) {
+            if (moveQuantity >= sourceQuantity) {
                 await Item.deleteDocuments([data.data._id], {parent: sourceActor});
             } else {
                 const newSourceQuantity = sourceQuantity - moveQuantity;
