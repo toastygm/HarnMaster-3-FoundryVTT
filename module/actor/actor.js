@@ -346,9 +346,12 @@ export class HarnMasterActor extends Actor {
             // If a skill, apply the specific active effect to modify
             // the EML
             if (['skill', 'psionic'].includes(it.data.type)) {
-                this.applySkillActiveEffect(it);
+                this.applySkillTypeActiveEffect(it);
             }
         });
+
+        // Apply the individual AML and DML active effects for each Melee or Missile Weapon
+        this._applyItemActiveEffects();
 
         // Calculate spell effective mastery level values
         this._refreshSpellsAndInvocations();
@@ -390,9 +393,6 @@ export class HarnMasterActor extends Actor {
         });
 
         this._setupWeaponData(combatSkills);
-
-        // Apply the individual AML and DML active effects for each Melee or Missile Weapon
-        this._applyItemActiveEffects();
 
         this._generateArmorLocationMap(data);
 
@@ -977,7 +977,7 @@ export class HarnMasterActor extends Actor {
      * 
      * @param {Item} skill The item representing the skill to apply the active effect to. 
      */
-    applySkillActiveEffect(skill) {
+    applySkillTypeActiveEffect(skill) {
         // Organize non-disabled effects by their application priority
         const changes = this.effects.reduce((chgs, e) => {
             if (e.data.disabled) return chgs;
