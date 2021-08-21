@@ -1,6 +1,6 @@
 # HarnMaster-3-FoundryVTT
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/toastygm/HarnMaster-3-FoundryVTT)  ![GitHub issues](https://img.shields.io/github/issues-raw/toastygm/HarnMaster-3-FoundryVTT) ![GitHub all releases](https://img.shields.io/github/downloads/toastygm/HarnMaster-3-FoundryVTT/total) ![Forge Installs](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2Fhm3)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/toastygm/HarnMaster-3-FoundryVTT)  ![GitHub issues](https://img.shields.io/github/issues-raw/toastygm/HarnMaster-3-FoundryVTT) ![Forge Installs](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2Fhm3)
 
 This is a game system definition of the H&acirc;rnMaster 3 RPG for [Foundry Virtual Tabletop](http://foundryvtt.com/).
 
