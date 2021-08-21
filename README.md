@@ -30,60 +30,11 @@ The following features are included in this system.
 * Effects allowing use of "buffs" and "debuffs" (such as Outnumbered, melee attack modifiers, UP/PP modifiers, etc) for either indefinite or a specified duration, that can be enabled/disabled as desired
 * Flexible macro support for extending with your own custom capabilities
 
-# Associated Modules
+# Recommended Modules
 
-The HarnMaster system comes with a number of compendium packs providing details on standard skills, weapons, armor, spells, invocations, and psionics.  The following modules (highly recommended) extend HarnMaster.
+There are a number of modules that extend the H&acirc;rnMaster system by providing new functionality or ready-made content for you to use in your campaign.  See the [Modules](https://github.com/toastygm/HarnMaster-3-FoundryVTT/wiki/Modules) page for more information.
 
-To install these modules: go to the "Configuration and Setup" screen, then select the "Add-on Modules" tab, and click "Install Module"; enter the "Manifest URL" (see below) into the text box at the bottom of the dialog and click "Install".
-
-## Core Functionality
-
-These modules provide new or modify existing functionality of the H&acirc;rnMaster system.
-
-| Name | Project URL | Manifest URL | Description |
-|---|---|---|---|
-| H&acirc;rnMaster Gold | https://github.com/TimoLemburg/hm-gold | [Manifest URL](https://raw.githubusercontent.com/TimoLemburg/hm-gold/master/module.json) | Provides support for H&acirc;rnMaster Gold rules |
-
-## Characters and creatures
-
-These modules provide additional Characters and Creatures for use in your campaigns
-
-| Name | Project URL | Manifest URL | Description |
-|---|---|---|---|
-| Harn Friends, Foes, and Followers V1 | https://github.com/toastygm/hm3-fffv1 | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm3-fffv1/master/module.json) | Provides 144 fully-described characters from Friends, Foes, and Followers V1 |
-| Harn Ensemble of Characters | https://github.com/toastygm/hm-ensemble | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm-ensemble/master/module.json) | Over a thousand characters of various types: guilded, unguilded, nobles, Shek-Pvar, clerics, and Gargun |
-| Harn Bestiary | https://github.com/toastygm/hm-bestiary | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm-bestiary/master/module.json) | Creature stats for many different denizens of Harn |
-
-## Items
-
-These modules provide additional item compendiums to represent gear, skills, spells, invocations, and other items.
-
-| Name | Project URL | Manifest URL | Description |
-|---|---|---|---|
-| Harn Comprehensive Price Lists | https://github.com/toastygm/hm3-cpl | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm3-cpl/master/module.json) | Hundreds of misc items; if its not here, you don't need it! |
-
-## Locations
-
-These modules provide detailed location information, such as taverns, keeps, manors, etc.  Some of these may be usable with other game systems as well.
-
-| Name | Project URL | Manifest URL | Description |
-|---|---|---|---|
-| Harn Standing Bear Inn | https://github.com/toastygm/hm-loc-sbi | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm-loc-sbi/master/module.json) | The bustling and famous Standing Bear Inn located in Olokand, kingdom of Kaldor |
-| Jedes Keep | https://github.com/toastygm/hm-loc-jedes | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm-loc-jedes/master/module.json) | The primary settlement of Asolade Hundred, located in the SW of the kingdom of Kaldor |
-| Chewintin Manor | https://github.com/toastygm/hm-loc-chewintin | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm-loc-chewintin/master/module.json) | A prime example of a "£10 tower", Chewintin is located on the frontier of Asolade Hundred, in SW kingdom of Kaldor |
-| Three Brothers' Barrow | https://github.com/toastygm/hm-loc-tbb | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm-loc-tbb/master/module.json) | A fun location module with a new creature, a cave, and a hidden tomb, suitable for a single session play. |
-| Charmic Manor | https://github.com/toastygm/hm-loc-charmic | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm-loc-charmic/master/module.json) | A relatively new manor with huge potential, it grew very prosperous under its original bailiff. But in recent years, it has become a dark and dangerous place. |
-
-## Adventures
-
-These modules provide pre-generated adventures that can be used with HarnMaster rules; some of these may be usable with other game systems as well.
-
-| Name | Project URL | Manifest URL | Description |
-|---|---|---|---|
-| A Shower of Silver |  https://github.com/toastygm/hm-adv-sos | [Manifest URL](https://raw.githubusercontent.com/toastygm/hm-adv-sos/master/module.json) | An introductory murder-mystery adventure for H&acirc;rn, located around Jedes keep in the kingdom of Kaldor |
-
-
-# Character Sheet Walkthrough
+# System Walkthrough
 
 See the [Walkthrough](https://github.com/toastygm/HarnMaster-3-FoundryVTT/wiki/FoundryVTT-HarnMaster-Walkthrough) page for a detailed review of the system (with screenshots).
 
@@ -93,17 +44,7 @@ Although most parts of this system should be self-explanatory to those familiar 
 
 ## Missing Components of H&acirc;rnMaster Rules
 
-This system requires the user to have a copy of the H&acirc;rnMaster rules. Most skills and mechanisms for calculating SB and ML, as well as rules use mechanics have been intentionally left out.  This is not intended to be used as a character generator.  This section highlights a few specific items that were left out.
-
-### Skills Missing
-
-Although basic laborious computations have been included in this system, only "default" skills and humanoid armor locations are loaded (on request); specifically those already on the publicly-available [character sheet and combat tables](https://secure.columbiagames.com/product/4001-PDF).
-
-No other skills beyond the standard skills are provided; they must be manually entered along with all SB and ML characteristics.
-
-### Combat Tables Missing
-
-Although automatic dice rolling for attack/defense rolls, damage rolls, and injuries are provided, the actual combat mechanics (including the meele and missile attack tables) are not automated or included.  It is expected that the rules will be consulted to determine the effect of attacks and defense.
+This system requires the user to have a copy of the H&acirc;rnMaster rules in order to play effectively. Skill descriptions and rules descriptions have been intentionally left out.  This system is not intended to be used as a character generator; for that you will need a copy of the H&acirc;rnMaster rules.
 
 ## Actors Supported
 
@@ -124,6 +65,8 @@ The following actors are supported:
   3. Combat (Weapons, Injuries, Armor Locations)
   4. Misc. Gear
   5. Description
+
+* __Container:__ A token (such as a chest, a wagon, or a shop) that can contain items and can be placed separately on the canvas.
 
 Note that when creating a character, you will be prompted whether to install standard skills and standard humanoid armor locations.  When creating a creature, no armor locations will be preloaded, since each creature will have different armor locations (although a few basic combat skills are preloaded).
 
@@ -157,41 +100,6 @@ The following capabilities are supported in both characters and creatures:
   * Move rate (characters only)
   * Spell EML and Ritual Invocation EML (accounting for spell level or invocation circle)
   * Weapon Attack ML (AML) and Defense ML (DML)
-
-## Macros
-
-A number of system capabilities are available as macros functions so you can automate your use of this system with script macros.  All of these macro functions are avaialbe via `game.hm3.macros.<function>`. The following macros are defined:
-
-Function                                       | Description
------------------------------------------------|--------------------------
-**skillRoll**(itemName, _noDialog_)            | roll against skill EML
-**castSpellRoll**(itemName, _noDialog_)        | spell casting roll against spell EML
-**invokeRitualRoll**(itemName, _noDialog_)     | ritual invocation roll against invocation EML
-**usePsionicRoll**(itemName, _noDialog_)       | psionic talent roll against talent EML
-**testAbilityD6Roll**(abilityName, _noDialog_) | 3d6 roll against a specific ability
-**testAbilityD100Roll**(ability, _noDialog_)   | 1d100 roll against a specific ability
-**weaponDamageRoll**(itemName)                 | damage roll, using attributes from a particular melee weapon
-**missileDamageRoll**(itemName)                | damage roll, using attributes from a particular missile weapon
-**weaponAttackRoll**(itemName, _noDialog_)     | weapon attack roll, using attributes from a particular melee weapon
-**weaponDefendRoll**(itemName, _noDialog_)     | weapon defend roll, using attributes from a particular melee weapon
-**missileAttackRoll**(itemName)                | missile attack roll, using attributes froma particular missile weapon
-**injuryRoll**()                               | injury roll
-**healingRoll**(itemName, _noDialog_)          | healing roll for the specific injury specified
-**dodgeRoll**(_noDialog_)                        | dodge roll
-**shockRoll**(_noDialog_)                        | shock roll
-**stumbleRoll**(_noDialog_)                      | stumble roll
-**fumbleRoll**(_noDialog_)                       | fumble roll
-**genericDamageRoll**()                        | damage roll not specific to any weapon (you must enter details of the attack)
-**changeMissileQuanity**(missileName, newQty)  | Change missile quantity: +XX to increase, -XX to decrease, XX to change to exact value
-**changeFatigue**(newValue)                    | Change fatigue value: +XX to increase, -XX to decrease, XX to change to exact value
-**setSkillDevelopmentFlag**(skillName)         | Set the flag for a Skill Development Roll (only set, **not** unset)
-**weaponAttack**(weaponName)                   | Initiate melee attack from current combatant against selected token with weapon
-**missileAttack**(missileName)                 | Initiate missile attack from current combatant against selected token with missile
-**weaponAttackResume**(atkTokenId, defTokenId, action, attackAML, attackAim, attackWpnAspect, attackImpactModification)  | Continue attack with defender. "action" can be one of "dodge", "block", "counterstrike", or "ignore".
-
-_itemName_ = name (or id) of the item to affect
-
-_noDialog_ = \[**optional**\] flag whether or not to display dialog; if noDialog is true, all defaults will be used. Note that not all rolls support this, because some require input to operate.
 
 ## Special Considerations
 
