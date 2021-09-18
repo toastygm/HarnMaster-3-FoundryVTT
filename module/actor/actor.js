@@ -932,6 +932,19 @@ export class HarnMasterActor extends Actor {
         // Apply all changes
         for (let change of changes) {
             change.effect.apply(change.item, change);
+            this.roundChange(change.item, change);
+        }
+    }
+
+    roundChange(item, change) {
+        const current = foundry.utils.getProperty(item.data, change.key) ?? null;
+        const ct = foundry.utils.getType(current);
+        if (ct === "number" && !Number.isInteger(current)) {
+            const update = Math.round(current + Number.EPSILON);
+            foundry.utils.setProperty(item.data, change.key, update);
+            return update;
+        } else {
+            return current;
         }
     }
 
@@ -962,7 +975,8 @@ export class HarnMasterActor extends Actor {
 
         // Apply all changes
         for (let change of changes) {
-            const result = change.effect.apply(this, change);
+            change.effect.apply(this, change);
+            const result = this.roundChange(this, change);
             if (result !== null) overrides[change.key] = result;
         }
 
@@ -1003,6 +1017,7 @@ export class HarnMasterActor extends Actor {
         // Apply all changes
         for (let change of changes) {
             change.effect.apply(skill, change);
+            this.roundChange(skill, change);
         }
     }
 
@@ -1026,6 +1041,7 @@ export class HarnMasterActor extends Actor {
         // Apply all changes
         for (let change of changes) {
             change.effect.apply(weapon, change);
+            this.roundChange(weapon, change);
         }
     }
 
