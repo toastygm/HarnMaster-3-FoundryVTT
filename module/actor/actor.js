@@ -242,7 +242,8 @@ export class HarnMasterActor extends Actor {
         // Safety net: We divide things by endurance, so ensure it is > 0
         data.endurance = Math.max(data.endurance, 1);
 
-        data.encumbrance = Math.floor(data.totalWeight / data.endurance);
+        eph.effectiveWeight = data.loadRating ? Math.max(data.totalWeight - data.loadRating, 0) : data.totalWeight;
+        data.encumbrance = Math.floor(eph.effectiveWeight / data.endurance);
 
         // Setup temporary work values masking the base values
         eph.move = data.move.base;
