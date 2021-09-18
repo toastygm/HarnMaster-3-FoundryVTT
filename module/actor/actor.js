@@ -548,15 +548,15 @@ export class HarnMasterActor extends Actor {
         data.abilities.stamina.effective = Math.max(Math.round(eph.stamina + Number.EPSILON) - data.physicalPenalty, 0);
         data.abilities.agility.effective = Math.max(Math.round(eph.agility + Number.EPSILON) - data.physicalPenalty, 0);
         data.abilities.dexterity.effective = Math.max(Math.round(eph.dexterity + Number.EPSILON) - data.physicalPenalty, 0);
-        data.abilities.eyesight.effective = Math.max(Math.round(eph.eyesight + Number.EPSILON) - data.physicalPenalty, 0);
-        data.abilities.hearing.effective = Math.max(Math.round(eph.hearing + Number.EPSILON) - data.physicalPenalty, 0);
-        data.abilities.smell.effective = Math.max(Math.round(eph.smell + Number.EPSILON) - data.physicalPenalty, 0);
-        data.abilities.voice.effective = Math.max(Math.round(eph.voice + Number.EPSILON) - data.physicalPenalty, 0);
 
         // Affected by universal penalty
         data.abilities.intelligence.effective = Math.max(Math.round(eph.intelligence + Number.EPSILON) - data.universalPenalty, 0);
         data.abilities.aura.effective = Math.max(Math.round(eph.aura + Number.EPSILON) - data.universalPenalty, 0);
         data.abilities.will.effective = Math.max(Math.round(eph.will + Number.EPSILON) - data.universalPenalty, 0);
+        data.abilities.eyesight.effective = Math.max(Math.round(eph.eyesight + Number.EPSILON) - data.universalPenalty, 0);
+        data.abilities.hearing.effective = Math.max(Math.round(eph.hearing + Number.EPSILON) - data.universalPenalty, 0);
+        data.abilities.smell.effective = Math.max(Math.round(eph.smell + Number.EPSILON) - data.universalPenalty, 0);
+        data.abilities.voice.effective = Math.max(Math.round(eph.voice + Number.EPSILON) - data.universalPenalty, 0);
 
         // Not affected by any penalties
         data.abilities.comeliness.effective = Math.max(Math.round(eph.comeliness + Number.EPSILON), 0);
