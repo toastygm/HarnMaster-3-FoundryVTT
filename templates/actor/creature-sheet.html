@@ -361,9 +361,9 @@
         {{!-- Skills Tab --}}
         <div class="tab skills items" data-group="primary" data-tab="skills">
             <div class="flexrow">
-                <input class="skill-name-filter" type="text" name="data.skillNameFilter" placeholder="Filter skills by name..." data-dtype="String" />
+                <input class="skill-name-filter" type="text" name="data.skillNameFilter"
+                    placeholder="Filter skills by name..." data-dtype="String" />
             </div>
-
             <!-- Physical Skills -->
             <ol class="items-list skills-list">
                 <li class="items-header skill flexrow">
@@ -382,7 +382,7 @@
                 <ol class="item-list skill-list">
                     {{#each items as |item id|}}
                         {{#if (and (eq item.type "skill") (eq item.data.type "Physical"))}}
-                            <li class="item skill flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
+                            <li class="item skill skill-item flexrow" data-item-id="{{item._id}}" data-item-name="{{item.name}}">
                                 <div class="item-name skill-roll skill-name flexrow">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                                     <h4>{{item.name}}</h4>
@@ -419,7 +419,7 @@
                 <ol class="item-list skill-list">
                     {{#each items as |item id|}}
                         {{#if (and (eq item.type "skill") (eq item.data.type "Communication"))}}
-                            <li class="item skill flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
+                            <li class="item skill skill-item flexrow" data-item-id="{{item._id}}" data-item-name="{{item.name}}">
                                 <div class="item-name skill-roll skill-name flexrow">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                                     <h4>{{item.name}}</h4>
@@ -456,7 +456,7 @@
                 <ol class="item-list skill-list">
                     {{#each items as |item id|}}
                         {{#if (and (eq item.type "skill") (eq item.data.type "Combat"))}}
-                            <li class="item skill flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
+                            <li class="item skill skill-item flexrow" data-item-id="{{item._id}}" data-item-name="{{item.name}}">
                                 <div class="item-name skill-roll skill-name flexrow">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                                     <h4>{{item.name}}</h4>
@@ -493,7 +493,7 @@
                 <ol class="item-list skill-list">
                     {{#each items as |item id|}}
                         {{#if (and (eq item.type "skill") (eq item.data.type "Craft"))}}
-                            <li class="item skill flexrow" data-item-id="{{item._id}}" data-item-name="{{data.name}}">
+                            <li class="item skill skill-item flexrow" data-item-id="{{item._id}}" data-item-name="{{item.name}}">
                                 <div class="item-name skill-roll skill-name flexrow">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                                     <h4>{{item.name}}</h4>
