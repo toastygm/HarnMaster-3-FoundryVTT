@@ -469,7 +469,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             const lcEffectsNameFilter = this.effectsNameFilter.toLowerCase();
             let effectItems = html.find('.effect');
             for (let effect of effectItems) {
-                const effectName = gear.getAttribute('data-effect-name');
+                const effectName = effect.getAttribute('data-effect-name');
                 if (lcEffectsNameFilter) {
                     if (effectName.toLowerCase().includes(lcEffectsNameFilter)) {
                         $(effect).show()
