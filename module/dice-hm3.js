@@ -1194,7 +1194,7 @@ export class DiceHM3 {
         const modifier = Number(testData.modifier);
         const baseTargetNum = Number(testData.target) + modifier;
         // Ensure target num is between 9 and 95; always a 5% chance of success/failure
-        const targetNum = Math.min(Math.max(baseTargetNum, 95), 5);
+        const targetNum = Math.max(Math.min(baseTargetNum, 95), 5);
         let isCrit = (roll.total % 5) === 0;
         const levelDesc = isCrit ? "Critical" : "Marginal";
         let description = "";
