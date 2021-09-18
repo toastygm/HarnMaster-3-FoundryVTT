@@ -42,8 +42,13 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         data.dtypes = ["String", "Number", "Boolean"];
         let capacityMax = 0;
         let capacityVal = 0;
-        if ((this.actor.data.type === 'creature') || (this.actor.data.type === 'character')) {
+        if (this.actor.data.type === 'character') {
             capacityMax = data.data.endurance * 10;
+            if (data.data.eph) {
+                capacityVal = data.data.eph.totalGearWeight;
+            }
+        } else if (this.actor.data.type === 'creature') {
+            capacityMax = data.data.loadRating + (data.data.endurance * 10);
             if (data.data.eph) {
                 capacityVal = data.data.eph.totalGearWeight;
             }
