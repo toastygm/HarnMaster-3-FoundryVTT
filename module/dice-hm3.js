@@ -1184,14 +1184,17 @@ export class DiceHM3 {
     static async rollTest(testData) {
 
         const diceType = testData.diceSides === 6 ? "d6" : "d100";
-        const diceSpec = ((testData.diceNum > 0) ? testData.diceNum : 1) + diceType;
+        const numDice = (testData.diceNum > 0) ? testData.diceNum : 1;
+        const diceSpec = numDice + diceType;
         const rollObj = new Roll(diceSpec, testData.data);
         const roll = await rollObj.evaluate({async: true});
         if (!roll) {
             console.error(`Roll evaluation failed, diceSpec=${diceSpec}`)
         }
         const modifier = Number(testData.modifier);
-        const targetNum = Number(testData.target) + modifier;
+        const baseTargetNum = Number(testData.target) + modifier;
+        // Ensure target num is between 9 and 95; always a 5% chance of success/failure
+        const targetNum = Math.min(Math.max(baseTargetNum, 95), 5);
         let isCrit = (roll.total % 5) === 0;
         const levelDesc = isCrit ? "Critical" : "Marginal";
         let description = "";
@@ -1199,7 +1202,7 @@ export class DiceHM3 {
 
         if (diceType === 'd100') {
             // ********** Failure ***********
-            if (roll.total >= 96 || (roll.total > 5 && roll.total > targetNum)) {
+            if (roll.total > targetNum) {
                 description = levelDesc + " Failure";
             }
             // ********** Success ***********
@@ -1216,6 +1219,7 @@ export class DiceHM3 {
         let rollResults = {
             "type": testData.type,
             "target": targetNum,
+            "isCapped": baseTargetNum !== targetNum,
             "modifier": modifier,
             "rollObj": roll,
             "isCritical": isCrit,
