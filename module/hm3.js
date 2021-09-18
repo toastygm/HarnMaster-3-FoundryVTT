@@ -139,12 +139,16 @@ Hooks.on('updateCombat', async (combat, updateData) => {
  */
 Hooks.once("ready", function () {
     // Determine whether a system migration is required
-    const currentVersion = game.settings.get("hm3", "systemMigrationVersion");
+    const currentMigrationVersion = game.settings.get("hm3", "systemMigrationVersion");
     const NEEDS_MIGRATION_VERSION = "1.2.19";  // Anything older than this must be migrated
 
-    let needMigration = currentVersion === null || (isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion));
-    if (needMigration && game.user.isGM) {
-        migrations.migrateWorld();
+    if (currentMigrationVersion) {
+        let needMigration = isNewerVersion(NEEDS_MIGRATION_VERSION, currentMigrationVersion);
+        if (needMigration && game.user.isGM) {
+            migrations.migrateWorld();
+        }
+    } else {
+        game.settings.set("hm3", "systemMigrationVersion", game.system.data.version);
     }
 
     Hooks.on("hotbarDrop", (bar, data, slot) => macros.createHM3Macro(data, slot));
