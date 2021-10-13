@@ -24,6 +24,7 @@ import { HM3 } from './config.js';
 export function calcSkillBase(item) {
     const sb = item.data.data.skillBase;
 
+    sb.delta = 0;
     sb.isFormulaValid = true;
     if (sb.formula === '') {
         // If the formula is blank, its valid,
@@ -36,9 +37,9 @@ export function calcSkillBase(item) {
         actorData = item.actor.data.data;
     }
 
-
     let numAbilities = 0;
-    let sumAbilities = 0;
+    let sumBaseAbilities = 0;
+    let sumModifiedAbilities = 0;
     let ssBonus = 0;
     let modifier = 0;
     let resultSB = 0;
@@ -52,163 +53,175 @@ export function calcSkillBase(item) {
     // we must have at least three parts, otherwise it is invalid
     if (sbParts.length < 3) {
         sb.isFormulaValid = false;
-        return;
+    } else {
+        for (let param of sbParts) {
+            if (!sb.isFormulaValid) break;
+    
+            param = param.trim();
+            if (param != '') {
+                if (param.startsWith('@')) {
+                    // This is a reference to an ability
+    
+                    // Must have more than just the '@' sign
+                    if (param.length === 1) {
+                        sb.isFormulaValid = false;
+                        break;
+                    }
+    
+                    // There may only be 3 abilities
+                    if (numAbilities >= 3) {
+                        sb.isFormulaValid = false;
+                        break;
+                    }
+    
+                    if (actorData) {
+                        const paramName = param.slice(1);
+                        switch (paramName) {
+                            case 'str':
+                                sumBaseAbilities += actorData.abilities.strength.base;
+                                sumModifiedAbilities += actorData.abilities.strength.modified;
+                                break;
+    
+                            case 'sta':
+                                sumBaseAbilities += actorData.abilities.stamina.base;
+                                sumModifiedAbilities += actorData.abilities.stamina.modified;
+                                break;
+    
+                            case 'dex':
+                                sumBaseAbilities += actorData.abilities.dexterity.base;
+                                sumModifiedAbilities += actorData.abilities.dexterity.modified;
+                                break;
+    
+                            case 'agl':
+                                sumBaseAbilities += actorData.abilities.agility.base;
+                                sumModifiedAbilities += actorData.abilities.agility.modified;
+                                break;
+    
+                            case 'int':
+                                sumBaseAbilities += actorData.abilities.intelligence.base;
+                                sumModifiedAbilities += actorData.abilities.intelligence.modified;
+                                break;
+    
+                            case 'aur':
+                                sumBaseAbilities += actorData.abilities.aura.base;
+                                sumModifiedAbilities += actorData.abilities.aura.modified;
+                                break;
+    
+                            case 'wil':
+                                sumBaseAbilities += actorData.abilities.will.base;
+                                sumModifiedAbilities += actorData.abilities.will.modified;
+                                break;
+    
+                            case 'eye':
+                                sumBaseAbilities += actorData.abilities.eyesight.base;
+                                sumModifiedAbilities += actorData.abilities.eyesight.modified;
+                                break;
+    
+                            case 'hrg':
+                                sumBaseAbilities += actorData.abilities.hearing.base;
+                                sumModifiedAbilities += actorData.abilities.hearing.modified;
+                                break;
+    
+                            case 'sml':
+                                sumBaseAbilities += actorData.abilities.smell.base;
+                                sumModifiedAbilities += actorData.abilities.smell.modified;
+                                break;
+    
+                            case 'voi':
+                                sumBaseAbilities += actorData.abilities.voice.base;
+                                sumModifiedAbilities += actorData.abilities.voice.modified;
+                                break;
+    
+                            case 'cml':
+                                sumBaseAbilities += actorData.abilities.comeliness.base;
+                                sumModifiedAbilities += actorData.abilities.comeliness.modified;
+                                break;
+    
+                            case 'mor':
+                                sumBaseAbilities += actorData.abilities.morality.base;
+                                sumModifiedAbilities += actorData.abilities.morality.modified;
+                                break;
+    
+                            case 'end':
+                                sumBaseAbilities += actorData.abilities.endurance.base;
+                                sumModifiedAbilities += actorData.abilities.endurance.modified;
+                                break;
+    
+                            case 'spd':
+                                sumBaseAbilities += actorData.abilities.speed.base;
+                                sumModifiedAbilities += actorData.abilities.speed.modified;
+                                break;
+    
+                            default:
+                                sb.isFormulaValid = false;
+                                return;
+                        }
+                    }
+    
+                    numAbilities++;
+                    continue;
+                }
+    
+                if (param.match(/^[a-z]/)) {
+                    // This is a sunsign
+    
+                    let ssParts = param.split(':');
+    
+                    // if more than 2 parts, it's invalid
+                    if (ssParts.length > 2) {
+                        sb.isFormulaValid = false;
+                        break;
+                    }
+    
+                    // if second part provided, must be a number
+                    if (ssParts.length === 2 && !ssParts[1].trim().match(/[-+]?\d+/)) {
+                        sb.isFormulaValid = false;
+                        break;
+                    }
+    
+                    if (actorData) {
+                        // we must get the actor's sunsign to see if it matches. Actors may
+                        // specify the sunsign as a dual sunsign, in which case the two parts
+                        // must be separated either by a dash or a forward slash
+                        let actorSS = actorData.sunsign.trim().toLowerCase().split(/[-\/]/);
+    
+                        // Call 'trim' function on all strings in actorSS
+                        actorSS.map(Function.prototype.call, String.prototype.trim);
+    
+                        // Now, check whether our sunsign matches any of the actor's sunsigns
+                        if (actorSS.includes(ssParts[0])) {
+                            // We matched a character's sunsign, apply modifier
+                            // Character only gets the largest sunsign bonus
+                            ssBonus = Math.max(ssParts.length === 2 ? Number(ssParts[1].trim()) : 1, ssBonus);
+                        }
+                    }
+    
+                    continue;
+                }
+    
+                // The only valid possibility left is a number.
+                // If it's not a number, it's invalid.
+                if (param.match(/^[-+]?\d+$/)) {
+                    modifier += Number(param);
+                } else {
+                    sb.isFormulaValid = false;
+                    break;
+                }
+            }
+        }            
     }
 
-    sbParts.forEach(param => {
-        if (!sb.isFormulaValid) return;
-
-        param = param.trim();
-        if (param != '') {
-            if (param.startsWith('@')) {
-                // This is a reference to an ability
-
-                // Must have more than just the '@' sign
-                if (param.length === 1) {
-                    sb.isFormulaValid = false;
-                    return;
-                }
-
-                // There may only be 3 abilities
-                if (numAbilities >= 3) {
-                    sb.isFormulaValid = false;
-                    return;
-                }
-
-                if (actorData) {
-                    const paramName = param.slice(1);
-                    switch (paramName) {
-                        case 'str':
-                            sumAbilities += actorData.abilities.strength.base;
-                            break;
-
-                        case 'sta':
-                            sumAbilities += actorData.abilities.stamina.base;
-                            break;
-
-                        case 'dex':
-                            sumAbilities += actorData.abilities.dexterity.base;
-                            break;
-
-                        case 'agl':
-                            sumAbilities += actorData.abilities.agility.base;
-                            break;
-
-                        case 'int':
-                            sumAbilities += actorData.abilities.intelligence.base;
-                            break;
-
-                        case 'aur':
-                            sumAbilities += actorData.abilities.aura.base;
-                            break;
-
-                        case 'wil':
-                            sumAbilities += actorData.abilities.will.base;
-                            break;
-
-                        case 'eye':
-                            sumAbilities += actorData.abilities.eyesight.base;
-                            break;
-
-                        case 'hrg':
-                            sumAbilities += actorData.abilities.hearing.base;
-                            break;
-
-                        case 'sml':
-                            sumAbilities += actorData.abilities.smell.base;
-                            break;
-
-                        case 'voi':
-                            sumAbilities += actorData.abilities.voice.base;
-                            break;
-
-                        case 'cml':
-                            sumAbilities += actorData.abilities.comeliness.base;
-                            break;
-
-                        case 'mor':
-                            sumAbilities += actorData.abilities.morality.base;
-                            break;
-
-                        case 'end':
-                            sumAbilities += actorData.abilities.endurance.base;
-                            break;
-
-                        case 'spd':
-                            sumAbilities += actorData.abilities.speed.base;
-                            break;
-
-                        case 'tch':
-                            sumAbilities += actorData.abilities.touch.base;
-                            break;
-
-                        case 'frm':
-                            sumAbilities += actorData.abilities.frame.base;
-                            break;
-
-                        default:
-                            sb.isFormulaValid = false;
-                            return;
-                    }
-                }
-
-                numAbilities++;
-                return;
-            }
-
-            if (param.match(/^[a-z]/)) {
-                // This is a sunsign
-
-                let ssParts = param.split(':');
-
-                // if more than 2 parts, it's invalid
-                if (ssParts.length > 2) {
-                    sb.isFormulaValid = false;
-                    return;
-                }
-
-                // if second part provided, must be a number
-                if (ssParts.length === 2 && !ssParts[1].trim().match(/[-+]?\d+/)) {
-                    sb.isFormulaValid = false;
-                    return;
-                }
-
-                if (actorData) {
-                    // we must get the actor's sunsign to see if it matches. Actors may
-                    // specify the sunsign as a dual sunsign, in which case the two parts
-                    // must be separated either by a dash or a forward slash
-                    let actorSS = actorData.sunsign.trim().toLowerCase().split(/[-\/]/);
-
-                    // Call 'trim' function on all strings in actorSS
-                    actorSS.map(Function.prototype.call, String.prototype.trim);
-
-                    // Now, check whether our sunsign matches any of the actor's sunsigns
-                    if (actorSS.includes(ssParts[0])) {
-                        // We matched a character's sunsign, apply modifier
-                        // Character only gets the largest sunsign bonus
-                        ssBonus = Math.max(ssParts.length === 2 ? Number(ssParts[1].trim()) : 1, ssBonus);
-                    }
-                }
-
-                return;
-            }
-
-            // The only valid possibility left is a number.
-            // If it's not a number, it's invalid.
-            if (param.match(/^[-+]?\d+$/)) {
-                modifier += Number(param);
-            } else {
-                sb.isFormulaValid = false;
-                return;
-            }
-        }
-    });
 
     if (numAbilities != 3) {
         sb.isFormulaValid = false;
-    } else {
-        if (actorData) {
-            sb.value = Math.round((sumAbilities / 3) + Number.EPSILON) + ssBonus + modifier;
+    }
+    
+    if (actorData) {
+        if (sb.isFormulaValid) {
+            sb.value = Math.round((sumModifiedAbilities / 3) + Number.EPSILON) + ssBonus + modifier;
+            if (sumBaseAbilities !== sumModifiedAbilities) {
+                sb.delta = (sumModifiedAbilities / 3) - (sumBaseAbilities / 3);
+            }
         }
     }
 }
@@ -414,20 +427,42 @@ export function aeChanges(effect) {
     return effect.data.changes.map(ch => {
         const modes = CONST.ACTIVE_EFFECT_MODES;
         const key = ch.key;
-        const val = ch.value;
+        let val = 0;
+        let prefix = '';
+        const parts = parseAEValue(ch.value);
+        if (parts.length === 2) {
+            val = Number.parseInt(parts[1], 10) || 0;
+            const itemName = parts[0];
+            switch(key) {
+                case 'data.eph.itemEMLMod':
+                    prefix = `${itemName} EML`;
+                    break;
+
+                case 'data.eph.itemAMLMod':
+                    prefix = `${itemName} AML`;
+                    break;
+
+                case 'data.eph.itemDMLMod':
+                    prefix = `${itemName} DML`;
+                    break;
+            }
+        } else {
+            val = ch.value;
+            prefix = HM3.activeEffectKey[key];
+        }
         switch (ch.mode) {
             case modes.ADD:
-                return `${HM3.activeEffectKey[key]} ${val < 0 ? '-' : '+'} ${Math.abs(val)}`;
+                return `${prefix} ${val < 0 ? '-' : '+'} ${Math.abs(val)}`;
             case modes.MULTIPLY:
-                return `${HM3.activeEffectKey[key]} x ${val}`;
+                return `${prefix} x ${val}`;
             case modes.OVERRIDE:
-                return `${HM3.activeEffectKey[key]} = ${val}`;
+                return `${prefix} = ${val}`;
             case modes.UPGRADE:
-                return `${HM3.activeEffectKey[key]} >= ${val}`;
+                return `${prefix} >= ${val}`;
             case modes.DOWNGRADE:
-                return `${HM3.activeEffectKey[key]} <= ${val}`;
+                return `${prefix} <= ${val}`;
             default:
-                return `${HM3.activeEffectKey[key]} custom`;
+                return `${prefix} custom`;
         }
     }).join(', ');
 }
@@ -486,4 +521,12 @@ export function executeMacroScript(macro, { actor, token, rollResult, rollData, 
     }
 
     return result;
+}
+
+export function parseAEValue(string) {
+    const lastColon = string.lastIndexOf(':');
+    if (lastColon === -1) return [string];
+    const preString = string.slice(0,lastColon).trim();
+    const postString = string.slice(lastColon+1).trim();
+    return [preString, postString];
 }

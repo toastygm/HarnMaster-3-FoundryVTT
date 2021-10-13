@@ -32,24 +32,8 @@ export class HarnMasterItem extends Item {
             }
         }
 
-        switch (itemData.type) {
-            case 'armorlocation':
-                this._prepareArmorLocationData(itemData);
-                break;
-
-            case 'skill':
-                utility.calcSkillBase(this);
-
-                // Handle using Condition Skill for Endurance if it is present
-                if (itemData.name.toLowerCase() === 'condition' && this.actor?.data) {
-                    this.actor.data.data.hasCondition = true;
-                    this.actor.data.data.endurance = Math.floor(data.masteryLevel / 5) || 1;
-                }
-                break;
-
-            case 'psionic':
-                utility.calcSkillBase(this);
-                break;
+        if (itemData.type === 'armorlocation') {
+            this._prepareArmorLocationData(itemData);
         }
 
         if (img && img != itemData.img) {
@@ -59,7 +43,7 @@ export class HarnMasterItem extends Item {
         Hooks.call("hm3.onItemPrepareData", this);
     }
 
-    prepareDerivedData() {
+    postProcessItems() {
         const itemData = this.data;
         const data = itemData.data;
 
@@ -69,16 +53,28 @@ export class HarnMasterItem extends Item {
         if (itemData.type === 'skill') {
             if (!data.masteryLevel || data.masteryLevel < 0) data.masteryLevel = 0; 
 
+            utility.calcSkillBase(this);
+
+            // Handle using Condition Skill for Endurance if it is present
+            if (itemData.name.toLowerCase() === 'condition' && this.actor?.data) {
+                this.actor.data.data.hasCondition = true;
+                this.actor.data.data.endurance = Math.floor(data.masteryLevel / 5) || 1;
+            }
+
+            // We modify the EML by 5 times the difference between the SB based on base
+            // abilities and the SB based on AE-modified abilities
+            const sbModifier = Math.round(data.skillBase.delta * 5);
+
             // Set EML for skills based on UP/PP
             switch (data.type) {
                 case 'Combat':
                 case 'Physical':
-                    data.effectiveMasteryLevel = data.masteryLevel - pctPhysPen;
+                    data.effectiveMasteryLevel = data.masteryLevel - pctPhysPen + sbModifier;
                     break;
 
                 default:
-                    data.effectiveMasteryLevel = data.masteryLevel - pctUnivPen;
-
+                    data.effectiveMasteryLevel = data.masteryLevel - pctUnivPen + sbModifier;
+                    break;
             }
 
             // Set some actor properties from skills
@@ -90,6 +86,7 @@ export class HarnMasterItem extends Item {
             }
         } else if (itemData.type === 'psionic') {
             if (!data.masteryLevel || data.masteryLevel < 0) data.masteryLevel = 0; 
+            utility.calcSkillBase(this);
             data.effectiveMasteryLevel = data.masteryLevel - pctUnivPen;
         } else if (itemData.type === 'injury') {
             // Just make sure if injuryLevel is negative, we set it to zero
