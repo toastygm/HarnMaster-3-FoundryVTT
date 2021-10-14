@@ -211,6 +211,19 @@ export class HarnMasterActor extends Actor {
         data.abilities.voice.effective = 0;
         data.abilities.comeliness.effective = 0;
         data.abilities.morality.effective = 0;
+        data.abilities.strength.modified = 0;
+        data.abilities.stamina.modified = 0;
+        data.abilities.dexterity.modified = 0;
+        data.abilities.agility.modified = 0;
+        data.abilities.intelligence.modified = 0;
+        data.abilities.aura.modified = 0;
+        data.abilities.will.modified = 0;
+        data.abilities.eyesight.modified = 0;
+        data.abilities.hearing.modified = 0;
+        data.abilities.smell.modified = 0;
+        data.abilities.voice.modified = 0;
+        data.abilities.comeliness.modified = 0;
+        data.abilities.morality.modified = 0;
         data.dodge = 0;
         data.initiative = 0;
         data.endurance = 0;
@@ -278,6 +291,7 @@ export class HarnMasterActor extends Actor {
         eph.itemAMLMod = 0;
         eph.itemDMLMod = 0;
         eph.itemEMLMod = 0;
+        eph.itemCustomMod = 0;
 
         Hooks.call("hm3.onActorPrepareBaseData", this);
     }
@@ -296,6 +310,21 @@ export class HarnMasterActor extends Actor {
         const data = actorData.data;
 
         const eph = data.eph;
+
+        // store AE-affected ability scores
+        data.abilities.strength.modified = eph.strength;
+        data.abilities.stamina.modified = eph.stamina;
+        data.abilities.dexterity.modified = eph.dexterity;
+        data.abilities.agility.modified = eph.agility;
+        data.abilities.eyesight.modified = eph.eyesight;
+        data.abilities.hearing.modified = eph.hearing;
+        data.abilities.smell.modified = eph.smell;
+        data.abilities.voice.modified = eph.voice;
+        data.abilities.intelligence.modified = eph.intelligence;
+        data.abilities.will.modified = eph.will;
+        data.abilities.aura.modified = eph.aura;
+        data.abilities.morality.modified = eph.morality;
+        data.abilities.comeliness.modified = eph.comeliness;
 
         this._calcGearWeightTotals();
 
@@ -340,46 +369,21 @@ export class HarnMasterActor extends Actor {
         eph.stumbleTarget = Math.max(data.abilities.agility.effective, 0);
         eph.fumbleTarget = Math.max(data.abilities.dexterity.effective, 0);
 
-        // Process all the final post activities for Items
+        // Process all the final post activities for each item
         this.items.forEach(it => {
-            it.prepareDerivedData();
+            it.postProcessItems();
 
-            // If a skill, apply the specific active effect to modify
-            // the EML
+            // Apply AE based on skill types (not based on individual skills, that comes later)
             if (['skill', 'psionic'].includes(it.data.type)) {
                 this.applySkillTypeActiveEffect(it);
             }
         });
 
-        // Apply the individual AML and DML active effects for each Melee or Missile Weapon
-        this._applyItemActiveEffects();
+        // Apply the individual AE for skills
+        this._applySkillActiveEffects();
 
         // Calculate spell effective mastery level values
         this._refreshSpellsAndInvocations();
-
-        // Ensure all EMLs are >= 5                
-        this.items.forEach(it => {
-            const itemData = it.data;
-            if (['skill', 'spell', 'invocation', 'psionic'].includes(itemData.type)) {
-                itemData.data.effectiveMasteryLevel = Math.max(itemData.data.effectiveMasteryLevel || 5, 5);
-            }
-
-            if (itemData.type === 'skill') {
-                switch (itemData.name.toLowerCase()) {
-                    case 'dodge':
-                        data.dodge = itemData.data.effectiveMasteryLevel;
-                        break;
-
-                    case 'initiative':
-                        data.initiative = itemData.data.effectiveMasteryLevel;
-                        break;
-
-                    case 'condition':
-                        data.condition = itemData.data.effectiveMasteryLevel;
-                        break;
-                }
-            }
-        });
 
         // Collect all combat skills into a map for use later
         let combatSkills = {};
@@ -396,6 +400,29 @@ export class HarnMasterActor extends Actor {
         this._setupWeaponData(combatSkills);
 
         this._generateArmorLocationMap(data);
+
+        // Ensure all EML, AML, and DML are min 5
+        this._setMinEML_AML_DML();
+
+        // Store "special" skill properties
+        this.items.forEach(it => {
+            const itemData = it.data;
+            if (itemData.type === 'skill') {
+                switch (itemData.name.toLowerCase()) {
+                    case 'dodge':
+                        data.dodge = itemData.data.effectiveMasteryLevel;
+                        break;
+
+                    case 'initiative':
+                        data.initiative = itemData.data.effectiveMasteryLevel;
+                        break;
+
+                    case 'condition':
+                        data.condition = itemData.data.effectiveMasteryLevel;
+                        break;
+                }
+            }
+        });
 
         Hooks.call("hm3.onActorPrepareDerivedData", this);
 
@@ -589,8 +616,6 @@ export class HarnMasterActor extends Actor {
                     let skillEml = combatSkills[assocSkill].eml;
                     itemData.attackMasteryLevel = (skillEml || 0) + (itemData.attackModifier || 0);
                 }
-                this.applyWeaponActiveEffect(it);
-                itemData.attackMasteryLevel = Math.max(itemData.attackMasteryLevel, 5);
             } else if (it.data.type === 'weapongear') {
                 // Reset mastery levels in case nothing matches
                 itemData.attackMasteryLevel = 5
@@ -616,11 +641,35 @@ export class HarnMasterActor extends Actor {
                     itemData.attackMasteryLevel = (skillEml || 0) + (itemData.attack || 0) + (itemData.attackModifier || 0);
                     itemData.defenseMasteryLevel = (skillEml || 0) + (itemData.defense || 0);
                 }
-                this.applyWeaponActiveEffect(it);
-                itemData.attackMasteryLevel = Math.max(itemData.attackMasteryLevel || 5, 5);
-                itemData.defenseMasteryLevel = Math.max(itemData.defenseMasteryLevel || 5, 5);
             }
         });
+
+        // Apply the individual AE for weapons
+        this._applyWeaponActiveEffects();
+
+    }
+
+    _setMinEML_AML_DML() {
+        this.items.forEach(it => {
+            const itemData = it.data;
+            switch (itemData.type) {
+                case 'skill':
+                case 'psionic':
+                case 'spell':
+                case 'invocation':
+                    itemData.data.effectiveMasteryLevel = Math.max(itemData.data.effectiveMasteryLevel, 5);
+                    break;
+
+                case 'weapongear':
+                    itemData.data.attackMasteryLevel = Math.max(itemData.data.attackMasteryLevel, 5);
+                    itemData.data.defenseMasteryLevel = Math.max(itemData.data.defenseMasteryLevel, 5);
+                    break;
+
+                case 'missilegear':
+                    itemData.data.attackMasteryLevel = Math.max(itemData.data.attackMasteryLevel, 5);
+                    break;
+            }
+        })
     }
 
     _refreshSpellsAndInvocations() {
@@ -888,41 +937,38 @@ export class HarnMasterActor extends Actor {
 
     /**
      * This method implements Item-based effects.  It applies three types of AE:
-     *   Weapon Attack ML - Modifies the AML of a single weapon
-     *   Weapon Defense ML - Modifies the DML of a single weapon
      *   Skill EML - Modifies the EML of a specific Skill (or Psionic talent)
      * 
      * Note that unlike normal Active Effects, these effects apply to the Itens data model,
-     * not the Actor's data model.  The Item to be affected is indicated by the
-     * AE origin field, which should be an Item in this case.
+     * not the Actor's data model.
+     * 
+     * The "value" field should look like "<item name>:<magnitude>"
      */
-    _applyItemActiveEffects() {
+     _applySkillActiveEffects() {
+        const ownedItems = this.items;
         const changes = this.effects.reduce((chgs, e) => {
             if (e.data.disabled) return chgs;
-            const m = e.data.origin?.match(/Item\.([a-zA-Z0-9]*)/);
-            if (!m) return chgs;
-            const item = this.items.get(m[1]);
-            if (!item) return chgs;
-            const itemChanges = e.data.changes.filter(chg =>
-                (chg.key === 'data.eph.itemAMLMod' && ['weapongear', 'missilegear'].includes(item.type)) ||
-                (chg.key === 'data.eph.itemDMLMod' && item.type === 'weapongear') ||
-                (chg.key === 'data.eph.itemEMLMod' && ['skill', 'psionic'].includes(item.type)));
-            return chgs.concat(itemChanges.map(c => {
-                c = foundry.utils.duplicate(c);
-                c.item = item;
-                switch (c.key) {
-                    case 'data.eph.itemAMLMod':
-                        c.key = 'data.attackMasteryLevel';
-                        break;
-
-                    case 'data.eph.itemDMLMod':
-                        c.key = 'data.defenseMasteryLevel';
-                        break;
-
-                    case 'data.eph.itemEMLMod':
-                        c.key = 'data.effectiveMasteryLevel';
-                        break;
+            const emlChanges = e.data.changes.filter(chg => {
+                if (chg.key === 'data.eph.itemEMLMod') {
+                    const val = utility.parseAEValue(chg.value);
+                    if (val.length != 2) return false;
+                    const magnitude = Number.parseInt(val[1], 10);
+                    if (isNaN(magnitude)) return false;
+                    const skillName = val[0];
+                    return Array.from(ownedItems).some(i => i.name === skillName && (i.type === 'skill' || i.type === 'psionic'));
+                } else {
+                    return false;
                 }
+            });
+
+            return chgs.concat(emlChanges.map(c => {
+                c = foundry.utils.duplicate(c);
+                const val = utility.parseAEValue(c.value);
+                const itemName = val[0];
+                c.value = Number.parseInt(val[1], 10);
+                c.key = 'data.effectiveMasteryLevel';
+                c.item = this.itemTypes.skill.find(it => it.name === itemName);
+                if (!c.item) c.item = this.itemTypes.psionic.find(it => it.name === itemName);
                 c.effect = e;
                 c.priority = c.priority ?? (c.mode * 10);
                 return c;
@@ -932,6 +978,86 @@ export class HarnMasterActor extends Actor {
 
         // Apply all changes
         for (let change of changes) {
+            if (!change.item) continue;  // THIS IS AN ERROR; Should generate an error
+            change.effect.apply(change.item, change);
+            this.roundChange(change.item, change);
+        }
+    }
+
+    /**
+     * This method implements Item-based weapon effects.  It applies two types of AE:
+     *   Weapon Attack ML - Modifies the AML of a single weapon
+     *   Weapon Defense ML - Modifies the DML of a single weapon
+     * 
+     * Note that unlike normal Active Effects, these effects apply to the Items data model,
+     * not the Actor's data model.
+     * 
+     * The "value" field should look like "<item name>:<magnitude>"
+     */
+     _applyWeaponActiveEffects() {
+        const changes = this.effects.reduce((chgs, e) => {
+            if (e.data.disabled) return chgs;
+            const amlChanges = e.data.changes.filter(chg => {
+                if (chg.key === 'data.eph.itemAMLMod') {
+                    const val = utility.parseAEValue(chg.value);
+                    if (val.length != 2) return false;
+                    const magnitude = Number.parseInt(val[1], 10);
+                    if (isNaN(magnitude)) return false;
+                    const skillName = val[0];
+                    for (let item in this.items.values()) {
+                        if ((item.data.name === skillName) && 
+                        (item.data.type === 'weapongear' || item.data.type === 'missilegear')) return true;
+                    }
+                }
+                
+                return false;
+            });
+                
+            const dmlChanges = e.data.changes.filter(chg => {
+                if (chg.key === 'data.eph.itemDMLMod') {
+                    const val = utility.parseAEValue(chg.value);
+                    if (val.length != 2) return false;
+                    const magnitude = Number.parseInt(val[1], 10);
+                    if (isNaN(magnitude)) return false;
+                    const skillName = val[0];
+                    for (let item in this.items.values()) {
+                        if ((item.data.name === skillName) && 
+                        item.data.type === 'weapongear') return true;
+                    }
+                }
+                
+                return false;
+            });
+
+            const allChanges = amlChanges.concat(dmlChanges);
+            return chgs.concat(allChanges.map(c => {
+                c = foundry.utils.duplicate(c);
+                const val = utility.parseAEValue(c.value);
+                const itemName = val[0];
+                c.value = Number.parseInt(val[1], 10);
+                switch (c.key) {
+                    case 'data.eph.itemAMLMod':
+                        c.key = 'data.attackMasteryLevel';
+                        c.item = this.itemTypes.weapongear.find(it => it.name === itemName);
+                        if (!c.item) c.item = this.itemTypes.missilegear.find(it => it.name === itemName);
+                        break;
+
+                    case 'data.eph.itemDMLMod':
+                        c.key = 'data.defenseMasteryLevel';
+                        c.item = this.itemTypes.weapongear.find(it => it.name === itemName);
+                        break;
+                }
+
+                c.effect = e;
+                c.priority = c.priority ?? (c.mode * 10);
+                return c;
+            }));
+        }, []);
+        changes.sort((a, b) => a.priority - b.priority);
+
+        // Apply all changes
+        for (let change of changes) {
+            if (!change.item) continue;  // THIS IS AN ERROR; Should generate an error
             change.effect.apply(change.item, change);
             this.roundChange(change.item, change);
         }
@@ -1022,7 +1148,7 @@ export class HarnMasterActor extends Actor {
         }
     }
 
-    applyWeaponActiveEffect(weapon) {
+/*    applyWeaponActiveEffect(weapon) {
         // Organize non-disabled effects by their application priority
         const changes = this.effects.reduce((chgs, e) => {
             if (e.data.disabled) return chgs;
@@ -1045,6 +1171,7 @@ export class HarnMasterActor extends Actor {
             this.roundChange(weapon, change);
         }
     }
+*/
 
     /**
      * Run a custom macro assigned to this item.
