@@ -44,7 +44,7 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
         return null;
     }
 
-    const speaker = ChatMessage.getSpeaker({token: attackToken});
+    const speaker = ChatMessage.getSpeaker({token: attackToken.document});
     const range = rangeToTarget(attackToken, defendToken);
 
     const options = {
@@ -186,7 +186,7 @@ export async function meleeAttack(attackToken, defendToken, weaponItem=null) {
         return null;
     }
 
-    const speaker = ChatMessage.getSpeaker({token: attackToken});
+    const speaker = ChatMessage.getSpeaker({token: attackToken.document});
 
     // display dialog, get aspect, aim, and addl damage
     const options = {
@@ -530,7 +530,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         return null;
     }
 
-    const speaker = ChatMessage.getSpeaker({token: atkToken});
+    const speaker = ChatMessage.getSpeaker({token: atkToken.document});
 
     // Get weapon with maximum impact
     const options = defaultMeleeWeapon(defToken);
@@ -733,7 +733,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         return null;
     }
 
-    const speaker = ChatMessage.getSpeaker({token: atkToken});
+    const speaker = ChatMessage.getSpeaker({token: atkToken.document});
 
     const atkRoll = await DiceHM3.rollTest({
         data: {},
@@ -1134,7 +1134,7 @@ export async function checkWeaponBreak(atkWeapon, defWeapon) {
     let html = await renderTemplate(chatTemplate, chatData);
 
     messageData.content = html.trim();
-    messageData.speaker = ChatMessage.getSpeaker({token: defToken});
+    messageData.speaker = ChatMessage.getSpeaker({token: defToken.document});
     messageData.roll = atkBreakRoll;
 
     const messageOptions = {};
@@ -1154,7 +1154,7 @@ export async function checkWeaponBreak(atkWeapon, defWeapon) {
     html = await renderTemplate(chatTemplate, chatData);
 
     messageData.content = html.trim();
-    messageData.speaker = ChatMessage.getSpeaker({token: defToken});
+    messageData.speaker = ChatMessage.getSpeaker({token: defToken.document});
     messageData.roll = defBreakRoll;
 
     await ChatMessage.create(messageData, messageOptions);
@@ -1182,7 +1182,7 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
         return null;
     }
 
-    const speaker = ChatMessage.getSpeaker({token: atkToken});
+    const speaker = ChatMessage.getSpeaker({token: atkToken.document});
 
     const atkRoll = await DiceHM3.rollTest({
         data: {},
