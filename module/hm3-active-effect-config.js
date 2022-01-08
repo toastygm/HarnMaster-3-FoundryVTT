@@ -1,7 +1,7 @@
 import { HM3 } from './config.js';
 
 /**
- * A form designed for creating and editing an Active Effect on an Actor or Item entity.
+ * A form designed for creating and editing an Active Effect on an Actor or Item.
  * @implements {FormApplication}
  *
  * @param {ActiveEffect} object     The target active effect being configured

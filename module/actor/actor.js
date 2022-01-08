@@ -4,7 +4,7 @@ import * as macros from '../macros.js';
 import * as utility from '../utility.js';
 
 /**
- * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
+ * Extend the base Actor by defining a custom roll data structure which is ideal for the Simple system.
  * @extends {Actor}
  */
 export class HarnMasterActor extends Actor {
@@ -13,14 +13,14 @@ export class HarnMasterActor extends Actor {
 
         // Collect data
         const documentName = this.metadata.name;
-        const types = game.system.entityTypes[documentName];
+        const types = game.system.documentTypes[documentName];
         const folders = game.folders.filter(f => (f.data.type === documentName) && f.displayed);
         const label = game.i18n.localize(this.metadata.label);
-        const title = game.i18n.format("ENTITY.Create", { entity: label });
+        const title = game.i18n.format("DOCUMENT.Create", { type: label });
 
-        // Render the entity creation form
+        // Render the document creation form
         const html = await renderTemplate(`systems/hm3/templates/dialog/actor-create.html`, {
-            name: data.name || game.i18n.format("ENTITY.New", { entity: label }),
+            name: data.name || game.i18n.format("DOCUMENT.New", { type: label }),
             folder: data.folder,
             folders: folders,
             hasFolders: folders.length > 1,

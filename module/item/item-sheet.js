@@ -40,7 +40,7 @@ export class HarnMasterItemSheet extends ItemSheet {
     data.hasRitualSkills = false;
     data.hasMagicSkills = false;
 
-    data.macroTypes = foundry.utils.deepClone(game.system.entityTypes.Macro);
+    data.macroTypes = foundry.utils.deepClone(game.system.documentTypes.Macro);
     
     data.containers = { 'On Person': 'on-person' };
     // Containers are not allowed in other containers.  So if this item is a container,
