@@ -816,7 +816,7 @@ export class HarnMasterActor extends Actor {
         if (result?.sdrIncr) {
             await item.update({
                 "data.improveFlag": false,
-                "data.masteryLevel": item.data.data.masteryLevel + (result.sdrIncr === 2 ? 2 : 1)
+                "data.masteryLevel": +(item.data.data.masteryLevel) + (result.sdrIncr === 2 ? 2 : 1)
             });
         } else {
             await item.update({ "data.improveFlag": false });
