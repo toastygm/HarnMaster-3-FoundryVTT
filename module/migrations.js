@@ -11,7 +11,7 @@ export const migrateWorld = async function () {
     try {
       const updateData = migrateActorData(a.data);
       if (!foundry.utils.isObjectEmpty(updateData)) {
-        console.log(`HM3 | Migrating Actor entity ${a.name}`);
+        console.log(`HM3 | Migrating Actor ${a.name}`);
         await a.update(updateData, { enforceTypes: false });
       }
     } catch (err) {
@@ -25,7 +25,7 @@ export const migrateWorld = async function () {
     try {
       const updateData = migrateItemData(i.data);
       if (!foundry.utils.isObjectEmpty(updateData)) {
-        console.log(`HM3 | Migrating Item entity ${i.name}`);
+        console.log(`HM3 | Migrating Item ${i.name}`);
         await i.update(updateData, { enforceTypes: false });
       }
     } catch (err) {
@@ -39,7 +39,7 @@ export const migrateWorld = async function () {
     try {
       const updateData = migrateSceneData(s.data);
       if (!foundry.utils.ObjectEmpty(updateData)) {
-        console.log(`HM3 | Migrating Scene entity ${s.name}`);
+        console.log(`HM3 | Migrating Scene ${s.name}`);
         await s.update(updateData, { enforceTypes: false });
       }
     } catch (err) {
@@ -52,7 +52,7 @@ export const migrateWorld = async function () {
   console.log(`HM3 | Migrating Compendium Packs`);
   for (let p of game.packs) {
     if (p.metadata.package !== 'world') continue;
-    if (!['Actor', 'Item', 'Scene'].includes(p.metadata.entity)) continue;
+    if (!['Actor', 'Item', 'Scene'].includes(p.documentName)) continue;
     console.log(`HM3 | Starting Migration for Pack ${p.metadata.label}`);
     await migrateCompendium(p);
   }
@@ -71,8 +71,8 @@ export const migrateWorld = async function () {
  * @return {Promise}
  */
  export const migrateCompendium = async function(pack) {
-  const entity = pack.metadata.entity;
-  if ( !["Actor", "Item", "Scene"].includes(entity) ) return;
+  const doc = pack.documentName;
+  if ( !["Actor", "Item", "Scene"].includes(doc) ) return;
 
   // Unlock the pack for editing
   const wasLocked = pack.locked;
@@ -86,7 +86,7 @@ export const migrateWorld = async function () {
   for ( let doc of documents ) {
     let updateData = {};
     try {
-      switch (entity) {
+      switch (doc) {
         case "Actor":
           updateData = migrateActorData(doc.data);
           break;
@@ -101,27 +101,27 @@ export const migrateWorld = async function () {
       // Save the entry, if data was changed
       if ( foundry.utils.isObjectEmpty(updateData) ) continue;
       await doc.update(updateData);
-      console.log(`Migrated ${entity} entity ${doc.name} in Compendium ${pack.collection}`);
+      console.log(`Migrated ${doc} ${doc.name} in Compendium ${pack.collection}`);
     }
 
     // Handle migration failures
     catch(err) {
-      err.message = `Failed dnd5e system migration for entity ${doc.name} in pack ${pack.collection}: ${err.message}`;
+      err.message = `Failed dnd5e system migration for ${doc.name} in pack ${pack.collection}: ${err.message}`;
       console.error(err);
     }
   }
 
   // Apply the original locked status for the pack
   await pack.configure({locked: wasLocked});
-  console.log(`Migrated all ${entity} entities from Compendium ${pack.collection}`);
+  console.log(`Migrated all ${doc} entities from Compendium ${pack.collection}`);
 };
 
 /* -------------------------------------------- */
-/*  Entity Type Migration Helpers               */
+/*  Document Type Migration Helpers               */
 /* -------------------------------------------- */
 
 /**
- * Migrate a single Actor entity to incorporate latest data model changes
+ * Migrate a single Actor to incorporate latest data model changes
  * Return an Object of updateData to be applied
  * @param {Actor} actor   The actor to Update
  * @return {Object}       The updateData to apply
@@ -321,7 +321,7 @@ function cleanActorData(actorData) {
 /* -------------------------------------------- */
 
 /**
- * Migrate a single Item entity to incorporate latest data model changes
+ * Migrate a single Item to incorporate latest data model changes
  * @param itemData
  */
 export const migrateItemData = function (item) {
@@ -439,7 +439,7 @@ export const migrateItemData = function (item) {
 /* -------------------------------------------- */
 
 /**
- * Migrate a single Scene entity to incorporate changes to the data model of it's actor data overrides
+ * Migrate a single Scene to incorporate changes to the data model of it's actor data overrides
  * Return an Object of updateData to be applied
  * @param {Object} scene  The Scene data to Update
  * @return {Object}       The updateData to apply
@@ -534,16 +534,16 @@ export async function purgeFlags(pack) {
   };
   await pack.configure({ locked: false });
   const content = await pack.getDocuments();
-  for (let entity of content) {
-    const update = { _id: entity.id, flags: cleanFlags(entity.data.flags) };
-    if (pack.document === "Actor") {
-      update.items = entity.data.items.map(i => {
+  for (let doc of content) {
+    const update = { flags: cleanFlags(doc.data.flags) };
+    if (pack.documentName === "Actor") {
+      update.items = doc.data.items.map(i => {
         i.flags = cleanFlags(i.flags);
         return i;
-      })
+      });
     }
-    await pack.updateEntity(update, { recursive: false });
-    console.log(`HM3 | Purged flags from ${entity.name}`);
+    await doc.update(update, { recursive: false });
+    console.log(`HM3 | Purged flags from ${doc.name}`);
   }
   await pack.configure({ locked: true });
 }

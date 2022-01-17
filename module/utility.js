@@ -484,7 +484,7 @@ export function executeMacroScript(macro, { actor, token, rollResult, rollData, 
             token = actor.isToken ? actor.token : null;
         } else {
             actor = token.actor;
-            speaker = ChatMessage.getSpeaker({ token: token });
+            speaker = ChatMessage.getSpeaker({ token: token.document });
         }
     }
 

@@ -37,7 +37,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         data.labels = this.actor.labels || {};
         data.filters = this._filters;
         
-        data.macroTypes = foundry.utils.deepClone(game.system.entityTypes.Macro);
+        data.macroTypes = foundry.utils.deepClone(game.system.documentTypes.Macro);
     
         data.dtypes = ["String", "Number", "Boolean"];
         let capacityMax = 0;

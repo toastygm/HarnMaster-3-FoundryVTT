@@ -3,7 +3,7 @@
 /**
  * Manage Active Effect instances through the Actor Sheet via effect control buttons.
  * @param {MouseEvent} event      The left-click event on the effect control
- * @param {Actor|Item} owner      The owning entity which manages this effect
+ * @param {Actor|Item} owner      The owning document which manages this effect
  */
 export async function onManageActiveEffect(event, owner) {
     event.preventDefault();

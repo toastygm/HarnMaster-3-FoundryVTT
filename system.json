@@ -2,16 +2,16 @@
   "name": "hm3",
   "title": "HarnMaster 3",
   "description": "The HarnMaster system for FoundryVTT!",
-  "version": "1.2.25",
-  "minimumCoreVersion": "0.8.6",
-  "compatibleCoreVersion": "0.8.9",
+  "version": "1.3.0",
+  "minimumCoreVersion": "9",
+  "compatibleCoreVersion": "9",
   "templateVersion": 2,
   "bugs": "https://github.com/toastygm/HarnMaster-3-FoundryVTT/issues",
   "license": "LICENSE",
   "readme": "README.md",
   "authors": [
     {
-      "name": "Tom Rodriguez",
+      "name": "Toasty",
       "discord": "toasty#8538"
     }
   ],
@@ -24,196 +24,196 @@
       "name": "std-spell-fyvria",
       "path": "packs/std-spell-fyvria.db",
       "system": "hm3",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "label": "Std Spells - Jmorvi",
       "name": "std-spell-jmorvi",
       "path": "packs/std-spell-jmorvi.db",
       "system": "hm3",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "label": "Std Spells - Lyahvi",
       "name": "std-spell-lyahvi",
       "path": "packs/std-spell-lyahvi.db",
       "system": "hm3",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "label": "Std Spells - Neutral",
       "name": "std-spell-neutral",
       "path": "packs/std-spell-neutral.db",
       "system": "hm3",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "label": "Std Spells - Odivishe",
       "name": "std-spell-odivishe",
       "path": "packs/std-spell-odivishe.db",
       "system": "hm3",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "label": "Std Spells - Peleahn",
       "name": "std-spell-peleahn",
       "path": "packs/std-spell-peleahn.db",
       "system": "hm3",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "label": "Std Spells - Savorya",
       "name": "std-spell-savorya",
       "path": "packs/std-spell-savorya.db",
       "system": "hm3",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "label": "Std Rituals - Agrik",
       "name": "std-rituals-agrik",
       "path": "packs/std-rituals-agrik.db",
       "system": "hm3",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "label": "Std Rituals - Halea",
       "name": "std-rituals-halea",
       "path": "packs/std-rituals-halea.db",
       "system": "hm3",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "label": "Std Rituals - Ilvir",
       "name": "std-rituals-ilvir",
       "path": "packs/std-rituals-ilvir.db",
       "system": "hm3",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "label": "Std Rituals - Larani",
       "name": "std-rituals-larani",
       "path": "packs/std-rituals-larani.db",
       "system": "hm3",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "label": "Std Rituals - Morgath",
       "name": "std-rituals-morgath",
       "path": "packs/std-rituals-morgath.db",
       "system": "hm3",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "label": "Std Rituals - Naveh",
       "name": "std-rituals-naveh",
       "path": "packs/std-rituals-naveh.db",
       "system": "hm3",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "label": "Std Rituals - Peoni",
       "name": "std-rituals-peoni",
       "path": "packs/std-rituals-peoni.db",
       "system": "hm3",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "label": "Std Rituals - Sarajin",
       "name": "std-rituals-sarajin",
       "path": "packs/std-rituals-sarajin.db",
       "system": "hm3",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "label": "Std Rituals - Save-K'nor",
       "name": "std-rituals-save-knor",
       "path": "packs/std-rituals-save-knor.db",
       "system": "hm3",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "label": "Std Rituals - Siem",
       "name": "std-rituals-siem",
       "path": "packs/std-rituals-siem.db",
       "system": "hm3",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "label": "Std Skills - Physical",
       "name": "std-skills-physical",
       "path": "packs/std-skills-physical.db",
       "system": "hm3",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "label": "Std Skills - Communication",
       "name": "std-skills-communication",
       "path": "packs/std-skills-communication.db",
       "system": "hm3",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "label": "Std Skills - Combat",
       "name": "std-skills-combat",
       "path": "packs/std-skills-combat.db",
       "system": "hm3",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "label": "Std Skills - Crafts & Lore",
       "name": "std-skills-crafts-and-lore",
       "path": "packs/std-skills-crafts-and-lore.db",
       "system": "hm3",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "label": "Std Skills - Religion",
       "name": "std-skills-religion",
       "path": "packs/std-skills-religion.db",
       "system": "hm3",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "label": "Std Skills - Magic",
       "name": "std-skills-magic",
       "path": "packs/std-skills-magic.db",
       "system": "hm3",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "label": "Std Psionics",
       "name": "std-psionics",
       "path": "packs/std-psionics.db",
       "system": "hm3",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "label": "Std Melee Weapons",
       "name": "std-melee-weapons",
       "path": "packs/std-melee-weapons.db",
       "system": "hm3",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "label": "Std Missile Weapons",
       "name": "std-missile-weapons",
       "path": "packs/std-missile-weapons.db",
       "system": "hm3",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "label": "Std Armor",
       "name": "std-armor",
       "path": "packs/std-armor.db",
       "system": "hm3",
-      "entity": "Item"
+      "type": "Item"
     },
     {
       "label": "System Help",
       "name": "system-help",
       "path": "packs/system-help.db",
       "system": "hm3",
-      "entity": "JournalEntry"
+      "type": "JournalEntry"
     }
   ],
   "languages": [

@@ -50,7 +50,7 @@ Hooks.once('init', async function () {
     // Define custom ActiveEffect class
     CONFIG.ActiveEffect.sheetClass = HM3ActiveEffectConfig;
 
-    // Define custom Entity classes
+    // Define custom Document classes
     CONFIG.Actor.documentClass = HarnMasterActor;
     CONFIG.Item.documentClass = HarnMasterItem;
     CONFIG.Combat.documentClass = HarnMasterCombat;
