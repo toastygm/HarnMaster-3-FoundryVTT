@@ -51,7 +51,7 @@ export async function createHM3Macro(data, slot) {
 }
 
 async function applyMacro(name, command, slot, img, flags) {
-    let macro = game.macros.entities.find(m => (m.name === name) && (m.command === command));
+    let macro = [game.macros.values()].find(m => (m.name === name) && (m.command === command));
     if (!macro) {
         macro = await Macro.create({
             name: name,
