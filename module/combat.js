@@ -424,6 +424,8 @@ async function attackDialog(options) {
             const form = html[0].querySelector("form");
             const formRange = form.range ? form.range.value : null;
 
+            const addlModifier = (form.addlModifier ? parseInt(form.addlModifier.value) : 0) +
+                (form.aim?.value !== 'Mid' ? -10 : 0);
             const result = {
                 weapon: options.weapon,
                 aspect: form.weaponAspect ? form.weaponAspect.value : null,
