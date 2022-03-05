@@ -1264,8 +1264,12 @@ export class HarnMasterActor extends Actor {
     
     static calcShockIndex(actor) {
         const data = actor.data.data;
-        data.shockIndex.value = 
+        const value = 
             HarnMasterActor.normProb(data.endurance, data.universalPenalty * 3.5, data.universalPenalty);
+        if (data.shockIndex.value !== value) {
+            updates = {[`data.${attribute}.value`]: value};
+            actor.update(updates);
+        }
     }
     
 }
