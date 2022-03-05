@@ -181,7 +181,7 @@ Hooks.on('renderSceneConfig', (app, html, data) => {
     
     let isTotm = scene.getFlag('hm3', 'isTotm');
     if (typeof isTotm === 'undefined') {
-        if (scene.compendium === null) {
+        if (!scene.compendium) {
             scene.setFlag('hm3', 'isTotm', false);
         }
         isTotm = false;
@@ -203,7 +203,7 @@ Hooks.on('renderSceneConfig', (app, html, data) => {
 Hooks.on('closeSceneConfig', (app, html, data) => {
     const scene = app.object;
     app.renderTOTMScene = false;
-    if (scene.compendium === null) {
+    if (!scene.compendium) {
         scene.setFlag('hm3', 'isTotm', html.find("input[name='hm3Totm']").is(":checked"));
     }
 });

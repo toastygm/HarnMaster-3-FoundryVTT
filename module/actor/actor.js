@@ -1266,6 +1266,11 @@ export class HarnMasterActor extends Actor {
         const data = actor.data.data;
         data.shockIndex.value = 
             HarnMasterActor.normProb(data.endurance, data.universalPenalty * 3.5, data.universalPenalty);
+        
+        // Draw attribute bars for all linked tokens
+        actor.getActiveTokens(true).forEach(t => {
+            t.drawBars();
+        });
     }
     
 }
