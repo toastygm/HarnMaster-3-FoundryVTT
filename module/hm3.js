@@ -98,7 +98,8 @@ Hooks.once('init', async function () {
     });
 
     // Add a font selector dropdown to the TineMCE editor
-    CONFIG.TinyMCE.toolbar = "styleselect forecolor backcolor bullist numlist image table hr link removeformat code fontselect fontsizeselect save";
+    //CONFIG.TinyMCE.toolbar = "styleselect forecolor backcolor bullist numlist image table hr link removeformat code fontselect fontsizeselect save";
+    //CONFIG.TinyMCE.toolbar = "styles bullist numlist image table hr link removeformat code fontselect save";
     // Register the Hârnic fonts with Foundry and TinyMCE
     // These are the default fonts for browsers
     let defaultFonts = "Andale Mono=andale mono,times; Arial=arial,helvetica,sans-serif; Arial Black=arial black,avant garde; Book Antiqua=book antiqua,palatino; Comic Sans MS=comic sans ms,sans-serif; Courier New=courier new,courier; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago; Signika=Signika,sans-serif;Symbol=symbol; Tahoma=tahoma,arial,helvetica,sans-serif; Terminal=terminal,monaco; Times New Roman=times new roman,times; Trebuchet MS=trebuchet ms,geneva; Verdana=verdana,geneva; Webdings=webdings; Wingdings=wingdings,zapf dingbats"
@@ -107,8 +108,13 @@ Hooks.once('init', async function () {
     // Configure the TinyMCE font drop-down (note: Monk's Enhanced Journal will overwrite this)
     CONFIG.TinyMCE.font_formats = (CONFIG.TinyMCE.font_formats?CONFIG.TinyMCE.font_formats:defaultFonts) + ";"+extraFonts;
     // Register the extra fonts within Foundry itsel (e.g. Text drawing tool)
-    let fontFamilies = extraFonts.split(";").map(f => f.split("=")[0]).filter(f => f.length);
-    fontFamilies.forEach(f => CONFIG.fontFamilies.push(f));
+//    let fontFamilies = extraFonts.split(";").map(f => f.split("=")[0]).filter(f => f.length);
+//    fontFamilies.forEach(f => CONFIG.fontFamilies.push(f));
+    Object.assign(CONFIG.fontDefinitions, {
+        "Lakise": {editor: true, fonts: [{urls: ['./systems/hm3/fonts/Harn-Lakise-Normal.otf']}]},
+        "Runic": {editor: true, fonts: [{urls: ['./systems/hm3/fonts/Harn-Runic-Normal.otf']}]},
+        "Lankorian Blackhand": {editor: true, fonts: [{urls: ['./systems/hm3/fonts/Lankorian-Blackhand.otf']}]}
+    });
 
 });
 
