@@ -32,7 +32,7 @@ export class HarnMasterItemSheet extends ItemSheet {
 
     // Re-define the template data references (backwards compatible)
     data.item = itemData;
-    data.data = itemData.data;
+    data.data = itemData.system;
     data.config = CONFIG.HM3;
     data.itemType = this.item.data.type;
     data.hasActor = this.actor && true;
@@ -71,20 +71,20 @@ export class HarnMasterItemSheet extends ItemSheet {
       data.dieties = [];
       if (this.actor) {
         this.actor.itemTypes.skill.forEach(it => {
-          if (it.data.data.type === 'Ritual') {
-            data.dieties.push(it.data.name);
+          if (it.system.type === 'Ritual') {
+            data.dieties.push(it.name);
             data.hasRitualSkills = true;
           }
         });
       }
-    } else if (this.item.data.type === 'weapongear' ||
-      this.item.data.type === 'missilegear') {
+    } else if (this.item.type === 'weapongear' ||
+      this.item.type === 'missilegear') {
 
       // Weapons need a list of combat skills
       data.combatSkills = [];
 
       if (this.actor) {
-        if (this.item.data.type === 'weapongear') {
+        if (this.item.type === 'weapongear') {
           // For weapons, we add a "None" item to the front of the list
           // as a default (in case no other combat skill applies)
           data.combatSkills.push('None');
@@ -96,12 +96,12 @@ export class HarnMasterItemSheet extends ItemSheet {
         }
 
         this.actor.itemTypes.skill.forEach(it => {
-          if (it.data.data.type === 'Combat') {
-            const lcName = it.data.name.toLowerCase();
+          if (it.system.type === 'Combat') {
+            const lcName = it.name.toLowerCase();
             // Ignore the 'Dodge' and 'Initiative' skills,
             // since you never want a weapon based on those skills.
             if (!(lcName === 'initiative' || lcName === 'dodge')) {
-              data.combatSkills.push(it.data.name);
+              data.combatSkills.push(it.name);
               data.hasCombatSkills = true;
             }
           }
@@ -115,7 +115,7 @@ export class HarnMasterItemSheet extends ItemSheet {
         data.effects[effect.id] = {
           'source': effect.sourceName,
           'duration': utility.aeDuration(effect),
-          'data': effect.data,
+          'data': effect,
           'changes': utility.aeChanges(effect)
         }
       })

@@ -13,114 +13,110 @@ export class HarnMasterItem extends Item {
         super.prepareData();
 
         // Get the Item's data
-        const itemData = this.data;
-        const data = itemData.data;
+        const itemData = this.system;
 
         let img = null;
 
         // Handle marking gear as equipped or carried
-        if (itemData.type.endsWith('gear')) {
+        if (this.type.endsWith('gear')) {
             // If you aren't carrying the gear, it can't be equipped
-            if (!data.isCarried) {
-                data.isEquipped = false;
+            if (!itemData.isCarried) {
+                itemData.isEquipped = false;
             }
 
             // Check if the item is in a container
-            if (data.container && data.container !== 'on-person') {
+            if (itemData.container && itemData.container !== 'on-person') {
                 // Anything in a container is unequipped automatically
-                data.isEquipped = false;
+                itemData.isEquipped = false;
             }
         }
 
-        if (itemData.type === 'armorlocation') {
+        if (this.type === 'armorlocation') {
             this._prepareArmorLocationData(itemData);
         }
 
-        if (img && img != itemData.img) {
-            itemData.img = img;
+        if (img && img != this.img) {
+            this.img = img;
         }
 
         Hooks.call("hm3.onItemPrepareData", this);
     }
 
     postProcessItems() {
-        const itemData = this.data;
-        const data = itemData.data;
+        const itemData = this.system;
 
-        let pctUnivPen = HarnMasterItem.calcPenaltyPct(this.actor?.data?.data.universalPenalty);
-        let pctPhysPen = HarnMasterItem.calcPenaltyPct(this.actor?.data?.data.physicalPenalty);
+        let pctUnivPen = HarnMasterItem.calcPenaltyPct(this.actor?.system?.universalPenalty);
+        let pctPhysPen = HarnMasterItem.calcPenaltyPct(this.actor?.system?.physicalPenalty);
 
-        if (itemData.type === 'skill') {
-            if (!data.masteryLevel || data.masteryLevel < 0) data.masteryLevel = 0; 
+        if (this.type === 'skill') {
+            if (!itemData.masteryLevel || itemData.masteryLevel < 0) itemData.masteryLevel = 0; 
 
             utility.calcSkillBase(this);
 
             // Handle using Condition Skill for Endurance if it is present
-            if (itemData.name.toLowerCase() === 'condition' && this.actor?.data) {
-                this.actor.data.data.hasCondition = true;
-                this.actor.data.data.endurance = Math.floor(data.masteryLevel / 5) || 1;
+            if (this.name.toLowerCase() === 'condition' && this.actor) {
+                this.actor.system.hasCondition = true;
+                this.actor.system.endurance = Math.floor(itemData.masteryLevel / 5) || 1;
             }
 
             // We modify the EML by 5 times the difference between the SB based on base
             // abilities and the SB based on AE-modified abilities
-            const sbModifier = Math.round(data.skillBase.delta * 5);
+            const sbModifier = Math.round(itemData.skillBase.delta * 5);
 
             // Set EML for skills based on UP/PP
-            switch (data.type) {
+            switch (itemData.type) {
                 case 'Combat':
                 case 'Physical':
-                    data.effectiveMasteryLevel = data.masteryLevel - pctPhysPen + sbModifier;
+                    itemData.effectiveMasteryLevel = itemData.masteryLevel - pctPhysPen + sbModifier;
                     break;
 
                 default:
-                    data.effectiveMasteryLevel = data.masteryLevel - pctUnivPen + sbModifier;
+                    itemData.effectiveMasteryLevel = itemData.masteryLevel - pctUnivPen + sbModifier;
                     break;
             }
 
             // Set some actor properties from skills
-            const lcSkillName = itemData.name.toLowerCase();
+            const lcSkillName = this.name.toLowerCase();
             if (lcSkillName === 'initiative') {
-                if (this.actor?.data) this.actor.data.data.initiative = data.effectiveMasteryLevel;
+                if (this.actor?.system) this.actor.system.initiative = itemData.effectiveMasteryLevel;
             } else if (lcSkillName === 'dodge') {
-                if (this.actor?.data) this.actor.data.data.dodge = data.effectiveMasteryLevel;
+                if (this.actor?.system) this.actor.system.dodge = itemData.effectiveMasteryLevel;
             }
-        } else if (itemData.type === 'psionic') {
-            if (!data.masteryLevel || data.masteryLevel < 0) data.masteryLevel = 0; 
+        } else if (this.type === 'psionic') {
+            if (!itemData.masteryLevel || itemData.masteryLevel < 0) itemData.masteryLevel = 0; 
             utility.calcSkillBase(this);
-            data.effectiveMasteryLevel = data.masteryLevel - pctUnivPen;
-        } else if (itemData.type === 'injury') {
+            itemData.effectiveMasteryLevel = itemData.masteryLevel - pctUnivPen;
+        } else if (this.type === 'injury') {
             // Just make sure if injuryLevel is negative, we set it to zero
-            data.injuryLevel = Math.max(data.injuryLevel || 0, 0);
+            itemData.injuryLevel = Math.max(itemData.injuryLevel || 0, 0);
             HarnMasterItem.calcInjurySeverity(this);
         }
     }
 
     _prepareArmorLocationData(itemData) {
-        const data = itemData.data;
-
         // If impactType isn't custom, then set all properties from the selected impactType
-        if (itemData.data.impactType != "custom") {
+        if (itemData.impactType != "custom") {
             Object.keys(HM3.injuryLocations).forEach(key => {
-                if (HM3.injuryLocations[key].impactType === itemData.data.impactType) {
-                    mergeObject(itemData.data, HM3.injuryLocations[key]);
+                if (HM3.injuryLocations[key].impactType === itemData.impactType) {
+                    mergeObject(itemData, HM3.injuryLocations[key]);
                 }
             });
         }
 
-        data.probWeight.low = data.probWeight?.low || 0;
-        data.probWeight.mid = data.probWeight?.mid || 0;
-        data.probWeight.high = data.probWeight?.high || 0;
-        data.armorQuality = data.armorQuality || 0;
-        data.blunt = data.blunt || 0;
-        data.edged = data.edged || 0;
-        data.piercing = data.piercing || 0;
-        data.fire = data.fire || 0;
+        itemData.probWeight.low = itemData.probWeight?.low || 0;
+        itemData.probWeight.mid = itemData.probWeight?.mid || 0;
+        itemData.probWeight.high = itemData.probWeight?.high || 0;
+        itemData.armorQuality = itemData.armorQuality || 0;
+        itemData.blunt = itemData.blunt || 0;
+        itemData.edged = itemData.edged || 0;
+        itemData.piercing = itemData.piercing || 0;
+        itemData.fire = itemData.fire || 0;
     }
 
     /** @override */
     async _preCreate(data, options, user) {
         super._preCreate(data, options, user);
-        const itemData = this.data;
+        const itemData = this.system;
 
         const updateData = {};
         if (data.img) updateData.img = data.img;
@@ -132,15 +128,15 @@ export class HarnMasterItem extends Item {
         // some values directly from the actor.
         if (this.actor) {
             // If a weapon or a missile, get the associated skill
-            if ((itemData.type === 'weapongear' || itemData.type === 'missilegear') && !itemData.data.assocSkill) {
-                updateData['data.assocSkill'] = utility.getAssocSkill(itemData.name, this.actor.itemTypes.skill, 'None');
-                itemData.data.assocSkill = updateData['data.assocSkill'];
+            if ((this.type === 'weapongear' || this.type === 'missilegear') && !itemData.assocSkill) {
+                updateData['system.assocSkill'] = utility.getAssocSkill(this.name, this.actor.itemTypes.skill, 'None');
+                itemData.assocSkill = updateData['system.assocSkill'];
             }
 
             // If it is a spell, initialize the convocation to the
             // first magic skill found; it is really unimportant what the
             // value is, so long as it is a valid skill for this character
-            if (itemData.type === 'spell' && !itemData.data.convocation) {
+            if (this.type === 'spell' && !itemData.convocation) {
 
                 // Most spellcasters have two convocations: Neutral and another,
                 // maybe several others.  Most spells are going to be of the
@@ -152,30 +148,30 @@ export class HarnMasterItem extends Item {
                 // convocations, give up and don't make any changes.
                 let hasNeutral = false;
                 for (let skill of this.actor.itemTypes.skill.values()) {
-                    if (skill.data.data.type === 'Magic') {
-                        if (skill.data.name === 'Neutral') {
+                    if (skill.system.type === 'Magic') {
+                        if (skill.name === 'Neutral') {
                             hasNeutral = true;
                             continue;
                         }
-                        updateData['data.convocation'] = skill.data.name;
-                        itemData.data.convocation = skill.data.name;
+                        updateData['system.convocation'] = skill.name;
+                        itemData.convocation = skill.name;
                         break;
                     }
                 }
-                if (!updateData['data.convocation'] && hasNeutral) {
-                    updateData['data.convocation'] = 'Neutral';
-                    itemData.data.convocation = 'Neutral';
+                if (!updateData['system.convocation'] && hasNeutral) {
+                    updateData['system.convocation'] = 'Neutral';
+                    itemData.convocation = 'Neutral';
                 }
             }
 
             // If it is a invocation, initialize the diety to the
             // first ritual skill found; it is really unimportant what the
             // value is, so long as it is a valid skill for this character
-            if (itemData.type === 'invocation' && !itemData.data.diety) {
+            if (itemData.type === 'invocation' && !itemData.diety) {
                 for (let skill of this.actor.itemTypes.skill.values()) {
-                    if (skill.data.data.type === 'Ritual') {
-                        updateData['data.diety'] = skill.data.name;
-                        itemData.data.diety = skill.data.name;
+                    if (skill.system.type === 'Ritual') {
+                        updateData['system.diety'] = skill.name;
+                        itemData.diety = skill.name;
                         break;
                     }
                 }
@@ -190,9 +186,9 @@ export class HarnMasterItem extends Item {
         if (!updateData.img) {
             switch (itemData.type) {
                 case 'skill':
-                    if (itemData.data.type === 'Ritual') {
+                    if (itemData.system.type === 'Ritual') {
                         updateData.img = utility.getImagePath(HM3.defaultRitualIconName);
-                    } else if (itemData.data.type === 'Magic') {
+                    } else if (itemData.system.type === 'Magic') {
                         updateData.img = utility.getImagePath(HM3.defaultMagicIconName);
                     }
                     break;
@@ -203,7 +199,7 @@ export class HarnMasterItem extends Item {
     
                 case 'spell':
                     // Base image on convocation name
-                    updateData.img = utility.getImagePath(itemData.data.convocation);
+                    updateData.img = utility.getImagePath(itemData.system.convocation);
                     if (!updateData.img) {
                         // If convocation image wasn't found, use default
                         updateData.img = utility.getImagePath(HM3.defaultMagicIconName);
@@ -212,7 +208,7 @@ export class HarnMasterItem extends Item {
     
                 case 'invocation':
                     // Base image on diety name
-                    updateData.img = utility.getImagePath(itemData.data.diety);
+                    updateData.img = utility.getImagePath(itemData.system.diety);
                     if (!updateData.img) {
                         // If diety name wasn't found, use default
                         updateData.img = utility.getImagePath(HM3.defaultRitualIconName);
@@ -233,14 +229,14 @@ export class HarnMasterItem extends Item {
 
                 case 'weapongear':
                 case 'missilegear':
-                    updateData.img = utility.getImagePath(itemData.data.assocSkill);
+                    updateData.img = utility.getImagePath(itemData.system.assocSkill);
                     break;
             }
 
             if (!updateData.img) delete updateData.img;
         }
 
-        await this.data.update(updateData);
+        await this.update(updateData);
     }
 
     /**
@@ -267,7 +263,6 @@ export class HarnMasterItem extends Item {
 
         const actor = this.parent;
 
-        const itemData = this.data;
         const rollResult = {
             type: rollInput.type,
             title: rollInput.title,
@@ -282,16 +277,16 @@ export class HarnMasterItem extends Item {
             notes: rollInput.notes
         }
 
-        if (!itemData.data.macros.command) return null;
+        if (!this.system.macros.command) return null;
 
         const macro = await Macro.create({
             name: `${this.name} ${this.type} macro`,
-            type: itemData.data.macros.type,
+            type: this.system.macros.type,
             scope: 'global',
-            command: itemData.data.macros.command
+            command: this.system.macros.command
         }, {temporary: true});
         if (!macro) {
-            console.error(`HM3 | Failure initializing macro '${this.name} ${this.type} macro', type=${itemData.data.macros.type}, command='${itemData.data.macros.command}'`);
+            console.error(`HM3 | Failure initializing macro '${this.name} ${this.type} macro', type=${this.system.macros.type}, command='${this.system.macros.command}'`);
             return null;
         }
 
@@ -306,7 +301,7 @@ export class HarnMasterItem extends Item {
     }
 
     static calcInjurySeverity(injury) {
-        const data = injury.data.data;
+        const data = injury.system;
     
         if (data.injuryLevel === 0) {
             data.severity = '';

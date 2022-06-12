@@ -521,6 +521,7 @@ export class DiceHM3 {
         const enableLimbInjuries = game.settings.get('hm3', 'limbInjuries');
 
         const result = {
+            type: 'injury',
             isRandom: location === 'Random',
             name: dialogOptions.name,
             aim: aim,
@@ -731,6 +732,7 @@ export class DiceHM3 {
         let weapon = DiceHM3.calcWeaponAspect(rollData.weapon, rollData.data.items);
 
         const dialogOptions = {
+            type: 'damage',
             weapon: rollData.weapon,
             weaponAspect: rollData.aspect ? rollData.aspect : weapon.defaultAspect,
             weaponAspects: weapon.aspects,

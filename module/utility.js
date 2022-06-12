@@ -22,7 +22,7 @@ import { HM3 } from './config.js';
  * @param {Object} item
  */
 export function calcSkillBase(item) {
-    const sb = item.data.data.skillBase;
+    const sb = item.system.skillBase;
 
     sb.delta = 0;
     sb.isFormulaValid = true;
@@ -33,8 +33,8 @@ export function calcSkillBase(item) {
     }
 
     let actorData = null;
-    if (item.actor?.data) {
-        actorData = item.actor.data.data;
+    if (item.actor?.system) {
+        actorData = item.actor.system;
     }
 
     let numAbilities = 0;
@@ -229,11 +229,11 @@ export function calcSkillBase(item) {
 export function createUniqueName(prefix, itemTypes) {
     let incr = 0;
     itemTypes.forEach(it => {
-        if (prefix === it.data.name) {
+        if (prefix === it.name) {
             // Name was found, so minimum next increment will be 1
             incr = Math.max(1, incr);
         } else {
-            const match = it.data.name.match(`${prefix}-(\\d+)`);
+            const match = it.name.match(`${prefix}-(\\d+)`);
             if (match) {
                 // Found an existing increment, so increase it by 1
                 // as the new candidate; keep it only if it is greater than
