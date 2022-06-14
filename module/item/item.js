@@ -121,9 +121,6 @@ export class HarnMasterItem extends Item {
         const updateData = {};
         if (data.img) updateData.img = data.img;
 
-        // Get the default icon for Items
-        const DEFAULT_ICON = foundry.data.ItemData.schema.img.default();
-
         // If this item is associated with a specific actor, then we can determine
         // some values directly from the actor.
         if (this.actor) {
@@ -180,7 +177,7 @@ export class HarnMasterItem extends Item {
 
         // If the image was not specified (or is default),
         // then set it based on the item name
-        if (!updateData.img || updateData.img === DEFAULT_ICON) updateData.img = utility.getImagePath(itemData.name);
+        if (!updateData.img || updateData.img === Item.DEFAULT_ICON) updateData.img = utility.getImagePath(itemData.name);
 
         // Setup Image Icon only if it is currently the default icon
         if (!updateData.img) {
@@ -236,7 +233,7 @@ export class HarnMasterItem extends Item {
             if (!updateData.img) delete updateData.img;
         }
 
-        await this.update(updateData);
+        await this.updateSource(updateData);
     }
 
     /**
