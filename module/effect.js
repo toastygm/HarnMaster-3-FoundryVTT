@@ -31,7 +31,7 @@ export async function onManageActiveEffect(event, owner) {
                 callback: async (html) => {
                     const form = html.querySelector('#active-effect-start');
                     const fd = new FormDataExtended(form);
-                    const formdata = fd.toObject();
+                    const formdata = fd.object;
                     const startType = formdata.startType;
 
                     const aeData = {

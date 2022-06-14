@@ -836,7 +836,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             callback: async (html) => {
                 const form = html.querySelector('#create-item');
                 const fd = new FormDataExtended(form);
-                const formdata = fd.toObject();
+                const formdata = fd.object;
                 let itemName = formdata.name;
                 let extraValue = formdata.extra_value;
 

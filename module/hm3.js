@@ -226,7 +226,7 @@ async function welcomeDialog() {
         callback: html => {
             const form = html.querySelector("#welcome");
             const fd = new FormDataExtended(form);
-            const data = fd.toObject();
+            const data = fd.object;
             return data.showOnStartup;
         },
         options: { jQuery: false }

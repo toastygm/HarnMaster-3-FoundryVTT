@@ -42,7 +42,7 @@ export class HarnMasterActor extends Actor {
                 const createOptions = { renderSheet: true };
                 const form = html[0].querySelector("form");
                 const fd = new FormDataExtended(form);
-                data = foundry.utils.mergeObject(data, fd.toObject());
+                data = foundry.utils.mergeObject(data, fd.object);
                 if (!data.initDefaults) createOptions.skipDefaults = true;
                 delete data["initDefaults"];
                 if (!data.folder) delete data["folder"];
@@ -113,6 +113,7 @@ export class HarnMasterActor extends Actor {
                     chain = await chain.then(async () => {
                         if (itemNames.includes(ability.name)) {
                             const clone = ability.clone();
+                            clone.effects = clone.effects.contents;
                             items.push(clone);
                         }
                     });
