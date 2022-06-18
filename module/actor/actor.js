@@ -812,11 +812,11 @@ export class HarnMasterActor extends Actor {
 
         if (result?.sdrIncr) {
             await item.update({
-                "data.improveFlag": false,
-                "data.masteryLevel": +(item.system.masteryLevel) + (result.sdrIncr === 2 ? 2 : 1)
+                "system.improveFlag": false,
+                "system.masteryLevel": +(item.system.masteryLevel) + (result.sdrIncr === 2 ? 2 : 1)
             });
         } else {
-            await item.update({ "data.improveFlag": false });
+            await item.update({ "system.improveFlag": false });
         }
 
         return result;
@@ -1061,7 +1061,7 @@ export class HarnMasterActor extends Actor {
     }
 
     roundChange(item, change) {
-        const current = foundry.utils.getProperty(item.data, change.key) ?? null;
+        const current = foundry.utils.getProperty(item, change.key) ?? null;
         const ct = foundry.utils.getType(current);
         if (ct === "number" && !Number.isInteger(current)) {
             const update = Math.round(current + Number.EPSILON);

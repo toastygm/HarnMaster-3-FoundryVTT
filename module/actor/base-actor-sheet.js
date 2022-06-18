@@ -93,9 +93,11 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         this.actor.effects.forEach(effect => {
             effect._getSourceName().then(() => {
                 data.effects[effect.id] = {
+                    'id': effect.id,
+                    'label': effect.label,
                     'source': effect.sourceName,
                     'duration': utility.aeDuration(effect),
-                    'data': effect,
+                    'source': effect,
                     'changes': utility.aeChanges(effect)
                 }
                 data.effects[effect.id].disabled = effect.disabled;
@@ -160,7 +162,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     if (item.type.endsWith('gear') && item.type !== 'containergear') {
                         if (item.data.data.container != destContainer) {
                             const embItem = this.actor.items.get(item.id);
-                            await embItem.update({'data.container': destContainer });
+                            await embItem.update({'system.container': destContainer });
                         }
                     }
     
@@ -179,7 +181,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     if (item.data.type.endsWith('gear') && item.data.type !== 'containergear') {
                         if (item.data.data.container != destContainer) {
                             const embItem = this.actor.items.get(item.id);
-                            await embItem.update({'data.container': destContainer });
+                            await embItem.update({'system.container': destContainer });
                         }
                     }
     
@@ -190,7 +192,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         // NOTE: when an item comes from the item list or a compendium, its type is
         // "Item" but it does not have a "data" element.  So we have to check for that in
-        // the following conditional; "data.data.type" may not exist!
+        // the following conditional; "data.type" may not exist!
 
         // Skills, spells, etc. (non-gear) coming from a item list or compendium
         if (!data || !data.type.endsWith("gear")) {
@@ -348,7 +350,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         if (result) {
             // update quantity
             const newTargetQuantity = result.data.data.quantity + moveQuantity;
-            await result.update({ 'data.quantity': newTargetQuantity });
+            await result.update({ 'system.quantity': newTargetQuantity });
         } else {
             // Create an item
             data.data.quantity = moveQuantity;
@@ -362,7 +364,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             } else {
                 const newSourceQuantity = sourceQuantity - moveQuantity;
                 const sourceItem = await sourceActor.items.get(data.id);
-                await sourceItem.update({ 'data.quantity': newSourceQuantity });
+                await sourceItem.update({ 'system.quantity': newSourceQuantity });
             }
         }
         return result;
@@ -375,7 +377,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         //const item = await Item.fromDropData(data);
 
         if (!data.type.endsWith("gear")) {
-            if (actor.data.type === 'container') {
+            if (actor.type === 'container') {
                 ui.notifications.warn(`You may only place physical objects in a container; drop of ${data.name} refused.`);
                 return false;
             }
@@ -383,7 +385,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             for (let it of actor.items.values()) {
                 // Generally, if the items have the same type and name,
                 // then merge the dropped item onto the existing item.
-                if (it.data.type === data.type && it.name === data.name) {
+                if (it.type === data.type && it.name === data.name) {
                     this.mergeItem(it, data);
 
                     // Don't actually allow the new item
@@ -716,11 +718,11 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         const otherData = other.data;
         const updateData = {};
 
-        if (!data.notes) updateData['data.notes'] = otherData.notes;
-        if (!data.source) updateData['data.source'] = otherData.source;
-        if (!data.description) updateData['data.description'] = otherData.description;
-        if (!data.macros.type || data.macros.type !== otherData.macros.type) updateData['data.macros.type'] = otherData.macros.type;
-        if (!data.macros.command) updateData['data.macros.command'] = otherData.macros.command;
+        if (!data.notes) updateData['system.notes'] = otherData.notes;
+        if (!data.source) updateData['system.source'] = otherData.source;
+        if (!data.description) updateData['system.description'] = otherData.description;
+        if (!data.macros.type || data.macros.type !== otherData.macros.type) updateData['system.macros.type'] = otherData.macros.type;
+        if (!data.macros.command) updateData['system.macros.command'] = otherData.macros.command;
         updateData['img'] = other.img;
 
         switch (item.type) {
@@ -736,28 +738,28 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
                 // If the skillbase is blank, copy it over from dropped item
                 if (!data.skillBase.formula) {
-                    updateData['data.skillBase.formula'] = otherData.skillBase.formula;
-                    updateData['data.skillBase.isFormulaValid'] = otherData.skillBase.isFormulaValid;
+                    updateData['system.skillBase.formula'] = otherData.skillBase.formula;
+                    updateData['system.skillBase.isFormulaValid'] = otherData.skillBase.isFormulaValid;
                 }
                 break;
 
             case 'spell':
-                updateData['data.convocation'] = otherData.convocation;
-                updateData['data.level'] = otherData.level;
+                updateData['system.convocation'] = otherData.convocation;
+                updateData['system.level'] = otherData.level;
                 break;
 
             case 'invocation':
-                updateData['data.diety'] = otherData.diety;
-                updateData['data.circle'] = otherData.circle;
+                updateData['system.diety'] = otherData.diety;
+                updateData['system.circle'] = otherData.circle;
                 break;
 
             case 'psionic':
                 // If the skillbase is blank, copy it over from dropped item
                 if (!data.skillBase.formula) {
-                    updateData['data.skillBase.formula'] = otherData.skillBase.formula;
-                    updateData['data.skillBase.isFormulaValid'] = otherData.skillBase.isFormulaValid;
+                    updateData['system.skillBase.formula'] = otherData.skillBase.formula;
+                    updateData['system.skillBase.isFormulaValid'] = otherData.skillBase.isFormulaValid;
                 }
-                updateData['data.fatigue'] = otherData.fatigue;
+                updateData['system.fatigue'] = otherData.fatigue;
                 break;
         }
 
@@ -850,11 +852,11 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 }
 
                 // Item Data
-                if (dataset.type === 'skill') updateData['data.type'] = dataset.skilltype;
-                else if (dataset.type === 'trait') updateData['data.type'] = dataset.traittype;
-                else if (dataset.type.endsWith('gear')) updateData['data.container'] = dataset.containerId;
-                else if (dataset.type === 'spell') updateData['data.convocation'] = extraValue;
-                else if (dataset.type === 'invocation') updateData['data.diety'] = extraValue;
+                if (dataset.type === 'skill') updateData['system.type'] = dataset.skilltype;
+                else if (dataset.type === 'trait') updateData['system.type'] = dataset.traittype;
+                else if (dataset.type.endsWith('gear')) updateData['system.container'] = dataset.containerId;
+                else if (dataset.type === 'spell') updateData['system.convocation'] = extraValue;
+                else if (dataset.type === 'invocation') updateData['system.diety'] = extraValue;
 
                 // Finally, create the item!
                 const result = await Item.create(updateData, {parent: this.actor });
@@ -885,8 +887,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         // Only process inventory ("gear") items, otherwise ignore
         if (item.data.type.endsWith('gear')) {
-            const attr = "data.isCarried";
-            return item.update({ [attr]: !getProperty(item.data, attr) });
+            const attr = "system.isCarried";
+            return item.update({ [attr]: !getProperty(item, attr) });
         }
 
         return null;
@@ -903,9 +905,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         const item = this.actor.items.get(itemId);
 
         // Only process inventory ("gear") items, otherwise ignore
-        if (item.data.type.endsWith('gear')) {
-            const attr = "data.isEquipped";
-            return item.update({ [attr]: !getProperty(item.data, attr) });
+        if (item.type.endsWith('gear')) {
+            const attr = "system.isEquipped";
+            return item.update({ [attr]: !getProperty(item, attr) });
         }
 
         return null;
@@ -923,8 +925,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         // Only process skills and psionics, otherwise ignore
         if (item.type === 'skill' || item.type === 'psionic') {
-            if (!item.data.improveFlag) {
-                return item.update({ "data.improveFlag": true });
+            if (!item.system.improveFlag) {
+                return item.update({ "system.improveFlag": true });
             } else {
                 return this._improveToggleDialog(item);
             }
@@ -966,7 +968,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     disableFlag: {
                         label: "Disable Flag",
                         callback: async (html) => {
-                            return item.update({ "data.improveFlag": false });
+                            return item.update({ "system.improveFlag": false });
                         }
                     }
                 },
