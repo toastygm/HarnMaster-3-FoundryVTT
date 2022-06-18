@@ -343,7 +343,7 @@ export function romanize(num) {
 }
 
 export function aeDuration(effect) {
-    const d = effect.data.duration;
+    const d = effect.duration;
 
     // Time-based duration
     if (Number.isNumeric(d.seconds)) {
@@ -420,11 +420,11 @@ export function aeDuration(effect) {
 }
 
 export function aeChanges(effect) {
-    if (!effect.data.changes || !effect.data.changes.length) {
+    if (!effect.changes || !effect.changes.length) {
         return 'No Changes';
     }
 
-    return effect.data.changes.map(ch => {
+    return effect.changes.map(ch => {
         const modes = CONST.ACTIVE_EFFECT_MODES;
         const key = ch.key;
         let val = 0;
@@ -434,15 +434,15 @@ export function aeChanges(effect) {
             val = Number.parseInt(parts[1], 10) || 0;
             const itemName = parts[0];
             switch(key) {
-                case 'data.eph.itemEMLMod':
+                case 'system.eph.itemEMLMod':
                     prefix = `${itemName} EML`;
                     break;
 
-                case 'data.eph.itemAMLMod':
+                case 'system.eph.itemAMLMod':
                     prefix = `${itemName} AML`;
                     break;
 
-                case 'data.eph.itemDMLMod':
+                case 'system.eph.itemDMLMod':
                     prefix = `${itemName} DML`;
                     break;
             }
@@ -506,14 +506,14 @@ export function executeMacroScript(macro, { actor, token, rollResult, rollData, 
     if (item) context.item = item;
 
     // Attempt script execution
-    const asyncFunction = macro.data.command.includes("await") ? "async" : "";
+    const asyncFunction = macro.command.includes("await") ? "async" : "";
     const itemParam = item ? ", item" : "";
     const rollDataParam = rollData ? ", rollData" : ""
     let result = null;
     try {
         result = (new Function(`"use strict";
             return (${asyncFunction} function ({speaker, actor, token, character, rollResult ${itemParam} ${rollDataParam}}={}) {
-                ${macro.data.command}
+                ${macro.command}
                 });`))().call(macro, context);
     } catch (err) {
         ui.notifications.error(`There was an error in your macro syntax. See the console (F12) for details`);

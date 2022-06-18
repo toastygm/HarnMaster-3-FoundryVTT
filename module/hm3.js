@@ -48,7 +48,7 @@ Hooks.once('init', async function () {
     registerSystemSettings();
 
     // Define custom ActiveEffect class
-    CONFIG.ActiveEffect.sheetClass = HM3ActiveEffectConfig;
+    //CONFIG.ActiveEffect.sheetClass = HM3ActiveEffectConfig;
 
     // Define custom Document classes
     CONFIG.Actor.documentClass = HarnMasterActor;
@@ -77,6 +77,12 @@ Hooks.once('init', async function () {
         types: ["container"],
         makeDefault: true,
         label: "Default HarnMaster Container Sheet"
+    });
+
+    DocumentSheetConfig.unregisterSheet(ActiveEffect, "core", ActiveEffectConfig);
+    DocumentSheetConfig.registerSheet(ActiveEffect, "hm3", HM3ActiveEffectConfig, {
+        makeDefault: true,
+        label: "Default HarnMaster Active Effect Sheet"
     });
 
     Items.unregisterSheet("core", ItemSheet);
@@ -176,7 +182,7 @@ Hooks.once("ready", function () {
 Hooks.on('preCreateCombatant', (combat, combatant, options, id) => {
     if (!combatant.initiative) {
         let token = canvas.tokens.get(combatant.tokenId);
-        combatant.initiative = token.actor.data.data.initiative;
+        combatant.initiative = token.actor.system.initiative;
     }
 });
 

@@ -59,7 +59,7 @@ export async function onManageActiveEffect(event, owner) {
             return effect.delete();
         case "toggle":
             const updateData = {};
-            if (effect.data.disabled) {
+            if (effect.disabled) {
                 // Enable the Active Effect
                 updateData['disabled'] = false;
 
@@ -91,7 +91,7 @@ export async function checkExpiredActiveEffects() {
 
     // Next, handle tokens (only unlinked tokens)
     for (let token of canvas.tokens.ownedTokens.values()) {
-        if (!token.data.actorLink && token.actor?.effects?.size) {
+        if (!token.document.actorLink && token.actor?.effects?.size) {
             await disableExpiredAE(token.actor);
         }
     }
@@ -105,7 +105,7 @@ export async function checkExpiredActiveEffects() {
  */
 async function disableExpiredAE(actor) {
     for (let effect of actor.effects.values()) {
-        if (!effect.data.disabled) {
+        if (!effect.disabled) {
             const duration = effect.duration;
             if (duration.type !== 'none') {
                 if (duration.remaining <= 0) {
