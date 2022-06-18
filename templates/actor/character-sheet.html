@@ -63,7 +63,7 @@
                 <img class="facade-image" src="{{adata.bioImage}}" data-edit="system.bioImage" title="{{actor.name}}"
                     height="300" width="200" />
                 <div class="facade-description">
-                    {{editor content=adata.description target="system.description" button=true owner=owner editable=editable}}
+                    {{editor adata.description target="system.description" button=true owner=owner editable=editable}}
                 </div>
             </div>
         </div>
@@ -409,7 +409,7 @@
                             data-journal-entry="Sheet - Profile Tab"><i
                                 class="far fa-question-circle"></i></a></h3>
                         <div class="description">
-                            {{editor content=adata.biography target="system.biography" button=true owner=owner editable=editable}}
+                            {{editor adata.biography target="system.biography" button=true owner=owner editable=editable}}
                         </div>
                     </div>
                 </div>

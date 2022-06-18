@@ -21,9 +21,9 @@
         <div class="tab properties" data-group="primary" data-tab="properties">
             <div class="grid grid-fixed-row grid-2col">
                 <div class="resource">
-                    <label class="resource-label" for="data.convocation">Convocation</label>
+                    <label class="resource-label" for="system.convocation">Convocation</label>
                     {{#if hasMagicSkills}}
-                        <select class="resource-value" name="data.convocation" data-dtype="String">
+                        <select class="resource-value" name="system.convocation" data-dtype="String">
                             {{#select data.convocation}}
                                 {{#each convocations}}
                                     <option value="{{this}}">{{this}}</option>
@@ -31,34 +31,34 @@
                             {{/select}}
                         </select>
                     {{else}}
-                        <input type="text" name="data.convocation" value="{{data.convocation}}" data-dtype="String" />
+                        <input type="text" name="system.convocation" value="{{idata.convocation}}" data-dtype="String" />
                     {{/if}}
                 </div>
                 <div class="resource">
                     <label class="resource-label">Level</label>
-                    <input type="number" name="data.level" value="{{data.level}}" data-dtype="Number" />
+                    <input type="number" name="system.level" value="{{idata.level}}" data-dtype="Number" />
                 </div>
             </div>
             <div class="resource">
                 <label class="resource-label">Source</label>
-                <input type="text" name="data.source" value="{{data.source}}" data-dtype="String" />
+                <input type="text" name="system.source" value="{{idata.source}}" data-dtype="String" />
             </div>
             <div class="resource">
                 <label class="resource-label">Note</label>
-                <input type="text" name="data.notes" value="{{data.notes}}" data-dtype="String" />
+                <input type="text" name="system.notes" value="{{idata.notes}}" data-dtype="String" />
             </div>
         </div>
 
         {{!-- Description Tab --}}
         <div class="tab description" data-group="primary" data-tab="description">
-            {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+            {{editor idata.description target="system.description" button=true owner=owner editable=editable}}
         </div>
 
         {{!-- Macro Tab --}}
         <div class="tab macro" data-group="primary" data-tab="macro">
             <div class="form-group">
                 <label>Type</label>
-                <select name="data.macros.type">
+                <select name="system.macros.type">
                     {{#select data.macros.type}}
                     {{#each macroTypes}}
                     <option value="{{this}}">{{this}}</option>
@@ -69,7 +69,7 @@
         
             <div class="form-group stacked command">
                 <label>Command</label>
-                <textarea name="data.macros.command">{{data.macros.command}}</textarea>
+                <textarea name="system.macros.command">{{idata.macros.command}}</textarea>
             </div>
         </div>
 

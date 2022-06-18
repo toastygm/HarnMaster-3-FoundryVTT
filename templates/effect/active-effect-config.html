@@ -116,7 +116,7 @@
             </div>
         </header>
         <ol class="changes-list">
-            {{#each effect.changes as |change i|}}
+            {{#each data.changes as |change i|}}
             <li class="effect-change flexrow" data-index="{{i}}">
                 <div class="key">
                     <select name="changes.{{i}}.key" data-dtype="String">

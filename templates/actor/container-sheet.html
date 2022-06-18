@@ -10,13 +10,13 @@
                     <div class="header-stat-block">
                         <div class="penalties flexrow">
                             <div class="capacity-label">Max Capacity</div>
-                            <input class="capacity-value" type="number" name="data.capacity.max" value="{{data.capacity.max}}" data-dtype="Number"/>
+                            <input class="capacity-value" type="number" name="system.capacity.max" value="{{adata.capacity.max}}" data-dtype="Number"/>
                         </div>
                         <div class="endurance flexrow">
-                            <span class="label">Contents Wt.: {{data.eph.totalGearWeight}}</span>
+                            <span class="label">Contents Wt.: {{adata.eph.totalGearWeight}}</span>
                         </div>
                         <div class="endbar">
-                            <span class="bar" style="width: {{data.capacity.pct}}%"></span>
+                            <span class="bar" style="width: {{adata.capacity.pct}}%"></span>
                         </div>
                     </div>
                 </div>
@@ -38,9 +38,9 @@
         {{!-- Facade Tab --}}
         <div class="tab facade" data-group="primary" data-tab="facade">
             <div class="flexrow">
-                <img class="facade-image" src="{{data.bioImage}}" data-edit="data.bioImage" title="{{actor.name}}" height="300" width="200" />
+                <img class="facade-image" src="{{adata.bioImage}}" data-edit="system.bioImage" title="{{actor.name}}" height="300" width="200" />
                 <div class="facade-description">
-                    {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+                    {{editor adata.description target="system.description" button=true owner=owner editable=editable}}
                 </div>
             </div>
         </div>
@@ -59,11 +59,11 @@
                     </li>
                     <li class="weight-line flexrow">
                         <div class="weight-detail title">Weight</div>
-                        <div class="weight-detail weapon">{{data.eph.totalWeaponWeight}}</div>
-                        <div class="weight-detail missile">{{data.eph.totalMissileWeight}}</div>
-                        <div class="weight-detail armor">{{data.eph.totalArmorWeight}}</div>
-                        <div class="weight-detail misc-gear">{{data.eph.totalMiscGearWeight}}</div>
-                        <div class="total">{{data.eph.totalGearWeight}}</div>
+                        <div class="weight-detail weapon">{{adata.eph.totalWeaponWeight}}</div>
+                        <div class="weight-detail missile">{{adata.eph.totalMissileWeight}}</div>
+                        <div class="weight-detail armor">{{adata.eph.totalArmorWeight}}</div>
+                        <div class="weight-detail misc-gear">{{adata.eph.totalMiscGearWeight}}</div>
+                        <div class="total">{{adata.eph.totalGearWeight}}</div>
                     </li>
                 </ol>
                 <div class="buf"></div>
@@ -71,7 +71,7 @@
 
             <!-- Gear -->
             <div class="flexrow">
-                <input class="gear-name-filter" type="text" name="data.gearNameFilter"
+                <input class="gear-name-filter" type="text" name="system.gearNameFilter"
                     placeholder="Filter gear by name..." data-dtype="String" />
             </div>
             {{#each containers as |citem cid|}}
@@ -105,9 +105,9 @@
                                         <h4>{{item.name}}</h4>
                                     </div>
                                     <div class="item-detail gear-type">{{lookup ../../gearTypes item.type}}</div>
-                                    <div class="item-detail gear-qty">{{data.quantity}}</div>
-                                    <div class="item-detail gear-weight">{{data.weight}}</div>
-                                    <div class="item-detail gear-notes">{{data.notes}}</div>
+                                    <div class="item-detail gear-qty">{{adata.quantity}}</div>
+                                    <div class="item-detail gear-weight">{{adata.weight}}</div>
+                                    <div class="item-detail gear-notes">{{adata.notes}}</div>
                                     <div class="item-controls-wide">
                                         {{#if (eq cid "on-person")}}
                                             {{#unless (or (eq item.type "containergear") (eq item.type "miscgear"))}}

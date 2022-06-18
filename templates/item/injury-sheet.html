@@ -20,28 +20,28 @@
             <div class="grid grid-fixed-row grid-2col">
                 <div class="resource" id="injury-healrate">
                     <label class="resource-label">Heal Rate (HR)</label>
-                    <input type="number" name="data.healRate" value="{{data.healRate}}" data-dtype="Number" />
+                    <input type="number" name="system.healRate" value="{{idata.healRate}}" data-dtype="Number" />
                 </div>
                 <div class="resource" id="injury-level">
                     <label class="resource-label">Injury Level (IL)</label>
-                    <input type="number" name="data.injuryLevel" value="{{data.injuryLevel}}" data-dtype="Number" />
+                    <input type="number" name="system.injuryLevel" value="{{idata.injuryLevel}}" data-dtype="Number" />
                 </div>
             </div>
             <div></div>
             <div></div>
             <div class="resource" id="injury-source">
                 <label class="resource-label">Source</label>
-                <input type="text" name="data.source" value="{{data.source}}" data-dtype="String" />
+                <input type="text" name="system.source" value="{{idata.source}}" data-dtype="String" />
             </div>
             <div class="resource" id="injury-notes">
                 <label class="resource-label">Note</label>
-                <input type="text" name="data.notes" value="{{data.notes}}" data-dtype="String" />
+                <input type="text" name="system.notes" value="{{idata.notes}}" data-dtype="String" />
             </div>
         </div>
 
         {{!-- Description Tab --}}
         <div class="tab description" id="injury-desc" data-group="primary" data-tab="description">
-            {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+            {{editor idata.description target="system.description" button=true owner=owner editable=editable}}
         </div>
 
     </section>
