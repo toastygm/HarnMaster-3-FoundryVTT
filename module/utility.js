@@ -41,6 +41,7 @@ export function calcSkillBase(item) {
     let sumBaseAbilities = 0;
     let sumModifiedAbilities = 0;
     let ssBonus = 0;
+    let ssMatches = [];
     let modifier = 0;
     let resultSB = 0;
 
@@ -190,9 +191,8 @@ export function calcSkillBase(item) {
     
                         // Now, check whether our sunsign matches any of the actor's sunsigns
                         if (actorSS.includes(ssParts[0])) {
-                            // We matched a character's sunsign, apply modifier
-                            // Character only gets the largest sunsign bonus
-                            ssBonus = Math.max(ssParts.length === 2 ? Number(ssParts[1].trim()) : 1, ssBonus);
+                            // We matched a character's sunsign.  Add applicable modifier to list of matches.
+	                        ssMatches.push(ssParts.length === 2 ? Number(ssParts[1].trim()) : 1);
                         }
                     }
     
@@ -208,7 +208,12 @@ export function calcSkillBase(item) {
                     break;
                 }
             }
-        }            
+        }
+	    // Look at all applicable modifiers for character's sunsign(s) and pick largest one, or 0 if no matches.
+	    // This method allows for negative sunsign modifiers, as is the case with Magic Convocations.
+	    if (ssMatches.length > 0) {
+		    ssBonus = Math.max.apply(null, ssMatches);
+	    }
     }
 
 
