@@ -136,134 +136,134 @@ export const migrateActorData = function (actor) {
   */
 
   if (actorData.abilities.strength.hasOwnProperty('effective')) {
-    updateData['data.abilities.strength.-=effective'] = null
+    updateData['system.abilities.strength.-=effective'] = null
   }
 
   if (actorData.abilities.stamina.hasOwnProperty('effective')) {
-    updateData['data.abilities.stamina.-=effective'] = null
+    updateData['system.abilities.stamina.-=effective'] = null
   }
 
   if (actorData.abilities.dexterity.hasOwnProperty('effective')) {
-    updateData['data.abilities.dexterity.-=effective'] = null
+    updateData['system.abilities.dexterity.-=effective'] = null
   }
 
   if (actorData.abilities.agility.hasOwnProperty('effective')) {
-    updateData['data.abilities.agility.-=effective'] = null
+    updateData['system.abilities.agility.-=effective'] = null
   }
 
   if (actorData.abilities.intelligence.hasOwnProperty('effective')) {
-    updateData['data.abilities.intelligence.-=effective'] = null
+    updateData['system.abilities.intelligence.-=effective'] = null
   }
 
   if (actorData.abilities.aura.hasOwnProperty('effective')) {
-    updateData['data.abilities.aura.-=effective'] = null
+    updateData['system.abilities.aura.-=effective'] = null
   }
 
   if (actorData.abilities.will.hasOwnProperty('effective')) {
-    updateData['data.abilities.will.-=effective'] = null
+    updateData['system.abilities.will.-=effective'] = null
   }
 
   if (actorData.abilities.eyesight.hasOwnProperty('effective')) {
-    updateData['data.abilities.eyesight.-=effective'] = null
+    updateData['system.abilities.eyesight.-=effective'] = null
   }
 
   if (actorData.abilities.hearing.hasOwnProperty('effective')) {
-    updateData['data.abilities.hearing.-=effective'] = null
+    updateData['system.abilities.hearing.-=effective'] = null
   }
 
   if (actorData.abilities.smell.hasOwnProperty('effective')) {
-    updateData['data.abilities.smell.-=effective'] = null
+    updateData['system.abilities.smell.-=effective'] = null
   }
 
   if (actorData.abilities.voice.hasOwnProperty('effective')) {
-    updateData['data.abilities.voice.-=effective'] = null
+    updateData['system.abilities.voice.-=effective'] = null
   }
 
   if (actorData.abilities.hasOwnProperty('comliness')) {
     // Rename 'comliness' to 'comeliness'
-    updateData['data.abilities.comeliness.base'] = actorData.abilities.comliness.base;
-    updateData['data.abilities.-=comliness'] = null;
+    updateData['system.abilities.comeliness.base'] = actorData.abilities.comliness.base;
+    updateData['system.abilities.-=comliness'] = null;
   }
 
   if (actorData.abilities.morality.hasOwnProperty('effective')) {
-    updateData['data.abilities.morality.-=effective'] = null
+    updateData['system.abilities.morality.-=effective'] = null
   }
 
   if (actorData.abilities.hasOwnProperty('endurance')) {
     if (actorData.abilities.endurance.base) {
       updateData['flags.hm-gold.ability-endurance'] = actorData.abilities.endurance.base;
     }
-    updateData['data.abilities.-=endurance'] = null;
+    updateData['system.abilities.-=endurance'] = null;
   }
 
   if (actorData.abilities.hasOwnProperty('speed')) {
     if (actorData.abilities.speed.base) {
       updateData['flags.hm-gold.ability-speed'] = actorData.abilities.speed.base;
     }
-    updateData['data.abilities.-=speed'] = null;
+    updateData['system.abilities.-=speed'] = null;
   }
 
   if (actorData.abilities.hasOwnProperty('touch')) {
     if (actorData.abilities.touch.base) {
       updateData['flags.hm-gold.ability-touch'] = actorData.abilities.touch.base;
     }
-    updateData['data.abilities.-=touch'] = null;
+    updateData['system.abilities.-=touch'] = null;
   }
 
   if (actorData.abilities.hasOwnProperty('frame')) {
     if (actorData.abilities.frame.base) {
       updateData['flags.hm-gold.ability-frame'] = actorData.abilities.frame.base;
     }
-    updateData['data.abilities.-=frame'] = null;
+    updateData['system.abilities.-=frame'] = null;
   }
 
   // if (actorData.hasOwnProperty('shockIndex')) {
-  //   updateData['data.-=shockIndex'] = null
+  //   updateData['system.-=shockIndex'] = null
   // }
 
   if (actorData.hasOwnProperty('dodge')) {
-    updateData['data.-=dodge'] = null
+    updateData['system.-=dodge'] = null
   }
 
   if (actorData.hasOwnProperty('initiative')) {
-    updateData['data.-=initiative'] = null
+    updateData['system.-=initiative'] = null
   }
 
   if (actorData.hasOwnProperty('endurance')) {
-    updateData['data.-=endurance'] = null
+    updateData['system.-=endurance'] = null
   }
 
   if (actorData.move.hasOwnProperty('effective')) {
-    updateData['data.move.-=effective'] = null
+    updateData['system.move.-=effective'] = null
   }
 
   if (actorData.hasOwnProperty('universalPenalty')) {
-    updateData['data.-=universalPenalty'] = null
+    updateData['system.-=universalPenalty'] = null
   }
 
   if (actorData.hasOwnProperty('physicalPenalty')) {
-    updateData['data.-=physicalPenalty'] = null
+    updateData['system.-=physicalPenalty'] = null
   }
 
   if (actorData.hasOwnProperty('totalInjuryLevels')) {
-    updateData['data.-=totalInjuryLevels'] = null
+    updateData['system.-=totalInjuryLevels'] = null
   }
 
   if (actorData.hasOwnProperty('hasCondition')) {
-    updateData['data.-=hasCondition'] = null
+    updateData['system.-=hasCondition'] = null
   }
 
   if (actorData.hasOwnProperty('encumbrance')) {
-    updateData['data.-=encumbrance'] = null
+    updateData['system.-=encumbrance'] = null
   }
 
   if (actorData.hasOwnProperty('totalWeight')) {
-    updateData['data.-=totalWeight'] = null
+    updateData['system.-=totalWeight'] = null
   }
 
   if (!actorData.hasOwnProperty('macros') || !actorData.macros.hasOwnProperty('type')) {
-    updateData['data.macros.command'] = '';
-    updateData['data.macros.type'] = 'script';
+    updateData['system.macros.command'] = '';
+    updateData['system.macros.type'] = 'script';
   }
 
   // Remove deprecated fields
@@ -331,8 +331,8 @@ export const migrateItemData = function (item) {
   * -------- ITEM UPDATES GO HERE -------------
   */
   if (!item.data.macros?.hasOwnProperty('type')) {
-    updateData['data.macros.command'] = '';
-    updateData['data.macros.type'] = 'script';
+    updateData['system.macros.command'] = '';
+    updateData['system.macros.type'] = 'script';
   }
 
   if (item.type === 'weapongear') {
@@ -340,28 +340,28 @@ export const migrateItemData = function (item) {
       if (item.data.squeeze) {
         updateData['flags.hm-gold.squeeze-impact'] = item.data.squeeze;
       }
-      updateData['data.-=squeeze'] = null;
+      updateData['system.-=squeeze'] = null;
     }
 
     if (item.data.hasOwnProperty('tear')) {
       if (item.data.squeeze) {
         updateData['flags.hm-gold.tear-impact'] = item.data.tear;
       }
-      updateData['data.-=tear'] = null;
+      updateData['system.-=tear'] = null;
     }
   }
 
   if (item.type === 'missilegear') {
     if (item.data.range.hasOwnProperty('extreme64')) {
-      updateData['data.range.-=extreme64'] = null;
+      updateData['system.range.-=extreme64'] = null;
     }
 
     if (item.data.range.hasOwnProperty('extreme128')) {
-      updateData['data.range.-=extreme128'] = null;
+      updateData['system.range.-=extreme128'] = null;
     }
 
     if (item.data.range.hasOwnProperty('extreme256')) {
-      updateData['data.range.-=extreme256'] = null;
+      updateData['system.range.-=extreme256'] = null;
     }
 
     if (item.data.impact.hasOwnProperty('extreme64')) {
@@ -372,21 +372,21 @@ export const migrateItemData = function (item) {
         updateData['flags.hm-gold.range32-impact'] = item.data.impact.extreme;
         updateData['flags.hm-gold.range64-impact'] = item.data.impact.extreme64;
       }
-      updateData['data.impact.-=extreme64'] = null;
+      updateData['system.impact.-=extreme64'] = null;
     }
   
     if (item.data.impact.hasOwnProperty('extreme128')) {
       if (item.data.impact.extreme128) {
         updateData['flags.hm-gold.range128-impact'] = item.data.impact.extreme128;
       }
-      updateData['data.impact.-=extreme128'] = null;
+      updateData['system.impact.-=extreme128'] = null;
     }
 
     if (item.data.impact.hasOwnProperty('extreme256')) {
       if (item.data.impact.extreme256) {
         updateData['flags.hm-gold.range256-impact'] = item.data.impact.extreme256;
       }
-      updateData['data.impact.-=extreme256'] = null;
+      updateData['system.impact.-=extreme256'] = null;
     }  
   }
 
@@ -395,14 +395,14 @@ export const migrateItemData = function (item) {
       if (item.data.protection.squeeze) {
         updateData['flags.hm-gold.squeeze'] = item.data.protection.squeeze;
       }
-      updateData['data.protection.-=squeeze'] = null;
+      updateData['system.protection.-=squeeze'] = null;
     }
 
     if (item.data.protection.hasOwnProperty('tear')) {
       if (item.data.protection.tear) {
         updateData['flags.hm-gold.tear'] = item.data.protection.tear;
       }
-      updateData['data.protection.-=tear'] = null;
+      updateData['system.protection.-=tear'] = null;
     }
   }
 
@@ -411,21 +411,21 @@ export const migrateItemData = function (item) {
       if (item.data.squeeze) {
         updateData['flags.hm-gold.squeeze'] = item.data.squeeze;
       }      
-      updateData['data.-=squeeze'] = null;
+      updateData['system.-=squeeze'] = null;
     }
 
     if (item.data.hasOwnProperty('tear')) {
       if (item.data.tear) {
         updateData['flags.hm-gold.tear'] = item.data.tear;
       }
-      updateData['data.-=tear'] = null;
+      updateData['system.-=tear'] = null;
     }
 
     if (item.data.probWeight.hasOwnProperty('arms')) {
       if (item.data.probWeight.arms) {
         updateData['flags.hm-gold.probweight-arms'] = item.data.probWeight.arms;
       }
-      updateData['data.probWeight.-=arms'] = null;
+      updateData['system.probWeight.-=arms'] = null;
     }
   }
 

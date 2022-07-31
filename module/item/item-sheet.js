@@ -20,7 +20,7 @@ export class HarnMasterItemSheet extends ItemSheet {
   /** @override */
   get template() {
     const path = "systems/hm3/templates/item";
-    return `${path}/${this.item.data.type}-sheet.html`;
+    return `${path}/${this.item.type}-sheet.html`;
   }
 
   /* -------------------------------------------- */
@@ -28,13 +28,12 @@ export class HarnMasterItemSheet extends ItemSheet {
   /** @override */
   getData() {
     const data = super.getData();
-    const itemData = data.data;
 
     // Re-define the template data references (backwards compatible)
-    data.item = itemData;
-    data.data = itemData.data;
+    data.item = this.item;
+    data.idata = this.item.system;
     data.config = CONFIG.HM3;
-    data.itemType = this.item.data.type;
+    data.itemType = this.item.type;
     data.hasActor = this.actor && true;
     data.hasCombatSkills = false;
     data.hasRitualSkills = false;
@@ -46,7 +45,7 @@ export class HarnMasterItemSheet extends ItemSheet {
     // Containers are not allowed in other containers.  So if this item is a container,
     // don't show any other containers.
 
-    if (this.actor && this.item.data.type !== 'containergear') {
+    if (this.actor && this.item.type !== 'containergear') {
       this.actor.items.forEach(it => {
         if (it.type === 'containergear') {
           data.containers[it.name] = it.id;
@@ -55,36 +54,36 @@ export class HarnMasterItemSheet extends ItemSheet {
     }
 
     // Fill appropriate lists for individual item sheets
-    if (this.item.data.type === 'spell') {
+    if (this.item.type === 'spell') {
       // Spells need a list of convocations
       data.convocations = [];
       if (this.actor) {
         this.actor.itemTypes.skill.forEach(it => {
-          if (it.data.data.type === 'Magic') {
+          if (it.system.type === 'Magic') {
             data.convocations.push(it.data.name);
             data.hasMagicSkills = true;
           }
         });
       }
-    } else if (this.item.data.type === 'invocation') {
+    } else if (this.item.type === 'invocation') {
       // Invocations need a list of dieties
       data.dieties = [];
       if (this.actor) {
         this.actor.itemTypes.skill.forEach(it => {
-          if (it.data.data.type === 'Ritual') {
-            data.dieties.push(it.data.name);
+          if (it.system.type === 'Ritual') {
+            data.dieties.push(it.name);
             data.hasRitualSkills = true;
           }
         });
       }
-    } else if (this.item.data.type === 'weapongear' ||
-      this.item.data.type === 'missilegear') {
+    } else if (this.item.type === 'weapongear' ||
+      this.item.type === 'missilegear') {
 
       // Weapons need a list of combat skills
       data.combatSkills = [];
 
       if (this.actor) {
-        if (this.item.data.type === 'weapongear') {
+        if (this.item.type === 'weapongear') {
           // For weapons, we add a "None" item to the front of the list
           // as a default (in case no other combat skill applies)
           data.combatSkills.push('None');
@@ -96,12 +95,12 @@ export class HarnMasterItemSheet extends ItemSheet {
         }
 
         this.actor.itemTypes.skill.forEach(it => {
-          if (it.data.data.type === 'Combat') {
-            const lcName = it.data.name.toLowerCase();
+          if (it.system.type === 'Combat') {
+            const lcName = it.name.toLowerCase();
             // Ignore the 'Dodge' and 'Initiative' skills,
             // since you never want a weapon based on those skills.
             if (!(lcName === 'initiative' || lcName === 'dodge')) {
-              data.combatSkills.push(it.data.name);
+              data.combatSkills.push(it.name);
               data.hasCombatSkills = true;
             }
           }
@@ -115,7 +114,7 @@ export class HarnMasterItemSheet extends ItemSheet {
         data.effects[effect.id] = {
           'source': effect.sourceName,
           'duration': utility.aeDuration(effect),
-          'data': effect.data,
+          'data': effect,
           'changes': utility.aeChanges(effect)
         }
       })
@@ -187,7 +186,7 @@ export class HarnMasterItemSheet extends ItemSheet {
     }
 
     // Update the list on the server
-    return this.item.update({ "data.locations": locations });
+    return this.item.update({ "system.locations": locations });
   }
 
   async _armorgearLocationDelete(event) {
@@ -206,6 +205,6 @@ export class HarnMasterItemSheet extends ItemSheet {
     }
 
     // Update the list on the server
-    return this.item.update({ "data.locations": locations });
+    return this.item.update({ "system.locations": locations });
   }
 }

@@ -6,7 +6,7 @@
                 <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name" /></h1>
                 <div class="skill-type flexrow">
                     <label class="label">Type</label>
-                    <select class="value" name="data.type">
+                    <select class="value" name="system.type">
                         {{#select data.type}}
                             {{#each config.traitTypes}}
                                 <option value="{{this}}">{{this}}</option>
@@ -32,17 +32,17 @@
         <div class="tab properties" data-group="primary" data-tab="properties">
             <div class="resource">
                 <label class="resource-label">Source</label>
-                <input type="text" name="data.source" value="{{data.source}}" data-dtype="String" />
+                <input type="text" name="system.source" value="{{idata.source}}" data-dtype="String" />
             </div>
             <div class="resource">
                 <label class="resource-label">Note</label>
-                <input type="text" name="data.notes" value="{{data.notes}}" data-dtype="String" />
+                <input type="text" name="system.notes" value="{{idata.notes}}" data-dtype="String" />
             </div>
         </div>
 
         {{!-- Description Tab --}}
         <div class="tab description" data-group="primary" data-tab="description">
-            {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+            {{editor idata.description target="system.description" button=true owner=owner editable=editable}}
         </div>
 
         {{!-- Effects Tab --}}

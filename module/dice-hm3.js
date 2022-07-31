@@ -31,14 +31,12 @@ export class DiceHM3 {
             type: rollData.type,
             target: rollData.target,
             label: rollData.label,
-            modifier: rollData.modifier || 0,
-            data: rollData.actorData
+            modifier: rollData.modifier || 0
         };
 
         // Create the Roll instance
         const roll = rollData.fastforward ? await DiceHM3.rollTest({
             type: rollData.type,
-            data: rollData.data,
             diceSides: 100,
             diceNum: 1,
             modifier: rollData.modifier || 0,
@@ -132,7 +130,7 @@ export class DiceHM3 {
                 return DiceHM3.rollTest({
                     type: dialogOptions.type,
                     target: dialogOptions.target,
-                    data: dialogOptions.data,
+                    data: null,
                     diceSides: 100,
                     diceNum: 1,
                     modifier: formModifier
@@ -174,14 +172,12 @@ export class DiceHM3 {
             label: rollData.label,
             modifier: rollData.modifier || 0,
             numdice: Number(rollData.numdice),
-            data: rollData.actorData,
             items: rollData.items
         };
 
         // Create the Roll instance
         const roll = rollData.fastforward ? await DiceHM3.rollTest({
             type: rollData.type,
-            data: rollData.data,
             diceSides: 6,
             diceNum: Number(rollData.numdice),
             modifier: rollData.modifier || 0,
@@ -268,7 +264,7 @@ export class DiceHM3 {
                 return DiceHM3.rollTest({
                     type: dialogOptions.type,
                     target: dialogOptions.target,
-                    data: dialogOptions.data,
+                    data: null,
                     diceSides: 6,
                     diceNum: dialogOptions.numdice,
                     modifier: formModifier
@@ -281,22 +277,22 @@ export class DiceHM3 {
     /*        SKILL DEVELOPMENT ROLL PROCESSING
     /*--------------------------------------------------------------------------------*/
 
-    static async sdrRoll(itemData) {
+    static async sdrRoll(item) {
         const speaker = ChatMessage.getSpeaker();
 
-        let roll = await (new Roll(`1d100 + @sb`, {sb: itemData.data.skillBase.value})).evaluate({async: true});
+        let roll = await (new Roll(`1d100 + @sb`, {sb: item.system.skillBase.value})).evaluate({async: true});
 
-        const isSuccess = roll.total > itemData.data.masteryLevel;
+        const isSuccess = roll.total > item.system.masteryLevel;
 
         const re = RegExp('\(([^\)]+)\)');
-        const specMatch = itemData.name.match(/\(([^\)]+)\)/);
+        const specMatch = item.name.match(/\(([^\)]+)\)/);
         const chatTemplate = 'systems/hm3/templates/chat/standard-test-card.html';
 
         const chatTemplateData = {
-            title: `${itemData.name} Skill Development Roll`,
-            origTarget: itemData.data.masteryLevel,
+            title: `${item.name} Skill Development Roll`,
+            origTarget: item.system.masteryLevel,
             modifier: 0,
-            modifiedTarget: itemData.data.masteryLevel,
+            modifiedTarget: item.system.masteryLevel,
             isSuccess: isSuccess,
             rollValue: roll.total,
             rollResult: roll.result,
@@ -350,7 +346,7 @@ export class DiceHM3 {
 
             const dialogOptions = {
                 hitLocations: hitLocations,
-                data: rollData.actor.data,
+                data: rollData.actor.system,
                 items: rollData.actor.items,
                 name: rollData.actor.token ? rollData.actor.token.name : rollData.actor.name
             };
@@ -521,6 +517,7 @@ export class DiceHM3 {
         const enableLimbInjuries = game.settings.get('hm3', 'limbInjuries');
 
         const result = {
+            type: 'injury',
             isRandom: location === 'Random',
             name: dialogOptions.name,
             aim: aim,
@@ -548,20 +545,20 @@ export class DiceHM3 {
         if (!armorLocationItem) return;  // this means we couldn't find the location, so no injury
 
         // Just to make life simpler, get the data element which is what we really care about.
-        const armorLocationData = armorLocationItem.data;
+        const armorLocationData = armorLocationItem.system;
 
-        result.location = armorLocationData.name;
-        result.armorType = armorLocationData.data.layers === '' ? 'None' : armorLocationData.data.layers;
+        result.location = armorLocationItem.name;
+        result.armorType = armorLocationData.layers === '' ? 'None' : armorLocationData.layers;
 
         // determine effective impact (impact - armor)
         if (aspect === 'Blunt') {
-            result.armorValue = armorLocationData.data.blunt;
+            result.armorValue = armorLocationData.blunt;
         } else if (aspect === 'Edged') {
-            result.armorValue = armorLocationData.data.edged;
+            result.armorValue = armorLocationData.edged;
         } else if (aspect === 'Piercing') {
-            result.armorValue = armorLocationData.data.piercing;
+            result.armorValue = armorLocationData.piercing;
         } else {
-            result.armorValue = armorLocationData.data.fire;
+            result.armorValue = armorLocationData.fire;
         }
         result.effectiveImpact = Math.max(impact - result.armorValue, 0);
 
@@ -569,15 +566,15 @@ export class DiceHM3 {
         if (result.effectiveImpact === 0) {
             result.injuryLevelText = 'NA';
         } else if (result.effectiveImpact >= 17) {
-            result.injuryLevelText = armorLocationData.data.effectiveImpact.ei17;
+            result.injuryLevelText = armorLocationData.effectiveImpact.ei17;
         } else if (result.effectiveImpact >= 13) {
-            result.injuryLevelText = armorLocationData.data.effectiveImpact.ei13;
+            result.injuryLevelText = armorLocationData.effectiveImpact.ei13;
         } else if (result.effectiveImpact >= 9) {
-            result.injuryLevelText = armorLocationData.data.effectiveImpact.ei9;
+            result.injuryLevelText = armorLocationData.effectiveImpact.ei9;
         } else if (result.effectiveImpact >= 5) {
-            result.injuryLevelText = armorLocationData.data.effectiveImpact.ei5;
+            result.injuryLevelText = armorLocationData.effectiveImpact.ei5;
         } else {
-            result.injuryLevelText = armorLocationData.data.effectiveImpact.ei1;
+            result.injuryLevelText = armorLocationData.effectiveImpact.ei1;
         }
 
         // Calculate injury level and whether it is a kill shot.
@@ -597,24 +594,24 @@ export class DiceHM3 {
 
             case 'G4':
                 result.injuryLevel = 4;
-                result.isAmputate = enableAmputate && armorLocationData.data.isAmputate && (aspect === 'Edged');
+                result.isAmputate = enableAmputate && armorLocationData.isAmputate && (aspect === 'Edged');
                 break;
 
             case 'K4':
                 result.injuryLevel = 4;
                 result.isKillShot = true;
-                result.isAmputate = enableAmputate && armorLocationData.data.isAmputate && (aspect === 'Edged');
+                result.isAmputate = enableAmputate && armorLocationData.isAmputate && (aspect === 'Edged');
                 break;
 
             case 'G5':
                 result.injuryLevel = 5;
-                result.isAmputate = enableAmputate && armorLocationData.data.isAmputate && (aspect === 'Edged');
+                result.isAmputate = enableAmputate && armorLocationData.isAmputate && (aspect === 'Edged');
                 break;
 
             case 'K5':
                 result.injuryLevel = 5;
                 result.isKillShot = true;
-                result.isAmputate = enableAmputate && armorLocationData.data.isAmputate && (aspect === 'Edged');
+                result.isAmputate = enableAmputate && armorLocationData.isAmputate && (aspect === 'Edged');
                 break;
 
             case 'NA':
@@ -633,13 +630,13 @@ export class DiceHM3 {
         result.isBleeder = enableBloodloss && result.injuryLevel >= 4 && result.aspect != 'Fire';
 
         // Optional Rule - Limb Injuries (Combat 14)
-        if (armorLocationData.data.isFumble) {
+        if (armorLocationData.isFumble) {
             result.isFumble = enableLimbInjuries && result.injuryLevel >= 4;
             result.isFumbleRoll = enableLimbInjuries || (!result.isFumble && result.injuryLevel >= 2);
         }
 
         // Optional Rule - Limb Injuries (Combat 14)
-        if (armorLocationData.data.isStumble) {
+        if (armorLocationData.isStumble) {
             result.isStumble = enableLimbInjuries && result.injuryLevel >= 4;
             result.isStumbleRoll = enableLimbInjuries || (!result.isStumble && result.injuryLevel >= 2);
         }
@@ -663,8 +660,8 @@ export class DiceHM3 {
             let totalWeight = 0;
             let numArmorLocations = 0;
             items.forEach(it => {
-                if (it.data.type === 'armorlocation') {
-                    totalWeight += it.data.data.probWeight[lcAim];
+                if (it.type === 'armorlocation') {
+                    totalWeight += it.system.probWeight[lcAim];
                     numArmorLocations++;
                 }
             });
@@ -689,8 +686,8 @@ export class DiceHM3 {
             // find the location that meets that number
             let done = false;
             items.forEach(it => {
-                if (!done && it.data.type === 'armorlocation') {
-                    rollWeight -= it.data.data.probWeight[lcAim];
+                if (!done && it.type === 'armorlocation') {
+                    rollWeight -= it.system.probWeight[lcAim];
                     if (rollWeight <= 0) {
                         result = it;
                         done = true;
@@ -700,7 +697,7 @@ export class DiceHM3 {
         } else {
             // Not random, let's just find the designated item
             items.forEach(it => {
-                if (result === null && it.data.type === 'armorlocation' && it.data.name === location) {
+                if (result === null && it.type === 'armorlocation' && it.name === location) {
                     result = it;
                 }
             });
@@ -731,6 +728,7 @@ export class DiceHM3 {
         let weapon = DiceHM3.calcWeaponAspect(rollData.weapon, rollData.data.items);
 
         const dialogOptions = {
+            type: 'damage',
             weapon: rollData.weapon,
             weaponAspect: rollData.aspect ? rollData.aspect : weapon.defaultAspect,
             weaponAspects: weapon.aspects,
@@ -824,17 +822,17 @@ export class DiceHM3 {
         // Search for the specified weapon, and then choose the aspect with
         // the greatest impact (this will become the default aspect)
         items.forEach(it => {
-            const itemData = it.data;
-            if (itemData.type === 'weapongear' && itemData.name === weapon) {
-                let maxImpact = Math.max(itemData.data.blunt, itemData.data.piercing, itemData.data.edged, 0);
-                result.aspects["Blunt"] = itemData.data.blunt;
-                result.aspects["Edged"] = itemData.data.edged;
-                result.aspects["Piercing"] = itemData.data.piercing;
-                if (maxImpact === itemData.data.piercing) {
+            const itemData = it.system;
+            if (it.type === 'weapongear' && it.name === weapon) {
+                let maxImpact = Math.max(itemData.blunt, itemData.piercing, itemData.edged, 0);
+                result.aspects["Blunt"] = itemData.blunt;
+                result.aspects["Edged"] = itemData.edged;
+                result.aspects["Piercing"] = itemData.piercing;
+                if (maxImpact === itemData.piercing) {
                     result.defaultAspect = "Piercing";
-                } else if (maxImpact === itemData.data.edged) {
+                } else if (maxImpact === itemData.edged) {
                     result.defaultAspect = "Edged";
-                } else if (maxImpact === itemData.data.blunt) {
+                } else if (maxImpact === itemData.blunt) {
                     result.defaultAspect = "Blunt";
                 } else {
                     // This shouldn't happen, but if all else fails, choose "Other"
@@ -1247,12 +1245,11 @@ export class DiceHM3 {
         let result = `Unknown (roll=${rollResult})`;
         let done = false;
         items.forEach(it => {
-            const itemData = it.data;
             // If we finally exhaust rollResult, just return immediately,
             // so we finish this forEach as quickly as possible
             if (rollResult > 0) {
-                if (itemData.type === "hitlocation") {
-                    let probWeight = itemData.data.probWeight[hlAim];
+                if (it.type === "hitlocation") {
+                    let probWeight = it.system.probWeight[hlAim];
                     // if probWeight is not zero, then there is a possiblity
                     // of a match
                     if (probWeight != 0) {
@@ -1261,7 +1258,7 @@ export class DiceHM3 {
                             // At this point, we have a match! We have
                             // exhausted the rollResult, so we can
                             // set the result equal to this location name
-                            result = itemData.name;
+                            result = it.name;
                         }
                     }
                 }

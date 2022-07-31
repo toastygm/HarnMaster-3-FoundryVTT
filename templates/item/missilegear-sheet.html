@@ -5,7 +5,7 @@
             <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name" /></h1>
             <div class="flexrow">
                 <label>In Container:</label>
-                <select name="data.container">
+                <select name="system.container">
                     {{#select data.container}}
                         {{#each containers as |cid cname|}}
                             <option value="{{cid}}">{{cname}}</option>
@@ -31,26 +31,26 @@
             <div class="grid grid-fixed-row grid-3col">
                 <div class="resource" id="missilegear-qty">
                     <label class="resource-label">Quantity</label>
-                    <input type="number" name="data.quantity" value="{{data.quantity}}" data-dtype="Number" />
+                    <input type="number" name="system.quantity" value="{{idata.quantity}}" data-dtype="Number" />
                 </div>
                 <div class="resource" id="missilegear-weight">
                     <label class="resource-label">Weight</label>
-                    <input type="number" name="data.weight" value="{{data.weight}}" data-dtype="Number" />
+                    <input type="number" name="system.weight" value="{{idata.weight}}" data-dtype="Number" />
                 </div>
                 <div class="resource" id="missilegear-value">
                     <label class="resource-label">Value</label>
-                    <input type="number" name="data.value" value="{{data.value}}" data-dtype="Number" />
+                    <input type="number" name="system.value" value="{{idata.value}}" data-dtype="Number" />
                 </div>
                 <div></div>
                 <div></div>
                 <div></div>
                 <div class="resource" id="missilegear-quality">
                     <label class="resource-label">Weapon Quality</label>
-                    <input type="number" name="data.weaponQuality" value="{{data.weaponQuality}}" data-dtype="Number" />
+                    <input type="number" name="system.weaponQuality" value="{{idata.weaponQuality}}" data-dtype="Number" />
                 </div>
                 <div class="resource" id="missilegear=weaponaspect">
-                    <label class="resource-label" for="data.weaponAspect">Weapon Aspect</label>
-                    <select class="resource-value" name="data.weaponAspect" data-dtype="String">
+                    <label class="resource-label" for="system.weaponAspect">Weapon Aspect</label>
+                    <select class="resource-value" name="system.weaponAspect" data-dtype="String">
                         {{#select data.weaponAspect}}
                             <option value="Piercing">Piercing</option>
                             <option value="Blunt">Blunt</option>
@@ -59,9 +59,9 @@
                     </select>
                 </div>
                 <div class="resource" id="missilegear-assocskill">
-                    <label class="resource-label" for="data.assocSkill">Associated Skill</label>
+                    <label class="resource-label" for="system.assocSkill">Associated Skill</label>
                     {{#if hasCombatSkills}}
-                        <select class="resource-value" name="data.assocSkill" data-dtype="String">
+                        <select class="resource-value" name="system.assocSkill" data-dtype="String">
                             {{#select data.assocSkill}}
                                 {{#each combatSkills}}
                                     <option value="{{this}}">{{this}}</option>
@@ -69,17 +69,17 @@
                             {{/select}}
                         </select>
                     {{else}}
-                        <input type="text" name="data.assocSkill" value="{{data.assocSkill}}" data-dtype="String" />
+                        <input type="text" name="system.assocSkill" value="{{idata.assocSkill}}" data-dtype="String" />
                     {{/if}}
                 </div>
             </div>
             <div class="resource" id="missilegear-source">
                 <label class="resource-label">Source</label>
-                <input type="text" name="data.source" value="{{data.source}}" data-dtype="String" />
+                <input type="text" name="system.source" value="{{idata.source}}" data-dtype="String" />
             </div>
             <div class="resource" id="missilegear-notes">
                 <label class="resource-label">Note</label>
-                <input type="text" name="data.notes" value="{{data.notes}}" data-dtype="String" />
+                <input type="text" name="system.notes" value="{{idata.notes}}" data-dtype="String" />
             </div>
             <ol class="range-table">
                 <li class="flexrow range-header" id="missilegear-range-header">
@@ -92,36 +92,36 @@
                 <li class="flexrow" id="missilegear-range-values">
                     <div class="range-label">Range</div>
                     <div class="range-value" id="missilegear-range-short">
-                        <input type="text" name="data.range.short" 
-                        value="{{data.range.short}}" data-dtype="Number" /></div>
+                        <input type="text" name="system.range.short" 
+                        value="{{idata.range.short}}" data-dtype="Number" /></div>
                     <div class="range-value" id="missilegear-range-medium">
-                        <input type="text" name="data.range.medium" 
-                        value="{{data.range.medium}}" data-dtype="Number" /></div>
+                        <input type="text" name="system.range.medium" 
+                        value="{{idata.range.medium}}" data-dtype="Number" /></div>
                     <div class="range-value" id="missilegear-range-long">
-                        <input type="text" name="data.range.long" 
-                        value="{{data.range.long}}" data-dtype="Number" /></div>
+                        <input type="text" name="system.range.long" 
+                        value="{{idata.range.long}}" data-dtype="Number" /></div>
                     <div class="range-value" id="missilegear-range-extreme">
-                        <input type="text" name="data.range.extreme" 
-                        value="{{data.range.extreme}}" data-dtype="Number" /></div>
+                        <input type="text" name="system.range.extreme" 
+                        value="{{idata.range.extreme}}" data-dtype="Number" /></div>
                 </li>
                 <li class="flexrow" id="missilegear-impact-values">
                     <div class="range-label">Impact</div>
                     <div class="range-value" id="missilegear-impact-short">
-                        <input type="text" name="data.impact.short" 
-                        value="{{data.impact.short}}" data-dtype="Number" /></div>
+                        <input type="text" name="system.impact.short" 
+                        value="{{idata.impact.short}}" data-dtype="Number" /></div>
                     <div class="range-value" id="missilegear-impact-medium">
-                        <input type="text" name="data.impact.medium" 
-                        value="{{data.impact.medium}}" data-dtype="Number" /></div>
+                        <input type="text" name="system.impact.medium" 
+                        value="{{idata.impact.medium}}" data-dtype="Number" /></div>
                     <div class="range-value" id="missilegear-impact-long">
-                        <input type="text" name="data.impact.long" 
-                        value="{{data.impact.long}}" data-dtype="Number" /></div>
+                        <input type="text" name="system.impact.long" 
+                        value="{{idata.impact.long}}" data-dtype="Number" /></div>
                     <div class="range-value" id="missilegear-impact-extreme">
-                        <input type="text" name="data.impact.extreme"
-                        value="{{data.impact.extreme}}" data-dtype="Number" /></div>
+                        <input type="text" name="system.impact.extreme"
+                        value="{{idata.impact.extreme}}" data-dtype="Number" /></div>
                 </li>
             </ol>
             <div class="resource artifact flexrow" id="missilegear-isartifact">
-                <input type="checkbox" name="data.arcane.isArtifact" value="{{data.arcane.isArtifact}}"
+                <input type="checkbox" name="system.arcane.isArtifact" value="{{idata.arcane.isArtifact}}"
                     data-dtype="Boolean" {{checked data.arcane.isArtifact}} />
                 <label class="resource-label">Artifact</label>
             </div>
@@ -130,18 +130,18 @@
                     <legend>Artifact Properties</legend>
                     <div class="grid grid-fixed-row grid-3col">
                         <div class="resource" id="missilegear-artifact-isattuned">
-                            <input type="checkbox" name="data.arcane.isAttuned" value="{{data.arcane.isAttuned}}"
+                            <input type="checkbox" name="system.arcane.isAttuned" value="{{idata.arcane.isAttuned}}"
                                 data-dtype="Boolean" {{checked data.arcane.isAttuned}} />
                             <label class="resource-label">Attuned</label>
                         </div>
                         <div class="resource" id="missilegear-artifact-charges">
                             <label class="resource-label">Charges</label>
-                            <input type="number" name="data.arcane.charges" value="{{data.arcane.charges}}"
+                            <input type="number" name="system.arcane.charges" value="{{idata.arcane.charges}}"
                                 data-dtype="Number" />
                         </div>
                         <div class="resource" id="missilegear-artifact-ego">
                             <label class="resource-label">Ego/Will</label>
-                            <input type="number" name="data.arcane.ego" value="{{data.arcane.ego}}"
+                            <input type="number" name="system.arcane.ego" value="{{idata.arcane.ego}}"
                                 data-dtype="Number" />
                         </div>
                     </div>
@@ -151,7 +151,7 @@
 
         {{!-- Description Tab --}}
         <div class="tab description" id="missilegear-desc" data-group="primary" data-tab="description">
-            {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+            {{editor idata.description target="system.description" button=true owner=owner editable=editable}}
         </div>
 
         {{!-- Effects Tab --}}

@@ -10,13 +10,13 @@
                     <div class="header-stat-block">
                         <div class="penalties flexrow">
                             <div class="capacity-label">Max Capacity</div>
-                            <input class="capacity-value" type="number" name="data.capacity.max" value="{{data.capacity.max}}" data-dtype="Number"/>
+                            <input class="capacity-value" type="number" name="system.capacity.max" value="{{adata.capacity.max}}" data-dtype="Number"/>
                         </div>
                         <div class="endurance flexrow">
-                            <span class="label">Capacity: {{data.capacity.value}}</span>
+                            <span class="label">Capacity: {{adata.capacity.value}}</span>
                         </div>
                         <div class="endbar">
-                            <span class="bar" style="width: {{data.capacity.pct}}%"></span>
+                            <span class="bar" style="width: {{adata.capacity.pct}}%"></span>
                         </div>
                     </div>
                 </div>
@@ -28,9 +28,9 @@
     <section class="sheet-body">
         <div class="facade">
             <div class="flexrow">
-                <img class="facade-image" src="{{data.bioImage}}" data-edit="data.bioImage" title="{{actor.name}}" height="300" width="200" />
+                <img class="facade-image" src="{{adata.bioImage}}" data-edit="system.bioImage" title="{{actor.name}}" height="300" width="200" />
                 <div class="facade-description">
-                    {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+                    {{editor idata.description target="system.description" button=true owner=owner editable=editable}}
                 </div>
             </div>
         </div>

@@ -22,7 +22,7 @@ import { HM3 } from './config.js';
  * @param {Object} item
  */
 export function calcSkillBase(item) {
-    const sb = item.data.data.skillBase;
+    const sb = item.system.skillBase;
 
     sb.delta = 0;
     sb.isFormulaValid = true;
@@ -33,8 +33,8 @@ export function calcSkillBase(item) {
     }
 
     let actorData = null;
-    if (item.actor?.data) {
-        actorData = item.actor.data.data;
+    if (item.actor?.system) {
+        actorData = item.actor.system;
     }
 
     let numAbilities = 0;
@@ -229,11 +229,11 @@ export function calcSkillBase(item) {
 export function createUniqueName(prefix, itemTypes) {
     let incr = 0;
     itemTypes.forEach(it => {
-        if (prefix === it.data.name) {
+        if (prefix === it.name) {
             // Name was found, so minimum next increment will be 1
             incr = Math.max(1, incr);
         } else {
-            const match = it.data.name.match(`${prefix}-(\\d+)`);
+            const match = it.name.match(`${prefix}-(\\d+)`);
             if (match) {
                 // Found an existing increment, so increase it by 1
                 // as the new candidate; keep it only if it is greater than
@@ -343,7 +343,7 @@ export function romanize(num) {
 }
 
 export function aeDuration(effect) {
-    const d = effect.data.duration;
+    const d = effect.duration;
 
     // Time-based duration
     if (Number.isNumeric(d.seconds)) {
@@ -420,11 +420,11 @@ export function aeDuration(effect) {
 }
 
 export function aeChanges(effect) {
-    if (!effect.data.changes || !effect.data.changes.length) {
+    if (!effect.changes || !effect.changes.length) {
         return 'No Changes';
     }
 
-    return effect.data.changes.map(ch => {
+    return effect.changes.map(ch => {
         const modes = CONST.ACTIVE_EFFECT_MODES;
         const key = ch.key;
         let val = 0;
@@ -434,15 +434,15 @@ export function aeChanges(effect) {
             val = Number.parseInt(parts[1], 10) || 0;
             const itemName = parts[0];
             switch(key) {
-                case 'data.eph.itemEMLMod':
+                case 'system.eph.itemEMLMod':
                     prefix = `${itemName} EML`;
                     break;
 
-                case 'data.eph.itemAMLMod':
+                case 'system.eph.itemAMLMod':
                     prefix = `${itemName} AML`;
                     break;
 
-                case 'data.eph.itemDMLMod':
+                case 'system.eph.itemDMLMod':
                     prefix = `${itemName} DML`;
                     break;
             }
@@ -506,14 +506,14 @@ export function executeMacroScript(macro, { actor, token, rollResult, rollData, 
     if (item) context.item = item;
 
     // Attempt script execution
-    const asyncFunction = macro.data.command.includes("await") ? "async" : "";
+    const asyncFunction = macro.command.includes("await") ? "async" : "";
     const itemParam = item ? ", item" : "";
     const rollDataParam = rollData ? ", rollData" : ""
     let result = null;
     try {
         result = (new Function(`"use strict";
             return (${asyncFunction} function ({speaker, actor, token, character, rollResult ${itemParam} ${rollDataParam}}={}) {
-                ${macro.data.command}
+                ${macro.command}
                 });`))().call(macro, context);
     } catch (err) {
         ui.notifications.error(`There was an error in your macro syntax. See the console (F12) for details`);

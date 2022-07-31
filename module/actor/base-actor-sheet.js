@@ -20,20 +20,20 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             options: this.options,
             editable: this.isEditable,
             cssClass: isOwner ? "editable" : "locked",
-            isCharacter: this.document.data.type === "character",
-            isCreature: this.document.data.type === "creature",
-            isContainer: this.document.data.type === "container",
+            isCharacter: this.document.type === "character",
+            isCreature: this.document.type === "creature",
+            isContainer: this.document.type === "container",
             config: CONFIG.HM3
         }
 
         data.customSunSign = game.settings.get('hm3', 'customSunSign');
-        data.actor = foundry.utils.deepClone(this.actor.data);
+        data.actor = foundry.utils.deepClone(this.actor);
         data.items = this.actor.items.map(i => {
-            i.data.labels = i.labels;
-            return i.data;
+            //i.data.labels = i.labels;
+            return i;
         });
         data.items.sort((a, b) => (a.sort || 0) - (b.sort || 0));
-        data.data = data.actor.data;
+        data.adata = data.actor.system;
         data.labels = this.actor.labels || {};
         data.filters = this._filters;
         
@@ -42,19 +42,19 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         data.dtypes = ["String", "Number", "Boolean"];
         let capacityMax = 0;
         let capacityVal = 0;
-        if (this.actor.data.type === 'character') {
-            capacityMax = data.data.endurance * 10;
-            if (data.data.eph) {
-                capacityVal = data.data.eph.totalGearWeight;
+        if (this.actor.type === 'character') {
+            capacityMax = data.adata.endurance * 10;
+            if (data.adata.eph) {
+                capacityVal = data.adata.eph.totalGearWeight;
             }
-        } else if (this.actor.data.type === 'creature') {
-            capacityMax = data.data.loadRating + (data.data.endurance * 10);
-            if (data.data.eph) {
-                capacityVal = data.data.eph.totalGearWeight;
+        } else if (this.actor.type === 'creature') {
+            capacityMax = data.adata.loadRating + (data.adata.endurance * 10);
+            if (data.adata.eph) {
+                capacityVal = data.adata.eph.totalGearWeight;
             }
-        } else if (this.actor.data.type === 'container') {
-            capacityMax = data.data.capacity.max;
-            capacityVal = data.data.capacity.value;
+        } else if (this.actor.type === 'container') {
+            capacityMax = data.adata.capacity.max;
+            capacityVal = data.adata.capacity.value;
         }
 
         // Setup the fake container entry for "On Person" container
@@ -93,12 +93,14 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         this.actor.effects.forEach(effect => {
             effect._getSourceName().then(() => {
                 data.effects[effect.id] = {
+                    'id': effect.id,
+                    'label': effect.label,
                     'source': effect.sourceName,
                     'duration': utility.aeDuration(effect),
-                    'data': effect.data,
+                    'source': effect,
                     'changes': utility.aeChanges(effect)
                 }
-                data.effects[effect.id].data.disabled = effect.data.disabled;
+                data.effects[effect.id].disabled = effect.disabled;
             });
         });
 
@@ -123,10 +125,10 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Get the drop target
         const dropTarget = event.target.closest(".item");
         const targetId = dropTarget ? dropTarget.dataset.itemId : null;
-        const target = siblings.find(s => s.data._id === targetId);
+        const target = siblings.find(s => s.id === targetId);
 
         // Ensure we are only sorting like-types
-        if (target && !target.data.type.endsWith('gear')) return;
+        if (target && !target.type.endsWith('gear')) return;
 
         // Perform the sort
         const sortUpdates = SortingHelpers.performIntegerSort(source, { target: target, siblings });
@@ -160,7 +162,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     if (item.type.endsWith('gear') && item.type !== 'containergear') {
                         if (item.data.data.container != destContainer) {
                             const embItem = this.actor.items.get(item.id);
-                            await embItem.update({'data.container': destContainer });
+                            await embItem.update({'system.container': destContainer });
                         }
                     }
     
@@ -179,7 +181,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     if (item.data.type.endsWith('gear') && item.data.type !== 'containergear') {
                         if (item.data.data.container != destContainer) {
                             const embItem = this.actor.items.get(item.id);
-                            await embItem.update({'data.container': destContainer });
+                            await embItem.update({'system.container': destContainer });
                         }
                     }
     
@@ -190,10 +192,10 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         // NOTE: when an item comes from the item list or a compendium, its type is
         // "Item" but it does not have a "data" element.  So we have to check for that in
-        // the following conditional; "data.data.type" may not exist!
+        // the following conditional; "data.type" may not exist!
 
         // Skills, spells, etc. (non-gear) coming from a item list or compendium
-        if (!data.data || !data.data.type.endsWith("gear")) {
+        if (!data || !data.type.endsWith("gear")) {
             return super._onDropItem(event, data);
         }
 
@@ -202,12 +204,12 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // track the result.
 
         // Containers are a special case, and they need to be processed specially
-        if (data.data.type === 'containergear') return await this._moveContainer(event, data);
+        if (data.type === 'containergear') return await this._moveContainer(event, data);
 
         // Set the destination container to the closest drop containerid
-        data.data.data.container = destContainer;
+        data.data.container = destContainer;
 
-        const quantity = data.data.data.quantity;
+        const quantity = data.data.quantity;
 
         // Source quantity really should never be 0 or negative; if so, just decline
         // the drop request.
@@ -223,7 +225,6 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
     async _moveContainer(event, data) {
         // create new container
-        const itemData = data.data;
 
         // Get source actor
         let sourceActor = null;
@@ -239,7 +240,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             return null;
         }
 
-        const containerResult = await Item.create(itemData, {parent: this.actor});
+        const containerResult = await Item.create(data, {parent: this.actor});
         if (!containerResult) {
             ui.notifications.warn(`Error while moving container, move aborted`);
             return null;
@@ -248,7 +249,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // move all items into new container
         let failure = false;
         for (let it of sourceActor.items.values()) {
-            if (!failure && it.data.data.container === itemData._id) {
+            if (!failure && it.data.data.container === data.id) {
                 const itData = it.toJSON();
                 delete itData._id;
                 itData.data.container = containerResult.id;
@@ -289,10 +290,10 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Render modal dialog
         let dlgTemplate = "systems/hm3/templates/dialog/item-qty.html";
         let dialogData = {
-            itemName: data.data.name,
-            sourceName: sourceActor.data.name,
-            targetName: this.actor.data.name,
-            maxItems: data.data.data.quantity,
+            itemName: data.name,
+            sourceName: sourceActor.name,
+            targetName: this.actor.name,
+            maxItems: data.data.quantity,
         };
 
         const dlghtml = await renderTemplate(dlgTemplate, dialogData);
@@ -319,9 +320,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     }
 
     async _moveItems(data, moveQuantity) {
-        const sourceName = data.data.name;
-        const sourceType = data.data.type;
-        const sourceQuantity = data.data.data.quantity;
+        const sourceName = data.name;
+        const sourceType = data.type;
+        const sourceQuantity = data.data.quantity;
 
         // Get source actor
         let sourceActor = null;
@@ -340,7 +341,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Look for a similar item locally
         let result = null;
         for (let it of this.actor.items.values()) {
-            if (it.data.type === sourceType && it.data.name === sourceName) {
+            if (it.type === sourceType && it.name === sourceName) {
                 result = it;
                 break;
             }
@@ -349,22 +350,21 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         if (result) {
             // update quantity
             const newTargetQuantity = result.data.data.quantity + moveQuantity;
-            await result.update({ 'data.quantity': newTargetQuantity });
+            await result.update({ 'system.quantity': newTargetQuantity });
         } else {
             // Create an item
-            const itemData = data.data;
-            itemData.data.quantity = moveQuantity;
-            itemData.data.container = 'on-person';
-            result = await Item.create(itemData, {parent: this.actor});
+            data.data.quantity = moveQuantity;
+            data.data.container = 'on-person';
+            result = await Item.create(data, {parent: this.actor});
         }
 
         if (result) {
             if (moveQuantity >= sourceQuantity) {
-                await Item.deleteDocuments([data.data._id], {parent: sourceActor});
+                await Item.deleteDocuments([data.id], {parent: sourceActor});
             } else {
                 const newSourceQuantity = sourceQuantity - moveQuantity;
-                const sourceItem = await sourceActor.items.get(data.data._id);
-                await sourceItem.update({ 'data.quantity': newSourceQuantity });
+                const sourceItem = await sourceActor.items.get(data.id);
+                await sourceItem.update({ 'system.quantity': newSourceQuantity });
             }
         }
         return result;
@@ -377,7 +377,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         //const item = await Item.fromDropData(data);
 
         if (!data.type.endsWith("gear")) {
-            if (actor.data.type === 'container') {
+            if (actor.type === 'container') {
                 ui.notifications.warn(`You may only place physical objects in a container; drop of ${data.name} refused.`);
                 return false;
             }
@@ -385,7 +385,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             for (let it of actor.items.values()) {
                 // Generally, if the items have the same type and name,
                 // then merge the dropped item onto the existing item.
-                if (it.data.type === data.type && it.data.name === data.name) {
+                if (it.type === data.type && it.name === data.name) {
                     this.mergeItem(it, data);
 
                     // Don't actually allow the new item
@@ -674,7 +674,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
             let title = `Delete ${data.label}`;
             let content;
-            if (item.data.type === 'containergear') {
+            if (item.type === 'containergear') {
                 title = 'Delete Container';
                 content = '<p>WARNING: All items in this container will be deleted as well!</p><p>Are you sure?</p>';
             } else {
@@ -693,9 +693,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 const deleteItems = [];
 
                 // Add all items in the container to the delete list
-                if (item.data.type === 'containeritem') {
+                if (item.type === 'containeritem') {
                     this.actor.items.forEach(it => {
-                        if (item.data.type.endsWith('gear') && it.data.data.container === itemId) deleteItems.push(it.id);
+                        if (item.type.endsWith('gear') && it.data.container === itemId) deleteItems.push(it.id);
                     });
                 }
 
@@ -710,22 +710,22 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     }
 
     async mergeItem(item, other) {
-        if (item.data.type != other.type) {
+        if (item.type != other.type) {
             return;
         }
 
-        const data = item.data.data;
+        const data = item.data;
         const otherData = other.data;
         const updateData = {};
 
-        if (!data.notes) updateData['data.notes'] = otherData.notes;
-        if (!data.source) updateData['data.source'] = otherData.source;
-        if (!data.description) updateData['data.description'] = otherData.description;
-        if (!data.macros.type || data.macros.type !== otherData.macros.type) updateData['data.macros.type'] = otherData.macros.type;
-        if (!data.macros.command) updateData['data.macros.command'] = otherData.macros.command;
+        if (!data.notes) updateData['system.notes'] = otherData.notes;
+        if (!data.source) updateData['system.source'] = otherData.source;
+        if (!data.description) updateData['system.description'] = otherData.description;
+        if (!data.macros.type || data.macros.type !== otherData.macros.type) updateData['system.macros.type'] = otherData.macros.type;
+        if (!data.macros.command) updateData['system.macros.command'] = otherData.macros.command;
         updateData['img'] = other.img;
 
-        switch (item.data.type) {
+        switch (item.type) {
             case 'skill':
                 // If the skill types don't match, return without change
                 if (data.type != otherData.type) {
@@ -738,28 +738,28 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
                 // If the skillbase is blank, copy it over from dropped item
                 if (!data.skillBase.formula) {
-                    updateData['data.skillBase.formula'] = otherData.skillBase.formula;
-                    updateData['data.skillBase.isFormulaValid'] = otherData.skillBase.isFormulaValid;
+                    updateData['system.skillBase.formula'] = otherData.skillBase.formula;
+                    updateData['system.skillBase.isFormulaValid'] = otherData.skillBase.isFormulaValid;
                 }
                 break;
 
             case 'spell':
-                updateData['data.convocation'] = otherData.convocation;
-                updateData['data.level'] = otherData.level;
+                updateData['system.convocation'] = otherData.convocation;
+                updateData['system.level'] = otherData.level;
                 break;
 
             case 'invocation':
-                updateData['data.diety'] = otherData.diety;
-                updateData['data.circle'] = otherData.circle;
+                updateData['system.diety'] = otherData.diety;
+                updateData['system.circle'] = otherData.circle;
                 break;
 
             case 'psionic':
                 // If the skillbase is blank, copy it over from dropped item
                 if (!data.skillBase.formula) {
-                    updateData['data.skillBase.formula'] = otherData.skillBase.formula;
-                    updateData['data.skillBase.isFormulaValid'] = otherData.skillBase.isFormulaValid;
+                    updateData['system.skillBase.formula'] = otherData.skillBase.formula;
+                    updateData['system.skillBase.isFormulaValid'] = otherData.skillBase.isFormulaValid;
                 }
-                updateData['data.fatigue'] = otherData.fatigue;
+                updateData['system.fatigue'] = otherData.fatigue;
                 break;
         }
 
@@ -838,7 +838,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             callback: async (html) => {
                 const form = html.querySelector('#create-item');
                 const fd = new FormDataExtended(form);
-                const formdata = fd.toObject();
+                const formdata = fd.object;
                 let itemName = formdata.name;
                 let extraValue = formdata.extra_value;
 
@@ -852,11 +852,11 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 }
 
                 // Item Data
-                if (dataset.type === 'skill') updateData['data.type'] = dataset.skilltype;
-                else if (dataset.type === 'trait') updateData['data.type'] = dataset.traittype;
-                else if (dataset.type.endsWith('gear')) updateData['data.container'] = dataset.containerId;
-                else if (dataset.type === 'spell') updateData['data.convocation'] = extraValue;
-                else if (dataset.type === 'invocation') updateData['data.diety'] = extraValue;
+                if (dataset.type === 'skill') updateData['system.type'] = dataset.skilltype;
+                else if (dataset.type === 'trait') updateData['system.type'] = dataset.traittype;
+                else if (dataset.type.endsWith('gear')) updateData['system.container'] = dataset.containerId;
+                else if (dataset.type === 'spell') updateData['system.convocation'] = extraValue;
+                else if (dataset.type === 'invocation') updateData['system.diety'] = extraValue;
 
                 // Finally, create the item!
                 const result = await Item.create(updateData, {parent: this.actor });
@@ -887,8 +887,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         // Only process inventory ("gear") items, otherwise ignore
         if (item.data.type.endsWith('gear')) {
-            const attr = "data.isCarried";
-            return item.update({ [attr]: !getProperty(item.data, attr) });
+            const attr = "system.isCarried";
+            return item.update({ [attr]: !getProperty(item, attr) });
         }
 
         return null;
@@ -905,9 +905,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         const item = this.actor.items.get(itemId);
 
         // Only process inventory ("gear") items, otherwise ignore
-        if (item.data.type.endsWith('gear')) {
-            const attr = "data.isEquipped";
-            return item.update({ [attr]: !getProperty(item.data, attr) });
+        if (item.type.endsWith('gear')) {
+            const attr = "system.isEquipped";
+            return item.update({ [attr]: !getProperty(item, attr) });
         }
 
         return null;
@@ -924,9 +924,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         const item = this.actor.items.get(itemId);
 
         // Only process skills and psionics, otherwise ignore
-        if (item.data.type === 'skill' || item.data.type === 'psionic') {
-            if (!item.data.data.improveFlag) {
-                return item.update({ "data.improveFlag": true });
+        if (item.type === 'skill' || item.type === 'psionic') {
+            if (!item.system.improveFlag) {
+                return item.update({ "system.improveFlag": true });
             } else {
                 return this._improveToggleDialog(item);
             }
@@ -968,7 +968,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     disableFlag: {
                         label: "Disable Flag",
                         callback: async (html) => {
-                            return item.update({ "data.improveFlag": false });
+                            return item.update({ "system.improveFlag": false });
                         }
                     }
                 },

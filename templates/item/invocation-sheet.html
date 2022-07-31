@@ -21,9 +21,9 @@
         <div class="tab properties" data-group="primary" data-tab="properties">
             <div class="grid grid-fixed-row grid-2col">
                 <div class="resource">
-                    <label class="resource-label" for="data.diety">Diety</label>
+                    <label class="resource-label" for="system.diety">Diety</label>
                     {{#if hasRitualSkills}}
-                        <select class="resource-value" name="data.diety" data-dtype="String">
+                        <select class="resource-value" name="system.diety" data-dtype="String">
                             {{#select data.diety}}
                                 {{#each dieties}}
                                     <option value="{{this}}">{{this}}</option>
@@ -31,34 +31,34 @@
                             {{/select}}
                         </select>
                     {{else}}
-                        <input type="text" name="data.diety" value="{{data.diety}}" data-dtype="String" />
+                        <input type="text" name="system.diety" value="{{idata.diety}}" data-dtype="String" />
                     {{/if}}
                 </div>
                 <div class="resource">
                     <label class="resource-label">Circle</label>
-                    <input type="number" name="data.circle" value="{{data.circle}}" data-dtype="Number" />
+                    <input type="number" name="system.circle" value="{{idata.circle}}" data-dtype="Number" />
                 </div>
             </div>
             <div class="resource">
                 <label class="resource-label">Source</label>
-                <input type="text" name="data.source" value="{{data.source}}" data-dtype="String" />
+                <input type="text" name="system.source" value="{{idata.source}}" data-dtype="String" />
             </div>
             <div class="resource">
                 <label class="resource-label">Note</label>
-                <input type="text" name="data.notes" value="{{data.notes}}" data-dtype="String" />
+                <input type="text" name="system.notes" value="{{idata.notes}}" data-dtype="String" />
             </div>
         </div>
 
         {{!-- Description Tab --}}
         <div class="tab description" data-group="primary" data-tab="description">
-            {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+            {{editor idata.description target="system.description" button=true owner=owner editable=editable}}
         </div>
 
         {{!-- Macro Tab --}}
         <div class="tab macro" data-group="primary" data-tab="macro">
             <div class="form-group">
                 <label>Type</label>
-                <select name="data.macros.type">
+                <select name="system.macros.type">
                     {{#select data.macros.type}}
                     {{#each macroTypes}}
                     <option value="{{this}}">{{this}}</option>
@@ -69,7 +69,7 @@
         
             <div class="form-group stacked command">
                 <label>Command</label>
-                <textarea name="data.macros.command">{{data.macros.command}}</textarea>
+                <textarea name="system.macros.command">{{idata.macros.command}}</textarea>
             </div>
         </div>
 
