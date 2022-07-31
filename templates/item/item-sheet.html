@@ -22,26 +22,26 @@
             <div class="grid grid-2col">
                 <div class="resource">
                   <label class="resource-label">Quantity</label>
-                    <input type="number" name="data.quantity" value="{{data.quantity}}" data-dtype="Number"/>
+                    <input type="number" name="system.quantity" value="{{idata.quantity}}" data-dtype="Number"/>
                 </div>
                 <div class="resource">
                   <label class="resource-label">Weight</label>
-                    <input type="number" name="data.weight" value="{{data.weight}}" data-dtype="Number"/>
+                    <input type="number" name="system.weight" value="{{idata.weight}}" data-dtype="Number"/>
                 </div>
             </div>
             <div class="resource">
                 <label class="resource-label">Note</label>
-                <input type="text" name="data.notes" value="{{data.notes}}" data-dtype="String"/>
+                <input type="text" name="system.notes" value="{{idata.notes}}" data-dtype="String"/>
             </div>
             <div class="resource">
                 <label class="resource-label">Source</label>
-                <input type="text" name="data.source" value="{{data.source}}" data-dtype="String"/>
+                <input type="text" name="system.source" value="{{idata.source}}" data-dtype="String"/>
             </div>
         </div>
 
         {{!-- Description Tab --}}
         <div class="tab description" data-group="primary" data-tab="description">
-            {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+            {{editor idata.description target="system.description" button=true owner=owner editable=editable}}
         </div>
 
     </section>

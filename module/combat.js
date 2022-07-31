@@ -56,7 +56,7 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
 
     // If a weapon was provided, don't ask for it.
     if (missileItem) {
-        if (missileItem.data.data.isEquipped) {
+        if (missileItem.system.isEquipped) {
             options['weapon'] = missileItem;
         } else {
             ui.notification.warn(`${missileItem.name} is not equipped.`);
@@ -77,22 +77,22 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
     }
 
     if (game.settings.get('hm3', 'missileTracking') && attackToken.actor) {
-        if (missileItem.data.data.quantity <= 0) {
+        if (missileItem.system.quantity <= 0) {
             ui.notification.warn(`No more ${missileItem.name} left, attack denied.`);
             return null;
         }
 
         const item = attackToken.actor.items.get(missileItem.id);
-        item.update({'data.quantity': missileItem.data.data.quantity - 1});
+        item.update({'system.quantity': missileItem.system.quantity - 1});
     }
 
-    const effAML = dialogResult.weapon.data.data.attackMasteryLevel + dialogResult.addlModifier + dialogResult.rangeMod;
+    const effAML = dialogResult.weapon.system.attackMasteryLevel + dialogResult.addlModifier + dialogResult.rangeMod;
 
     // Prepare for Chat Message
     const chatTemplate = 'systems/hm3/templates/chat/attack-card.html';
 
     const chatTemplateData = {
-        title: `${missileItem.data.name} Missile Attack`,
+        title: `${missileItem.name} Missile Attack`,
         attacker: attackToken.name,
         atkTokenId: attackToken.id,
         defender: defendToken.name,
@@ -108,7 +108,7 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
         aspect: dialogResult.aspect,
         addlModifierAbs: Math.abs(dialogResult.addlModifier),
         addlModifierSign: dialogResult.addlModifier<0?'-':'+',
-        origAML: missileItem.data.data.attackMasteryLevel,
+        origAML: missileItem.system.attackMasteryLevel,
         effAML: effAML,
         impactMod: dialogResult.impactMod,
         hasDodge: true,
@@ -197,7 +197,7 @@ export async function meleeAttack(attackToken, defendToken, weaponItem=null) {
 
     // If a weapon was provided, don't ask for it.
     if (weaponItem) {
-        if (weaponItem.data.data.isEquipped) {
+        if (weaponItem.system.isEquipped) {
             options['weapon'] = weaponItem;
         } else {
             ui.notification.warn(`For ${attackToken.name} ${weaponItem.name} is not equipped.`);
@@ -222,13 +222,13 @@ export async function meleeAttack(attackToken, defendToken, weaponItem=null) {
         weaponItem = dialogResult.weapon;
     }
     
-    const effAML = dialogResult.weapon.data.data.attackMasteryLevel + dialogResult.addlModifier;
+    const effAML = dialogResult.weapon.system.attackMasteryLevel + dialogResult.addlModifier;
 
     // Prepare for Chat Message
     const chatTemplate = 'systems/hm3/templates/chat/attack-card.html';
 
     const chatTemplateData = {
-        title: `${weaponItem.data.name} Melee Attack`,
+        title: `${weaponItem.name} Melee Attack`,
         attacker: attackToken.name,
         atkTokenId: attackToken.id,
         defender: defendToken.name,
@@ -239,7 +239,7 @@ export async function meleeAttack(attackToken, defendToken, weaponItem=null) {
         aspect: dialogResult.aspect,
         addlModifierAbs: Math.abs(dialogResult.addlModifier),
         addlModifierSign: dialogResult.addlModifier<0?'-':'+',
-        origAML: weaponItem.data.data.attackMasteryLevel,
+        origAML: weaponItem.system.attackMasteryLevel,
         effAML: effAML,
         impactMod: dialogResult.impactMod,
         hasDodge: true,
@@ -337,7 +337,7 @@ async function selectWeaponDialog(options) {
  */
 async function attackDialog(options) {
     if (options.weapons) {
-        const equippedWeapons = options.weapons.filter(w => w.data.data.isEquipped);
+        const equippedWeapons = options.weapons.filter(w => w.system.isEquipped);
         options.weapons = equippedWeapons;
     }
 
@@ -360,15 +360,15 @@ async function attackDialog(options) {
         defaultModifier: options.defaultModifier || 0
     };
 
-    if (options.weapon.data.type === 'weapongear') {
+    if (options.weapon.type === 'weapongear') {
         dialogOptions.title = `Weapon ${options.type} with ${options.weapon.name}`;
         const weaponAspect = calcWeaponAspect(options.weapon);
         if (!weaponAspect.defaultAspect) return null;   // no aspects available, shouldn't happen
         mergeObject(dialogOptions, weaponAspect);
-    } else if (options.weapon.data.type === 'missilegear') {
+    } else if (options.weapon.type === 'missilegear') {
         dialogOptions.title = `Missile ${options.type} with ${options.weapon.name}`;
 
-        const weaponData = options.weapon.data.data;
+        const weaponData = options.weapon.system;
 
         // Missiles only have a single weapon aspect
         dialogOptions.aspects = {};
@@ -477,7 +477,7 @@ function isValidToken(token) {
         return false;
     };
 
-    if (['character', 'creature'].includes(token.actor.data.type)) {
+    if (['character', 'creature'].includes(token.actor.type)) {
         return true;
     } else {
         ui.notifications.warn(`Token ${token.name} is not a character or creature.`);
@@ -493,12 +493,12 @@ function isValidToken(token) {
 function defaultMeleeWeapon(token) {
     if (!isValidToken(token)) return {weapons: [], defaultWeapon: null};
 
-    const equippedWeapons = token.actor.itemTypes.weapongear.filter(w => w.data.data.isEquipped);
+    const equippedWeapons = token.actor.itemTypes.weapongear.filter(w => w.system.isEquipped);
     let defaultWeapon = null;
     if (equippedWeapons.length > 0) {
         let maxImpact = -1;
         equippedWeapons.forEach(w => {
-            const data = w.data.data;
+            const data = w.system;
             const impactMax = Math.max(data.blunt, data.edged, data.piercing);
             if (impactMax > maxImpact) {
                 maxImpact = impactMax;
@@ -546,8 +546,8 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     options.attackerName = defToken.name;
     options.defenderName = atkToken.name;
 
-    if (defToken.actor?.data?.data?.eph?.outnumbered > 1) {
-        options.defaultModifier = Math.floor(defToken.actor.data.data.eph.outnumbered-1) * -10;
+    if (defToken.actor?.system?.eph?.outnumbered > 1) {
+        options.defaultModifier = Math.floor(defToken.actor.system.eph.outnumbered-1) * -10;
     }
 
     const csDialogResult = await attackDialog(options);
@@ -562,7 +562,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         target: atkEffAML
     });
 
-    const csEffEML = csDialogResult.weapon.data.data.attackMasteryLevel;
+    const csEffEML = csDialogResult.weapon.system.attackMasteryLevel;
 
     // Roll Counterstrike Attack
     const csRoll = await DiceHM3.rollTest({
@@ -637,7 +637,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         atkTokenId: defToken.id,
         defender: atkToken.name,
         defTokenId: atkToken.id,
-        outnumbered: defToken.actor?.data?.data?.eph?.outnumbered > 1 ? defToken.actor.data.data.eph.outnumbered : 0,
+        outnumbered: defToken.actor?.system?.eph?.outnumbered > 1 ? defToken.actor.system.eph.outnumbered : 0,
         attackWeapon: csDialogResult.weapon.name,
         mlType: 'AML',
         addlModifierAbs: Math.abs(csDialogResult.addlModifier),
@@ -745,11 +745,11 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         target: effAML
     });
 
-    const effDML = defToken.actor.data.data.dodge;
+    const effDML = defToken.actor.system.dodge;
 
     let outnumberedMod = 0;
-    if (defToken.actor?.data?.data?.eph?.outnumbered > 1) {
-        outnumberedMod = Math.floor((defToken.actor.data.data.eph.outnumbered - 1) * -10);
+    if (defToken.actor?.system?.eph?.outnumbered > 1) {
+        outnumberedMod = Math.floor((defToken.actor.system.eph.outnumbered - 1) * -10);
     }
 
     const defRoll = await DiceHM3.rollTest({
@@ -791,7 +791,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         defender: defToken.name,
         defTokenId: defToken.id,
         attackWeapon: weaponName,
-        outnumbered: defToken.actor?.data?.data?.eph?.outnumbered > 1 ? defToken.actor.data.data.eph.outnumbered : null,
+        outnumbered: defToken.actor?.system?.eph?.outnumbered > 1 ? defToken.actor.system.eph.outnumbered : null,
         effAML: effAML,
         defense: 'Dodge',
         effDML: effDML+outnumberedMod,
@@ -863,7 +863,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         return null;
     }
 
-    const speaker = ChatMessage.getSpeaker({token: atkToken});
+    const speaker = ChatMessage.getSpeaker({token: atkToken.document});
 
     const atkRoll = await DiceHM3.rollTest({
         data: {},
@@ -878,7 +878,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
     // setup defensive available weapons.  This is all equipped melee weapons initially,
     // but later we may limit it to only shields.
     let defAvailWeapons = defToken.actor.itemTypes.weapongear;
-    const shields = defAvailWeapons.filter(w => w.data.data.isEquipped && /shield|\bbuckler\b/i.test(w.name));
+    const shields = defAvailWeapons.filter(w => w.system.isEquipped && /shield|\bbuckler\b/i.test(w.name));
 
     let atkWeapon = null;
     // Missile Pre-processing.  If attacker is using a high-velocity weapon, then defender
@@ -910,8 +910,8 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
     let defaultWeapon = null;
     let maxDML = -9999;
     defAvailWeapons.forEach(w => {
-        if (w.data.data.isEquipped) {
-            if (w.data.data.defenseMasteryLevel > maxDML) {
+        if (w.system.isEquipped) {
+            if (w.system.defenseMasteryLevel > maxDML) {
                 defaultWeapon = w;
             }
             weapons.push(w);
@@ -923,8 +923,8 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
     }
     
     let outnumberedMod = 0;
-    if (defToken.actor?.data?.data?.eph?.outnumbered > 1) {
-        outnumberedMod = Math.floor(defToken.actor.data.data.eph.outnumbered - 1) * -10;
+    if (defToken.actor?.system?.eph?.outnumbered > 1) {
+        outnumberedMod = Math.floor(defToken.actor.system.eph.outnumbered - 1) * -10;
     }
 
     const options = {
@@ -942,7 +942,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
     let effDML;
     const defWeapon = defToken.actor.itemTypes.weapongear.find(w => w.name === dialogResult.weapon);
     if (defWeapon) {
-        effDML = defWeapon.data.data.defenseMasteryLevel;
+        effDML = defWeapon.system.defenseMasteryLevel;
     } else {
         effDML = 5;
     }
@@ -998,12 +998,12 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
 
         if (weaponBroke.attackWeaponBroke) {
             const item = atkToken.actor.items.get(atkWeapon.id);
-            await item.update({'data.isEquipped': false});
+            await item.update({'system.isEquipped': false});
         }
 
         if (weaponBroke.defendWeaponBroke) {
             const item = defToken.actor.items.get(defWeapon.id);
-            await item.update({'data.isEquipped': false});
+            await item.update({'system.isEquipped': false});
         }
     }
 
@@ -1013,7 +1013,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         atkTokenId: atkToken.id,
         defender: defToken.name,
         defTokenId: defToken.id,
-        outnumbered: defToken.actor?.data?.data?.eph?.outnumbered > 1 ? defToken.actor.data.data.eph.outnumbered : null,
+        outnumbered: defToken.actor?.system?.eph?.outnumbered > 1 ? defToken.actor.system.eph.outnumbered : null,
         mlType: 'DML',
         attackWeapon: weaponName,
         defendWeapon: defWeapon ? defWeapon.name : "",
@@ -1097,8 +1097,8 @@ export async function checkWeaponBreak(atkWeapon, defWeapon) {
     let atkWeaponBroke = false;
     let defWeaponBroke = false;
 
-    const atkWeaponQuality = atkWeapon.data.data.weaponQuality;
-    const defWeaponQuality = defWeapon.data.data.weaponQuality;
+    const atkWeaponQuality = atkWeapon.system.weaponQuality;
+    const defWeaponQuality = defWeapon.system.weaponQuality;
 
     const atkBreakRoll = await new Roll('3d6').evaluate({async: true});
     const defBreakRoll = await new Roll('3d6').evaluate({async: true});
@@ -1126,8 +1126,8 @@ export async function checkWeaponBreak(atkWeapon, defWeapon) {
     // Prepare and generate Attack Weapon Break chat message
 
     chatData.tokenName = atkToken.name;
-    chatData.weaponName = atkWeapon.data.name;
-    chatData.weaponQuality = atkWeapon.data.data.weaponQuality;
+    chatData.weaponName = atkWeapon.name;
+    chatData.weaponQuality = atkWeapon.system.weaponQuality;
     chatData.weaponBroke = atkWeaponBroke;
     chatData.rollValue = atkBreakRoll.total;
     chatData.actorId = atkWeapon.parent;
@@ -1146,8 +1146,8 @@ export async function checkWeaponBreak(atkWeapon, defWeapon) {
     // Prepare and generate Defend Weapon Break chat message
 
     chatData.tokenName = defToken.name;
-    chatData.weaponName = defWeapon.data.name;
-    chatData.weaponQuality = defWeapon.data.data.weaponQuality;
+    chatData.weaponName = defWeapon.name;
+    chatData.weaponQuality = defWeapon.system.weaponQuality;
     chatData.weaponBroke = defWeaponBroke;
     chatData.rollValue = defBreakRoll.total;
     chatData.actorId = defWeapon.parent;
@@ -1411,7 +1411,7 @@ function diceFormula (numDice, addlImpact) {
  */
 function calcWeaponAspect(weapon) {
 
-    const data = weapon.data.data;
+    const data = weapon.system;
 
     // Note that although "Fire" is in this list, because it is a
     // type of damage, no normal weapon uses it as its aspect.
@@ -1490,7 +1490,7 @@ export function getItem(itemName, type, actor) {
  * @param {Boolean} gridUnits If true, return in grid units, not "scene" units
  */
 export function rangeToTarget(sourceToken, targetToken, gridUnits=false) {
-    if (!sourceToken || !targetToken || !canvas.scene || !canvas.scene.data.grid) return 9999;
+    if (!sourceToken || !targetToken || !canvas.scene || !canvas.scene.grid) return 9999;
 
     // If the current scene is marked "Theatre of the Mind", then range is always 0
     if (canvas.scene.getFlag('hm3', 'isTotm')) return 0;

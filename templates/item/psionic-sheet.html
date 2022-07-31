@@ -22,16 +22,16 @@
             <div class="grid grid-fixed-row grid-3col">
                 <div class="resource">
                     <label class="resource-label">Skill Base (SB)</label>
-                    <input type="text" name="data.skillBase.value" value="{{data.skillBase.value}}" data-dtype="Number"
+                    <input type="text" name="system.skillBase.value" value="{{idata.skillBase.value}}" data-dtype="Number"
                         {{#if data.skillBase.formula}}readonly{{/if}} />
                 </div>
                 <div class="resource">
                     <label class="resource-label">Mastery Level (ML)</label>
-                    <input type="number" name="data.masteryLevel" value="{{data.masteryLevel}}" data-dtype="Number" />
+                    <input type="number" name="system.masteryLevel" value="{{idata.masteryLevel}}" data-dtype="Number" />
                 </div>
                 <div class="resource">
                     <label class="resource-label">Fatigue</label>
-                    <input type="number" name="data.fatigue" value="{{data.fatigue}}" data-dtype="Number" />
+                    <input type="number" name="system.fatigue" value="{{idata.fatigue}}" data-dtype="Number" />
                 </div>
             </div>
             <div class="resource">
@@ -42,7 +42,7 @@
                         There must always be exactly three attributes.
                         Valid attributes are: @str, @sta, @dex, @agl, @int, @aur, @wil, @eye, @hrg, @sml, @voi, @cml,
                         @mor</span></label>
-                <input type="text" name="data.skillBase.formula" value="{{data.skillBase.formula}}"
+                <input type="text" name="system.skillBase.formula" value="{{idata.skillBase.formula}}"
                     data-dtype="String" />
                 {{#unless data.skillBase.isFormulaValid}}
                     <div class="error">Error: Invalid SkillBase Formula!</div>
@@ -50,24 +50,24 @@
             </div>
             <div class="resource">
                 <label class="resource-label">Source</label>
-                <input type="text" name="data.source" value="{{data.source}}" data-dtype="String" />
+                <input type="text" name="system.source" value="{{idata.source}}" data-dtype="String" />
             </div>
             <div class="resource">
                 <label class="resource-label">Note</label>
-                <input type="text" name="data.notes" value="{{data.notes}}" data-dtype="String" />
+                <input type="text" name="system.notes" value="{{idata.notes}}" data-dtype="String" />
             </div>
         </div>
 
         {{!-- Description Tab --}}
         <div class="tab description" data-group="primary" data-tab="description">
-            {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+            {{editor idata.description target="system.description" button=true owner=owner editable=editable}}
         </div>
 
         {{!-- Macro Tab --}}
         <div class="tab macro" data-group="primary" data-tab="macro">
             <div class="form-group">
                 <label>Type</label>
-                <select name="data.macros.type">
+                <select name="system.macros.type">
                     {{#select data.macros.type}}
                     {{#each macroTypes}}
                     <option value="{{this}}">{{this}}</option>
@@ -78,7 +78,7 @@
         
             <div class="form-group stacked command">
                 <label>Command</label>
-                <textarea name="data.macros.command">{{data.macros.command}}</textarea>
+                <textarea name="system.macros.command">{{idata.macros.command}}</textarea>
             </div>
         </div>
 

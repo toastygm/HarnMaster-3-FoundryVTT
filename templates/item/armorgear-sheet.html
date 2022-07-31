@@ -5,8 +5,8 @@
             <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name" /></h1>
             <div class="flexrow">
                 <label>In Container:</label>
-                <select name="data.container">
-                    {{#select data.container}}
+                <select name="system.container">
+                    {{#select idata.container}}
                         {{#each containers as |cid cname|}}
                             <option value="{{cid}}">{{cname}}</option>
                         {{/each}}
@@ -31,61 +31,61 @@
             <div class="grid grid-fixed-row grid-3col">
                 <div class="resource" id="armorgear-qty">
                     <label class="resource-label">Quantity</label>
-                    <input type="number" name="data.quantity" value="{{data.quantity}}" data-dtype="Number" />
+                    <input type="number" name="system.quantity" value="{{idata.quantity}}" data-dtype="Number" />
                 </div>
                 <div class="resource" id="armorgear-weight">
                     <label class="resource-label">Weight</label>
-                    <input type="number" name="data.weight" value="{{data.weight}}" data-dtype="Number" />
+                    <input type="number" name="system.weight" value="{{idata.weight}}" data-dtype="Number" />
                 </div>
                 <div class="resource" id="armorgear-value">
                     <label class="resource-label">Value</label>
-                    <input type="number" name="data.value" value="{{data.value}}" data-dtype="Number" />
+                    <input type="number" name="system.value" value="{{idata.value}}" data-dtype="Number" />
                 </div>
                 <div></div>
                 <div></div>
                 <div></div>
                 <div class="resource" id="armorgear-quality">
                     <label class="resource-label">Armor Quality</label>
-                    <input type="number" name="data.armorQuality" value="{{data.armorQuality}}" data-dtype="Number" />
+                    <input type="number" name="system.armorQuality" value="{{idata.armorQuality}}" data-dtype="Number" />
                 </div>
                 <div class="resource" id="armorgear-material">
                     <label class="resource-label">Material</label>
-                    <input type="text" name="data.material" value="{{data.material}}" data-dtype="String" />
+                    <input type="text" name="system.material" value="{{idata.material}}" data-dtype="String" />
                 </div>
                 <div class="resource" id="armorgear-size">
                     <label class="resource-label">Size</label>
-                    <input type="number" name="data.size" value="{{data.size}}" data-dtype="Number" />
+                    <input type="number" name="system.size" value="{{idata.size}}" data-dtype="Number" />
                 </div>
             </div>
             <div class="resource" id="armorgear-source">
                 <label class="resource-label">Source</label>
-                <input type="text" name="data.source" value="{{data.source}}" data-dtype="String" />
+                <input type="text" name="system.source" value="{{idata.source}}" data-dtype="String" />
             </div>
             <div class="resource" id="armorgear-note">
                 <label class="resource-label">Note</label>
-                <input type="text" name="data.notes" value="{{data.notes}}" data-dtype="String" />
+                <input type="text" name="system.notes" value="{{idata.notes}}" data-dtype="String" />
             </div>
             <fieldset class="armorgear-protection">
                 <legend>Protection</legend>
                 <div class="grid grid-row grid-4col">
                     <div class="armorgear-protection-item" id="armorgear-blunt">
                         <label class="label">Blunt</label>
-                        <input class="value" type="number" name="data.protection.blunt"
-                            value="{{data.protection.blunt}}" data-dtype="Number" />
+                        <input class="value" type="number" name="system.protection.blunt"
+                            value="{{idata.protection.blunt}}" data-dtype="Number" />
                     </div>
                     <div class="armorgear-protection-item" id="armorgear-edged">
                         <label class="label">Edged</label>
-                        <input class="value" type="number" name="data.protection.edged"
-                            value="{{data.protection.edged}}" data-dtype="Number" />
+                        <input class="value" type="number" name="system.protection.edged"
+                            value="{{idata.protection.edged}}" data-dtype="Number" />
                     </div>
                     <div class="armorgear-protection-item" id="armorgear-piercing">
                         <label class="label">Piercing</label>
-                        <input class="value" type="number" name="data.protection.piercing"
-                            value="{{data.protection.piercing}}" data-dtype="Number" />
+                        <input class="value" type="number" name="system.protection.piercing"
+                            value="{{idata.protection.piercing}}" data-dtype="Number" />
                     </div>
                     <div class="armorgear-protection-item" id="armorgear-fire">
                         <label class="label">Fire</label>
-                        <input class="value" type="number" name="data.protection.fire" value="{{data.protection.fire}}"
+                        <input class="value" type="number" name="system.protection.fire" value="{{idata.protection.fire}}"
                             data-dtype="Number" />
                     </div>
                 </div>
@@ -94,7 +94,7 @@
                 <legend>Locations</Legend>
                 <div class="armorgear-location flexrow" id="armorgear-location-select">
                     <label class="label">Location:</label>
-                    <select class="value" name="data.targetLocation">
+                    <select class="value" name="system.targetLocation">
                         {{#select data.targetLocation}}
                             {{#each config.injuryLocations as |value key|}}
                                 {{#if (ne key "Custom")}}
@@ -103,7 +103,7 @@
                             {{/each}}
                         {{/select}}
                     </select>
-                    <a class="armorgear-location-add" data-location="{{data.targetLocation}}"><i
+                    <a class="armorgear-location-add" data-location="{{idata.targetLocation}}"><i
                             class="fas fa-plus"></i> Add</a>
                 </div>
                 <ol class="grid grid-fixed-row grid-4col" id="armorgear-location-display">
@@ -117,7 +117,7 @@
                 </ol>
             </fieldset>
             <div class="resource artifact flexrow" id="armorgear-isarcane">
-                <input type="checkbox" name="data.arcane.isArtifact" value="{{data.arcane.isArtifact}}"
+                <input type="checkbox" name="system.arcane.isArtifact" value="{{idata.arcane.isArtifact}}"
                     data-dtype="Boolean" {{checked data.arcane.isArtifact}} />
                 <label class="resource-label">Artifact</label>
             </div>
@@ -126,18 +126,18 @@
                     <legend>Artifact Properties</legend>
                     <div class="grid grid-fixed-row grid-3col">
                         <div class="resource" id="armorgear-artifact-isattuned">
-                            <input type="checkbox" name="data.arcane.isAttuned" value="{{data.arcane.isAttuned}}"
+                            <input type="checkbox" name="system.arcane.isAttuned" value="{{idata.arcane.isAttuned}}"
                                 data-dtype="Boolean" {{checked data.arcane.isAttuned}} />
                             <label class="resource-label">Attuned</label>
                         </div>
                         <div class="resource" id="armorgear-artifact-charges">
                             <label class="resource-label">Charges</label>
-                            <input type="number" name="data.arcane.charges" value="{{data.arcane.charges}}"
+                            <input type="number" name="system.arcane.charges" value="{{idata.arcane.charges}}"
                                 data-dtype="Number" />
                         </div>
                         <div class="resource" id="armorgear-artifact-ego">
                             <label class="resource-label">Ego/Will</label>
-                            <input type="number" name="data.arcane.ego" value="{{data.arcane.ego}}"
+                            <input type="number" name="system.arcane.ego" value="{{idata.arcane.ego}}"
                                 data-dtype="Number" />
                         </div>
                     </div>
@@ -147,7 +147,7 @@
 
         {{!-- Description Tab --}}
         <div class="tab description" id="armorgear-desc" data-group="primary" data-tab="description">
-            {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+            {{editor idata.description target="system.description" button=true owner=owner editable=editable}}
         </div>
 
         {{!-- Effects Tab --}}

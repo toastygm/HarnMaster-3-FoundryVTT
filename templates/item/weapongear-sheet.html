@@ -5,7 +5,7 @@
             <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name" /></h1>
             <div class="flexrow">
                 <label>In Container:</label>
-                <select name="data.container">
+                <select name="system.container">
                     {{#select data.container}}
                         {{#each containers as |cid cname|}}
                             <option value="{{cid}}">{{cname}}</option>
@@ -31,37 +31,37 @@
             <div class="grid grid-fixed-row grid-3col">
                 <div class="resource" id="weapongear-qty">
                     <label class="resource-label">Quantity</label>
-                    <input type="number" name="data.quantity" value="{{data.quantity}}" data-dtype="Number" />
+                    <input type="number" name="system.quantity" value="{{idata.quantity}}" data-dtype="Number" />
                 </div>
                 <div class="resource" id="weapongear-weight">
                     <label class="resource-label">Weight</label>
-                    <input type="number" name="data.weight" value="{{data.weight}}" data-dtype="Number" />
+                    <input type="number" name="system.weight" value="{{idata.weight}}" data-dtype="Number" />
                 </div>
                 <div class="resource" id="weapongear-value">
                     <label class="resource-label">Value</label>
-                    <input type="number" name="data.value" value="{{data.value}}" data-dtype="Number" />
+                    <input type="number" name="system.value" value="{{idata.value}}" data-dtype="Number" />
                 </div>
                 <div></div>
                 <div></div>
                 <div></div>
                 <div class="resource" id="weapongear-quality">
                     <label class="resource-label">Weapon Quality</label>
-                    <input type="number" name="data.weaponQuality" value="{{data.weaponQuality}}" data-dtype="Number" />
+                    <input type="number" name="system.weaponQuality" value="{{idata.weaponQuality}}" data-dtype="Number" />
                 </div>
                 <div class="resource" id="weapongear-attack">
                     <label class="resource-label">Attack</label>
-                    <input type="number" name="data.attack" value="{{data.attack}}" data-dtype="Number" />
+                    <input type="number" name="system.attack" value="{{idata.attack}}" data-dtype="Number" />
                 </div>
                 <div class="resource" id="weapongear-defense">
                     <label class="resource-label">Defense</label>
-                    <input type="number" name="data.defense" value="{{data.defense}}" data-dtype="Number" />
+                    <input type="number" name="system.defense" value="{{idata.defense}}" data-dtype="Number" />
                 </div>
                 <div></div>
                 <div></div>
                 <div></div>
                 <div class="resource" id="weapongear-attack-mod">
                     <label class="resource-label">Attack Modifier</label>
-                    <input type="number" name="data.attackModifier" value="{{data.attackModifier}}"
+                    <input type="number" name="system.attackModifier" value="{{idata.attackModifier}}"
                         data-dtype="Number" />
                 </div>
                 <div class="resource"></div>
@@ -71,20 +71,20 @@
                 <div></div>
                 <div class="resource" id="weapongear-blunt">
                     <label class="resource-label">Blunt</label>
-                    <input type="number" name="data.blunt" value="{{data.blunt}}" data-dtype="Number" />
+                    <input type="number" name="system.blunt" value="{{idata.blunt}}" data-dtype="Number" />
                 </div>
                 <div class="resource" id="weapongear-edged">
                     <label class="resource-label">Edged</label>
-                    <input type="number" name="data.edged" value="{{data.edged}}" data-dtype="Number" />
+                    <input type="number" name="system.edged" value="{{idata.edged}}" data-dtype="Number" />
                 </div>
                 <div class="resource" id="weapongear-piercing">
                     <label class="resource-label">Piercing</label>
-                    <input type="number" name="data.piercing" value="{{data.piercing}}" data-dtype="Number" />
+                    <input type="number" name="system.piercing" value="{{idata.piercing}}" data-dtype="Number" />
                 </div>
                <div class="resource" id="weapongear-assocskill">
-                    <label class="resource-label" for="data.assocSkill">Associated Skill</label>
+                    <label class="resource-label" for="system.assocSkill">Associated Skill</label>
                     {{#if hasCombatSkills}}
-                        <select class="resource-value" name="data.assocSkill" data-dtype="String">
+                        <select class="resource-value" name="system.assocSkill" data-dtype="String">
                             {{#select data.assocSkill}}
                                 {{#each combatSkills}}
                                     <option value="{{this}}">{{this}}</option>
@@ -92,20 +92,20 @@
                             {{/select}}
                         </select>
                     {{else}}
-                        <input type="text" name="data.assocSkill" value="{{data.assocSkill}}" data-dtype="String" />
+                        <input type="text" name="system.assocSkill" value="{{idata.assocSkill}}" data-dtype="String" />
                     {{/if}}
                 </div>
             </div>
             <div class="resource" id="weapongear-source">
                 <label class="resource-label">Source</label>
-                <input type="text" name="data.source" value="{{data.source}}" data-dtype="String" />
+                <input type="text" name="system.source" value="{{idata.source}}" data-dtype="String" />
             </div>
             <div class="resource" id="weapongear-note">
                 <label class="resource-label">Note</label>
-                <input type="text" name="data.notes" value="{{data.notes}}" data-dtype="String" />
+                <input type="text" name="system.notes" value="{{idata.notes}}" data-dtype="String" />
             </div>
             <div class="resource artifact flexrow" id="weapongear-isartifact">
-                <input type="checkbox" name="data.arcane.isArtifact" value="{{data.arcane.isArtifact}}"
+                <input type="checkbox" name="system.arcane.isArtifact" value="{{idata.arcane.isArtifact}}"
                     data-dtype="Boolean" {{checked data.arcane.isArtifact}} />
                 <label class="resource-label">Artifact</label>
             </div>
@@ -114,18 +114,18 @@
                     <legend>Artifact Properties</legend>
                     <div class="grid grid-fixed-row grid-3col">
                         <div class="resource" id="weapongear-artifact-isattuned">
-                            <input type="checkbox" name="data.arcane.isAttuned" value="{{data.arcane.isAttuned}}"
+                            <input type="checkbox" name="system.arcane.isAttuned" value="{{idata.arcane.isAttuned}}"
                                 data-dtype="Boolean" {{checked data.arcane.isAttuned}} />
                             <label class="resource-label">Attuned</label>
                         </div>
                         <div class="resource" id="weapongear-artifact-charges">
                             <label class="resource-label">Charges</label>
-                            <input type="number" name="data.arcane.charges" value="{{data.arcane.charges}}"
+                            <input type="number" name="system.arcane.charges" value="{{idata.arcane.charges}}"
                                 data-dtype="Number" />
                         </div>
                         <div class="resource" id="weapongear-artifact-ego">
                             <label class="resource-label">Ego/Will</label>
-                            <input type="number" name="data.arcane.ego" value="{{data.arcane.ego}}"
+                            <input type="number" name="system.arcane.ego" value="{{idata.arcane.ego}}"
                                 data-dtype="Number" />
                         </div>
                     </div>
@@ -135,7 +135,7 @@
 
         {{!-- Description Tab --}}
         <div class="tab description" id="weapongear-desc" data-group="primary" data-tab="description">
-            {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+            {{editor idata.description target="system.description" button=true owner=owner editable=editable}}
         </div>
 
         {{!-- Effects Tab --}}

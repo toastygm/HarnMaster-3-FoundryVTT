@@ -9,10 +9,10 @@
                     <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
                     <div class="header-stat-block">
                         <div class="endurance flexrow">
-                            <span class="label">Shock Index: {{data.shockIndex.value}}</span>
+                            <span class="label">Shock Index: {{adata.shockIndex.value}}</span>
                         </div>
                         <div class="endbar">
-                            <span class="bar" style="width: {{data.shockIndex.value}}%"></span>
+                            <span class="bar" style="width: {{adata.shockIndex.value}}%"></span>
                         </div>
                     </div>
                 </div>
@@ -23,9 +23,9 @@
                         <li class="attribute move flexcol">
                             <label class="label">Move</label>
                             <div class="flexrow move-values">
-                                <span class="move-eff">{{data.move.effective}}</span>
+                                <span class="move-eff">{{adata.move.effective}}</span>
                                 <span class="sep">/</span>
-                                <input class="move-base" type="number" name="data.move.base" value="{{data.move.base}}" data-dtype="Number"/>
+                                <input class="move-base" type="number" name="system.move.base" value="{{adata.move.base}}" data-dtype="Number"/>
                             </div>
                         </li>
                     </ol>
@@ -38,9 +38,9 @@
     <section class="sheet-body">
         <div class="facade">
             <div class="flexrow">
-                <img class="facade-image" src="{{data.bioImage}}" data-edit="data.bioImage" title="{{actor.name}}" height="300" width="200" />
+                <img class="facade-image" src="{{adata.bioImage}}" data-edit="system.bioImage" title="{{actor.name}}" height="300" width="200" />
                 <div class="facade-description">
-                    {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+                    {{editor idata.description target="system.description" button=true owner=owner editable=editable}}
                 </div>
             </div>
         </div>

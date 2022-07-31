@@ -5,7 +5,7 @@
             <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name" /></h1>
             <div class="flexrow">
                 <label>In Container:</label>
-                <select name="data.container">
+                <select name="system.container">
                     {{#select data.container}}
                         {{#each containers as |cid cname|}}
                             <option value="{{cid}}">{{cname}}</option>
@@ -31,31 +31,31 @@
             <div class="grid grid-fixed-row grid-4col">
                 <div class="resource">
                     <label class="resource-label">Quantity</label>
-                    <input type="number" name="data.quantity" value="{{data.quantity}}" readonly data-dtype="Number" />
+                    <input type="number" name="system.quantity" value="{{idata.quantity}}" readonly data-dtype="Number" />
                 </div>
                 <div class="resource">
                     <label class="resource-label">Weight</label>
-                    <input type="number" name="data.weight" value="{{data.weight}}" data-dtype="Number" />
+                    <input type="number" name="system.weight" value="{{idata.weight}}" data-dtype="Number" />
                 </div>
                 <div class="resource">
                     <label class="resource-label">Value</label>
-                    <input type="number" name="data.value" value="{{data.value}}" data-dtype="Number" />
+                    <input type="number" name="system.value" value="{{idata.value}}" data-dtype="Number" />
                 </div>
                 <div class="resource">
                     <label class="resource-label">Max Capacity</label>
-                    <input type="number" name="data.capacity.max" value="{{data.capacity.max}}" data-dtype="Number" />
+                    <input type="number" name="system.capacity.max" value="{{idata.capacity.max}}" data-dtype="Number" />
                 </div>
             </div>
             <div class="resource">
                 <label class="resource-label">Source</label>
-                <input type="text" name="data.source" value="{{data.source}}" data-dtype="String" />
+                <input type="text" name="system.source" value="{{idata.source}}" data-dtype="String" />
             </div>
             <div class="resource">
                 <label class="resource-label">Note</label>
-                <input type="text" name="data.notes" value="{{data.notes}}" data-dtype="String" />
+                <input type="text" name="system.notes" value="{{idata.notes}}" data-dtype="String" />
             </div>
             <div class="resource artifact flexrow">
-                <input type="checkbox" name="data.arcane.isArtifact" value="{{data.arcane.isArtifact}}"
+                <input type="checkbox" name="system.arcane.isArtifact" value="{{idata.arcane.isArtifact}}"
                     data-dtype="Boolean" {{checked data.arcane.isArtifact}} />
                 <label class="resource-label">Artifact</label>
             </div>
@@ -64,18 +64,18 @@
                     <legend>Artifact Properties</legend>
                     <div class="grid grid-fixed-row grid-3col">
                         <div class="resource">
-                            <input type="checkbox" name="data.arcane.isAttuned" value="{{data.arcane.isAttuned}}"
+                            <input type="checkbox" name="system.arcane.isAttuned" value="{{idata.arcane.isAttuned}}"
                                 data-dtype="Boolean" {{checked data.arcane.isAttuned}} />
                             <label class="resource-label">Attuned</label>
                         </div>
                         <div class="resource">
                             <label class="resource-label">Charges</label>
-                            <input type="number" name="data.arcane.charges" value="{{data.arcane.charges}}"
+                            <input type="number" name="system.arcane.charges" value="{{idata.arcane.charges}}"
                                 data-dtype="Number" />
                         </div>
                         <div class="resource">
                             <label class="resource-label">Ego/Will</label>
-                            <input type="number" name="data.arcane.ego" value="{{data.arcane.ego}}"
+                            <input type="number" name="system.arcane.ego" value="{{idata.arcane.ego}}"
                                 data-dtype="Number" />
                         </div>
                     </div>
@@ -85,7 +85,7 @@
 
         {{!-- Description Tab --}}
         <div class="tab description" data-group="primary" data-tab="description">
-            {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+            {{editor idata.description target="system.description" button=true owner=owner editable=editable}}
         </div>
 
         {{!-- Effects Tab --}}

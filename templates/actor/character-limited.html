@@ -11,10 +11,10 @@
                         <div class="penalties flexrow">
                         </div>
                         <div class="endurance flexrow">
-                            <span class="label">Shock Index: {{data.shockIndex.value}}</span>
+                            <span class="label">Shock Index: {{adata.shockIndex.value}}</span>
                         </div>
                         <div class="endbar">
-                            <span class="bar" style="width: {{data.shockIndex.value}}%"></span>
+                            <span class="bar" style="width: {{adata.shockIndex.value}}%"></span>
                         </div>
                     </div>
                 </div>
@@ -22,15 +22,15 @@
                     <ol class="flexrow">
                         <li class="attribute species flexcol">
                             <label class="label">Race</label>
-                            <input class="value" type="text" name="data.species" value="{{data.species}}" data-dtype="String"/>
+                            <input class="value" type="text" name="system.species" value="{{adata.species}}" data-dtype="String"/>
                         </li>
                         <li class="attribute gender flexcol">
                             <label class="label">Gender</label>
-                            <input class="value" type="text" name="data.gender" value="{{data.gender}}" data-dtype="String"/>
+                            <input class="value" type="text" name="system.gender" value="{{adata.gender}}" data-dtype="String"/>
                         </li>
                         <li class="attribute occupation flexcol">
                             <label class="label">Occupation</label>
-                            <input class="value" type="text" name="data.occupation" value="{{data.occupation}}" data-dtype="String"/>
+                            <input class="value" type="text" name="system.occupation" value="{{adata.occupation}}" data-dtype="String"/>
                         </li>
                     </ol>
                 </div>
@@ -42,9 +42,9 @@
     <section class="sheet-body">
         <div class="facade">
             <div class="flexrow">
-                <img class="facade-image" src="{{data.bioImage}}" data-edit="data.bioImage" title="{{actor.name}}" height="300" width="200" />
+                <img class="facade-image" src="{{adata.bioImage}}" data-edit="system.bioImage" title="{{actor.name}}" height="300" width="200" />
                 <div class="facade-description">
-                    {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+                    {{editor idata.description target="system.description" button=true owner=owner editable=editable}}
                 </div>
             </div>
         </div>
