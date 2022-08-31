@@ -1,8 +1,9 @@
 {
   "id": "hm3",
+  "name": "hm3",
   "title": "HarnMaster 3",
   "description": "The HarnMaster system for FoundryVTT!",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "authors": [
     {
       "name": "Toasty",
@@ -16,9 +17,10 @@
   "flags": {
     "allowBugReporter": true
   },
+  "minimumCoreVersion": "10",
   "compatibility": {
     "minimum": "10",
-    "verified": "10.265"
+    "verified": "10.283"
   },
   "esmodules": [
     "module/hm3.js"
@@ -261,7 +263,7 @@
   ],
   "socket": true,
   "manifest": "https://github.com/toastygm/HarnMaster-3-FoundryVTT/releases/latest/download/system.json",
-  "download": "https://github.com/toastygm/HarnMaster-3-FoundryVTT/releases/download/v1.4.1/system.zip",
+  "download": "https://github.com/toastygm/HarnMaster-3-FoundryVTT/releases/download/v1.4.2/system.zip",
   "gridDistance": 5,
   "gridUnits": "ft",
   "primaryTokenAttribute": "shockIndex"
