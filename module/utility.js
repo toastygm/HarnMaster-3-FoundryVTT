@@ -40,7 +40,7 @@ export function calcSkillBase(item) {
     let numAbilities = 0;
     let sumBaseAbilities = 0;
     let sumModifiedAbilities = 0;
-    let ssBonus = 0;
+    let ssBonus = Number.MIN_SAFE_INTEGER;
     let modifier = 0;
     let resultSB = 0;
 

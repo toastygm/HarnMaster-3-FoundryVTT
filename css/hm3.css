@@ -283,6 +283,9 @@ section.highlight {
   line-height: 32px;
   border: none;
 }
+.sheet nav.sheet-tabs .item {
+  padding: 0;
+}
 
 #hotbar li.macro {
   background: url("../ui/parchment.jpg");
