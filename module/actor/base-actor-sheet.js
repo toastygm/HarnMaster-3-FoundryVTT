@@ -134,7 +134,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         const sortUpdates = SortingHelpers.performIntegerSort(source, { target: target, siblings });
         const updateData = sortUpdates.map(u => {
             const update = u.update;
-            update._id = u.target.data._id;
+            update._id = u.target._id;
             return update;
         });
 
