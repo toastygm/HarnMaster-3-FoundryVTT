@@ -864,8 +864,8 @@
                     <ol class="item-list gear-list">
                         {{#each ../items as | item |}}
                             {{#if (and (endswith item.type "gear") (eq item.system.container cid))}}
-                                <li class="item gear-item {{#unless adata.isCarried}}nocarry{{/unless}} flexrow"
-                                    data-item-id="{{item._id}}" data-item-name="{{item.name}}"
+                                <li class="item gear-item {{#unless system.isCarried}}nocarry{{/unless}} flexrow"
+                                    data-item-id="{{item.id}}" data-item-name="{{item.name}}"
                                     data-container-id="{{cid}}" data-container-name="{{citem.name}}">
                                     <div class="item-name gear-name flexrow">
                                         <div class="item-image" style="background-image: url('{{item.img}}')"></div>
