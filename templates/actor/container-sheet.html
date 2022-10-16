@@ -86,8 +86,8 @@
                         <div class="item-detail gear-weight">Weight</div>
                         <div class="item-detail gear-notes">Notes</div>
                         <div
-                            class="item detail gear-capacity {{#if (gt citem.data.data.capacity.value citem.data.data.capacity.max)}}overcapacity{{/if}}">
-                            Capacity: {{citem.data.data.capacity.value}}/{{citem.data.data.capacity.max}}</div>
+                            class="item detail gear-capacity {{#if (gt citem.system.capacity.value citem.system.capacity.max)}}overcapacity{{/if}}">
+                            Capacity: {{citem.system.capacity.value}}/{{citem.system.capacity.max}}</div>
                         <div class="item-controls">
                             <a class="item-control item-create active" title="Add Gear" data-type="gear"
                                 data-container-id="{{cid}}" data-container-name="{{citem.data.name}}"><i
@@ -97,7 +97,7 @@
                     <ol class="item-list gear-list">
                         {{#each ../items as | item |}}
                             {{#if (and (endswith item.type "gear") (eq item.data.container cid))}}
-                                <li class="item gear-item {{#unless data.isCarried}}nocarry{{/unless}} flexrow"
+                                <li class="item gear-item {{#unless adata.isCarried}}nocarry{{/unless}} flexrow"
                                     data-item-id="{{item._id}}" data-item-name="{{item.name}}"
                                     data-container-id="{{cid}}" data-container-name="{{citem.data.name}}">
                                     <div class="item-name gear-name flexrow">
@@ -112,10 +112,10 @@
                                         {{#if (eq cid "on-person")}}
                                             {{#unless (or (eq item.type "containergear") (eq item.type "miscgear"))}}
                                                 <a class="item-control item-equip" title="Equip"><i
-                                                        class="{{#if data.isEquipped}}active{{/if}} fas fa-shield-alt"></i></a>
+                                                        class="{{#if adata.isEquipped}}active{{/if}} fas fa-shield-alt"></i></a>
                                             {{/unless}}
                                             <a class="item-control item-carry" title="Carry"><i
-                                                    class="{{#if data.isCarried}}active{{/if}} fas fa-suitcase"></i></a>
+                                                    class="{{#if adata.isCarried}}active{{/if}} fas fa-suitcase"></i></a>
                                         {{/if}}
                                         <a class="item-control item-edit" title="Edit"><i
                                                 class="active fas fa-edit"></i></a>

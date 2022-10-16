@@ -170,14 +170,14 @@ export class HarnMasterItemSheet extends ItemSheet {
 
   async _armorgearLocationAdd(event) {
     const dataset = event.currentTarget.dataset;
-    const data = this.item.data.data;
+    const itemData = this.item.system;
 
     await this._onSubmit(event);  // Submit any unsaved changes
 
     // Clone the existing locations list if it exists, otherwise set to empty array
     let locations = [];
-    if (typeof data.locations != 'undefined') {
-      locations = [...data.locations];
+    if (typeof itemData.locations != 'undefined') {
+      locations = [...itemData.locations];
     }
 
     // Only add location to list if it is unique
@@ -191,12 +191,12 @@ export class HarnMasterItemSheet extends ItemSheet {
 
   async _armorgearLocationDelete(event) {
     const dataset = event.currentTarget.dataset;
-    const data = this.item.data.data;
+    const itemData = this.item.system;
 
     await this._onSubmit(event);   // Submit any unsaved changes
 
     // Clone the location list (we don't want to touch the actual list)
-    let locations = [...data.locations];
+    let locations = [...itemData.locations];
 
     // find the index of the item to remove, and if found remove it from list
     let removeIndex = locations.indexOf(dataset.location);

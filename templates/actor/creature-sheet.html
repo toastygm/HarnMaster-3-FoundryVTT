@@ -293,7 +293,7 @@
                         </li>
                         <ol class="item-list trait-list">
                             {{#each items as |item id|}}
-                                {{#if (and (eq item.type "trait") (eq item.data.type "Physical"))}}
+                                {{#if (and (eq item.type "trait") (eq item.type "Physical"))}}
                                     <li class="item trait trait-item flexrow" data-item-id="{{item._id}}"
                                         data-item-name="{{item.name}}">
                                         <div class="item-name trait-name flexrow">
@@ -325,7 +325,7 @@
                         </li>
                         <ol class="item-list trait-list">
                             {{#each items as |item id|}}
-                                {{#if (and (eq item.type "trait") (eq item.data.type "Psyche"))}}
+                                {{#if (and (eq item.type "trait") (eq item.type "Psyche"))}}
                                     <li class="item trait trait-item flexrow" data-item-id="{{item._id}}"
                                         data-item-name="{{item.name}}">
                                         <div class="item-name trait-name flexrow">
@@ -381,7 +381,7 @@
                 </li>
                 <ol class="item-list skill-list">
                     {{#each items as |item id|}}
-                        {{#if (and (eq item.type "skill") (eq item.data.type "Physical"))}}
+                        {{#if (and (eq item.type "skill") (eq item.type "Physical"))}}
                             <li class="item skill skill-item flexrow" data-item-id="{{item._id}}" data-item-name="{{item.name}}">
                                 <div class="item-name skill-roll skill-name flexrow">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
@@ -418,7 +418,7 @@
                 </li>
                 <ol class="item-list skill-list">
                     {{#each items as |item id|}}
-                        {{#if (and (eq item.type "skill") (eq item.data.type "Communication"))}}
+                        {{#if (and (eq item.type "skill") (eq item.type "Communication"))}}
                             <li class="item skill skill-item flexrow" data-item-id="{{item._id}}" data-item-name="{{item.name}}">
                                 <div class="item-name skill-roll skill-name flexrow">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
@@ -455,7 +455,7 @@
                 </li>
                 <ol class="item-list skill-list">
                     {{#each items as |item id|}}
-                        {{#if (and (eq item.type "skill") (eq item.data.type "Combat"))}}
+                        {{#if (and (eq item.type "skill") (eq item.type "Combat"))}}
                             <li class="item skill skill-item flexrow" data-item-id="{{item._id}}" data-item-name="{{item.name}}">
                                 <div class="item-name skill-roll skill-name flexrow">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
@@ -492,7 +492,7 @@
                 </li>
                 <ol class="item-list skill-list">
                     {{#each items as |item id|}}
-                        {{#if (and (eq item.type "skill") (eq item.data.type "Craft"))}}
+                        {{#if (and (eq item.type "skill") (eq item.type "Craft"))}}
                             <li class="item skill skill-item flexrow" data-item-id="{{item._id}}" data-item-name="{{item.name}}">
                                 <div class="item-name skill-roll skill-name flexrow">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
@@ -606,9 +606,9 @@
                 </li>
                 <ol class="item-list weapon-list">
                     {{#each items as |item id|}}
-                        {{#if (and (eq item.type "weapongear") data.isEquipped)}}
-                            <li class="item weapon {{#unless data.isCarried}}nocarry{{/unless}} flexrow" data-item-id="{{item._id}}" data-item-name="{{adata.name}}">
-                                <div class="item-name weapon-name {{#if (and data.isEquipped data.isCarried)}}melee-weapon-attack{{/if}} flexrow">
+                        {{#if (and (eq item.type "weapongear") adata.isEquipped)}}
+                            <li class="item weapon {{#unless adata.isCarried}}nocarry{{/unless}} flexrow" data-item-id="{{item._id}}" data-item-name="{{adata.name}}">
+                                <div class="item-name weapon-name {{#if (and adata.isEquipped adata.isCarried)}}melee-weapon-attack{{/if}} flexrow">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                                     <h4>{{item.name}}</h4>
                                 </div>
@@ -616,23 +616,23 @@
                                 <div class="item-detail weapon-quality">{{adata.weaponQuality}}</div>
                                 <div class="item-detail weapon-atkdef">{{adata.attack}}/{{adata.defense}}</div>
                                 <div class="item-detail weapon-atkmod">{{adata.attackModifier}}</div>
-                                {{#if (lt data.blunt 0)}}
+                                {{#if (lt adata.blunt 0)}}
                                 <div class="item-detail weapon-blunt"><i class="fas fa-times"></i></div>
                                 {{else}}
-                                <div class="item-detail weapon-blunt {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="weapon-damage-roll" title="{{item.name}} Blunt Damage Roll" data-weapon="{{item.name}}" data-aspect="Blunt">{{adata.blunt}}</a>{{else}}{{adata.blunt}}{{/if}}</div>
+                                <div class="item-detail weapon-blunt {{#if (and adata.isEquipped adata.isCarried)}}active{{/if}}">{{#if (and adata.isEquipped adata.isCarried)}}<a class="weapon-damage-roll" title="{{item.name}} Blunt Damage Roll" data-weapon="{{item.name}}" data-aspect="Blunt">{{adata.blunt}}</a>{{else}}{{adata.blunt}}{{/if}}</div>
                                 {{/if}}
-                                {{#if (lt data.edged 0)}}
+                                {{#if (lt adata.edged 0)}}
                                 <div class="item-detail weapon-edged"><i class="fas fa-times"></i></div>
                                 {{else}}
-                                <div class="item-detail weapon-edged {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="weapon-damage-roll" title="{{item.name}} Edged Damage Roll" data-weapon="{{item.name}}" data-aspect="Edged">{{adata.edged}}</a>{{else}}{{adata.edged}}{{/if}}</div>
+                                <div class="item-detail weapon-edged {{#if (and adata.isEquipped adata.isCarried)}}active{{/if}}">{{#if (and adata.isEquipped adata.isCarried)}}<a class="weapon-damage-roll" title="{{item.name}} Edged Damage Roll" data-weapon="{{item.name}}" data-aspect="Edged">{{adata.edged}}</a>{{else}}{{adata.edged}}{{/if}}</div>
                                 {{/if}}
-                                {{#if (lt data.piercing 0)}}
+                                {{#if (lt adata.piercing 0)}}
                                 <div class="item-detail weapon-piercing"><i class="fas fa-times"></i></div>
                                 {{else}}
-                                <div class="item-detail weapon-piercing {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="weapon-damage-roll" title="{{item.name}} Piercing Damage Roll" data-weapon="{{item.name}}" data-aspect="Piercing">{{adata.piercing}}</a>{{else}}{{adata.piercing}}{{/if}}</div>
+                                <div class="item-detail weapon-piercing {{#if (and adata.isEquipped adata.isCarried)}}active{{/if}}">{{#if (and adata.isEquipped adata.isCarried)}}<a class="weapon-damage-roll" title="{{item.name}} Piercing Damage Roll" data-weapon="{{item.name}}" data-aspect="Piercing">{{adata.piercing}}</a>{{else}}{{adata.piercing}}{{/if}}</div>
                                 {{/if}}
-                                <div class="item-detail weapon-attack {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="weapon-attack-roll" title="{{item.name}} Attack Roll">{{adata.attackMasteryLevel}}</a>{{else}}{{adata.attackMasteryLevel}}{{/if}}</div>
-                                <div class="item-detail weapon-defense {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="weapon-defend-roll" title="{{item.name}} Defense Roll">{{adata.defenseMasteryLevel}}</a>{{else}}{{adata.defenseMasteryLevel}}{{/if}}</div>
+                                <div class="item-detail weapon-attack {{#if (and adata.isEquipped adata.isCarried)}}active{{/if}}">{{#if (and adata.isEquipped adata.isCarried)}}<a class="weapon-attack-roll" title="{{item.name}} Attack Roll">{{adata.attackMasteryLevel}}</a>{{else}}{{adata.attackMasteryLevel}}{{/if}}</div>
+                                <div class="item-detail weapon-defense {{#if (and adata.isEquipped adata.isCarried)}}active{{/if}}">{{#if (and adata.isEquipped adata.isCarried)}}<a class="weapon-defend-roll" title="{{item.name}} Defense Roll">{{adata.defenseMasteryLevel}}</a>{{else}}{{adata.defenseMasteryLevel}}{{/if}}</div>
                                 <div class="item-detail weapon-notes">{{adata.notes}}</div>
                             </li>
                         {{/if}}
@@ -657,35 +657,35 @@
                 </li>
                 <ol class="item-list missile-list">
                     {{#each items as |item id|}}
-                        {{#if (and (eq item.type "missilegear") data.isEquipped)}}
-                            <li class="item missile {{#unless data.isCarried}}nocarry{{/unless}} flexrow" data-item-id="{{item._id}}" data-item-name="{{adata.name}}">
-                                <div class="item-name missile-name {{#if (and data.isEquipped data.isCarried)}}missile-weapon-attack{{/if}} flexrow">
+                        {{#if (and (eq item.type "missilegear") adata.isEquipped)}}
+                            <li class="item missile {{#unless adata.isCarried}}nocarry{{/unless}} flexrow" data-item-id="{{item._id}}" data-item-name="{{adata.name}}">
+                                <div class="item-name missile-name {{#if (and adata.isEquipped adata.isCarried)}}missile-weapon-attack{{/if}} flexrow">
                                     <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                                     <h4>{{item.name}}</h4>
                                 </div>
                                 <div class="item-detail missile-qty">{{adata.quantity}}</div>
                                 <div class="item-detail missile-skill">{{adata.assocSkill}}</div>
-                                {{#if (lt data.range.short 0)}}
+                                {{#if (lt adata.range.short 0)}}
                                 <div class="item-detail missile-short"><i class="fas fa-times"></i></div>
                                 {{else}}
-                                <div class="item-detail missile-short {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="missile-damage-roll" title="{{item.name}} Short-Range Damage Roll" data-weapon="{{item.name}}" data-range="Short">{{adata.range.short}}/{{adata.impact.short}}</a>{{else}}{{adata.range.short}}/{{adata.impact.short}}{{/if}}</div>
+                                <div class="item-detail missile-short {{#if (and adata.isEquipped adata.isCarried)}}active{{/if}}">{{#if (and adata.isEquipped adata.isCarried)}}<a class="missile-damage-roll" title="{{item.name}} Short-Range Damage Roll" data-weapon="{{item.name}}" data-range="Short">{{adata.range.short}}/{{adata.impact.short}}</a>{{else}}{{adata.range.short}}/{{adata.impact.short}}{{/if}}</div>
                                 {{/if}}
-                                {{#if (lt data.range.medium 0)}}
+                                {{#if (lt adata.range.medium 0)}}
                                 <div class="item-detail missile-medium"><i class="fas fa-times"></i></div>
                                 {{else}}
-                                <div class="item-detail missile-medium {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="missile-damage-roll" title="{{item.name}} Medium-Range Damage Roll" data-weapon="{{item.name}}" data-range="Medium">{{adata.range.medium}}/{{adata.impact.medium}}</a>{{else}}{{adata.range.medium}}/{{adata.impact.medium}}{{/if}}</div>
+                                <div class="item-detail missile-medium {{#if (and adata.isEquipped adata.isCarried)}}active{{/if}}">{{#if (and adata.isEquipped adata.isCarried)}}<a class="missile-damage-roll" title="{{item.name}} Medium-Range Damage Roll" data-weapon="{{item.name}}" data-range="Medium">{{adata.range.medium}}/{{adata.impact.medium}}</a>{{else}}{{adata.range.medium}}/{{adata.impact.medium}}{{/if}}</div>
                                 {{/if}}
-                                {{#if (lt data.range.long 0)}}
+                                {{#if (lt adata.range.long 0)}}
                                 <div class="item-detail missile-long"><i class="fas fa-times"></i></div>
                                 {{else}}
-                                <div class="item-detail missile-long {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="missile-damage-roll" title="{{item.name}} Long-Range Damage Roll" data-weapon="{{item.name}}" data-range="Long">{{adata.range.long}}/{{adata.impact.long}}</a>{{else}}{{adata.range.long}}/{{adata.impact.long}}{{/if}}</div>
+                                <div class="item-detail missile-long {{#if (and adata.isEquipped adata.isCarried)}}active{{/if}}">{{#if (and adata.isEquipped adata.isCarried)}}<a class="missile-damage-roll" title="{{item.name}} Long-Range Damage Roll" data-weapon="{{item.name}}" data-range="Long">{{adata.range.long}}/{{adata.impact.long}}</a>{{else}}{{adata.range.long}}/{{adata.impact.long}}{{/if}}</div>
                                 {{/if}}
-                                {{#if (lt data.range.extreme 0)}}
+                                {{#if (lt adata.range.extreme 0)}}
                                 <div class="item-detail missile-extreme"><i class="fas fa-times"></i></div>
                                 {{else}}
-                                <div class="item-detail missile-extreme {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="missile-damage-roll" title="{{item.name}} Extreme-Range Damage Roll" data-weapon="{{item.name}}" data-range="Extreme">{{adata.range.extreme}}/{{adata.impact.extreme}}</a>{{else}}{{adata.range.extreme}}/{{adata.impact.extreme}}{{/if}}</div>
+                                <div class="item-detail missile-extreme {{#if (and adata.isEquipped adata.isCarried)}}active{{/if}}">{{#if (and adata.isEquipped adata.isCarried)}}<a class="missile-damage-roll" title="{{item.name}} Extreme-Range Damage Roll" data-weapon="{{item.name}}" data-range="Extreme">{{adata.range.extreme}}/{{adata.impact.extreme}}</a>{{else}}{{adata.range.extreme}}/{{adata.impact.extreme}}{{/if}}</div>
                                 {{/if}}
-                                <div class="item-detail missile-attack {{#if (and data.isEquipped data.isCarried)}}active{{/if}}">{{#if (and data.isEquipped data.isCarried)}}<a class="missile-attack-roll" title="Missile Attack Roll">{{adata.attackMasteryLevel}}</a>{{else}}{{adata.attackMasteryLevel}}{{/if}}</div>
+                                <div class="item-detail missile-attack {{#if (and adata.isEquipped adata.isCarried)}}active{{/if}}">{{#if (and adata.isEquipped adata.isCarried)}}<a class="missile-attack-roll" title="Missile Attack Roll">{{adata.attackMasteryLevel}}</a>{{else}}{{adata.attackMasteryLevel}}{{/if}}</div>
                                 <div class="item-detail missile-notes">{{adata.notes}}</div>
                             </li>
                         {{/if}}
@@ -845,28 +845,28 @@
             {{#each containers as |citem cid|}}
                 <ol class="items-list gear-list">
                     <li class="items-header gear flexrow" data-container-id="{{cid}}"
-                        data-container-name="{{citem.data.name}}">
-                        <h3 class="item-name gear-name">{{citem.data.name}}<a class="more-info"
+                        data-container-name="{{citem.name}}">
+                        <h3 class="item-name gear-name">{{citem.name}}<a class="more-info"
                             data-journal-entry="Sheet - Gear Tab"><i
                                 class="far fa-question-circle"></i></a></h3>
                         <div class="item-detail gear-type">Type</div>
                         <div class="item-detail gear-qty">Qty</div>
                         <div class="item-detail gear-weight">Weight</div>
                         <div class="item-detail gear-notes">Notes</div>
-                        <div class="item detail gear-capacity {{#if (gt citem.data.data.capacity.value citem.data.data.capacity.max)}}overcapacity{{/if}}">
-                            Capacity: {{citem.data.data.capacity.value}}/{{citem.data.data.capacity.max}}</div>
+                        <div class="item detail gear-capacity {{#if (gt citem.system.capacity.value citem.system.capacity.max)}}overcapacity{{/if}}">
+                            Capacity: {{citem.system.capacity.value}}/{{citem.system.capacity.max}}</div>
                         <div class="item-controls">
                             <a class="item-control item-create active" title="Add Gear" data-type="gear"
-                                data-container-id="{{cid}}" data-container-name="{{citem.data.name}}"><i
+                                data-container-id="{{cid}}" data-container-name="{{citem.name}}"><i
                                     class="fas fa-plus"></i> Add</a>
                         </div>
                     </li>
                     <ol class="item-list gear-list">
                         {{#each ../items as | item |}}
-                            {{#if (and (endswith item.type "gear") (eq item.data.container cid))}}
-                                <li class="item gear-item {{#unless data.isCarried}}nocarry{{/unless}} flexrow"
+                            {{#if (and (endswith item.type "gear") (eq item.system.container cid))}}
+                                <li class="item gear-item {{#unless adata.isCarried}}nocarry{{/unless}} flexrow"
                                     data-item-id="{{item._id}}" data-item-name="{{item.name}}"
-                                    data-container-id="{{cid}}" data-container-name="{{citem.data.name}}">
+                                    data-container-id="{{cid}}" data-container-name="{{citem.name}}">
                                     <div class="item-name gear-name flexrow">
                                         <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                                         <h4>{{item.name}}</h4>
@@ -879,10 +879,10 @@
                                         {{#if (eq cid "on-person")}}
                                             {{#unless (or (eq item.type "containergear") (eq item.type "miscgear"))}}
                                                 <a class="item-control item-equip" title="Equip"><i
-                                                        class="{{#if data.isEquipped}}active{{/if}} fas fa-shield-alt"></i></a>
+                                                        class="{{#if adata.isEquipped}}active{{/if}} fas fa-shield-alt"></i></a>
                                             {{/unless}}
                                             <a class="item-control item-carry" title="Carry"><i
-                                                    class="{{#if data.isCarried}}active{{/if}} fas fa-suitcase"></i></a>
+                                                    class="{{#if adata.isCarried}}active{{/if}} fas fa-suitcase"></i></a>
                                         {{/if}}
                                         <a class="item-control item-edit" title="Edit"><i
                                                 class="active fas fa-edit"></i></a>
@@ -902,7 +902,7 @@
             <div class="form-group">
                 <label>Type</label>
                 <select name="system.macros.type">
-                    {{#select data.macros.type}}
+                    {{#select adata.macros.type}}
                     {{#each macroTypes}}
                     <option value="{{this}}">{{this}}</option>
                     {{/each}}
@@ -935,17 +935,17 @@
                 </li>
                 <ol class="effect-list item-list">
                 {{#each effects as |effect id|}}
-                    <li class="effect {{#if effect.data.disabled}}disabled{{/if}} flexrow" data-effect-name="{{effect.data.label}}"
-                        data-effect-id="{{effect.data._id}}">
+                    <li class="effect {{#if effect.disabled}}disabled{{/if}} flexrow" data-effect-name="{{effect.label}}"
+                        data-effect-id="{{effect._id}}">
                         <div class="effect-name flexrow">
-                            <div class="effect-image" style="background-image: url('{{effect.data.icon}}')"></div>
-                            <h4>{{effect.data.label}}</h4>
+                            <div class="effect-image" style="background-image: url('{{effect.icon}}')"></div>
+                            <h4>{{effect.label}}</h4>
                         </div>
                         <div class="effect-ele effect-source">{{effect.source}}</div>
                         <div class="effect-ele effect-duration">{{effect.duration.label}}</div>
                         <div class="effect-ele effect-changes">{{effect.changes}}</div>
                         <div class="effect-controls">
-                            <a class="effect-control" data-action="toggle"><i class="{{#unless effect.data.disabled}}active{{/unless}} fas fa-circle-notch"></i></a>
+                            <a class="effect-control" data-action="toggle"><i class="{{#unless effect.disabled}}active{{/unless}} fas fa-circle-notch"></i></a>
                             <a class="effect-control" data-action="edit"><i class="active fas fa-edit"></i></a>
                             <a class="effect-control" data-action="delete"><i class="active fas fa-trash"></i></a>
                         </div>
