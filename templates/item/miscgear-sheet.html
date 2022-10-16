@@ -6,7 +6,7 @@
             <div class="flexrow">
                 <label>In Container:</label>
                 <select name="system.container">
-                    {{#select data.container}}
+                    {{#select idata.container}}
                         {{#each containers as |cid cname|}}
                             <option value="{{cid}}">{{cname}}</option>
                         {{/each}}
@@ -52,16 +52,16 @@
             </div>
             <div class="resource artifact flexrow">
                 <input type="checkbox" name="system.arcane.isArtifact" value="{{idata.arcane.isArtifact}}"
-                    data-dtype="Boolean" {{checked data.arcane.isArtifact}} />
+                    data-dtype="Boolean" {{checked idata.arcane.isArtifact}} />
                 <label class="resource-label">Artifact</label>
             </div>
-            {{#if data.arcane.isArtifact}}
+            {{#if idata.arcane.isArtifact}}
                 <fieldset>
                     <legend>Artifact Properties</legend>
                     <div class="grid grid-fixed-row grid-3col">
                         <div class="resource">
                             <input type="checkbox" name="system.arcane.isAttuned" value="{{idata.arcane.isAttuned}}"
-                                data-dtype="Boolean" {{checked data.arcane.isAttuned}} />
+                                data-dtype="Boolean" {{checked idata.arcane.isAttuned}} />
                             <label class="resource-label">Attuned</label>
                         </div>
                         <div class="resource">

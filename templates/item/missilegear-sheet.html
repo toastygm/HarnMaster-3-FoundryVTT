@@ -6,7 +6,7 @@
             <div class="flexrow">
                 <label>In Container:</label>
                 <select name="system.container">
-                    {{#select data.container}}
+                    {{#select idata.container}}
                         {{#each containers as |cid cname|}}
                             <option value="{{cid}}">{{cname}}</option>
                         {{/each}}
@@ -51,7 +51,7 @@
                 <div class="resource" id="missilegear=weaponaspect">
                     <label class="resource-label" for="system.weaponAspect">Weapon Aspect</label>
                     <select class="resource-value" name="system.weaponAspect" data-dtype="String">
-                        {{#select data.weaponAspect}}
+                        {{#select idata.weaponAspect}}
                             <option value="Piercing">Piercing</option>
                             <option value="Blunt">Blunt</option>
                             <option value="Edged">Edged</option>
@@ -62,7 +62,7 @@
                     <label class="resource-label" for="system.assocSkill">Associated Skill</label>
                     {{#if hasCombatSkills}}
                         <select class="resource-value" name="system.assocSkill" data-dtype="String">
-                            {{#select data.assocSkill}}
+                            {{#select idata.assocSkill}}
                                 {{#each combatSkills}}
                                     <option value="{{this}}">{{this}}</option>
                                 {{/each}}
@@ -122,16 +122,16 @@
             </ol>
             <div class="resource artifact flexrow" id="missilegear-isartifact">
                 <input type="checkbox" name="system.arcane.isArtifact" value="{{idata.arcane.isArtifact}}"
-                    data-dtype="Boolean" {{checked data.arcane.isArtifact}} />
+                    data-dtype="Boolean" {{checked idata.arcane.isArtifact}} />
                 <label class="resource-label">Artifact</label>
             </div>
-            {{#if data.arcane.isArtifact}}
+            {{#if idata.arcane.isArtifact}}
                 <fieldset id="missilegear-artifact">
                     <legend>Artifact Properties</legend>
                     <div class="grid grid-fixed-row grid-3col">
                         <div class="resource" id="missilegear-artifact-isattuned">
                             <input type="checkbox" name="system.arcane.isAttuned" value="{{idata.arcane.isAttuned}}"
-                                data-dtype="Boolean" {{checked data.arcane.isAttuned}} />
+                                data-dtype="Boolean" {{checked idata.arcane.isAttuned}} />
                             <label class="resource-label">Attuned</label>
                         </div>
                         <div class="resource" id="missilegear-artifact-charges">

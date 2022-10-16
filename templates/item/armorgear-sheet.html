@@ -95,7 +95,7 @@
                 <div class="armorgear-location flexrow" id="armorgear-location-select">
                     <label class="label">Location:</label>
                     <select class="value" name="system.targetLocation">
-                        {{#select data.targetLocation}}
+                        {{#select idata.targetLocation}}
                             {{#each config.injuryLocations as |value key|}}
                                 {{#if (ne key "Custom")}}
                                     <option value="{{key}}">{{key}}</option>
@@ -107,7 +107,7 @@
                             class="fas fa-plus"></i> Add</a>
                 </div>
                 <ol class="grid grid-fixed-row grid-4col" id="armorgear-location-display">
-                    {{#each data.locations}}
+                    {{#each idata.locations}}
                         <li class="armor-location">
                             <span class="name">{{this}}</span>
                             <a class="armorgear-location-delete" data-location="{{this}}" title="Delete Location"><i

@@ -7,7 +7,7 @@
                 <div class="skill-type flexrow">
                     <label class="label">Type</label>
                     <select class="value" name="system.type">
-                        {{#select data.type}}
+                        {{#select idata.type}}
                             {{#each config.skillTypes}}
                                 <option value="{{this}}">{{this}}</option>
                             {{/each}}
@@ -35,13 +35,13 @@
                 <div class="resource">
                     <label class="resource-label">Skill Base (SB)</label>
                     <input type="text" name="system.skillBase.value" value="{{idata.skillBase.value}}" data-dtype="Number"
-                        {{#if data.skillBase.formula}}readonly{{/if}} />
+                        {{#if idata.skillBase.formula}}readonly{{/if}} />
                 </div>
                 <div class="resource">
                     <label class="resource-label">Mastery Level (ML)</label>
                     <input type="number" name="system.masteryLevel" value="{{idata.masteryLevel}}" data-dtype="Number" />
                 </div>
-                {{#if (eq data.type "Ritual")}}
+                {{#if (eq idata.type "Ritual")}}
                     <div class="resource">
                         <label class="resource-label">Piety</label>
                         <input type="number" name="system.ritual.piety" value="{{idata.ritual.piety}}"
@@ -59,7 +59,7 @@
                         @mor</span></label>
                 <input type="text" name="system.skillBase.formula" value="{{idata.skillBase.formula}}"
                     data-dtype="String" />
-                {{#unless data.skillBase.isFormulaValid}}
+                {{#unless idata.skillBase.isFormulaValid}}
                     <div class="error">Error: Invalid SkillBase Formula!</div>
                 {{/unless}}
             </div>
@@ -83,7 +83,7 @@
             <div class="form-group">
                 <label>Type</label>
                 <select name="system.macros.type">
-                    {{#select data.macros.type}}
+                    {{#select idata.macros.type}}
                     {{#each macroTypes}}
                     <option value="{{this}}">{{this}}</option>
                     {{/each}}
