@@ -218,6 +218,7 @@ export function calcSkillBase(item) {
     
     if (actorData) {
         if (sb.isFormulaValid) {
+            ssBonus = ssBonus > Number.MIN_SAFE_INTEGER ? ssBonus : 0;
             sb.value = Math.round((sumModifiedAbilities / 3) + Number.EPSILON) + ssBonus + modifier;
             if (sumBaseAbilities !== sumModifiedAbilities) {
                 sb.delta = (sumModifiedAbilities / 3) - (sumBaseAbilities / 3);

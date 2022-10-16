@@ -134,7 +134,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         const sortUpdates = SortingHelpers.performIntegerSort(source, { target: target, siblings });
         const updateData = sortUpdates.map(u => {
             const update = u.update;
-            update._id = u.target.data._id;
+            update._id = u.target._id;
             return update;
         });
 
@@ -160,7 +160,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     // (this allows people to move items into containers easily)
                     const item = await Item.fromDropData(data);
                     if (item.type.endsWith('gear') && item.type !== 'containergear') {
-                        if (item.data.data.container != destContainer) {
+                        if (item.system.container != destContainer) {
                             const embItem = this.actor.items.get(item.id);
                             await embItem.update({'system.container': destContainer });
                         }
@@ -179,7 +179,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     // (this allows people to move items into containers easily)
                     const item = await Item.fromDropData(data);
                     if (item.data.type.endsWith('gear') && item.data.type !== 'containergear') {
-                        if (item.data.data.container != destContainer) {
+                        if (item.system.container != destContainer) {
                             const embItem = this.actor.items.get(item.id);
                             await embItem.update({'system.container': destContainer });
                         }
@@ -207,9 +207,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         if (data.type === 'containergear') return await this._moveContainer(event, data);
 
         // Set the destination container to the closest drop containerid
-        data.data.container = destContainer;
+        itemData.container = destContainer;
 
-        const quantity = data.data.quantity;
+        const quantity = itemData.quantity;
 
         // Source quantity really should never be 0 or negative; if so, just decline
         // the drop request.
@@ -249,10 +249,10 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // move all items into new container
         let failure = false;
         for (let it of sourceActor.items.values()) {
-            if (!failure && it.data.data.container === data.id) {
+            if (!failure && it.system.container === data.id) {
                 const itData = it.toJSON();
                 delete itData._id;
-                itData.data.container = containerResult.id;
+                itData.system.container = containerResult.id;
                 const result = await Item.create(itData, {parent: this.actor});
                 if (result) {
                     await Item.deleteDocuments([it.id], {parent: sourceActor});
@@ -268,7 +268,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         }
 
         // delete old container
-        await Item.deleteDocuments([data.data._id], {parent: sourceActor});
+        await Item.deleteDocuments([data._id], {parent: sourceActor});
         return containerResult;
     }
 
@@ -293,7 +293,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             itemName: data.name,
             sourceName: sourceActor.name,
             targetName: this.actor.name,
-            maxItems: data.data.quantity,
+            maxItems: itemData.quantity,
         };
 
         const dlghtml = await renderTemplate(dlgTemplate, dialogData);
@@ -322,7 +322,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     async _moveItems(data, moveQuantity) {
         const sourceName = data.name;
         const sourceType = data.type;
-        const sourceQuantity = data.data.quantity;
+        const sourceQuantity = itemData.quantity;
 
         // Get source actor
         let sourceActor = null;
@@ -349,12 +349,12 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         if (result) {
             // update quantity
-            const newTargetQuantity = result.data.data.quantity + moveQuantity;
+            const newTargetQuantity = result.system.quantity + moveQuantity;
             await result.update({ 'system.quantity': newTargetQuantity });
         } else {
             // Create an item
-            data.data.quantity = moveQuantity;
-            data.data.container = 'on-person';
+            itemData.quantity = moveQuantity;
+            itemData.container = 'on-person';
             result = await Item.create(data, {parent: this.actor});
         }
 
@@ -695,7 +695,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 // Add all items in the container to the delete list
                 if (item.type === 'containeritem') {
                     this.actor.items.forEach(it => {
-                        if (item.type.endsWith('gear') && it.data.container === itemId) deleteItems.push(it.id);
+                        if (item.type.endsWith('gear') && it.systemn.container === itemId) deleteItems.push(it.id);
                     });
                 }
 
@@ -862,7 +862,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 const result = await Item.create(updateData, {parent: this.actor });
 
                 if (!result) {
-                    throw new Error(`Error creating item '${updateData.name}' of type '${updateData.type}' on character '${this.actor.data.name}'`);
+                    throw new Error(`Error creating item '${updateData.name}' of type '${updateData.type}' on character '${this.actor.name}'`);
                 }
 
                 // Bring up edit dialog to complete creating item
@@ -886,7 +886,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         const item = this.actor.items.get(itemId);
 
         // Only process inventory ("gear") items, otherwise ignore
-        if (item.data.type.endsWith('gear')) {
+        if (item.type.endsWith('gear')) {
             const attr = "system.isCarried";
             return item.update({ [attr]: !getProperty(item, attr) });
         }
@@ -991,24 +991,24 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 return;
             }
 
-            const data = item.data;
+            const itemData = item.system;
 
-            if (['spell', 'invocation', 'psionic'].includes(data.type)) {
+            if (['spell', 'invocation', 'psionic'].includes(item.type)) {
                 const chatData = {
-                    name: data.name,
-                    desc: data.data.description,
-                    notes: data.data.notes || null,
-                    fatigue: data.type === 'psionic' ? data.data.fatigue : null
+                    name: item.name,
+                    desc: itemData.description,
+                    notes: itemData.notes || null,
+                    fatigue: item.type === 'psionic' ? itemData.fatigue : null
                 };
 
-                if (data.type === 'spell') {
-                    chatData.level = utility.romanize(data.data.level);
-                    chatData.title = `${data.data.convocation} Spell`;
-                } else if (data.type === 'invocation') {
-                    chatData.level = utility.romanize(data.data.circle);
-                    chatData.title = `${data.data.diety} Invocation`;
-                } else if (data.type === 'psionic') {
-                    chatData.level = `F${data.data.fatigue}`;
+                if (item.type === 'spell') {
+                    chatData.level = utility.romanize(itemData.level);
+                    chatData.title = `${itemData.convocation} Spell`;
+                } else if (item.type === 'invocation') {
+                    chatData.level = utility.romanize(itemData.circle);
+                    chatData.title = `${itemData.diety} Invocation`;
+                } else if (item.type === 'psionic') {
+                    chatData.level = `F${itemData.fatigue}`;
                     chatData.title = `Psionic Talent`;
                 }
 

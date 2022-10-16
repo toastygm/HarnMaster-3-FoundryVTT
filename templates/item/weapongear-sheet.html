@@ -6,7 +6,7 @@
             <div class="flexrow">
                 <label>In Container:</label>
                 <select name="system.container">
-                    {{#select data.container}}
+                    {{#select idata.container}}
                         {{#each containers as |cid cname|}}
                             <option value="{{cid}}">{{cname}}</option>
                         {{/each}}
@@ -85,7 +85,7 @@
                     <label class="resource-label" for="system.assocSkill">Associated Skill</label>
                     {{#if hasCombatSkills}}
                         <select class="resource-value" name="system.assocSkill" data-dtype="String">
-                            {{#select data.assocSkill}}
+                            {{#select idata.assocSkill}}
                                 {{#each combatSkills}}
                                     <option value="{{this}}">{{this}}</option>
                                 {{/each}}
@@ -106,16 +106,16 @@
             </div>
             <div class="resource artifact flexrow" id="weapongear-isartifact">
                 <input type="checkbox" name="system.arcane.isArtifact" value="{{idata.arcane.isArtifact}}"
-                    data-dtype="Boolean" {{checked data.arcane.isArtifact}} />
+                    data-dtype="Boolean" {{checked idata.arcane.isArtifact}} />
                 <label class="resource-label">Artifact</label>
             </div>
-            {{#if data.arcane.isArtifact}}
+            {{#if idata.arcane.isArtifact}}
                 <fieldset id="weapongear-artifact">
                     <legend>Artifact Properties</legend>
                     <div class="grid grid-fixed-row grid-3col">
                         <div class="resource" id="weapongear-artifact-isattuned">
                             <input type="checkbox" name="system.arcane.isAttuned" value="{{idata.arcane.isAttuned}}"
-                                data-dtype="Boolean" {{checked data.arcane.isAttuned}} />
+                                data-dtype="Boolean" {{checked idata.arcane.isAttuned}} />
                             <label class="resource-label">Attuned</label>
                         </div>
                         <div class="resource" id="weapongear-artifact-charges">
