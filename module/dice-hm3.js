@@ -344,16 +344,25 @@ export class DiceHM3 {
         if (typeof rollData.impact == 'undefined') {
             let hitLocations = DiceHM3._getHitLocations(rollData.actor.items);
 
-            const dialogOptions = {
+            let dialogOptions = {
                 hitLocations: hitLocations,
                 data: rollData.actor.system,
                 items: rollData.actor.items,
                 name: rollData.actor.token ? rollData.actor.token.name : rollData.actor.name
             };
+            if (typeof rollData.spell_aspect != "undefined") {
+                dialogOptions.spell_aspect = rollData.spell_aspect
+            }
+            if (typeof rollData.spell_impact != "undefined") {
+                dialogOptions.spell_impact = rollData.spell_impact
+            }
     
             // Create the Roll instance
             result = await DiceHM3.injuryDialog(dialogOptions);
         } else {
+            if (typeof rollData.items == "undefined") {
+                rollData.items = rollData.actor.items;
+            }
             result = DiceHM3._calcInjury('Random', rollData.impact, rollData.aspect,
                 game.settings.get('hm3', 'addInjuryToActorSheet') !== 'disable', rollData.aim, rollData);
         }
@@ -470,10 +479,16 @@ export class DiceHM3 {
 
         // Render modal dialog
         let dlgTemplate = dialogOptions.template || "systems/hm3/templates/dialog/injury-dialog.html";
+        dialogOptions.label = "Determine Injury"
+        let default_impact = 0
+        if (typeof dialogOptions.spell_impact != "undefined") {
+            default_impact = dialogOptions.spell_impact
+        }
         let dialogData = {
             aim: 'mid',
             location: 'Random',
-            impact: 0,
+            impact: default_impact,
+            // This setting is not honored so override aspect in dialog prompt below until fixed
             aspect: 'Blunt',
             askRecordInjury:  recordInjury === 'ask',
             hitLocations: dialogOptions.hitLocations
@@ -490,7 +505,11 @@ export class DiceHM3 {
                 const form = html[0].querySelector("form");
                 const formLocation = form.location.value;
                 const formImpact = form.impact.value;
-                const formAspect = form.aspect.value;
+                let formAspect = form.aspect.value;
+                // Override aspect if it has been set by the spell type
+		        if (typeof dialogOptions.spell_aspect != "undefined") {
+                    formAspect = dialogOptions.spell_aspect
+		        }
                 const formAim = form.aim.value;
                 const formAddToCharSheet = dialogData.askRecordInjury ?
                     form.addToCharSheet.checked : recordInjury === 'enable';
