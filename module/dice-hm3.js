@@ -507,9 +507,9 @@ export class DiceHM3 {
                 const formImpact = form.impact.value;
                 let formAspect = form.aspect.value;
                 // Override aspect if it has been set by the spell type
-		        if (typeof dialogOptions.spell_aspect != "undefined") {
+                if (typeof dialogOptions.spell_aspect != "undefined") {
                     formAspect = dialogOptions.spell_aspect
-		        }
+                }
                 const formAim = form.aim.value;
                 const formAddToCharSheet = dialogData.askRecordInjury ?
                     form.addToCharSheet.checked : recordInjury === 'enable';
