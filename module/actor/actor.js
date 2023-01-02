@@ -516,27 +516,27 @@ export class HarnMasterActor extends Actor {
 
             switch (it.type) {
                 case 'weapongear':
-                    tempWeight = Math.max(it.weight * it.quantity, 0);
-                    if (!it.isCarried) break;
+                    tempWeight = Math.max(itemData.weight * itemData.quantity, 0);
+                    if (!itemData.isCarried) break;
                     eph.totalWeaponWeight += tempWeight;
                     break;
 
                 case 'missilegear':
-                    tempWeight = Math.max(it.weight * it.quantity, 0);
-                    if (!it.isCarried) break;
+                    tempWeight = Math.max(itemData.weight * itemData.quantity, 0);
+                    if (!itemData.isCarried) break;
                     eph.totalMissileWeight += tempWeight;
                     break;
 
                 case 'armorgear':
-                    tempWeight = Math.max(it.weight * it.quantity, 0);
-                    if (!it.isCarried) break;
+                    tempWeight = Math.max(itemData.weight * itemData.quantity, 0);
+                    if (!itemData.isCarried) break;
                     eph.totalArmorWeight += tempWeight;
                     break;
 
                 case 'miscgear':
                 case 'containergear':
-                    tempWeight = Math.max(it.weight * it.quantity, 0);
-                    if (!it.isCarried) break;
+                    tempWeight = Math.max(itemData.weight * itemData.quantity, 0);
+                    if (!itemData.isCarried) break;
                     eph.totalMiscGearWeight += tempWeight;
                     break;
             }
