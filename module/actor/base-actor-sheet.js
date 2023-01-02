@@ -144,31 +144,38 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     async _onDropItem(event, data) {
         if (!this.actor.isOwner) return false;
 
-        const droppedItem = await fromUuid(data.uuid);
+        const droppedItem = await Item.fromDropData(data);
 
         // Destination containerid: set to 'on-person' if a containerid can't be found
         const closestContainer = event.target.closest('[data-container-id]');
         const destContainer = closestContainer?.dataset.containerId ? closestContainer.dataset.containerId : 'on-person';
 
-        if ((droppedItem.parent?.isToken && this.actor.token?.id === droppedItem.parent.token.id) ||
-            (!droppedItem.parent?.isToken && !this.actor.isToken && droppedItem.parent.id === this.actor.id)) {
-            // Dropping an item into the same actor (Token or Linked)
+        if (droppedItem.parent) {
+            if ((droppedItem.parent.isToken && this.actor.token?.id === droppedItem.parent.token.id) ||
+                (!droppedItem.parent.isToken && !this.actor.isToken && droppedItem.parent.id === this.actor.id)) {
+                // Dropping an item into the same actor (Token or Linked)
 
-            // If the item is some type of gear (other than containergear), then
-            // make sure we set the container to the same as the dropped location
-            // (this allows people to move items into containers easily)
-            if (droppedItem.type.endsWith('gear') && droppedItem.type !== 'containergear') {
-                if (droppedItem.system.container !== destContainer) {
-                    await droppedItem.update({'system.container': destContainer });
+                // If the item is some type of gear (other than containergear), then
+                // make sure we set the container to the same as the dropped location
+                // (this allows people to move items into containers easily)
+                if (droppedItem.type.endsWith('gear') && droppedItem.type !== 'containergear') {
+                    if (droppedItem.system.container !== destContainer) {
+                        await droppedItem.update({'system.container': destContainer });
+                    }
                 }
-            }
 
-            return super._onDropItem(event, data);
+                return super._onDropItem(event, data);
+            }
         }
 
         // Skills, spells, etc. (non-gear) coming from a item list or compendium
         if (!droppedItem.type.endsWith("gear")) {
             return super._onDropItem(event, data);
+        }
+
+        // Check if coming from a compendium pack
+        if (droppedItem.pack) {
+            return super._onDropItem(event, data)
         }
 
         // At this point we know this dropped item comes from another actor,
@@ -200,7 +207,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         if (!item.parent) {
             ui.notifications.warn(`Error accessing actor where container is coming from, move aborted`);
-            return null;
+            throw Error(`Error accessing actor where container is coming from, move aborted`);
         }
 
         let itData = item.toObject;
@@ -241,7 +248,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Get source actor
         if (!item.parent) {
             ui.notifications.warn(`Error accessing actor where container is coming from, move aborted`);
-            return null;
+            throw Error(`Error accessing actor where container is coming from, move aborted`);
         }
 
         // Render modal dialog
@@ -315,23 +322,21 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
     }
 
     /** @override */
-    async _onDropItemCreate(data) {
+    async _onDropItemCreate(itemData) {
         const actor = this.actor;
         if (!actor.isOwner) return false;
 
-        const droppedItem = await fromUuid(data.uuid);
-
-        if (!droppedItem.type.endsWith("gear")) {
+        if (!itemData.type.endsWith("gear")) {
             if (actor.type === 'container') {
-                ui.notifications.warn(`You may only place physical objects in a container; drop of ${data.name} refused.`);
+                ui.notifications.warn(`You may only place physical objects in a container; drop of ${itemData.name} refused.`);
                 return false;
             }
 
             actor.items.forEach(it => {
                 // Generally, if the items have the same type and name,
                 // then merge the dropped item onto the existing item.
-                if (it.type === droppedItem.type && it.name === droppedItem.name) {
-                    this.mergeItem(it, droppedItem);
+                if (it.type === itemData.type && it.name === itemData.name) {
+                    this.mergeItem(it, itemData);
 
                     // Don't actually allow the new item
                     // to be created.
@@ -339,12 +344,10 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 }
             });
 
-            const itData = droppedItem.toObject();
-            delete itData._id;
-            return Item.create(itData, {parent: this.actor});
+            return Item.create(itemData, {parent: this.actor});
         }
 
-        return super._onDropItemCreate(data);
+        return super._onDropItemCreate(itemData);
     }
 
 
