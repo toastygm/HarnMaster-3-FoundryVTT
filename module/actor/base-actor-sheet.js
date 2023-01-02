@@ -60,15 +60,13 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Setup the fake container entry for "On Person" container
         data.containers = {
             'on-person': {
-                "data": {
-                    "name": "On Person",
-                    "type": "containergear",
-                    "data": {
-                        "container": "on-person",
-                        "capacity": {
-                            "max": capacityMax,
-                            "value": capacityVal
-                        }
+                "name": "On Person",
+                "type": "containergear",
+                "system": {
+                    "container": "on-person",
+                    "capacity": {
+                        "max": capacityMax,
+                        "value": capacityVal
                     }
                 }
             }
