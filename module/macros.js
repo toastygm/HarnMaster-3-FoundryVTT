@@ -394,7 +394,7 @@ export async function testAbilityD6Roll(ability, noDialog = false, myActor=null)
     return null;
 }
 
-export async function testAbilityD100Roll(ability, noDialog = false, myActor = null) {
+export async function testAbilityD100Roll(ability, noDialog = false, myActor = null, multiplier=5) {
     const speaker = myActor instanceof Actor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
     const actor = getActor(myActor, speaker);
     if (!actor) {
@@ -416,7 +416,7 @@ export async function testAbilityD100Roll(ability, noDialog = false, myActor = n
     const stdRollData = {
         type: `${ability}-d100`,
         label: `d100 ${ability[0].toUpperCase()}${ability.slice(1)} Roll`,
-        target: Math.max(5, actor.system.abilities[ability].effective * 5),
+        target: Math.max(5, actor.system.abilities[ability].effective * multiplier),
         notesData: {},
         speaker: speaker,
         fastforward: noDialog,
