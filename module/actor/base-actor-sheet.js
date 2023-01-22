@@ -146,41 +146,43 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
         const droppedItem = await Item.fromDropData(data);
 
-        // Destination containerid: set to 'on-person' if a containerid can't be found
-        const closestContainer = event.target.closest('[data-container-id]');
-        const destContainer = closestContainer?.dataset.containerId ? closestContainer.dataset.containerId : 'on-person';
-
-        if (droppedItem.parent) {
-            if ((droppedItem.parent.isToken && this.actor.token?.id === droppedItem.parent.token.id) ||
-                (!droppedItem.parent.isToken && !this.actor.isToken && droppedItem.parent.id === this.actor.id)) {
-                // Dropping an item into the same actor (Token or Linked)
-
-                // If the item is some type of gear (other than containergear), then
-                // make sure we set the container to the same as the dropped location
-                // (this allows people to move items into containers easily)
-                if (droppedItem.type.endsWith('gear') && droppedItem.type !== 'containergear') {
-                    if (droppedItem.system.container !== destContainer) {
-                        await droppedItem.update({'system.container': destContainer });
-                    }
-                }
-
-                return super._onDropItem(event, data);
-            }
-        }
-
-        // Skills, spells, etc. (non-gear) coming from a item list or compendium
-        if (!droppedItem.type.endsWith("gear")) {
-            return super._onDropItem(event, data);
-        }
-
         // Check if coming from a compendium pack
         if (droppedItem.pack) {
             return super._onDropItem(event, data)
         }
 
-        // At this point we know this dropped item comes from another actor,
-        // and it is some sort of "gear". Go ahead and process the drop, but
-        // track the result.
+        // Skills, spells, etc. (non-gear)
+        if (!droppedItem.type.endsWith("gear")) {
+            return super._onDropItem(event, data);
+        }
+
+        // Gear coming from world items list
+        if (!droppedItem.parent) {
+            return super._onDropItem(event, data);
+        }
+
+        // At this point we know the item is some sort of gear, and coming from an actor
+
+        // Destination containerid: set to 'on-person' if a containerid can't be found
+        const closestContainer = event.target.closest('[data-container-id]');
+        const destContainer = closestContainer?.dataset.containerId ? closestContainer.dataset.containerId : 'on-person';
+
+        // Dropping an item into the same actor (Token or Linked)
+        if ((droppedItem.parent.isToken && this.actor.token?.id === droppedItem.parent.token.id) ||
+            (!droppedItem.parent.isToken && !this.actor.isToken && droppedItem.parent.id === this.actor.id)) {
+            // If the item is some type of gear (other than containergear), then
+            // make sure we set the container to the same as the dropped location
+            // (this allows people to move items into containers easily)
+            if (droppedItem.type.endsWith('gear') && droppedItem.type !== 'containergear') {
+                if (droppedItem.system.container !== destContainer) {
+                    await droppedItem.update({'system.container': destContainer });
+                }
+            }
+
+            return super._onDropItem(event, data);
+        }
+
+        // At this point we know this dropped item is Gear coming from an actor,
 
         // Containers are a special case, and they need to be processed specially
         if (droppedItem.type === 'containergear') return await this._moveContainer(event, droppedItem);
@@ -254,7 +256,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Render modal dialog
         let dlgTemplate = "systems/hmk/templates/dialog/item-qty.html";
         let dialogData = {
-            itemName: data.name,
+            itemName: item.name,
             sourceName: item.parent.name,
             targetName: this.actor.name,
             maxItems: item.system.quantity,
