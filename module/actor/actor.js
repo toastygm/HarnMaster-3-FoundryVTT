@@ -192,7 +192,7 @@ export class HarnMasterActor extends Actor {
         this.calcTotalGearWeight();
 
         // Prepare data items unique to containers
-        if (actorData.type === 'container') {
+        if (this.type === 'container') {
             actorData.capacity.value = actorData.totalWeight;
             actorData.capacity.pct = Math.round(((actorData.capacity.max - actorData.capacity.value) / (actorData.capacity.max || 1)) * 100);
             actorData.capacity.pct = Math.max(Math.min(actorData.capacity.pct, 100), 0);  // ensure value is between 0 and 100 inclusive)
@@ -312,6 +312,12 @@ export class HarnMasterActor extends Actor {
 
         const eph = actorData.eph;
 
+        this._calcGearWeightTotals();
+
+        if (this.type === 'container') {
+            return;
+        }
+
         // store AE-affected ability scores
         actorData.abilities.strength.modified = eph.strength;
         actorData.abilities.stamina.modified = eph.stamina;
@@ -326,12 +332,6 @@ export class HarnMasterActor extends Actor {
         actorData.abilities.aura.modified = eph.aura;
         actorData.abilities.morality.modified = eph.morality;
         actorData.abilities.comeliness.modified = eph.comeliness;
-
-        this._calcGearWeightTotals();
-
-        if (this.type === 'container') {
-            return;
-        }
 
         // All common character and creature derived data below here
 
