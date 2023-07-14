@@ -35,9 +35,16 @@
       "path": "lang/en.json"
     }
   ],
+  "packFolders": [
+    {
+      "name": "HârnMaster 3 System",
+      "sorting": "m",
+      "packs": ["hm3-character", "hm3-possessions", "hm3-esoteric", "hm3-system-help"]
+    }
+  ],
   "packs": [
     {
-      "label": "HM3 Character",
+      "label": "Character",
       "type": "Item",
       "name": "hm3-character",
       "system": "hm3",
@@ -45,7 +52,7 @@
       "private": false
     },
     {
-      "label": "HM3 Possessions",
+      "label": "Possessions",
       "type": "Item",
       "name": "hm3-possessions",
       "system": "hm3",
@@ -53,7 +60,7 @@
       "private": false
     },
     {
-      "label": "HM3 Esoteric",
+      "label": "Esoteric",
       "type": "Item",
       "name": "hm3-esoteric",
       "system": "hmk",
@@ -61,7 +68,7 @@
       "private": false
     },
     {
-      "label": "HM3 System Help",
+      "label": "System Help",
       "name": "hm3-system-help",
       "path": "packs/hm3-system-help.db",
       "system": "hm3",
