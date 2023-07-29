@@ -100,10 +100,10 @@ export class HarnMasterActor extends Actor {
     /**
      * Add all of the items from a pack with the specified names
      * @param {*} itemNames Array of item names to include
-     * @param {*} packName Name of compendium pack containing items
+     * @param {*} packNames Array of packNames of compendium packs containing items
      * @param {*} items array of ItemData elements to populate
      */
-    static async addItemsFromPack(itemNames, packName, items) {
+    static async addItemsFromPack(itemNames, packNames, items) {
         let itNames = foundry.utils.deepClone(itemNames);
         const itemAry = [];
         for (let packName of packNames) {
