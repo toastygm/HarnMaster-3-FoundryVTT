@@ -104,23 +104,31 @@ export class HarnMasterActor extends Actor {
      * @param {*} items array of ItemData elements to populate
      */
     static async addItemsFromPack(itemNames, packName, items) {
-        await game.packs
-            .get(packName)
-            .getDocuments()
-            .then((result) => {
+        let itNames = foundry.utils.deepClone(itemNames);
+        const itemAry = [];
+        for (let packName of packNames) {
+            const pack = game.packs.get(packName);
+            await pack.getDocuments().then((result) => {
                 let chain = Promise.resolve()
-                result.forEach(async (ability, index) => {
+                result.forEach(async (item, index) => {
                     chain = await chain.then(async () => {
-                        if (itemNames.includes(ability.name)) {
-                            const clone = ability.clone();
+                        if (itNames.includes(item.name)) {
+                            const clone = item.toObject();
                             clone.effects = clone.effects.contents;
-                            items.push(clone);
+                            // Set the created time for added items
+                            if (clone.system?.hasOwnProperty('createdTime')) clone.system.createdTime = game.time.worldTime;
+                            itemAry.push(clone);
+                            // Ensure we don't continue looking for the itemName after we have found one
+                            itNames = itNames.filter(i => i !== item.name);
                         }
                     });
                 });
             });
+        }
+        itemAry.sort((a,b) => itemNames.indexOf(a.name) - itemNames.indexOf(b.name));
+        items.push(...itemAry);
     }
-
+        
     /**
      * Create an armorlocation ItemData element
      * 
