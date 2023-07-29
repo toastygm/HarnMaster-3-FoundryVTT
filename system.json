@@ -39,38 +39,38 @@
     {
       "name": "HârnMaster 3 System",
       "sorting": "m",
-      "packs": ["hm3-character", "hm3-possessions", "hm3-esoteric", "hm3-system-help"]
+      "packs": ["character", "possessions", "esoteric", "system-help"]
     }
   ],
   "packs": [
     {
       "label": "Character",
       "type": "Item",
-      "name": "hm3-character",
+      "name": "character",
       "system": "hm3",
-      "path": "packs/hm3-character.db",
+      "path": "packs/character.db",
       "private": false
     },
     {
       "label": "Possessions",
       "type": "Item",
-      "name": "hm3-possessions",
+      "name": "possessions",
       "system": "hm3",
-      "path": "packs/hm3-possessions.db",
+      "path": "packs/possessions.db",
       "private": false
     },
     {
       "label": "Esoteric",
       "type": "Item",
-      "name": "hm3-esoteric",
-      "system": "hmk",
-      "path": "packs/hm3-esoteric.db",
+      "name": "esoteric",
+      "system": "hm3",
+      "path": "packs/esoteric.db",
       "private": false
     },
     {
       "label": "System Help",
-      "name": "hm3-system-help",
-      "path": "packs/hm3-system-help.db",
+      "name": "system-help",
+      "path": "packs/system-help.db",
       "system": "hm3",
       "type": "JournalEntry",
       "private": false
