@@ -22,7 +22,6 @@ export class HM3ActiveEffectConfig extends ActiveEffectConfig {
     async getData(options={}) {
         const context = await super.getData(options);
         context.keyChoices = HM3.activeEffectKey;
-        context.sourceName = await this.object.sourceName;
         return context;
     }
 }
