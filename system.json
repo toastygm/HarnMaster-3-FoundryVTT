@@ -3,7 +3,7 @@
   "name": "hm3",
   "title": "HarnMaster 3",
   "description": "The HarnMaster system for FoundryVTT!",
-  "version": "1.5.0",
+  "version": "1.5.2",
   "authors": [
     {
       "name": "Toasty",
@@ -20,7 +20,7 @@
   "minimumCoreVersion": "11",
   "compatibility": {
     "minimum": "11",
-    "verified": "11.305"
+    "verified": "11.306"
   },
   "esmodules": [
     "module/hm3.js"
@@ -35,35 +35,42 @@
       "path": "lang/en.json"
     }
   ],
+  "packFolders": [
+    {
+      "name": "HârnMaster 3 System",
+      "sorting": "m",
+      "packs": ["character", "possessions", "esoteric", "system-help"]
+    }
+  ],
   "packs": [
     {
-      "label": "HM3 Character",
+      "label": "Character",
       "type": "Item",
-      "name": "hm3-character",
+      "name": "character",
       "system": "hm3",
-      "path": "packs/hm3-character.db",
+      "path": "packs/character.db",
       "private": false
     },
     {
-      "label": "HM3 Possessions",
+      "label": "Possessions",
       "type": "Item",
-      "name": "hm3-possessions",
+      "name": "possessions",
       "system": "hm3",
-      "path": "packs/hm3-possessions.db",
+      "path": "packs/possessions.db",
       "private": false
     },
     {
-      "label": "HM3 Esoteric",
+      "label": "Esoteric",
       "type": "Item",
-      "name": "hm3-esoteric",
-      "system": "hmk",
-      "path": "packs/hm3-esoteric.db",
+      "name": "esoteric",
+      "system": "hm3",
+      "path": "packs/esoteric.db",
       "private": false
     },
     {
-      "label": "HM3 System Help",
-      "name": "hm3-system-help",
-      "path": "packs/hm3-system-help.db",
+      "label": "System Help",
+      "name": "system-help",
+      "path": "packs/system-help.db",
       "system": "hm3",
       "type": "JournalEntry",
       "private": false
@@ -71,7 +78,7 @@
   ],
   "socket": true,
   "manifest": "https://github.com/toastygm/HarnMaster-3-FoundryVTT/releases/latest/download/system.json",
-  "download": "https://github.com/toastygm/HarnMaster-3-FoundryVTT/releases/download/v1.5.0/system.zip",
+  "download": "https://github.com/toastygm/HarnMaster-3-FoundryVTT/releases/download/v1.5.2/system.zip",
   "gridDistance": 5,
   "gridUnits": "ft",
   "primaryTokenAttribute": "shockIndex"

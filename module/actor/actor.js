@@ -13,7 +13,7 @@ export class HarnMasterActor extends Actor {
 
         // Collect data
         const documentName = this.metadata.name;
-        const types = game.system.documentTypes[documentName];
+        const types = game.system.documentTypes[documentName].filter(t => t !== CONST.BASE_DOCUMENT_TYPE);
         const folders = game.folders.filter(f => (f.type === documentName) && f.displayed);
         const label = game.i18n.localize(this.metadata.label);
         const title = game.i18n.format("DOCUMENT.Create", { type: label });
@@ -24,7 +24,7 @@ export class HarnMasterActor extends Actor {
             folder: data.folder,
             folders: folders,
             hasFolders: folders.length > 1,
-            type: data.type || types[0],
+            type: data.type || CONFIG[documentName]?.defaultType || types[0],
             types: types.reduce((obj, t) => {
                 const label = CONFIG[documentName]?.typeLabels?.[t] ?? t;
                 obj[t] = game.i18n.has(label) ? game.i18n.localize(label) : t;
@@ -72,9 +72,7 @@ export class HarnMasterActor extends Actor {
             updateData.items = [];
 
             // Add standard skills
-            for (let pack in HM3.defaultCharacterSkills) {
-                await HarnMasterActor.addItemsFromPack(HM3.defaultCharacterSkills[pack], pack, updateData.items);
-            }
+            await HarnMasterActor.addItemsFromPack(HM3.defaultCharacterSkills, ['hm3.character'], updateData.items);
 
             // Add standard armor locations
             HarnMasterActor._createDefaultHumanoidLocations(updateData.items);
@@ -85,9 +83,7 @@ export class HarnMasterActor extends Actor {
             updateData.items = [];
 
             // Add standard skills
-            for (let pack in HM3.defaultCreatureSkills) {
-                await HarnMasterActor.addItemsFromPack(HM3.defaultCreatureSkills[pack], pack, updateData.items);
-            }
+            await HarnMasterActor.addItemsFromPack(HM3.defaultCreatureSkills, ['hm3.character'], updateData.items);
         } else if (createData.type === 'container') {
             updateData['system.capacity.max'] = 1;
             updateData['system.description'] = '';
@@ -100,27 +96,35 @@ export class HarnMasterActor extends Actor {
     /**
      * Add all of the items from a pack with the specified names
      * @param {*} itemNames Array of item names to include
-     * @param {*} packName Name of compendium pack containing items
+     * @param {*} packNames Array of packNames of compendium packs containing items
      * @param {*} items array of ItemData elements to populate
      */
-    static async addItemsFromPack(itemNames, packName, items) {
-        await game.packs
-            .get(packName)
-            .getDocuments()
-            .then((result) => {
+    static async addItemsFromPack(itemNames, packNames, items) {
+        let itNames = foundry.utils.deepClone(itemNames);
+        const itemAry = [];
+        for (let packName of packNames) {
+            const pack = game.packs.get(packName);
+            await pack.getDocuments().then((result) => {
                 let chain = Promise.resolve()
-                result.forEach(async (ability, index) => {
+                result.forEach(async (item, index) => {
                     chain = await chain.then(async () => {
-                        if (itemNames.includes(ability.name)) {
-                            const clone = ability.clone();
+                        if (itNames.includes(item.name)) {
+                            const clone = item.toObject();
                             clone.effects = clone.effects.contents;
-                            items.push(clone);
+                            // Set the created time for added items
+                            if (clone.system?.hasOwnProperty('createdTime')) clone.system.createdTime = game.time.worldTime;
+                            itemAry.push(clone);
+                            // Ensure we don't continue looking for the itemName after we have found one
+                            itNames = itNames.filter(i => i !== item.name);
                         }
                     });
                 });
             });
+        }
+        itemAry.sort((a,b) => itemNames.indexOf(a.name) - itemNames.indexOf(b.name));
+        items.push(...itemAry);
     }
-
+        
     /**
      * Create an armorlocation ItemData element
      * 
