@@ -13,7 +13,7 @@ export class HarnMasterActor extends Actor {
 
         // Collect data
         const documentName = this.metadata.name;
-        const types = game.system.documentTypes[documentName];
+        const types = game.system.documentTypes[documentName].filter(t => t !== CONST.BASE_DOCUMENT_TYPE);
         const folders = game.folders.filter(f => (f.type === documentName) && f.displayed);
         const label = game.i18n.localize(this.metadata.label);
         const title = game.i18n.format("DOCUMENT.Create", { type: label });
@@ -24,7 +24,7 @@ export class HarnMasterActor extends Actor {
             folder: data.folder,
             folders: folders,
             hasFolders: folders.length > 1,
-            type: data.type || types[0],
+            type: data.type || CONFIG[documentName]?.defaultType || types[0],
             types: types.reduce((obj, t) => {
                 const label = CONFIG[documentName]?.typeLabels?.[t] ?? t;
                 obj[t] = game.i18n.has(label) ? game.i18n.localize(label) : t;
