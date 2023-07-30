@@ -72,9 +72,7 @@ export class HarnMasterActor extends Actor {
             updateData.items = [];
 
             // Add standard skills
-            for (let pack in HM3.defaultCharacterSkills) {
-                await HarnMasterActor.addItemsFromPack(HM3.defaultCharacterSkills[pack], pack, updateData.items);
-            }
+            await HarnMasterActor.addItemsFromPack(HM3.defaultCharacterSkills, ['hm3.character'], updateData.items);
 
             // Add standard armor locations
             HarnMasterActor._createDefaultHumanoidLocations(updateData.items);
@@ -85,9 +83,7 @@ export class HarnMasterActor extends Actor {
             updateData.items = [];
 
             // Add standard skills
-            for (let pack in HM3.defaultCreatureSkills) {
-                await HarnMasterActor.addItemsFromPack(HM3.defaultCreatureSkills[pack], pack, updateData.items);
-            }
+            await HarnMasterActor.addItemsFromPack(HM3.defaultCreatureSkills, ['hm3.character'], updateData.items);
         } else if (createData.type === 'container') {
             updateData['system.capacity.max'] = 1;
             updateData['system.description'] = '';
