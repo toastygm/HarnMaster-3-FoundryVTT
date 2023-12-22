@@ -888,7 +888,9 @@ export class HarnMasterActor extends Actor {
                     impact: button.dataset.impact,
                     aspect: button.dataset.aspect,
                     aim: button.dataset.aim,
-                    tokenId: token.id
+                    tokenId: token.id,
+                    attackerId: button.dataset.atkTokenId,
+                    attackWeapon: button.dataset.attackWeapon
                 });
                 break;
 
