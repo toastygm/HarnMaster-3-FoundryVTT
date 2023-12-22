@@ -102,8 +102,7 @@
     {{#if (or hasAttackHit dta isAtkFumbleRoll isAtkStumbleRoll isDefFumbleRoll isDefStumbleRoll)}}
     <div class="card-buttons">
         {{#if hasAttackHit}}
-            <button data-action="injury" data-visible-actor-id="{{visibleDefActorId}}" data-token-id="{{defTokenId}}" data-aim="{{atkAim}}" data-aspect="{{atkAspect}}"
-            data-impact="{{totalImpact}}">Calculate {{defender}} Injury</button>
+            <button data-action="injury" data-visible-actor-id="{{visibleDefActorId}}" data-token-id="{{defTokenId}}" data-atk-token-id="{{atkTokenId}}" data-attack-Weapon="{{attackWeapon}}" data-aim="{{atkAim}}" data-aspect="{{atkAspect}}" data-impact="{{totalImpact}}">Calculate {{defender}} Injury</button>
         {{/if}}
 
         {{#if dta}}
