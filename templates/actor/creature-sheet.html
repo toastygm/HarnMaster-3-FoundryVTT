@@ -936,7 +936,7 @@
                 <ol class="effect-list item-list">
                 {{#each effects as |effect id|}}
                     <li class="effect {{#if effect.disabled}}disabled{{/if}} flexrow" data-effect-name="{{effect.label}}"
-                        data-effect-id="{{effect._id}}">
+                        data-effect-id="{{effect.id}}">
                         <div class="effect-name flexrow">
                             <div class="effect-image" style="background-image: url('{{effect.icon}}')"></div>
                             <h4>{{effect.label}}</h4>
