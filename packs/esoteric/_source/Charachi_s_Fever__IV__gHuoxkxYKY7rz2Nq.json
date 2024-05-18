@@ -1,0 +1,37 @@
+{
+  "_id": "gHuoxkxYKY7rz2Nq",
+  "name": "Charachi’s Fever (IV)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/fire.svg",
+  "effects": [],
+  "folder": "aqY5F35ewokEjo5C",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>An enchantment which causes one victim to become restless and feverish; a kind of magical disease. The caster must touch the victim in order to lay the enchantment. No seed fire is required.</p><p>An unwilling subject gets a resistance test against Will x4 (MS casting) or Will x2 (CS casting). In its early stages, Charachi’s Fever may seem beneficial as the victim recovers from fatigue at twice the usual rate. Immediately, however, the victim will be unable to settle comfortably, and will be disposed to frequently exercise by running, lifting weights, moving furniture, swimming, etc. The victim will not sleep well, awakening hourly with an urge to pace.</p><p>About 24 hours after becoming enchanted, the victim will have a one degree (Celsius) fever which will climb by one degree per 24 hours (note: normal human body temperature is 37 degrees). When the fever climbs to 40 degrees, the victim tests Endurance x4 to avoid coma.  At 41 degrees, the victim tests Endurance x3, and so on.  Upon losing consciousness, the victim remains comatose until the enchantment is dispelled or the victim dies.</p><p>The fever continues to climb after the victim enters a coma. When the fever reaches 44, the victim tests Endurance x3 to avoid death; at 45, the victim tests Endurance x2; at 46, Endurance x1. A body temperature of 47 kills any human.</p><p>As a side effect, the enchantment prevents minor cold damage for Duration; reduce any frost impact by 2d6.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML70+</td><td>Fever acceleration may be halved or doubled at the caster’s option.</td></tr><tr><td style='width: 4em;'>CML90+</td><td>Caster may delay the onset of fever by up to CSI days.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI minutes</p><p>Range: Touch</p><p>Duration: Indefinite (or until victim dies)</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Peleahn",
+    "level": 4,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284402933,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!gHuoxkxYKY7rz2Nq"
+}

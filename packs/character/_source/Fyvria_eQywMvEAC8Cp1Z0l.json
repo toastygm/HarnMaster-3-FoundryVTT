@@ -1,0 +1,46 @@
+{
+  "_id": "eQywMvEAC8Cp1Z0l",
+  "name": "Fyvria",
+  "type": "skill",
+  "img": "systems/hm3/images/icons/svg/tree.svg",
+  "effects": [],
+  "folder": "zQdlAO8iJ9sy3s9l",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "",
+    "source": "HM Magic, Shek-pvar 6",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "type": "Magic",
+    "skillBase": {
+      "value": 0,
+      "formula": "@aur, @aur, @sml, Ulandus:3, Aralius:2, Feneri:1, Angberelius:-1, Nadai:-2, Hirin:-3, Tarael:-2, Tai:-1, Masara, Lado:2",
+      "isFormulaValid": true
+    },
+    "masteryLevel": 0,
+    "effectiveMasteryLevel": 0,
+    "ritual": {
+      "piety": 0
+    },
+    "improveFlag": false
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284340747,
+    "modifiedTime": 1689285072117,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!eQywMvEAC8Cp1Z0l"
+}

@@ -1,0 +1,37 @@
+{
+  "_id": "Bb1L3kMiLRT9LsbD",
+  "name": "Chalsa’s Sponge (II)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/water.svg",
+  "effects": [],
+  "folder": "gtGO9IFu3Gtp6l3r",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A self-enchantment to retain moisture. Chalsa’s Sponge inhibits the loss of bodily fluids such as sweat, tears, and urine.</p><p>Sponge reduces the need for water by half, but does not affect thirst. Thus, it can be used to help traverse a desert, but not comfortably.</p><p>The effect increases or decreases by environment at GM discretion. A subject in the hot sun requires more water than one in the cool shade.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML60+</td><td>Enchantment may be laid upon a willing recipient. Touch is required.</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Caster has the option to eliminate thirst.</td></tr></table><p>&nbsp;</p><p>Time: 35-CSI seconds</p><p>Range: Self/Touch at CML60+</p><p>Duration: CSI days</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Odivishe",
+    "level": 2,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284398122,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!Bb1L3kMiLRT9LsbD"
+}

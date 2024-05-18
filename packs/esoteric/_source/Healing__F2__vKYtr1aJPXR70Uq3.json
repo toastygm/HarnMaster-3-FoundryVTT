@@ -1,0 +1,46 @@
+{
+  "_id": "vKYtr1aJPXR70Uq3",
+  "name": "Healing (F2)",
+  "type": "psionic",
+  "img": "systems/hm3/images/icons/svg/psionics.svg",
+  "effects": [],
+  "folder": "tDpiTQntA3rYW1PE",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>Talent requires skin contact between the healer and the patient (who may be the healer). Four options exist:</p><p>[1] Empathy: An attempt to diagnose the patient&rsquo;s emotional state and/or physical well-being. Information depends on success level.</p><p>[2] Restoration: An attempt to remove fatigue. CS eliminates four Fatigue Levels (F4); MS removes two Fatigue Levels (F2).</p><p>[3] Bloodloss: An attempt to clot a single bleeding wound. Any success stops bleeding, and CS also reduces accumulated bloodloss by 1BP.</p><p>[4] Heal: An attempt to increase the healing rate of one identified ailment or wound. CS increases the healing rate by 2, MS by 1. If this brings the healing rate to H6 (or more) any infection, disease, or poison is defeated (cured).</p><p>Psionic Episodes: Emotional empathy (crying at the distress of others) and sympathy pains (someone else hurts their hand and the invoker feels the pain).</p><p>Misfire (CF): Sometimes the healer acquires some or all of the patient&rsquo;s ailments.</p>\n\n\n",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "skillBase": {
+      "value": 0,
+      "formula": "@aur,@aur,@wil,Masara, Skorus",
+      "isFormulaValid": true
+    },
+    "masteryLevel": 0,
+    "effectiveMasteryLevel": 0,
+    "improveFlag": false,
+    "fatigue": 2,
+    "ritual": {
+      "piety": 0
+    }
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284256178,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!vKYtr1aJPXR70Uq3"
+}

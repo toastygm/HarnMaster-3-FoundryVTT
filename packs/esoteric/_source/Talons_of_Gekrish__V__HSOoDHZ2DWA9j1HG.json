@@ -1,0 +1,37 @@
+{
+  "_id": "HSOoDHZ2DWA9j1HG",
+  "name": "Talons of Gekrish (V)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/naveh.png",
+  "effects": [],
+  "folder": "J8M3FXoJSUHr5EYi",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI secs+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> N/A+</td><td><b>Duration:</b> One strike</td></tr></table><p>Any edge or point strike with a dagger will find a vulnerable artery at the strike location and sever it, causing (GM discretion) a K5 strike.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Naveh",
+    "circle": 5,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284286859,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!HSOoDHZ2DWA9j1HG"
+}

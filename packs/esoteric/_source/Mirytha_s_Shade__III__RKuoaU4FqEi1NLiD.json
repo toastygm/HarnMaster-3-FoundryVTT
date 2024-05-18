@@ -1,0 +1,37 @@
+{
+  "_id": "RKuoaU4FqEi1NLiD",
+  "name": "Mirytha’s Shade (III)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/peoni.png",
+  "effects": [],
+  "folder": "vgrw7aVTemgPWZxh",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI minutes+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> Line of Sight+</td><td><b>Duration:</b> 1 (MS); 3 (CS) hours</td></tr></table><p>Offers insight into the reason a ghost haunts a locale or is causing trouble. The priest is then compelled to help the ghost find its way to the next plane of existence. The GM may reveal the information in any suitable manner.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Peoni",
+    "circle": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284294673,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!RKuoaU4FqEi1NLiD"
+}

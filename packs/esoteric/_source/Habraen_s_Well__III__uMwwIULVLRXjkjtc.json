@@ -1,0 +1,37 @@
+{
+  "_id": "uMwwIULVLRXjkjtc",
+  "name": "Habraen’s Well (III)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/peoni.png",
+  "effects": [],
+  "folder": "vgrw7aVTemgPWZxh",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI minutes+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Touch Water+</td><td><b>Duration:</b> Indefinite</td></tr></table><p>Blesses RSI ounces of water. Ethereals or demons sprinkled with holy water must make an immediate 5d6 shock roll. Holy water is also needed for many invocations, especially those of healing.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Peoni",
+    "circle": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284294673,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!uMwwIULVLRXjkjtc"
+}

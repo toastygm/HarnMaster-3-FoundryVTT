@@ -1,0 +1,37 @@
+{
+  "_id": "gfXkgM3wGe2ibvSQ",
+  "name": "Feat of Albarra (III)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/ilvir.png",
+  "effects": [],
+  "folder": "olFsheWfuwIH41Tk",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> RSI hexes+</td><td><b>Duration:</b> 10 (MS); 30 (CS) mins</td></tr></table><p>Allows the invoker to increase any one physical attribute for Duration. With MS the increase is by 50%; with CS the attribute is doubled. All dependent skills are affected by +20 (MS) and +50 (CS). Invoker acquires F3 Fatigue after Duration. The ritual takes its name from a popular Jarin hero of folklore.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Ilvir",
+    "circle": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284270245,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!gfXkgM3wGe2ibvSQ"
+}

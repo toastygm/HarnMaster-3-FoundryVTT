@@ -1,0 +1,37 @@
+{
+  "_id": "T1RtlVF2m103tGiL",
+  "name": "Krasula’s Whisper (III)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/naveh.png",
+  "effects": [],
+  "folder": "J8M3FXoJSUHr5EYi",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI secs+</td><td><b>Ritual:</b> Silent Prayer</td></tr><tr><td><b>Range:</b> RML feet+</td><td><b>Duration:</b> Instantaneous</td></tr></table><p>Inserts a specific thought into the mind of a victim. The thought must be no more than one simple sentence. If the victim is awake, he may engage in Mental Conflict. Sleeping victims have no defense. The victim may or may not (GM discretion) be influenced by the suggestion.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Naveh",
+    "circle": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284286859,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!T1RtlVF2m103tGiL"
+}

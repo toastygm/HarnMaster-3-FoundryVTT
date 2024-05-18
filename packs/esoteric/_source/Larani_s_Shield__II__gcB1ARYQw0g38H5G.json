@@ -1,0 +1,37 @@
+{
+  "_id": "gcB1ARYQw0g38H5G",
+  "name": "Larani’s Shield (II)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/larani.png",
+  "effects": [],
+  "folder": "cKpd7e8LEPwE5H2E",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Self/Touch+</td><td><b>Duration:</b> 10 (MS); 30 (CS) rounds</td></tr></table><p>Subject’s shield skill is +20 for Duration. An extra bonus of +10 applies if subject is protecting an unarmed lady within two hexes.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Larani",
+    "circle": 2,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284275736,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!gcB1ARYQw0g38H5G"
+}

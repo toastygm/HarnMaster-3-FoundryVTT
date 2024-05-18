@@ -1,0 +1,37 @@
+{
+  "_id": "73pV74gd9O9iFBej",
+  "name": "Perfection of Sif (I)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/divination.svg",
+  "effects": [],
+  "folder": "3TYjKHsSaszxaXv2",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A self enchantment to increase the effectiveness of Eyesight, Hearing, or Smell. The caster selects one sensory attribute and then casts the spell. MS increases the chosen attribute by 1d6, CS by 2d6.</p><p>The MLs of skills based on the chosen attribute are raised by five times (5x) the attribute increase. If the skil has the attribute in its SB twice, its ML is increased by ten times (10x) the attribute increase. For example, if a +4 enchantment is laid upon Smell, Tracking is increased by 20 and Brewing is increased by 40.</p><p>These sensory benefits exist for Duration. Each time the spell is cast (or maintained) the subject rolls 1d6 for aftereffects. Any attribute changes are permanent (cannot be dispelled).</p><p>1d6     Sensory Attribute Aftereffects</p><p>1–2     Reduce chosen attribute by one (-1)</p><p>3–5     No aftereffects</p><p>6      Increase chosen attribute by one (+1)</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML60+</td><td>Enchantment may be laid upon the mind of a willing recipient. Touch is required.</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Enchantment may be laid on Aura.</td></tr></table><p>&nbsp;</p><p>Time:35-CSI seconds</p><p>Range: Self/Touch at CML60+</p><p>Duration: CSI hours</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Savorya",
+    "level": 1,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284407783,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!73pV74gd9O9iFBej"
+}

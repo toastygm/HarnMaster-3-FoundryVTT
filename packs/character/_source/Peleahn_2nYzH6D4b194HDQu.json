@@ -1,0 +1,46 @@
+{
+  "_id": "2nYzH6D4b194HDQu",
+  "name": "Peleahn",
+  "type": "skill",
+  "img": "systems/hm3/images/icons/svg/fire.svg",
+  "effects": [],
+  "folder": "zQdlAO8iJ9sy3s9l",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "",
+    "source": "HM Magic, Shek-pvar 6",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "type": "Magic",
+    "skillBase": {
+      "value": 0,
+      "formula": "@aur, @aur, @agl, Ulandus:-1, Feneri, Ahnu:2, Angberelius:3, Nadai:2, Hirin, Tai:-1, Skorus:-2, Masara:-3, Lado:-2",
+      "isFormulaValid": true
+    },
+    "masteryLevel": 0,
+    "effectiveMasteryLevel": 0,
+    "ritual": {
+      "piety": 0
+    },
+    "improveFlag": false
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284340747,
+    "modifiedTime": 1689285072117,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!2nYzH6D4b194HDQu"
+}

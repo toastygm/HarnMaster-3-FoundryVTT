@@ -1,0 +1,37 @@
+{
+  "_id": "nP0MeJAEKp1vGFYT",
+  "name": "Idjar’s Mantle (IV)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/sarajin.png",
+  "effects": [],
+  "folder": "gTMPd6VAWFd8nfM2",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 25−RSI seconds+</td><td><b>Ritual:</b> Prayer & Mantle</td></tr><tr><td><b>Range:</b> Touch+</td><td><b>Duration:</b> 10 (MS); 30 (CS) days.</td></tr></table><p>Blesses a mantle, blanket,.or similar item, to keep its wearer immune to any cold temperature for Duration. The mantle will also, if wrapped around any frostbitten limb, thaw it painlessly and without injury in 1d6 hours.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Sarajin",
+    "circle": 4,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284299721,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!nP0MeJAEKp1vGFYT"
+}

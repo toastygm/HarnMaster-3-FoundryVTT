@@ -1,0 +1,19 @@
+{
+  "name": "Sarajin",
+  "type": "Item",
+  "folder": "nX49OcUBOzl8FyrL",
+  "_id": "gTMPd6VAWFd8nfM2",
+  "sorting": "a",
+  "sort": -250000,
+  "flags": {},
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284299679,
+    "modifiedTime": 1689285083780,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "color": null,
+  "_key": "!folders!gTMPd6VAWFd8nfM2"
+}

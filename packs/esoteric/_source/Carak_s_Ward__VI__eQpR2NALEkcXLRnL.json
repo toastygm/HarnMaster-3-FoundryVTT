@@ -1,0 +1,37 @@
+{
+  "_id": "eQpR2NALEkcXLRnL",
+  "name": "Carak’s Ward (VI)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/divination.svg",
+  "effects": [],
+  "folder": "3TYjKHsSaszxaXv2",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A spell to protect a designated secret from discovery by divining spells and psionic talents. Carak’s Ward cannot prevent knowledge being gained by mundane means, nor remove information from someone’s memory. A ward is rated at CSI (MS) or CSI +3 (CS) levels.</p><p>Ward level should be modified according to the number of people who know the secret. This modification is dynamic and may fluctuate. Hence, if a secret is known by three persons a Ward is modified -1. If one of them tells a friend, the Ward is modified -2. If one of the four kills the other three, the Ward is now modified back to +0. The GM is advised to keep track of the Ward level and the number of persons who know the secret (at least in general). Facts known by more than 128 people are not secrets and cannot be warded.</p><p>People Knowing      Ward Level Modifier</p><p>&nbsp;</p><p>1             +0</p><p>2+             -1</p><p>4+             -2</p><p>8+             -3</p><p>16+             -4</p><p>32+             -5</p><p>64+             -6</p><p>128+            n/a</p><p>&nbsp;</p><p>A warded secret cannot be discovered by arcane means (divination) until the Ward is removed. Anyone who knows of a Ward’s existence may attempt to dispell it. The original caster is immediately aware of a dispelled ward.</p><p>&nbsp;</p><h2>Bonus Effects</h2><p>(none)</p><p>&nbsp;</p><p>Time: 15-CSI hours</p><p>Range: n/a</p><p>Duration: Indefinite</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Savorya",
+    "level": 6,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284407783,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!eQpR2NALEkcXLRnL"
+}

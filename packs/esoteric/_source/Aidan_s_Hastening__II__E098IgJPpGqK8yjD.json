@@ -1,0 +1,37 @@
+{
+  "_id": "E098IgJPpGqK8yjD",
+  "name": "Aidan’s Hastening (II)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/fire.svg",
+  "effects": [],
+  "folder": "aqY5F35ewokEjo5C",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A self-enchantment to increase the caster’s Move attribute (see Combat 2 & 6) by 50% (MS) or 100% (CS).</p><p>A skill’s ML is increased by five times the attribute increase when the skill is being used in a manner which requires physical movement. For example, the Jumping skill would eligible for the ML increase for a running jump, but not for a standing jump.</p><p>Example: Scrope has an Agility of 12, so his Move is normally 12. He lays Aidan’s Hastening upon himself with MS, so his Move increases by 50% to 18. Since the increase in his Move is six, the ML of any skill use requiring physi movement is increased by 6 x 5 = 30.</p><p>While enchanted, the caster accrues fatigue (from activities involving physical movement) at twice the normal rate.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML70+</td><td>Enchantment may be laid upon a willing recipient. Touch is required.</td></tr><tr><td style='width: 4em;'>CML90+</td><td>Subject’s fatigue accumulation rate is now normal.</td></tr></table><p>&nbsp;</p><p>Warning: This spell achieves its effect by drastically increasing the caster’s metabolism. Because of this, the r at which the caster bleeds, for example, is increased by the same percentage rate as Move.</p><p>&nbsp;</p><p>Time: 15-CSI seconds</p><p>Range: Self/Touch at CML70+</p><p>Duration: CSI rounds</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Peleahn",
+    "level": 2,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284402933,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!E098IgJPpGqK8yjD"
+}

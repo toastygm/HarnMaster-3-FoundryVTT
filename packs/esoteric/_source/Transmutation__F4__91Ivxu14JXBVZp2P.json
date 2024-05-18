@@ -1,0 +1,46 @@
+{
+  "_id": "91Ivxu14JXBVZp2P",
+  "name": "Transmutation (F4)",
+  "type": "psionic",
+  "img": "systems/hm3/images/icons/svg/psionics.svg",
+  "effects": [],
+  "folder": "tDpiTQntA3rYW1PE",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "15-SI min",
+    "description": "<p>The psionic ability to shapechange. The target form is rarely a choice and is nearly always an animal of roughly the same size as the invoker. The invoker acquires the physical attributes of the target form, but retains own personality attributes. The effect lasts for up to SI hours, but this can be shortened by another transmutation use.</p><p><strong>Psionic Episodes</strong>: Headaches, dizziness, and dreams/ nightmares involving the target form.</p><p><strong>Misfire (CF)</strong>: facial disfigurement, skin discoloration, etc.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "skillBase": {
+      "value": 0,
+      "formula": "@aur,@aur,@wil,Tarael,Tai",
+      "isFormulaValid": true
+    },
+    "masteryLevel": 0,
+    "effectiveMasteryLevel": 0,
+    "improveFlag": false,
+    "fatigue": 4,
+    "ritual": {
+      "piety": 0
+    }
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284256178,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!91Ivxu14JXBVZp2P"
+}

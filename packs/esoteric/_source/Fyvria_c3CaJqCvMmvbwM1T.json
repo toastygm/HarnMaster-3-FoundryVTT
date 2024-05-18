@@ -1,0 +1,19 @@
+{
+  "name": "Fyvria",
+  "type": "Item",
+  "folder": "PR46ib7VZ7pTTkWv",
+  "_id": "c3CaJqCvMmvbwM1T",
+  "sorting": "a",
+  "sort": 100000,
+  "flags": {},
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284358420,
+    "modifiedTime": 1689285083780,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "color": null,
+  "_key": "!folders!c3CaJqCvMmvbwM1T"
+}

@@ -1,0 +1,37 @@
+{
+  "_id": "xmPFYk0ndL0V4Hkc",
+  "name": "Mouth of Lathal (III)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/water.svg",
+  "effects": [],
+  "folder": "gtGO9IFu3Gtp6l3r",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A self-enchantment which enables the caster to breathe water, but not air.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML60+</td><td>Enchantment may be laid upon a willing recipient. Touch is required.</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Subject may breathe both air and water.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI minutes</p><p>Range: Self/Touch at CML60+</p><p>Duration: CSI hours</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Odivishe",
+    "level": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284398122,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!xmPFYk0ndL0V4Hkc"
+}

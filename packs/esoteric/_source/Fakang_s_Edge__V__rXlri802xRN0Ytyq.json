@@ -1,0 +1,37 @@
+{
+  "_id": "rXlri802xRN0Ytyq",
+  "name": "Fakang’s Edge (V)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/sarajin.png",
+  "effects": [],
+  "folder": "gTMPd6VAWFd8nfM2",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI minutes+</td><td><b>Ritual:</b> Prayer/Holy Water.</td></tr><tr><td><b>Range:</b> Touch Axe+</td><td><b>Duration:</b> Indefinite</td></tr></table><p>Improves the Edge impact of any battleaxe by +2. The ritual requires the blade to be heated to a glowing red and then plunged into a vat of ice cold Holy Water.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Sarajin",
+    "circle": 5,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284299721,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!rXlri802xRN0Ytyq"
+}

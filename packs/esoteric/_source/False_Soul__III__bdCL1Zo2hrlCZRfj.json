@@ -1,0 +1,37 @@
+{
+  "_id": "bdCL1Zo2hrlCZRfj",
+  "name": "False Soul (III)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/pentacle.svg",
+  "effects": [],
+  "folder": "g3J9Eik2awfBs91a",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>An enchantment to install an artificial personality (Ego) in a physical object thereby turning it into a major artifact.</p><p>Ego is expressed as a number determined by the success of the False Soul casting. With MS, Ego is equal to CSI. With CS, the caster may set Ego at any value between one and CSI (inclusive). CF generally destroys the object.</p><p>Duration is Permanent if the enchantment is laid when the artifact is first created; otherwise, Duration is Indefin</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML70+</td><td>Caster may install a Morality no more than three points higher/lower than his own.</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Caster may give the artifact a Purpose. See Treasure 15 for effect.</td></tr></table><p>&nbsp;</p><p>Time: 20-CSI hours</p><p>Range: Touch</p><p>Duration: Indefinite/Permanent (see above)</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Neutral",
+    "level": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284390936,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!bdCL1Zo2hrlCZRfj"
+}

@@ -1,0 +1,37 @@
+{
+  "_id": "g17WKR50Kwk501Mt",
+  "name": "Klyss’ Command (III)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/morgath.png",
+  "effects": [],
+  "folder": "4u6Psw2rEtLt9ZMS",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> RML Feet+</td><td><b>Duration:</b> 1 (MS); 3 (CS) hours</td></tr></table><p>Permits the priest to command one Gulmorvrus within Range for Duration.</p><p>CS: The cleric has telepathic control and needs only to think of a command.</p><p>MS: The cleric must use verbal commands to direct the Gulmorvrus.</p><p>CF: Gulmorvrus engages and attacks the nearest person, who might be the invoking cleric.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Morgath",
+    "circle": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284281965,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!g17WKR50Kwk501Mt"
+}

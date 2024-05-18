@@ -1,0 +1,37 @@
+{
+  "_id": "9oeTTQxRBkSVWPJN",
+  "name": "Aron’s Thought (II)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/divination.svg",
+  "effects": [],
+  "folder": "3TYjKHsSaszxaXv2",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>An enchantment which inserts one idea/thought into the mind of a subject touched by the caster. EML is modified according to the caster’s familiarity with the subject as follows:</p><p>Close Friend:          +0</p><p>Acquaintance:           -5</p><p>Stranger:        -10</p><p>The effect of the enchantment depends on the caster’s success and the subject’s Will test to resist. Although it probably impossible to convince someone to kiss a fire dragon, it may well be possible to convince someone that the best way to escape a pack of hungry Vlasta is to stare them down.</p><p>With a successful casting of Aron’s Thought, the subject tests Will x5 (MS) and Will x2 (CS). Results of the test are:</p><p>&nbsp;</p><p>CS: Subject rejects the idea and suspects the attempt at mind persuasion.</p><p>MS: Subject is uncomfortable and rejects the notion as a “dumb idea.”</p><p>MF: Subject accepts the idea, provided it is not obviously stupid or life threatening.</p><p>CF: Subject believes the idea to be completely original and clever.</p><p>&nbsp;</p><p>Special Bonus 1: A caster with Telepathy adds that psionic talent’s SI to EML.</p><p>Special Bonus 2: A subject with Sensitivity may test that talent instead of Will.</p><p>&nbsp;</p><p>Bonus Effect</p><table><tr><td style='width: 4em;'>CML60+</td><td>Touch no longer required.  Range is CSI hexes.</td></tr></table><p>&nbsp;</p><p>Time: 25-CSI seconds</p><p>Range: Touch/CSI hexes at CML 60+</p><p>Duration: Inserting one idea</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Savorya",
+    "level": 2,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284407783,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!9oeTTQxRBkSVWPJN"
+}

@@ -1,0 +1,19 @@
+{
+  "name": "Agrik",
+  "type": "Item",
+  "folder": "nX49OcUBOzl8FyrL",
+  "_id": "jOppWJPOPMwgDYFG",
+  "sorting": "a",
+  "sort": 100000,
+  "flags": {},
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284264800,
+    "modifiedTime": 1689285083780,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "color": null,
+  "_key": "!folders!jOppWJPOPMwgDYFG"
+}

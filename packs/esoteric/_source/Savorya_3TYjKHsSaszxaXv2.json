@@ -1,0 +1,19 @@
+{
+  "name": "Savorya",
+  "type": "Item",
+  "folder": "PR46ib7VZ7pTTkWv",
+  "_id": "3TYjKHsSaszxaXv2",
+  "sorting": "a",
+  "sort": -87500,
+  "flags": {},
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284407742,
+    "modifiedTime": 1689285083780,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "color": null,
+  "_key": "!folders!3TYjKHsSaszxaXv2"
+}

@@ -1,0 +1,37 @@
+{
+  "_id": "3iNnZJElzQq2rxuD",
+  "name": "Tirrala’s Renewal (IV)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/peoni.png",
+  "effects": [],
+  "folder": "vgrw7aVTemgPWZxh",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI minutes+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> Touch+</td><td><b>Duration:</b> Permanent</td></tr></table><p>Cures an old affliction, such as a blind eye, deaf ear, crippled leg, etc. The afflicted area must be present in its entirety and still attached to the subject’s body. If successful the affliction will disappear in RSI days (MS) or immediately (CS).</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Peoni",
+    "circle": 4,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284294673,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!3iNnZJElzQq2rxuD"
+}

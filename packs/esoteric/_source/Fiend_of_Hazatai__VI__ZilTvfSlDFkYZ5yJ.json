@@ -1,0 +1,37 @@
+{
+  "_id": "ZilTvfSlDFkYZ5yJ",
+  "name": "Fiend of Hazatai (VI)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/fire.svg",
+  "effects": [],
+  "folder": "aqY5F35ewokEjo5C",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>An enchantment laid upon a mundane seed fire to transform it into a humanoid creature. The fiend is unintelligent, and only follows directions given by the caster, who must remain within CSI hexes in good line of sight. The fiend is more of a puppet than a creature, and demands full concentration to operate.</p><p>The spell also enchants a designated control-focus, usually the caster’s focus or some other Peleahn elemental object. If the control-focus is dropped, the fiend collapses and the spell is terminated. With the basic enchantment, passing the control-focus is the same as dropping it.</p><p>The fiend’s power depends on the size of the seed fire, which is classified by the GM on a 1–5 scale:</p><p>Seed Size                 STR       END       AGL       Strike</p><p>1    Candle                     04        06        18        95/2f</p><p>2    Torch                      07        12        15        85/4f</p><p>3    Campfire                   10        18        12        75/6f</p><p>4    Large Bonfire              13        24        09        65/8f</p><p>5    Burning Building           16        30        06       55/10f</p><p>Strike is the fiend’s Unarmed Combat ML and mundane Fire Impact when it touches a victim.</p><p>Example: If a size-three fiend is performing a melee attack and obtains MS, and its opponent tries to block with a shield but rolls CF, the result on the Melee Attack Table is A★2. Thus, the fiend inflicts mundane Fire Impact of 2d6+6f upon its opponent.</p><p>The fiend does not fatigue or show wounds. Injuries to the fiend are classified as for mundane creatures: M1, S2, S3, G4, and G5. If the total Injury Levels exceed the fiend’s Endurance, it collapses and the enchantment is broken.</p><p>&nbsp;</p><p>Bonus Effect</p><table><tr><td style='width: 4em;'>CML80+</td><td>Caster may pass the control-focus to another person. The person may have difficulty controlling the fiend (depending on the amount of practice the person has had).</td></tr></table><p>&nbsp;</p><p>Time: 25-CSI seconds</p><p>Range: CSI hexes (fiend) Touch (control-focus)</p><p>Duration: CSI minutes (or until fuel is exhausted)</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Peleahn",
+    "level": 6,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284402933,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!ZilTvfSlDFkYZ5yJ"
+}

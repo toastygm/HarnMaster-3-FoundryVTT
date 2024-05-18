@@ -1,0 +1,37 @@
+{
+  "_id": "OMq7xKBR1z75Q4Yr",
+  "name": "Flash from Kamil (III)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/naveh.png",
+  "effects": [],
+  "folder": "J8M3FXoJSUHr5EYi",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI secs+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> RSI yards+</td><td><b>Duration:</b> One min. special penalty</td></tr></table><p>Creates a sudden, blinding flash, causing anyone within Range to lose sight of the cleric for at least one round. Anyone within Range also suffers a special penalty of −10 on all skills for one minute.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Naveh",
+    "circle": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284286859,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!OMq7xKBR1z75Q4Yr"
+}

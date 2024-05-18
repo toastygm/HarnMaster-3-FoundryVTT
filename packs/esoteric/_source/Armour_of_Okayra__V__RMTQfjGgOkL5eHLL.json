@@ -1,0 +1,37 @@
+{
+  "_id": "RMTQfjGgOkL5eHLL",
+  "name": "Armour of Okayra (V)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/agrik.png",
+  "effects": [],
+  "folder": "jOppWJPOPMwgDYFG",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 25−RSI seconds+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> Self/Touch+</td><td><b>Duration:</b> 10 (MS); 30 (CS) minutes</td></tr></table><p>Enhances ALL armour or clothing worn by the invoker, or that of one subject touched. The effect is +2 to all protection values for Duration.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Agrik",
+    "circle": 5,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284264856,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!RMTQfjGgOkL5eHLL"
+}

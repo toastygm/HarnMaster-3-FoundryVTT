@@ -1,0 +1,46 @@
+{
+  "_id": "PiADjYlhr9PDmjOn",
+  "name": "Hex (F2)",
+  "type": "psionic",
+  "img": "systems/hm3/images/icons/svg/psionics.svg",
+  "effects": [],
+  "folder": "tDpiTQntA3rYW1PE",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>Sometimes called &ldquo;the evil eye.&rdquo; Hex is the ability to &ldquo;curse&rdquo; a victim, causing them to have bad luck. If the invoker has a part of the victim (nail parings, lock of hair, etc.) increase EML by 20. Such items cannot be used more than once.</p><p>At the time the talent is invoked, the maximum distance between the invoker and the intended victim depends on whether the invoker has a part of the victim. If a part is available, the maximum distance is SI leagues. If a part is unavailable, the maximum distance is line of sight.</p><p>With MS, the victim&rsquo;s next attempt to use any skill, talent, spell, is made at half EML. With CS, halve the EML for all the victim&rsquo;s skills rolls for the next ML minutes (MS).</p><p>Psionic Episodes: The character and/or companions have unusual spells of good (or more likely bad) luck.</p><p>Misfire (CF): The invoker suffers the effect.</p>\n\n\n",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "skillBase": {
+      "value": 0,
+      "formula": "@aur,@aur,@wil, Ahnu",
+      "isFormulaValid": true
+    },
+    "masteryLevel": 0,
+    "effectiveMasteryLevel": 0,
+    "improveFlag": false,
+    "fatigue": 2,
+    "ritual": {
+      "piety": 0
+    }
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284256178,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!PiADjYlhr9PDmjOn"
+}

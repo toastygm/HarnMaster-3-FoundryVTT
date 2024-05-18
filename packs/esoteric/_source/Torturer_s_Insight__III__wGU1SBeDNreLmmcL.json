@@ -1,0 +1,37 @@
+{
+  "_id": "wGU1SBeDNreLmmcL",
+  "name": "Torturer’s Insight (III)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/agrik.png",
+  "effects": [],
+  "folder": "jOppWJPOPMwgDYFG",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI Seconds+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> Touch+</td><td><b>Duration:</b> Instantaneous</td></tr></table><p>Provides the invoker with knowledge of any fears or phobias of the victim. Invoker also discovers how to trigger the fear. With CS, the victim is more affected (GM discretion) by his fears.</p><p>&nbsp;</p><p>CF: Invoker phobias (if any) are triggered (GM discretion).</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Agrik",
+    "circle": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284264856,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!wGU1SBeDNreLmmcL"
+}

@@ -1,0 +1,37 @@
+{
+  "_id": "lNnPwY3ULDwDyxk9",
+  "name": "Vine of Alguinas (IV)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/tree.svg",
+  "effects": [],
+  "folder": "c3CaJqCvMmvbwM1T",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>An enchantment which causes rapid, excessive growth in vines touched by the caster. A small plant can grow to a volume of 1,000 cubic feet of tough, tangled vines in the first ten seconds of Duration. The vines rot rapidly after ts   Duration expires, shrinking to one cubic foot of organic compost within one minute.</p><p>&nbsp;</p><h2>Bonus Effects</h2><p>&nbsp;</p><table><tr><td style='width: 4em;'>CML60+</td><td>Touch no longer required.</td></tr></table><p>&nbsp;</p><p>Range is CSI hexes.</p><p>&nbsp;</p><p>Time: 25-CSI seconds</p><p>Range: Touch/CSI hexes at CML60+</p><p>Duration: CSI minutes</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Fyvria",
+    "level": 4,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284358457,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!lNnPwY3ULDwDyxk9"
+}

@@ -1,0 +1,37 @@
+{
+  "_id": "8yEFzaWA7qPO0uKC",
+  "name": "Sacrifice (V)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/morgath.png",
+  "effects": [],
+  "folder": "4u6Psw2rEtLt9ZMS",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Touch corpse+</td><td><b>Duration:</b> 10 (MS); 30 (CS) Mins</td></tr></table><p>Gets the attention of Klyss. The AUR of sacrificed individuals are intercepted by Klyss. The invoker is rewarded with an equivalent number of BPs. Living invokers receive Piety Points.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Morgath",
+    "circle": 5,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284281965,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!8yEFzaWA7qPO0uKC"
+}

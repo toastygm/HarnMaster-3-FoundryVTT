@@ -1,0 +1,19 @@
+{
+  "name": "Neutral",
+  "type": "Item",
+  "folder": "PR46ib7VZ7pTTkWv",
+  "_id": "g3J9Eik2awfBs91a",
+  "sorting": "a",
+  "sort": -50000,
+  "flags": {},
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284390882,
+    "modifiedTime": 1689285083780,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "color": null,
+  "_key": "!folders!g3J9Eik2awfBs91a"
+}

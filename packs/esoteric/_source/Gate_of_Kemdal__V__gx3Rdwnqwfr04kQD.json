@@ -1,0 +1,37 @@
+{
+  "_id": "gx3Rdwnqwfr04kQD",
+  "name": "Gate of Kemdal (V)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/pentacle.svg",
+  "effects": [],
+  "folder": "g3J9Eik2awfBs91a",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A spell which creates a brief interworld portal in the form of a hazy ellipse 3–8 feet tall and 2–5 feet wide. I hovers one foot above the ground, behind the caster, and is visible only from the front side. Anyone/anything small enough may pass through the gate.</p><p>The caster visualizes a specific destination and Gate o Kemdal determines a path there with 13-CSI stops. At each stop, a new casting is made to determine progress with the following results:</p><p>CS: Advance two stops along path.</p><p>MS: Advance one stop along path.</p><p>MF: No progress. Retreat one stop.</p><p>CF: No progress. Add one stop to path.</p><p>The journey seems to take about one minute per stop, but actually takes one day per stop. Fatigue is reduced to zero at each stop.</p><p>The final destination is known by the caster, but the path taken is always variable and obscure. The destination cannot be determined by anyone else except with a critically successful divination.</p><p>Gate of Kemdal avoids crowds. It almost never materializes travellers where their appearance can be witnessed. However, any number of beings could wander by within seconds.</p><p>&nbsp;</p><h2>Bonus Effects</h2><p>(none)</p><p>&nbsp;</p><p>Time: 35-CSI seconds</p><p>Range: n/a</p><p>Duration: CSI rounds</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Neutral",
+    "level": 5,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284390936,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!gx3Rdwnqwfr04kQD"
+}

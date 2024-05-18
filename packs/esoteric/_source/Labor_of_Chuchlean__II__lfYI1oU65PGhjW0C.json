@@ -1,0 +1,37 @@
+{
+  "_id": "lfYI1oU65PGhjW0C",
+  "name": "Labor of Chuchlean (II)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/ilvir.png",
+  "effects": [],
+  "folder": "olFsheWfuwIH41Tk",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI minutes+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Self/Touch+</td><td><b>Duration:</b> 10 (MS); 30 (CS) days</td></tr></table><p>Increases one artistic skill of subject for Duration. The effect is to increase the skill ML +20 (MS) and +50 (CS).</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Ilvir",
+    "circle": 2,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284270245,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!lfYI1oU65PGhjW0C"
+}

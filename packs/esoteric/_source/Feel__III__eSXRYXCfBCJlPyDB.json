@@ -1,0 +1,37 @@
+{
+  "_id": "eSXRYXCfBCJlPyDB",
+  "name": "Feel (III)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/pentacle.svg",
+  "effects": [],
+  "folder": "g3J9Eik2awfBs91a",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A spell to detect the presence of existing enchantments and spells. A successful casting reveals the existence of all active enchantments, spells, and wards. The basic spell will not identify their convocation or complexity.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML70+</td><td>Convocation of all magic is revealed.</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Complexity of all magic is revealed</td></tr><tr><td style='width: 4em;'>CML90+</td><td>Caster receives enough information to write a Spell Tract for one (caster choice) enchantment/spell.  Note: Spell Tracts facilitate research; see Shek-Pvar 13.</td></tr></table><p>&nbsp;</p><p>Time: 25-CSI seconds</p><p>Range: CSI hexes</p><p>Duration: None</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Neutral",
+    "level": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284390936,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!eSXRYXCfBCJlPyDB"
+}

@@ -1,0 +1,37 @@
+{
+  "_id": "deXfyWSsyAMYl1BY",
+  "name": "Water of the Azure Bowl (III)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/siem.png",
+  "effects": [],
+  "folder": "vEue0eMD5ey8uFXc",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Song</td></tr><tr><td><b>Range:</b> Touch+</td><td><b>Duration:</b> Permanent</td></tr></table><p>Purifies up to RSI gallons of water of anything that can cause harm. Water must be in a container.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Siem",
+    "circle": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284313055,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!deXfyWSsyAMYl1BY"
+}

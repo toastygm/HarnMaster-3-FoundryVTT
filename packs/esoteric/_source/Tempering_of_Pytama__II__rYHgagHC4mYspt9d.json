@@ -1,0 +1,37 @@
+{
+  "_id": "rYHgagHC4mYspt9d",
+  "name": "Tempering of Pytama (II)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/anvil.svg",
+  "effects": [],
+  "folder": "dILaYsjczUReYHlC",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>An enchantment to increase the Weapon Quality of a wholly metallic weapon. With success, WQ is increased by one (MS) or two (CS). Tempering of Pytama cannot be combined with any other WQ-increasing spell, and cannot be laid more than once on the same weapon.</p><p>The enchantment is a minor artifact power and “occupies” no Ego. See: Treasure 14.</p><p>The Duration is Permanent if the power is installed when the weapon is forged; otherwise, the Duration is Indefinite.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML70+</td><td>Enchantment may be laid upon a mostly metallic weapon.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI hours</p><p>Range: Touch</p><p>Duration: Indefinite/Permanent (see above)</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Jmorvi",
+    "level": 2,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284381758,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!rYHgagHC4mYspt9d"
+}

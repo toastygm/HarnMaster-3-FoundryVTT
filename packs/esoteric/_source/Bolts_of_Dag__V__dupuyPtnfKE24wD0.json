@@ -1,0 +1,37 @@
+{
+  "_id": "dupuyPtnfKE24wD0",
+  "name": "Bolts of Dag (V)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/fire.svg",
+  "effects": [],
+  "folder": "aqY5F35ewokEjo5C",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A self-enchantment which wreaths the caster’s hand or focus in ethereal flame. The caster is immune, but the flame inflicts ethereal burns on touched victims.</p><p>The enchantment “installs” CSI/2 Capacity Points (CPs). Each time a victim is touched, 1d3 CPs are expended. The enchantment terminates when all CPs are gone, or when Duration expires. A victim suffers a 1d6 ethereal burn to the body part touched for each CP expended (roll 2d6 for a 2CP burn).</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML80+</td><td>Caster may project the 1d3 CPs as High Velocity (50% Dodge) ethereal fireballs, aimed at a single target. Range is CSI hexes. Each fireball inflicts 1d6 Fire impact to a random Strike Location.</td></tr><tr><td style='width: 4em;'>CML90+</td><td>Caster may control the number of CPs expended with each Touch/Fireball.</td></tr></table><p>&nbsp;</p><p>Note: To a mundane creature, an Ethereal Burn is a Shock Roll: if the generated “Fire Impact” exceeds Endurance, victim loses consciousness.</p><p>&nbsp;</p><p>Time: 15-CSI seconds</p><p>Range: Touch/CSI hexes at CML80+</p><p>Duration: CSI minutes</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Peleahn",
+    "level": 5,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284402933,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!dupuyPtnfKE24wD0"
+}

@@ -1,0 +1,37 @@
+{
+  "_id": "KVpwcrvBXGLuzNuF",
+  "name": "Fist of Kuhan (IV)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/anvil.svg",
+  "effects": [],
+  "folder": "dILaYsjczUReYHlC",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A self-enchantment which infuses one of the caster’s hands (or feet) with Jmorvi essence, causing it to have the same impact and toughness as a mace. The impact is determined by the caster’s Strength.</p><p>Weapon Quality is equal to the caster’s Endurance. If the “mace” fails a weapon damage check the enchantment is dispelled.</p><p>The caster’s Unarmed Combat ML is used to fight with the “mace.” The hand/foot “stiffens” only as it or blocks; the rest of the time it behaves like an ordinary hand/foot. The skin of the hand/foot affected assumes a slight blue-black color while the enchantment is in place.</p><p>Note: The martial arts system taught by the Jmorvi makes extensive use of this enchantment. Jmorvi often don leather gloves in a combat situation to disguise the enchantment.</p><p>Strength         Impact</p><p>01–07           5 Blunt</p><p>08–13           6 Blunt</p><p>14+            8 Blunt</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML70+</td><td>Effect may be extended to both hands, or both feet, or one hand and one foot.</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Enchantment may be laid upon a willing recipient. Touch is required.</td></tr><tr><td style='width: 4em;'>CML90+</td><td>Subject may, by using fingers, achieve Point impact (equal to Blunt Impact).</td></tr></table><p>&nbsp;</p><p>Time: 25-CSI seconds</p><p>Range: Self/Touch at CML 80+</p><p>Duration: CSI rounds</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Jmorvi",
+    "level": 4,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284381758,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!KVpwcrvBXGLuzNuF"
+}

@@ -1,0 +1,37 @@
+{
+  "_id": "0mHYmeL5RefF35lz",
+  "name": "Forge of Obras (IV)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/anvil.svg",
+  "effects": [],
+  "folder": "dILaYsjczUReYHlC",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>An enchantment to change up to CSI pounds of a source metal into a less dense target metal. This is a long, laborious process. A metalsmith’s forge and tools are required to work the metal throughout the casting time.</p><p>The target metal must have a lower specific gravity than the source metal, and the difference cannot exceed two points. Hence, it is possible to change Steel (7.8) to Tin (7.3), but not Quicksilver (13.6) to Lead (11.3).</p><p>Purity of the source and target metals remain constant. If a seed sample of the target metal is unavailable, reduce EML by 30.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML50+</td><td>Enchantment may be set to dispell at a particular time.</td></tr><tr><td style='width: 4em;'>CML60+</td><td>Enchantment may be used to halve (MS) or eliminate (CS) impurities from a sample (this results in shrinkage).</td></tr><tr><td style='width: 4em;'>CML90+</td><td>The target metal can be denser (up to one point) than the source metal.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI hours</p><p>Range: Touch</p><p>Duration: Indefinite</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Jmorvi",
+    "level": 4,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284381758,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!0mHYmeL5RefF35lz"
+}

@@ -1,0 +1,46 @@
+{
+  "_id": "3Kmkzfg8Lz9xPjHI",
+  "name": "Clairvoyance (F1)",
+  "type": "psionic",
+  "img": "systems/hm3/images/icons/svg/psionics.svg",
+  "effects": [],
+  "folder": "tDpiTQntA3rYW1PE",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>The ability to visualize events currently occurring at a remote location. A target may sense the attention of a clairvoyant; test a multiple of the target&rsquo;s aura, or sensitivity&nbsp;talent if applicable. clairvoyance&nbsp;may be used in either of two ways:</p><p>&nbsp;</p>\n<p>[1] Near: The clairvoyant enters a trance for 25&ndash;SI seconds to transfer their point of perception to a location up to ML yards away. The location must be familiar to the clairvoyant. MS enables the clairvoyant to watch; CS allows the clairvoyant to also listen and smell. The vision lasts for SI minutes.</p><p>[2] Far: The clairvoyant enters a trance for 25-S1 minutes and attempts to focus on a specific, remote person or object whose location may not be known. The clairvoyant does this by visualizing the person&rsquo;s face (or by describing the object).</p><p>MS gains a blurred or vague vision of the person/ object&rsquo;s current situation and activities; CS gives a clearer vision. There are no range restrictions, but there is also no chance to listen or smell.</p><p>Psionic Episodes: Vivid dreams of faraway people and things. Dizziness, disorientation, confusion, headaches, sleepwalking, blurred vision, or mirage- like hallucinations can also occur.</p><p>Misfire (CF): False or random information is given to the clairvoyant. Sometimes, severe headaches that cause temporary blindness occurs.</p><p>&nbsp;</p>\n\n\n\n&nbsp;\n\n\n",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "skillBase": {
+      "value": 0,
+      "formula": "@aur,@aur,@wil, tai:1",
+      "isFormulaValid": true
+    },
+    "masteryLevel": 0,
+    "effectiveMasteryLevel": 0,
+    "improveFlag": false,
+    "fatigue": 1,
+    "ritual": {
+      "piety": 0
+    }
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284256178,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!3Kmkzfg8Lz9xPjHI"
+}

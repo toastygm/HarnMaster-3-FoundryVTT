@@ -1,0 +1,37 @@
+{
+  "_id": "5L4WQXVprN06WuUM",
+  "name": "Well of Anasiron (III)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/pentacle.svg",
+  "effects": [],
+  "folder": "g3J9Eik2awfBs91a",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A defensive spell to counter a spell being cast by another mage. Well of Anasiron works by disrupting the opponent’s spell form enough to reduce effects or perhaps cause casting failure The caster must be familiar with the target spell, and be within CSI hexes of the opposing mage.</p><p>If the target spell completes first (see Shek-Pvar 10) Well can have no effect, although it may still misfire. If Well is completed before the target spell, the success levels of both spells are compared:</p><p>* If the target spell is more successful, it is unaffected.</p><p>* If the target spell is less successful, its success level is reduced by one: MS=MF; MF=CF with a modest misfire; and CF remains CF with a nasty misfire.</p><p>* If the target spell and Well are cast with equal success, the effects of the target spell are halved.</p><p>Well of Anasiron cannot be used to counter spells that have already been cast. It can, however, be Stored and summoned faster than normal.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML60+</td><td>May be attempted against unidentified spells with an EML penalty of 20.</td></tr><tr><td style='width: 4em;'>CML90+</td><td>May be attempted against unidentified spells without an EML penalty.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI seconds</p><p>Range: CSI hexes</p><p>Duration: n/a</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Neutral",
+    "level": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284390936,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!5L4WQXVprN06WuUM"
+}

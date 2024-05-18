@@ -1,0 +1,37 @@
+{
+  "_id": "nge3VXuN3t50tC3Y",
+  "name": "Maintain (I)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/pentacle.svg",
+  "effects": [],
+  "folder": "g3J9Eik2awfBs91a",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A spell to extend the life of a target spell by its orig Duration. Only the caster’s own spells can be extended and Maintain must be cast before the target spell expires. The source/center of the target spell must be within CSI hexes of the caster.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML80+</td><td>Another mage’s spell may be maintained, provided the caster is aware of its nature and knows a reasonably similar spell.</td></tr></table><p>&nbsp;</p><p>Time: 25-CSI seconds</p><p>Range: CSI hexes</p><p>Duration: As per Target Spell.</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Neutral",
+    "level": 1,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284390936,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!nge3VXuN3t50tC3Y"
+}

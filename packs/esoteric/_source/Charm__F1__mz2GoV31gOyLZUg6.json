@@ -1,0 +1,46 @@
+{
+  "_id": "mz2GoV31gOyLZUg6",
+  "name": "Charm (F1)",
+  "type": "psionic",
+  "img": "systems/hm3/images/icons/svg/psionics.svg",
+  "effects": [],
+  "folder": "tDpiTQntA3rYW1PE",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A psionic talent to influence the mind of another person (victim). The usual effect is to &ldquo;freeze&rdquo; the victim in place for a limited period of time.</p><p>In order to invoke the talent successfully, eye contact between the invoker and the victim is necessary, but only for a momentary glance. The maximum distance at which effective eye contact can occur is equal to the invoker&rsquo;s&nbsp;SI&nbsp;yards. Determine Charm&nbsp;success, and then test victim&rsquo;s resistance to the effect.</p><p>Charm Attempt<br />MS:&nbsp;Victim tests&nbsp;will&times;5</p><p>CS:&nbsp;Victim tests&nbsp;will&times;3</p><p>Victim Resistance (<strong>WILL&nbsp;</strong>Test)<br />CF:&nbsp;Victim is frozen in place for 10 seconds, and&nbsp;must&nbsp;choose the ignore&nbsp;defense if attacked.&nbsp;</p><p>MF:&nbsp;Victim is frozen in place for 10 seconds, but&nbsp;&nbsp;may defend normally if attacked.</p><p>MS:&nbsp;Victim is unaffected.</p><p>CS:&nbsp;Victim is unaffected.&nbsp;CHarm&nbsp;invoker suffers a psionic episode.</p><p>Psionic Episodes:&nbsp;Brief hallucinations or illusions, headaches in nearby persons, sudden dizziness, people having bad luck or unusual clumsiness in the invoker&rsquo;s presence.</p><p>Misfire (CF):&nbsp;The invoker, or random person/animal nearby, suffers the talent&rsquo;s effect. Sometimes the invoker gets a severe headache instead.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "skillBase": {
+      "value": 0,
+      "formula": "@aur, @aur, @wil, Tai:1,Nadai:1,Tarael:1",
+      "isFormulaValid": true
+    },
+    "masteryLevel": 0,
+    "effectiveMasteryLevel": 0,
+    "improveFlag": false,
+    "fatigue": 1,
+    "ritual": {
+      "piety": 0
+    }
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284256178,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!mz2GoV31gOyLZUg6"
+}

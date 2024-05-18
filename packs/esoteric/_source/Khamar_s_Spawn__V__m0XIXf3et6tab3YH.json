@@ -1,0 +1,37 @@
+{
+  "_id": "m0XIXf3et6tab3YH",
+  "name": "Khamar’s Spawn (V)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/agrik.png",
+  "effects": [],
+  "folder": "jOppWJPOPMwgDYFG",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 45−RSI seconds+</td><td><b>Ritual:</b> Prayer/drop of blood.</td></tr><tr><td><b>Range:</b> Invoker blood+</td><td><b>Duration:</b> one minute</td></tr></table><p>One drop of fresh blood drawn from the invoker transforms into a Fire Elemental. Unless the invoker rolled a CS, he must engage in a Mental Conflict (Skills 23) to control the elemental.  A win or a tie allows control of the elemental for Duration; otherwise it controls the cleric (or departs) at GM discretion.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Agrik",
+    "circle": 5,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284264856,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!m0XIXf3et6tab3YH"
+}

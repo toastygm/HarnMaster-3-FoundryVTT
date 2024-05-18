@@ -1,0 +1,37 @@
+{
+  "_id": "2Llgf62kb9usXJVh",
+  "name": "Fiend of Alsai-Dom (VI)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/water.svg",
+  "effects": [],
+  "folder": "gtGO9IFu3Gtp6l3r",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A spell which creates an elemental fiend in a body of water within CSI hexes. The size of the fiend is CML cubic feet (or the volume of the water, whichever is less). Each fiend is unique and its capabilities are left to GM discretion.  Usually the spell summons a water elemental from the Odivshe elemental plane.</p><p>The fiend is semi-intelligent (INT: 1d4, AUR: 3d4, WIL: 3d6) and capable of following simple orders. It is controllable by the caster with a CS casting or by winning or tying a Mental Conflict. If uncontrolled, it will act at GM discretion, either departing (50% chance) or indulging in wanton destruction. Control demands concentration on the part of the caster.</p><p>The fiend is able to leave its parent body of water and move slowly (MOV: 1d6). It can smash against solid objects with a blunt impact of 1d6 per CSI (CSI 7 = 7d6). If the fiend strikes a living entity, this impact is allocated to 1d6 randomly generated body parts. Armour/clothing reduce Impact.</p><p>After Duration, the fiend loses cohesion over a few minutes, becomes ethereal, and flows away.</p><p>&nbsp;</p><h2>Bonus Effects</h2><p>(none)</p><p>&nbsp;</p><p>Time: 15-CSI rounds</p><p>Range: CSI hexes</p><p>Duration: CSI minutes</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Odivishe",
+    "level": 6,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284398122,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!2Llgf62kb9usXJVh"
+}

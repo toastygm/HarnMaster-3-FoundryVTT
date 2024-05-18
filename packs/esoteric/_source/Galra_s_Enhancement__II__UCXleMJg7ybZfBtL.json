@@ -1,0 +1,37 @@
+{
+  "_id": "UCXleMJg7ybZfBtL",
+  "name": "Galra’s Enhancement (II)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/divination.svg",
+  "effects": [],
+  "folder": "3TYjKHsSaszxaXv2",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A self-enchantment laid upon the mind to increase (for Duration) the EML of a designated psionic talent by 25% (MS) or 50% (CS). The basic enchantment cannot be used to stimulate a dormant psionic talent.</p><p>Although most psionic talents are Savoryan in nature, three require a convocation modifier to EML:</p><p>&nbsp;</p><p>Psonic Talent                  Convocation           EML</p><p>Disembodiment                     Lyahvi             -10</p><p>Healing                           Fyvria             -20</p><p>Pyrokinesis                      Peleahn             -20</p><p>&nbsp;</p><h2>Bonus Effects</h2><p>&nbsp;</p><table><tr><td style='width: 4em;'>CML50+</td><td>Enchantment may be laid upon the mind of a willing recipient. Touch is required.</td></tr><tr><td style='width: 4em;'>CML70+</td><td>Enchantment reveals any dormant psionic talent(s). This enables the caster/subject to subsequently use and develop the talent.</td></tr><tr><td style='width: 4em;'>CML90+</td><td>Enchantment may be used to permanently stimulate a designated psionic talent. The effect is to give bonus Skill Development Rolls:</td></tr></table><p>MS = 1 bonus roll</p><p>CS = 3 bonus rolls</p><p>Each bonus roll inflicts one (1) fatigue level on the benefactor, regardless of success or failure.</p><p>&nbsp;</p><p>Time: 15-CSI minutes</p><p>Range: Self/Touch at CML50+</p><p>Duration: CSI minutes</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Savorya",
+    "level": 2,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284407783,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!UCXleMJg7ybZfBtL"
+}

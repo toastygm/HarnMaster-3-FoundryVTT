@@ -1,0 +1,37 @@
+{
+  "_id": "GumV01tT7FEmh7J3",
+  "name": "Tharasin’s Ward (V)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/anvil.svg",
+  "effects": [],
+  "folder": "dILaYsjczUReYHlC",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>An enchantment to increase the protective value of wholly metallic armour by adding Enchantment Levels, each of which reduces the impact of any strike by one.  Enchantment Levels on armour must be carefully noted.  Tharasin’s Ward cannot be combined with another enchantment, and each separate piece of armour requires another casting.</p><p>The number of Enchantment Levels added to the armour depends on the CSI of the caster and success level achieved.  With MF, no enchantment is gained. With CF, the armour is destroyed.</p><p>The Duration is Permanent if the enchantment is laid when the armour is forged; otherwise, it is Indefinite.</p><p>CSI MS         CS</p><p>0–5      +1    +1</p><p>6–8      +1    +2</p><p>9       +2    +3</p><p>10      +2    +4</p><p>11      +3    +5</p><p>12      +3    +6</p><p>&nbsp;</p><p>Bonus Effect</p><table><tr><td style='width: 4em;'>CML70+</td><td>Enchantment may be laid upon mostly metallic armour.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI hours</p><p>Range: Touch</p><p>Duration: Indefinite/Permanent (see above)</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Jmorvi",
+    "level": 5,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284381758,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!GumV01tT7FEmh7J3"
+}

@@ -1,0 +1,69 @@
+{
+  "_id": "7VYcH7DZFpNpkmaR",
+  "name": "Javelin (thrown)",
+  "type": "missilegear",
+  "img": "systems/hm3/images/icons/svg/spear.svg",
+  "effects": [],
+  "folder": "duLWIXl94Pr8bL5B",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "",
+    "source": "HM3 Combat 16",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 1,
+    "value": 36,
+    "weight": 3,
+    "isCarried": true,
+    "isEquipped": true,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    },
+    "assocSkill": "Spear",
+    "weaponQuality": 10,
+    "attackMasteryLevel": 0,
+    "weaponAspect": "Piercing",
+    "attackModifier": 0,
+    "range": {
+      "short": 40,
+      "medium": 80,
+      "long": 160,
+      "extreme": 320,
+      "extreme64": 0,
+      "extreme128": 0,
+      "extreme256": 0
+    },
+    "impact": {
+      "short": 7,
+      "medium": 6,
+      "long": 5,
+      "extreme": 4,
+      "extreme64": 0,
+      "extreme128": 0,
+      "extreme256": 0
+    }
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284251300,
+    "modifiedTime": 1689285101425,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!7VYcH7DZFpNpkmaR"
+}

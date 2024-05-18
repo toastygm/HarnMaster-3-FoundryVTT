@@ -1,0 +1,37 @@
+{
+  "_id": "ALXkCANf9hTA8tDA",
+  "name": "Store (IV)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/pentacle.svg",
+  "effects": [],
+  "folder": "g3J9Eik2awfBs91a",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>An enchantment to install a known spell in a major artifact. Store cannot install a spell in a minor artifact. A stored spells have a casting time less than one second and “fire” instantly on the caster’s normal turn.</p><p>Store must first be successfully cast, followed by a successful casting of the spell to be stored. The stored spell occupies one (1) point of Ego/Will per complexity level. That is, a stored VII spell occupies seven points of Ego/Will. Up to CSI spells may be stored in the same artifact, subject to the limits of Ego/Will and spell complexity. Each installation requires a separate casting of Store.</p><p>At the time of storing, the caster designates a key word or phrase to invoke the stored spell. Thereafter, the spell can be invoked by anyone speaking the command word/phrase. To cast a stored spell, the invoker must win or tie a Mental Conflict. See Skills 23/24. The time required for this Mental Conflict is negligible.</p><p>An invoked spell is no longer stored. A stored spell dissipates harmlessly when Duration expires.</p><p>&nbsp;</p><h2>Bonus Effects</h2><p>(none)</p><p>&nbsp;</p><p>Time: 15-CSI minutes</p><p>Range: Touch (to store)</p><p>Duration: CSI days</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Neutral",
+    "level": 4,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284390936,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!ALXkCANf9hTA8tDA"
+}

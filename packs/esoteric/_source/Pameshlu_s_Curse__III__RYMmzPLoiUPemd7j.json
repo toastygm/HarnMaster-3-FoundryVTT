@@ -1,0 +1,37 @@
+{
+  "_id": "RYMmzPLoiUPemd7j",
+  "name": "Pameshlu’s Curse (III)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/agrik.png",
+  "effects": [],
+  "folder": "jOppWJPOPMwgDYFG",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI Seconds+</td><td><b>Ritual:</b> Spoken Curse</td></tr><tr><td><b>Range:</b> RML feet+</td><td><b>Duration:</b> RSI/2 rounds (MS); RSI rounds (CS)</td></tr></table><p>One chosen subject suffers a −10 (MS) or −30 (CS) to combat skills for Duration.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Agrik",
+    "circle": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284264856,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!RYMmzPLoiUPemd7j"
+}

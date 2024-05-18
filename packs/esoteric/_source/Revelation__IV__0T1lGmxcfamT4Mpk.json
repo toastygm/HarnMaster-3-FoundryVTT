@@ -1,0 +1,37 @@
+{
+  "_id": "0T1lGmxcfamT4Mpk",
+  "name": "Revelation (IV)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/sarajin.png",
+  "effects": [],
+  "folder": "gTMPd6VAWFd8nfM2",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Prayer/Meditation</td></tr><tr><td><b>Range:</b> RML yards+</td><td><b>Duration:</b> RSI minutes</td></tr></table><p>Allows the cleric (only) to perceive all ethereal phenomena within Range as faint, colored lights for Duration. The Summoning invocation may be used on a revealed ethereal with a bonus of +10.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Sarajin",
+    "circle": 4,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284299721,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!0T1lGmxcfamT4Mpk"
+}

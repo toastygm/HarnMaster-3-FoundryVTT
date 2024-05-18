@@ -1,0 +1,37 @@
+{
+  "_id": "6RkElpPJcMzNreqE",
+  "name": "Ordeal of Frida (III)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/divination.svg",
+  "effects": [],
+  "folder": "3TYjKHsSaszxaXv2",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>An enchantment which stimulates a phobia, mania, or any psyche complex in a subject who must be touched sometime during the casting.</p><p>With success, the subject’s most acute psyche attribute (if any) may be stimulated. This depends on the success of the caster, and the subject’s Will:</p><p>Caster Success           Subject Will Test</p><p>MS              Will x5</p><p>CS              Will x2</p><p>&nbsp;</p><p>If the subject rolls MF on the Will test, the effect is to increase (for Duration) the severity of an existing disorder by one level, such as from Dormant to Mild, or</p><p>Mild to Moderate. A victim with Moderate cynophobia, for example, may now see wild dogs where only cute puppies</p><p>exist.</p><p>Any Will test resulting in CF also gives the subject a permanent, dormant, randomly-generated psyche attribute using the Mental Disorder table (Character 11). Any misfire on Ordeal may give the caster a Mental Disorder.</p><p>The enchantment does not identify or confirm a subject’s Psyche attribute. Only the victim is aware of the stimulation.</p><p>Special Bonus: A caster with Telepathy adds that psionic talent’s SI to EML.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML50+</td><td>Touch no longer required.  Range is CSI hexes.</td></tr><tr><td style='width: 4em;'>CML70+</td><td>Spell may be broadcast to include everyone within CSI hexes of the caster.  The caster is immune to the effect.</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Caster may exclude (by touch) up to CSI individuals from the effect.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI minutes</p><p>Range: Touch/CSI hexes at CML 50+.</p><p>Duration: CSI minutes</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Savorya",
+    "level": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284407783,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!6RkElpPJcMzNreqE"
+}

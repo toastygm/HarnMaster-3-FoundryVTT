@@ -1,0 +1,37 @@
+{
+  "_id": "KFekl1mZWAs43hKy",
+  "name": "Nature’s Aid (III)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/siem.png",
+  "effects": [],
+  "folder": "vEue0eMD5ey8uFXc",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> RSI miles+</td><td><b>Duration:</b> 1 (MS); 3 (CS) hours</td></tr></table><p>Calls an friendly animal within Range. The animal may resist with a WIL ×3 check, unless its True Name is used in the invocation. The animal might not (GM Discretion) approach a cleric in a group. If not threatened, the animal will come close enough to touch.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Siem",
+    "circle": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284313055,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!KFekl1mZWAs43hKy"
+}

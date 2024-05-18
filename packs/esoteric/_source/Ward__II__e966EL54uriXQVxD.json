@@ -1,0 +1,37 @@
+{
+  "_id": "e966EL54uriXQVxD",
+  "name": "Ward (II)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/pentacle.svg",
+  "effects": [],
+  "folder": "g3J9Eik2awfBs91a",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>Wards protect objects from enchantment, or enchantments from magical interference. The ward must be specific to a chosen convocation to which the caster must be attuned.</p><p>If installed as a major power, a Ward occupies one (1) point of Ego/Will. If installed as a minor power, it cannot be combined with any other enchantment. Wards never have Permanent Duration; most are Indefinite, but the caster may designate a lesser Duration.</p><p>The value of a ward depends on casting success and the CSI of the chosen convocation:</p><p>MS = CSI/2           CS = CSI</p><p>Example: a mage with Neutral CML 50 has a Ward EML of 50-10=40. The 10 point penalty is for the complexity level of Ward. The mage wishes to create a Jmorvi ward.  With MS, and a Jmorvi CSI 6, a Jmorvi Ward 3 is created.</p><p>A ward is fully effective while in place and must be dispelled to be removed.</p><p>&nbsp;</p><h2>Bonus Effects</h2><p>(none)</p><p>&nbsp;</p><p>Time: 15-CSI minutes</p><p>Range: Touch</p><p>Duration: Indefinite (or less–caster choice)</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Neutral",
+    "level": 2,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284390936,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!e966EL54uriXQVxD"
+}

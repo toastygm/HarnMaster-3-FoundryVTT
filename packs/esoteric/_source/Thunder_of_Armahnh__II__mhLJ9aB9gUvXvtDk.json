@@ -1,0 +1,37 @@
+{
+  "_id": "mhLJ9aB9gUvXvtDk",
+  "name": "Thunder of Armahnh (II)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/agrik.png",
+  "effects": [],
+  "folder": "jOppWJPOPMwgDYFG",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI Seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Touch Whip+</td><td><b>Duration:</b> One strike</td></tr></table><p>Causes a whip to take on the attributes of Armahnh. Any strike result with the whip attack causes a deafening thunderclap which earns the invoker a tactical advantage and causes horses to bolt unless controlled by a Riding skill check at −30.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Agrik",
+    "circle": 2,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284264856,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!mhLJ9aB9gUvXvtDk"
+}

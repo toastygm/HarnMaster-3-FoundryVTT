@@ -1,0 +1,19 @@
+{
+  "name": "Larani",
+  "type": "Item",
+  "folder": "nX49OcUBOzl8FyrL",
+  "_id": "cKpd7e8LEPwE5H2E",
+  "sorting": "a",
+  "sort": -100000,
+  "flags": {},
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284275692,
+    "modifiedTime": 1689285083780,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "color": null,
+  "_key": "!folders!cKpd7e8LEPwE5H2E"
+}

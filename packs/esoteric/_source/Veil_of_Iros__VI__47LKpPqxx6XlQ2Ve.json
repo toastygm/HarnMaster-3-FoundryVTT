@@ -1,0 +1,37 @@
+{
+  "_id": "47LKpPqxx6XlQ2Ve",
+  "name": "Veil of Iros (VI)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/divination.svg",
+  "effects": [],
+  "folder": "3TYjKHsSaszxaXv2",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A self-enchantment which causes observers to perceive the caster as a benign entity or thing of the normal environment. Veil of Iros is sometimes referred to as an invisibility spell, but acts on the mind of observers not on their eyes. The success of the enchantment determines the chance of each observer perceiving the truth. If one observer gives the alarm, all others retest wit a +10 bonus to see if they now perceive the veiled caster.</p><p>Any action by the veiled caster that would be considered hostile or inappropriate causes the nearest observer to re-test. Other observers retest if the alarm is given.</p><p>&nbsp;</p><p>Casting     Observer Test</p><p>MS        Aura x2 or Sensitivity ML</p><p>CS        Aura x1 or Sensitivity ML ÷ 2</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML50+</td><td>Enchantment may be laid upon a willing subject. Touch is required.</td></tr><tr><td style='width: 4em;'>CML70+</td><td>Subject may, within reason, interact with observers. A guard might, for example, perceive the veiled subject as an ordinary person, such as a serf or a fellow guard. With a CS casting, the subject may be perceived as a superior officer.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI rounds</p><p>Range: Touch</p><p>Duration: CSI minutes</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Savorya",
+    "level": 6,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284407783,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!47LKpPqxx6XlQ2Ve"
+}

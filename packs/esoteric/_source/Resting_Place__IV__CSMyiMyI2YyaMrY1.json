@@ -1,0 +1,37 @@
+{
+  "_id": "CSMyiMyI2YyaMrY1",
+  "name": "Resting Place (IV)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/morgath.png",
+  "effects": [],
+  "folder": "4u6Psw2rEtLt9ZMS",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI minutes+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> Touch area+</td><td><b>Duration:</b> Indefinite</td></tr></table><p>Consecrates a new Resting Place for a morvrus. This requires a special expenditure of Piety (or Bukrai Points) equal to the cubic feet of the Resting Place. CF causes the invoker to enter a mindless trance for 1d6 hours.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Morgath",
+    "circle": 4,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284281965,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!CSMyiMyI2YyaMrY1"
+}

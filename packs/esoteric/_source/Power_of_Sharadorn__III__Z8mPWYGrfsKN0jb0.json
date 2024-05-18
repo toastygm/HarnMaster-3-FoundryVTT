@@ -1,0 +1,37 @@
+{
+  "_id": "Z8mPWYGrfsKN0jb0",
+  "name": "Power of Sharadorn (III)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/tree.svg",
+  "effects": [],
+  "folder": "c3CaJqCvMmvbwM1T",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A self-enchantment to temporarily increase one of the caster's physical attributes (Strength, Stamina, etc.) by one (MS) or three (CS). The enchantment cannot be combined with another attribute-enhancing spell (even itself).</p><p>The MLs of skills based on the chosen attribute are raised by five times the attribute increase. If the skill has the attribute in its SB twice, its ML is increased by ten times the attribute increase. For example, if a one-point enchantment is laid upon Agility, Climbing is increased by 5 and Acrobatics is increased by 10.</p><p>With CF, the subject rolls 1d10 for aftereffects which are treated as a Fyvrian/III enchantment for the purpose of dispelling, etc.</p><p>&nbsp;</p><p>1d10      Critical Failure Aftereffects</p><p>1-2      Reduce chosen attribute by 1 Indefinitely.</p><p>3-7      Reduce chosen attribute by 1 for one day.</p><p>8-10      Reduce chosen attribute by 1 for one hour.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML50+</td><td>Enchantment may be laid upon a willing recipient. Touch is required.</td></tr><tr><td style='width: 4em;'>CML60+</td><td>Touch no longer required.</td></tr></table><p>&nbsp;</p><p>Range is CSI hexes.</p><p>&nbsp;</p><p>Time: 25-CSI seconds</p><p>Range: Touch/CSI hexes at CML60+</p><p>Duration: CSI minutes</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Fyvria",
+    "level": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284358457,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!Z8mPWYGrfsKN0jb0"
+}

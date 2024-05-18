@@ -1,0 +1,37 @@
+{
+  "_id": "ljxMNzmAdWCc8DnI",
+  "name": "Aspect of Tarus (II)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/anvil.svg",
+  "effects": [],
+  "folder": "dILaYsjczUReYHlC",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>An enchantment which transforms the surface of a wholly metallic object into another metal. The enchantment is fragile, and, because it only places an extremely thin veneer, “transformed” objects will not pass more than a cursory inspection. Scratching the object, even with a fingernail, removes some of the plating. With CS, adhesion is better, and the observer has to scratch with an object harder than the plating metal to reveal the solid metal underneath.</p><p>With the basic enchantment, the transformation can only be to a lower-density metal (e.g., from lead to copper).</p><p>Aspect of Tarus cannot be combined with any other enchantment.</p><p>The maximum weight of the object is CSI lbs. The caster must have a minimum one-ounce seed of the plating metal, but the seed is unaffected by the enchantment.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML80+</td><td>Transformation may be from any metal to any other metal, meaning lead can be plated to look like gold.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI rounds</p><p>Range: Touch</p><p>Duration: CSI hours</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Jmorvi",
+    "level": 2,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284381758,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!ljxMNzmAdWCc8DnI"
+}

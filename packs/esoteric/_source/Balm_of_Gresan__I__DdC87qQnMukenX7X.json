@@ -1,0 +1,37 @@
+{
+  "_id": "DdC87qQnMukenX7X",
+  "name": "Balm of Gresan (I)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/tree.svg",
+  "effects": [],
+  "folder": "c3CaJqCvMmvbwM1T",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>Allows a person or animal touched by the caster to heal faster. Balm of Gresan may be used only once per injury/ailment. The effect is to immediately provide one Healing roll.</p><p>The basic spell cannot restore blood loss, and will not work on infected wounds. The spell does not remove fatigue.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML60+</td><td>Balm now works on infected wounds.</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Caster may restore one blood loss point.</td></tr><tr><td style='width: 4em;'>CML90+</td><td>Touch no longer required.</td></tr></table><p>&nbsp;</p><p>Range is CSI hexes.</p><p>&nbsp;</p><p>Time: 25-CSI seconds</p><p>Range: Touch/CSI hexes at CML90+</p><p>Duration: One Healing Roll</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Fyvria",
+    "level": 1,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284358457,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!DdC87qQnMukenX7X"
+}
