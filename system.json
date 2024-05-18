@@ -48,7 +48,7 @@
       "type": "Item",
       "name": "character",
       "system": "hm3",
-      "path": "packs/character.db",
+      "path": "packs/character",
       "private": false
     },
     {
@@ -56,7 +56,7 @@
       "type": "Item",
       "name": "possessions",
       "system": "hm3",
-      "path": "packs/possessions.db",
+      "path": "packs/possessions",
       "private": false
     },
     {
@@ -64,13 +64,13 @@
       "type": "Item",
       "name": "esoteric",
       "system": "hm3",
-      "path": "packs/esoteric.db",
+      "path": "packs/esoteric",
       "private": false
     },
     {
       "label": "System Help",
       "name": "system-help",
-      "path": "packs/system-help.db",
+      "path": "packs/system-help",
       "system": "hm3",
       "type": "JournalEntry",
       "private": false
@@ -79,7 +79,9 @@
   "socket": true,
   "manifest": "https://github.com/toastygm/HarnMaster-3-FoundryVTT/releases/latest/download/system.json",
   "download": "https://github.com/toastygm/HarnMaster-3-FoundryVTT/releases/download/v1.5.2/system.zip",
-  "gridDistance": 5,
-  "gridUnits": "ft",
+  "grid": {
+    "distance": 5,
+    "units": "ft"
+  },
   "primaryTokenAttribute": "shockIndex"
 }
