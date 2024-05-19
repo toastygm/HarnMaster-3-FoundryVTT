@@ -301,7 +301,7 @@ export const migrateActorData = function (actor) {
 function cleanActorData(actorData) {
 
   // Scrub system data
-  const model = game.system.model.Actor[actorData.type];
+  const model = game.model.Actor[actorData.type];
   actorData.data = filterObject(actorData.data, model);
 
   // Scrub system flags
@@ -463,12 +463,12 @@ export const migrateItemData = function (item) {
         const updates = new Map(update[embeddedName].map(u => [u._id, u]));
         t.actorData[embeddedName].forEach(original => {
           const update = updates.get(original._id);
-          if (update) mergeObject(original, update);
+          if (update) foundry.utils.mergeObject(original, update);
         });
         delete update[embeddedName];
       });
 
-      mergeObject(t.actorData, update);
+      foundry.utils.mergeObject(t.actorData, update);
     }
     return t;
   });
@@ -484,7 +484,7 @@ export const migrateItemData = function (item) {
  * @private
  */
 //   function _migrateActorBonuses(actor, updateData) {
-//     const b = game.system.model.Actor.character.bonuses;
+//     const b = game.model.Actor.character.bonuses;
 //     for ( let k of Object.keys(actor.data.bonuses || {}) ) {
 //       if ( k in b ) updateData[`data.bonuses.${k}`] = b[k];
 //       else updateData[`data.bonuses.-=${k}`] = null;

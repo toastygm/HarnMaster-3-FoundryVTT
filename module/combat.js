@@ -364,7 +364,7 @@ async function attackDialog(options) {
         dialogOptions.title = `Weapon ${options.type} with ${options.weapon.name}`;
         const weaponAspect = calcWeaponAspect(options.weapon);
         if (!weaponAspect.defaultAspect) return null;   // no aspects available, shouldn't happen
-        mergeObject(dialogOptions, weaponAspect);
+        foundry.utils.mergeObject(dialogOptions, weaponAspect);
     } else if (options.weapon.type === 'missilegear') {
         dialogOptions.title = `Missile ${options.type} with ${options.weapon.name}`;
 

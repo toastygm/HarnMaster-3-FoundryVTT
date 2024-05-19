@@ -9,7 +9,7 @@ export class HarnMasterItemSheet extends ItemSheet {
 
   /** @override */
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["hm3", "sheet", "item"],
       width: 560,
       height: 550,

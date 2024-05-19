@@ -163,7 +163,7 @@ function askMissileMacro(name, slot, img, actorSuffix) {
 }
 
 async function getItemAndActor(itemName, myActor, type) {
-    const result = {actor: myActor, item: null, speaker: ChatMessage.getSpeaker()};
+    let result = {actor: myActor, item: null, speaker: ChatMessage.getSpeaker()};
     if (itemName) {
         result.item = await combat.getItem(itemName, type, myActor);
         myActor = result.item.actor || myActor;
@@ -188,7 +188,7 @@ async function getItemAndActor(itemName, myActor, type) {
 }
 
 export async function skillRoll(itemName, noDialog = false, myActor=null) {
-    const {actor, item} = await getItemAndActor(itemName, myActor, 'skill');
+    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'skill');
 
     const stdRollData = {
         type: `skill-${item.name}`,
@@ -227,7 +227,7 @@ export async function skillRoll(itemName, noDialog = false, myActor=null) {
 }
 
 export async function castSpellRoll(itemName, noDialog = false, myActor=null) {
-    const {actor, item} = await getItemAndActor(itemName, myActor, 'spell');
+    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'spell');
 
     const stdRollData = {
         type: `spell-${item.name}`,
@@ -269,7 +269,7 @@ export async function castSpellRoll(itemName, noDialog = false, myActor=null) {
 }
 
 export async function invokeRitualRoll(itemName, noDialog = false, myActor = null) {
-    const {actor, item} = await getItemAndActor(itemName, myActor, 'invocation');
+    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'invocation');
 
     const stdRollData = {
         type: `invocation-${item.name}`,
@@ -311,7 +311,7 @@ export async function invokeRitualRoll(itemName, noDialog = false, myActor = nul
 }
 
 export async function usePsionicRoll(itemName, noDialog = false, myActor=null) {
-    const {actor, item} = await getItemAndActor(itemName, myActor, 'psionic');
+    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'psionic');
 
     const stdRollData = {
         type: `psionic-${item.name}`,
@@ -360,9 +360,9 @@ export async function testAbilityD6Roll(ability, noDialog = false, myActor=null)
 
     let abilities;
     if (actorInfo.actor.type === 'character') {
-        abilities = Object.keys(game.system.model.Actor.character.abilities);
+        abilities = Object.keys(game.model.Actor.character.abilities);
     } else if (actorInfo.actor.type === 'creature') {
-        abilities = Object.keys(game.system.model.Actor.creature.abilities);
+        abilities = Object.keys(game.model.Actor.creature.abilities);
     } else {
         ui.notifications.warn(`${actorInfo.name} does not have ability scores.`);
         return null;
@@ -407,9 +407,9 @@ export async function testAbilityD100Roll(ability, noDialog = false, myActor = n
 
     let abilities;
     if (actorInfo.actor.type === 'character') {
-        abilities = Object.keys(game.system.model.Actor.character.abilities);
+        abilities = Object.keys(game.model.Actor.character.abilities);
     } else if (actorInfo.actor.type === 'creature') {
-        abilities = Object.keys(game.system.model.Actor.creature.abilities);
+        abilities = Object.keys(game.model.Actor.creature.abilities);
     } else {
         ui.notifications.warn(`${actorInfo.actor.name} does not have ability scores.`);
         return null;
@@ -451,7 +451,7 @@ export async function weaponDamageRoll(itemName, aspect=null, myActor = null) {
         }
     }
 
-    const {actor, item} = await getItemAndActor(itemName, myActor, 'weapongear');
+    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'weapongear');
 
     const rollData = {
         notesData: {
@@ -493,7 +493,7 @@ export async function missileDamageRoll(itemName, range=null, myActor = null) {
         }
     }
 
-    const {actor, item} = await getItemAndActor(itemName, myActor, 'missilegear');
+    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'missilegear');
 
     const rollData = {
         notesData: {
@@ -533,7 +533,7 @@ export async function missileDamageRoll(itemName, range=null, myActor = null) {
 }
 
 export async function weaponAttackRoll(itemName, noDialog = false, myActor = null) {
-    const {actor, item} = await getItemAndActor(itemName, myActor, 'weapongear');
+    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'weapongear');
 
     const stdRollData = {
         label: `${item.name} Attack`,
@@ -573,7 +573,7 @@ export async function weaponAttackRoll(itemName, noDialog = false, myActor = nul
 }
 
 export async function weaponDefendRoll(itemName, noDialog = false, myActor = null) {
-    const {actor, item} = await getItemAndActor(itemName, myActor, 'weapongear');
+    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'weapongear');
 
     let outnumberedMod = 0;
     if (actor.system?.eph?.outnumbered > 1) {
@@ -618,7 +618,7 @@ export async function weaponDefendRoll(itemName, noDialog = false, myActor = nul
 }
 
 export async function missileAttackRoll(itemName, myActor = null) {
-    const {actor, item} = await getItemAndActor(itemName, myActor, 'missilegear');
+    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'missilegear');
 
     const rollData = {
         notesData: {
@@ -681,7 +681,7 @@ export async function injuryRoll(myActor = null, rollData = {}) {
 }
 
 export async function healingRoll(itemName, noDialog = false, myActor = null) {
-    const {actor, item} = await getItemAndActor(itemName, myActor, 'injury');
+    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'injury');
 
     const stdRollData = {
         type: 'healing',
@@ -1242,15 +1242,15 @@ function getUserTargetedToken(combatant) {
     return targetToken;
 }
 
-function getActor(result) {
-    if (result.item?.actor) {
-        result.actor = result.item.actor;
+function getActor({item, actor, speaker}={}) {
+    const result = {item, actor, speaker};
+    if (item?.actor) {
+        result.actor = item.actor;
         result.speaker = ChatMessage.getSpeaker({actor: result.actor});
     } else {
         // If actor is an Actor, just return it
         if (result.actor instanceof Actor) {
-            result.actor = myActor;
-            result.speaker = ChatMessage.getSpeaker({actor: result.actor});
+            result.speaker ||= ChatMessage.getSpeaker({actor: result.actor});
         } else {
             if (!result.actor) {
                 // If actor was null, lets try to figure it out from the Speaker
@@ -1275,17 +1275,14 @@ function getActor(result) {
                 return null;
             }    
         }
-
-        return result;
     }
-
 
     if (!result.actor.isOwner) {
         ui.notifications.warn(`You do not have permissions to control ${result.actor.name}.`);
         return null;
     }
 
-    return result.actor;
+    return result;
 }
 
 export function callOnHooks(hook, actor, result, rollData, item=null) {
