@@ -445,32 +445,32 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         html.find('.skill-roll').click(ev => {
             const li = $(ev.currentTarget).parents(".item");
             const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
-            const itemId = li.data('itemId');
-            macros.skillRoll(`Item$${itemId}`, fastforward, this.actor);
+            const item = this.actor.items.get(li.data("itemId"));
+            macros.skillRoll(item?.uuid, fastforward, this.actor);
         });
 
         // Standard 1d100 Spell Casting Roll
         html.find('.spell-roll').click(ev => {
             const li = $(ev.currentTarget).parents(".item");
             const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
-            const itemId = li.data('itemId');
-            macros.castSpellRoll(`Item$${itemId}`, fastforward, this.actor);
+            const item = this.actor.items.get(li.data("itemId"));
+            macros.castSpellRoll(item?.uuid, fastforward, this.actor);
         });
 
         // Standard 1d100 Ritual Invocation Roll
         html.find('.invocation-roll').click(ev => {
             const li = $(ev.currentTarget).parents(".item");
             const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
-            const itemId = li.data('itemId');
-            macros.invokeRitualRoll(`Item$${itemId}`, fastforward, this.actor);
+            const item = this.actor.items.get(li.data("itemId"));
+            macros.invokeRitualRoll(item?.uuid, fastforward, this.actor);
         });
 
         // Standard 1d100 Psionic Talent Roll
         html.find('.psionic-roll').click(ev => {
             const li = $(ev.currentTarget).parents(".item");
             const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
-            const itemId = li.data('itemId');
-            macros.usePsionicRoll(`Item$${itemId}`, fastforward, this.actor);
+            const item = this.actor.items.get(li.data("itemId"));
+            macros.usePsionicRoll(item?.uuid, fastforward, this.actor);
         });
 
         // d6 Ability Score Roll
@@ -490,17 +490,17 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Weapon Damage Roll
         html.find('.weapon-damage-roll').click(ev => {
             const li = $(ev.currentTarget).parents(".item");
-            const itemId = li.data('itemId');
             const aspect = ev.currentTarget.dataset.aspect;
-            macros.weaponDamageRoll(`Item$${itemId}`, aspect, this.actor);
+            const item = this.actor.items.get(li.data("itemId"));
+            macros.weaponDamageRoll(item?.uuid, aspect, this.actor);
         });
 
         // Missile Damage Roll
         html.find('.missile-damage-roll').click(ev => {
             const li = $(ev.currentTarget).parents(".item");
-            const itemId = li.data('itemId');
             const range = ev.currentTarget.dataset.range;
-            macros.missileDamageRoll(`Item$${itemId}`, range, this.actor);
+            const item = this.actor.items.get(li.data("itemId"));
+            macros.missileDamageRoll(item?.uuid, range, this.actor);
         });
 
         // Melee Weapon Attack
@@ -521,8 +521,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             }
 
             const li = $(ev.currentTarget).parents(".item");
-            const itemId = li.data('itemId');
-            macros.weaponAttack(`Item$${itemId}`, false, token);
+            const item = this.actor.items.get(li.data("itemId"));
+            macros.weaponAttack(item?.uuid, false, token);
         });
 
         // Missile Weapon Attack
@@ -543,31 +543,31 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             }
 
             const li = $(ev.currentTarget).parents(".item");
-            const itemId = li.data('itemId');
-            macros.missileAttack(`Item$${itemId}`, false, token);
+            const item = this.actor.items.get(li.data("itemId"));
+            macros.missileAttack(item?.uuid, false, token);
         });
 
         // Weapon Attack Roll
         html.find('.weapon-attack-roll').click(ev => {
             const li = $(ev.currentTarget).parents(".item");
             const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
-            const itemId = li.data('itemId');
-            macros.weaponAttackRoll(`Item$${itemId}`, fastforward, this.actor);
+            const item = this.actor.items.get(li.data("itemId"));
+            macros.weaponAttackRoll(item?.uuid, fastforward, this.actor);
         });
 
         // Weapon Defend Roll
         html.find('.weapon-defend-roll').click(ev => {
             const li = $(ev.currentTarget).parents(".item");
             const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
-            const itemId = li.data('itemId');
-            macros.weaponDefendRoll(`Item$${itemId}`, fastforward, this.actor);
+            const item = this.actor.items.get(li.data("itemId"));
+            macros.weaponDefendRoll(item?.uuid, fastforward, this.actor);
         });
 
         // Missile Attack Roll
         html.find('.missile-attack-roll').click(ev => {
             const li = $(ev.currentTarget).parents(".item");
-            const itemId = li.data('itemId');
-            macros.missileAttackRoll(`Item$${itemId}`, this.actor);
+            const item = this.actor.items.get(li.data("itemId"));
+            macros.missileAttackRoll(item?.uuid, this.actor);
         });
 
         // Injury Roll
@@ -577,8 +577,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         html.find('.healing-roll').click(ev => {
             const li = $(ev.currentTarget).parents(".item");
             const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
-            const itemId = li.data('itemId');
-            macros.healingRoll(`Item$${itemId}`, fastforward, this.actor);
+            const item = this.actor.items.get(li.data("itemId"));
+            macros.healingRoll(item?.uuid, fastforward, this.actor);
             //const ifff = new ImportFFF();
             //ifff.importFromJSON('test.json');
         });

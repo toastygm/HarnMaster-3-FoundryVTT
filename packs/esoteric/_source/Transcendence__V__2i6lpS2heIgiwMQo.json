@@ -1,0 +1,37 @@
+{
+  "_id": "2i6lpS2heIgiwMQo",
+  "name": "Transcendence (V)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/saveknor.png",
+  "effects": [],
+  "folder": "Q1GdIqZAQz4oVhEd",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI minutes+</td><td><b>Ritual:</b> Prayer/Meditation</td></tr><tr><td><b>Range:</b> Self+</td><td><b>Duration:</b> RSI hours</td></tr></table><p>Allows the invoker’s soul to temporarily depart the body which is left in a state of metabolic suspension. The disembodied soul functions as an Astral Entity for Duration. See: p16 for effects.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Save-K'nor",
+    "circle": 5,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284305234,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!2i6lpS2heIgiwMQo"
+}

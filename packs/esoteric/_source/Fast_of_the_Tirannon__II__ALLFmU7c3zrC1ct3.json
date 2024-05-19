@@ -1,0 +1,37 @@
+{
+  "_id": "ALLFmU7c3zrC1ct3",
+  "name": "Fast of the Tirannon (II)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/larani.png",
+  "effects": [],
+  "folder": "cKpd7e8LEPwE5H2E",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI minutes+</td><td><b>Ritual:</b> Prayer/Meditation</td></tr><tr><td><b>Range:</b> Self/Touch+</td><td><b>Duration:</b> 2 (MS); 5 (CS) days</td></tr></table><p>Subject is unaffected by hunger and thirst for Duration but has 50% EML for ALL skills. Invocation terminates if the subject eats/drinks. Invocation may not be performed on the same subject more than twice per month.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Larani",
+    "circle": 2,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284275736,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!ALLFmU7c3zrC1ct3"
+}

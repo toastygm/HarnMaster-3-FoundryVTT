@@ -1,0 +1,19 @@
+{
+  "name": "Siem",
+  "type": "Item",
+  "folder": "nX49OcUBOzl8FyrL",
+  "_id": "vEue0eMD5ey8uFXc",
+  "sorting": "a",
+  "sort": -275000,
+  "flags": {},
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284313003,
+    "modifiedTime": 1689285083780,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "color": null,
+  "_key": "!folders!vEue0eMD5ey8uFXc"
+}

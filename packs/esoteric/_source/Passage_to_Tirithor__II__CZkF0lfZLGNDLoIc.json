@@ -1,0 +1,37 @@
+{
+  "_id": "CZkF0lfZLGNDLoIc",
+  "name": "Passage to Tirithor (II)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/larani.png",
+  "effects": [],
+  "folder": "cKpd7e8LEPwE5H2E",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI minutes+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> Self/Touch+</td><td><b>Duration:</b> One infection roll</td></tr></table><p>An invocation to help cure infection. Make an immediate roll on the Infection Table (Physician 3) with a +20 (MS) or +50 (CS) bonus to EML.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Larani",
+    "circle": 2,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284275736,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!CZkF0lfZLGNDLoIc"
+}

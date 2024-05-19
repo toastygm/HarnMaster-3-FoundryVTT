@@ -1,0 +1,37 @@
+{
+  "_id": "4wluT5Lllvhm2Fl3",
+  "name": "Wisdom of the Shea-al-Aecor (II)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/saveknor.png",
+  "effects": [],
+  "folder": "Q1GdIqZAQz4oVhEd",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI minutes+</td><td><b>Ritual:</b> Silent Prayer</td></tr><tr><td><b>Range:</b> Self+</td><td><b>Duration:</b> Instantaneous</td></tr></table><p>Gives the priest insight into the proper course of action in a moral quandary. GM may reveal information in any appropriate way, with CS giving more substantial knowledge.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Save-K'nor",
+    "circle": 2,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284305234,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!4wluT5Lllvhm2Fl3"
+}

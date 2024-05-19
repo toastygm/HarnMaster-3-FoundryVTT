@@ -3,7 +3,7 @@
   "name": "hm3",
   "title": "HarnMaster 3",
   "description": "The HarnMaster system for FoundryVTT!",
-  "version": "1.5.2",
+  "version": "1.6.0",
   "authors": [
     {
       "name": "Toasty",
@@ -17,10 +17,10 @@
   "flags": {
     "allowBugReporter": true
   },
-  "minimumCoreVersion": "11",
+  "minimumCoreVersion": "12",
   "compatibility": {
-    "minimum": "11",
-    "verified": "11.306"
+    "minimum": "12",
+    "verified": "12.323"
   },
   "esmodules": [
     "module/hm3.js"
@@ -48,7 +48,7 @@
       "type": "Item",
       "name": "character",
       "system": "hm3",
-      "path": "packs/character.db",
+      "path": "packs/character",
       "private": false
     },
     {
@@ -56,7 +56,7 @@
       "type": "Item",
       "name": "possessions",
       "system": "hm3",
-      "path": "packs/possessions.db",
+      "path": "packs/possessions",
       "private": false
     },
     {
@@ -64,13 +64,13 @@
       "type": "Item",
       "name": "esoteric",
       "system": "hm3",
-      "path": "packs/esoteric.db",
+      "path": "packs/esoteric",
       "private": false
     },
     {
       "label": "System Help",
       "name": "system-help",
-      "path": "packs/system-help.db",
+      "path": "packs/system-help",
       "system": "hm3",
       "type": "JournalEntry",
       "private": false
@@ -78,8 +78,10 @@
   ],
   "socket": true,
   "manifest": "https://github.com/toastygm/HarnMaster-3-FoundryVTT/releases/latest/download/system.json",
-  "download": "https://github.com/toastygm/HarnMaster-3-FoundryVTT/releases/download/v1.5.2/system.zip",
-  "gridDistance": 5,
-  "gridUnits": "ft",
+  "download": "https://github.com/toastygm/HarnMaster-3-FoundryVTT/releases/download/v1.6.0/system.zip",
+  "grid": {
+    "distance": 5,
+    "units": "ft"
+  },
   "primaryTokenAttribute": "shockIndex"
 }

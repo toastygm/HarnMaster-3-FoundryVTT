@@ -1,0 +1,37 @@
+{
+  "_id": "CYVT2mDKScaMr67E",
+  "name": "Maslor’s Charm (VII)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/wind.svg",
+  "effects": [],
+  "folder": "2JX6jkRSgMm48QyW",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A spell to find, identify, summon, and control target entities. The basic spell locates and summons the “nearest” ethereal. If the caster wins or ties a Mental Conflict (Skills 23), or has achieved CS in casting, the ethereal is controlled for Duration; otherwise the ethereal controls the caster.</p><p>If uncontrolled, an ethereal acts at GM discretion, either departing (50% chance) or indulging in wanton destruction.</p><p>A controlled ethereal may be returned to the ethereal plane by commanding it to depart. If this is not done before Duration expires, the ethereal will be free in the caster’s world and do as it pleases.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML70+</td><td>Caster may locate and identify up to CSI ethereals. Any one can be summoned.</td></tr><tr><td style='width: 4em;'>CML90+</td><td>Caster gains a good idea of the strength, morality, and nature of the identified ethereals. Any or all of them can be summoned, but each requires a successful (win or tie) Mental Conflict to be controlled.</td></tr></table><p>&nbsp;</p><p>Time: 35-CSI seconds</p><p>Range: Nearest Ethereal (GM discretion)</p><p>Duration: CSI x10 minutes</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Lyahvi",
+    "level": 7,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284362741,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!CYVT2mDKScaMr67E"
+}

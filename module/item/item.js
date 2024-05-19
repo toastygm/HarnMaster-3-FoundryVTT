@@ -98,7 +98,7 @@ export class HarnMasterItem extends Item {
         if (itemData.impactType != "custom") {
             Object.keys(HM3.injuryLocations).forEach(key => {
                 if (HM3.injuryLocations[key].impactType === itemData.impactType) {
-                    mergeObject(itemData, HM3.injuryLocations[key]);
+                    foundry.utils.mergeObject(itemData, HM3.injuryLocations[key]);
                 }
             });
         }

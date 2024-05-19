@@ -1,0 +1,37 @@
+{
+  "_id": "3XHAqUEALvU9aRpy",
+  "name": "Animus of Nithri (V)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/tree.svg",
+  "effects": [],
+  "folder": "c3CaJqCvMmvbwM1T",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>An enchantment to restore a small portion of a dead creature’s animus, which can, to a limited degree, be controlled by the caster. This is a kind of necromancy to produce a zombie. Touch is required.</p><p>The basic enchantment activates the corpse’s metabolism to a small degree (perhaps the vocal chords and memory of a dead human), but it is not possible to make the cadaver move under its own power. With the example given, the corpse could be asked questions and made to talk about its past life or events in its “view,” corpses are not very intelligent and will not volunteer information.</p><p>The effects depend on the condition of the corpse (the more recently dead, the better).</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML70+</td><td>Zombie may be ordered to move within reasonable limits for body condition. For example, a just-slain body may be made to fight, but a skeleton cannot perform any activity requiring muscles. Control requires ongoing concentration and cannot be attempted beyond line of sight.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI minutes</p><p>Range: Touch (cast); Line of Sight (control)</p><p>Duration: CSI minutes</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Fyvria",
+    "level": 5,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284358457,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!3XHAqUEALvU9aRpy"
+}

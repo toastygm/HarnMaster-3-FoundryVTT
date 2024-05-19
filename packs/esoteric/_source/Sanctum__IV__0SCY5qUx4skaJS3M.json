@@ -1,0 +1,37 @@
+{
+  "_id": "0SCY5qUx4skaJS3M",
+  "name": "Sanctum (IV)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/pentacle.svg",
+  "effects": [],
+  "folder": "g3J9Eik2awfBs91a",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>An enchantment which “attunes” an enclosed space to a chosen convocation. The caster must be attuned to that convocation. Sanctums have a maximum volume of five thousand cubic feet.</p><p>The value of a Sanctum depends on casting success and the CSI of the chosen convocation:</p><p>MS = CSI x2           CS = CSI x4</p><p>Example: a mage with Neutral CML 50 has a Sanctum EML of 50-20=30. The 20 point penalty is for the complexity level of Sanctum. The mage wishes to create a Jmorvi sanctum. With MS, and a Jmorvi CSI 6, a Jmorvi Sanctum +12 is created.</p><p>A Sanctum modifies the EML of spells cast within it.  The Sanctum’s full value is applied as a bonus to Primary spells and as a penalty to Diametric spells. Half value is applied as a bonus to Secondary spells and as a penalty to Tertiary spells.</p><p>Mages can re-enchant their sanctums, raising them to a higher value with a CS casting or when CSI improves.  This requires a new casting from within the Sanctum. CF dispells the original enchantment.</p><p>Sanctums can only be dispelled from within. It is possible to encounter abandoned sanctums of, long dead, mages. Sanctums can also occur naturally.</p><p>&nbsp;</p><h2>Bonus Effects</h2><p>(none)</p><p>&nbsp;</p><p>Time: 15-CSI days</p><p>Range: Within the Sanctum</p><p>Duration: Indefinite</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Neutral",
+    "level": 4,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284390936,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!0SCY5qUx4skaJS3M"
+}

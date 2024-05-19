@@ -364,7 +364,7 @@ async function attackDialog(options) {
         dialogOptions.title = `Weapon ${options.type} with ${options.weapon.name}`;
         const weaponAspect = calcWeaponAspect(options.weapon);
         if (!weaponAspect.defaultAspect) return null;   // no aspects available, shouldn't happen
-        mergeObject(dialogOptions, weaponAspect);
+        foundry.utils.mergeObject(dialogOptions, weaponAspect);
     } else if (options.weapon.type === 'missilegear') {
         dialogOptions.title = `Missile ${options.type} with ${options.weapon.name}`;
 
@@ -1441,28 +1441,26 @@ function calcWeaponAspect(weapon) {
 }
 
 /**
- * Finds an Item within the given actor.
+ * Finds an Item by name or UUID. If name is provided, searches within the specified actor.
  * 
- * @param {*} itemName Either an Item or a string formatted as "Item$<itemId>"
+ * @param {*} itemName Either an Item or a string formatted as a UUID
  * @param {*} type The type of Item (e.g., "missilegear")
  * @param {*} actor The actor containing the items to search
  */
-export function getItem(itemName, type, actor) {
-    if (!actor || typeof actor !== 'object') {
-        ui.notifications.warn('No actor was selected. You must select an actor.');
-        return null;
-    }
-
+export async function getItem(itemName, type, actor) {
     if (!itemName) {
         ui.notifications.warn('No item name was specified. You must specify an item name.');
         return null;
     }
 
-    let item = null;
-    if (itemName.startsWith("Item$")) {
-        return actor.items.get(itemName.slice(5));
-    }
+    let item = await fromUuid(itemName);
+    
     if (!item) {
+        if (!actor || typeof actor !== 'object') {
+            ui.notifications.warn('No actor was selected. You must select an actor.');
+            return null;
+        }
+    
         const lcItemName = itemName.toLowerCase();
         const items = actor ? actor.items.filter(i => i.type === type && i.name.toLowerCase() === lcItemName) : [];
         if (items.length > 1) {

@@ -1,0 +1,37 @@
+{
+  "_id": "Oro5CIv8nZq5tupG",
+  "name": "Hlandor’s Flash (II)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/wind.svg",
+  "effects": [],
+  "folder": "2JX6jkRSgMm48QyW",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A spell which causes a blinding flash to radiate from a Lyahvi elemental object held by the caster. All persons (looking at the flash source) within CSI hexes are blinded, and those within CSI x 5 hexes are half-blinded.</p><p>Note: in a purely random situation, each person has a 10% chance of looking at the flash source at the critical instant.  This chance can be modified at GM discretion according to the situation.</p><p>Blindness lasts 10 seconds (MS) or 30 seconds (CS), and then turns into half-blindness, which lasts for a similar period. Blinded individuals suffer a Special Penalty of 20 for all skills (GM discretion). Individuals half-blinded suffer a Special Penalty of 10 for all skills (GM discretion).</p><p>The effects described assume the spell is cast in dim/ dark lighting conditions (e.g., underground or at night); halve the above effects if the flash occurs in bright light/ full daylight. The spell is (at GM discretion) twice as effective against nocturnal creatures.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML80+</td><td>Flash may be made to emanate from a Lyahvi elemental object in good line of sight within CSI hexes.</td></tr><tr><td style='width: 4em;'>CML90+</td><td>Caster may exclude up to CSI designated individuals from the effect.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI seconds</p><p>Range: CSI hexes (blind); CSI x5 hexes (half-blind)</p><p>Duration: Blindness lasts 10 seconds</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Lyahvi",
+    "level": 2,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284362741,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!Oro5CIv8nZq5tupG"
+}

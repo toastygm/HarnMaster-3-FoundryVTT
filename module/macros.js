@@ -10,43 +10,57 @@ import { HM3 } from './config.js';
  * @param {number} slot     The hotbar slot to use
  * @returns {Promise}
  */
-export async function createHM3Macro(data, slot) {
-    if (data.type !== "Item") return null;
-    if (!data.system) return ui.notifications.warn("No macro exists for that type of object.");
+export function createHM3Macro(data, slot) {
+    if (data.type !== "Item") return true;  // Continue normal processing for non-Item documents
+    handleItemMacro(data, slot);
+    return false;
+}
 
-    let command;
-    switch (data.type) {
+async function handleItemMacro(data, slot) {
+    const item = await fromUuid(data.uuid);
+    if (!item?.system) {
+        ui.notifications.warn("No macro exists for that type of object.");
+        return null;
+    }
+
+    let title = item.name;
+    if (item.actor) {
+        title = `${item.actor.name}'s ${item.name}`;
+    }
+
+    let cmdSuffix;
+    switch (item.type) {
         case 'skill':
-            command = `game.hm3.macros.skillRoll("${data.name}");`;
+            cmdSuffix = `skillRoll("${item.uuid}");`;
             break;
 
         case 'psionic':
-            command = `game.hm3.macros.usePsionicRoll("${data.name}");`;
+            cmdSuffix = `usePsionicRoll("${item.uuid}");`;
             break;
 
         case 'spell':
-            command = `game.hm3.macros.castSpellRoll("${data.name}");`;
+            cmdSuffix = `castSpellRoll("${item.uuid}");`;
             break;
 
         case 'invocation':
-            command = `game.hm3.macros.invokeRitualRoll("${data.name}");`;
+            cmdSuffix = `invokeRitualRoll("${item.uuid}");`;
             break;
 
         case 'weapongear':
-            return await askWeaponMacro(data.name, slot, data.img);
+            return await askWeaponMacro(item.uuid, slot, item.img);
 
         case 'missilegear':
-            return await askMissileMacro(data.name, slot, data.img);
+            return await askMissileMacro(item.uuid, slot, item.img);
 
         case 'injury':
-            command = `game.hm3.macros.healingRoll("${data.name}");`;
+            cmdSuffix = `healingRoll("${item.name}");`;
             break;
 
         default:
-            return false;
+            return null;  // Unhandled item, so ignore
     }
 
-    return await applyMacro(data.name, command, slot, data.img, {"hm3.itemMacro": false});
+    return await applyMacro(title, `await game.hm3.macros.${cmdSuffix}`, slot, item.img, {"hm3.itemMacro": false});
 }
 
 async function applyMacro(name, command, slot, img, flags) {
@@ -61,12 +75,22 @@ async function applyMacro(name, command, slot, img, flags) {
         });
     }
     game.user.assignHotbarMacro(macro, slot);
-    return false;
+    return null;
 }
 
-function askWeaponMacro(name, slot, img) {
-    const dlghtml = '<p>Select the type of weapon macro to create:</p>'
-    
+function askWeaponMacro(weaponUuid, slot, img) {
+    const item = fromUuidSync(weaponUuid);
+    if (!item) {
+        ui.notifications.warn(`No weapon with Uuid ${weaponUuid}`);
+    }
+
+    const dlghtml = '<p>Select the type of weapon macro to create:</p>';
+
+    let actorName = "";
+    if (item.actor) {
+        actorName = `${item.actor.name}'s `;
+    }
+
     // Create the dialog window
     return new Promise(resolve => {
         new Dialog({
@@ -76,25 +100,25 @@ function askWeaponMacro(name, slot, img) {
                 enhAttackButton: {
                     label: "Automated Combat",
                     callback: async (html) => {
-                        return await applyMacro(name, `game.hm3.macros.weaponAttack("${name}");`, slot, img, {"hm3.itemMacro": false});
+                        return await applyMacro(`${item.name} Automated Combat`, `await game.hm3.macros.weaponAttack("${weaponUuid}");`, slot, img, {"hm3.itemMacro": false});
                     }
                 },
                 attackButton: {
                     label: "Attack",
                     callback: async (html) => {
-                        return await applyMacro(name, `game.hm3.macros.weaponAttackRoll("${name}");`, slot, img, {"hm3.itemMacro": false});
+                        return await applyMacro(`${actorName}${item.name} Attack Roll`, `await game.hm3.macros.weaponAttackRoll("${weaponUuid}");`, slot, img, {"hm3.itemMacro": false});
                     }
                 },
                 defendButton: {
                     label: "Defend",
                     callback: async (html) => {
-                        return await applyMacro(name, `game.hm3.macros.weaponDefendRoll("${name}");`, slot, img, {"hm3.itemMacro": false});
+                        return await applyMacro(`${actorName}${item.name} Defend Roll`, `await game.hm3.macros.weaponDefendRoll("${weaponUuid}");`, slot, img, {"hm3.itemMacro": false});
                     }
                 },
                 damageButton: {
                     label: "Damage",
                     callback: async (html) => {
-                        return await applyMacro(name, `game.hm3.macros.weaponDamageRoll("${name}");`, slot, img, {"hm3.itemMacro": false});
+                        return await applyMacro(`${actorName}${item.name} Damage Roll`, `await game.hm3.macros.weaponDamageRoll("${weaponUuid}");`, slot, img, {"hm3.itemMacro": false});
                     }
                 }
             },
@@ -104,7 +128,7 @@ function askWeaponMacro(name, slot, img) {
     });
 }
 
-function askMissileMacro(name, slot, img) {
+function askMissileMacro(name, slot, img, actorSuffix) {
     const dlghtml = '<p>Select the type of missile macro to create:</p>'
     
     // Create the dialog window
@@ -116,19 +140,19 @@ function askMissileMacro(name, slot, img) {
                 enhAttackButton: {
                     label: "Automated Combat",
                     callback: async (html) => {
-                        return await applyMacro(name, `game.hm3.macros.missileAttack("${name}");`, slot, img, {"hm3.itemMacro": false});
+                        return await applyMacro(`${name} Automated Combat`, `game.hm3.macros.missileAttack("${name}");`, slot, img, {"hm3.itemMacro": false});
                     }
                 },
                 attackButton: {
                     label: "Attack",
                     callback: async (html) => {
-                        return await applyMacro(name, `game.hm3.macros.missileAttackRoll("${name}");`, slot, img, {"hm3.itemMacro": false});
+                        return await applyMacro(`${actorName}'s ${name} Attack Roll`, `game.hm3.macros.missileAttackRoll("${name}"${actorSuffix});`, slot, img, {"hm3.itemMacro": false});
                     }
                 },
                 damageButton: {
                     label: "Damage",
                     callback: async (html) => {
-                        return await applyMacro(name, `game.hm3.macros.missileDamageRoll("${name}");`, slot, img, {"hm3.itemMacro": false});
+                        return await applyMacro(`${actorName}'s ${name} Damage Roll`, `game.hm3.macros.missileDamageRoll("${name}"${actorSuffix});`, slot, img, {"hm3.itemMacro": false});
                     }
                 }
             },
@@ -138,19 +162,33 @@ function askMissileMacro(name, slot, img) {
     });
 }
 
-export async function skillRoll(itemName, noDialog = false, myActor=null) {
-    const speaker = myActor instanceof Actor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
-    const actor = getActor(myActor, speaker);
-    if (!actor) {
+async function getItemAndActor(itemName, myActor, type) {
+    let result = {actor: myActor, item: null, speaker: ChatMessage.getSpeaker()};
+    if (itemName) {
+        result.item = await combat.getItem(itemName, type, myActor);
+        myActor = result.item.actor || myActor;
+    
+        if (result.item?.type !== type) {
+            if (result.item) {
+                ui.notifications.warn(`Ignoring ${HM3.ITEM_TYPE_LABEL[type].singular} test because ${result.item.name} is not a ${HM3.ITEM_TYPE_LABEL[type].singular}`);
+            } else {
+                ui.notifications.warn(`Ignoring ${HM3.ITEM_TYPE_LABEL[type].singular} test because no ${HM3.ITEM_TYPE_LABEL[type].singular} found for '${itemName}'`);
+            }
+            return null;
+        }
+    }
+    
+    result = getActor(result);
+    if (!result) {
         ui.notifications.warn(`No actor for this action could be determined.`);
         return null;
     }
 
-    const item = combat.getItem(itemName, 'skill', actor);
-    if (!item) {
-        ui.notifications.warn(`${itemName} could not be found in the list of skills for ${actor.name}.`);
-        return null;
-    }
+    return result;
+}
+
+export async function skillRoll(itemName, noDialog = false, myActor=null) {
+    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'skill');
 
     const stdRollData = {
         type: `skill-${item.name}`,
@@ -189,18 +227,7 @@ export async function skillRoll(itemName, noDialog = false, myActor=null) {
 }
 
 export async function castSpellRoll(itemName, noDialog = false, myActor=null) {
-    const speaker = myActor instanceof Actor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
-    const actor = getActor(myActor, speaker);
-    if (!actor) {
-        ui.notifications.warn(`No actor for this action could be determined.`);
-        return null;
-    }
-
-    const item = combat.getItem(itemName, 'spell', actor);
-    if (!item) {
-        ui.notifications.warn(`${itemName} could not be found in the list of spells for ${actor.name}.`);
-        return null;
-    }
+    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'spell');
 
     const stdRollData = {
         type: `spell-${item.name}`,
@@ -242,18 +269,7 @@ export async function castSpellRoll(itemName, noDialog = false, myActor=null) {
 }
 
 export async function invokeRitualRoll(itemName, noDialog = false, myActor = null) {
-    const speaker = myActor instanceof Actor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
-    const actor = getActor(myActor, speaker);
-    if (!actor) {
-        ui.notifications.warn(`No actor for this action could be determined.`);
-        return null;
-    }
-
-    const item = combat.getItem(itemName, 'invocation', actor);
-    if (!item) {
-        ui.notifications.warn(`${itemName} could not be found in the list of ritual invocations for ${actor.name}.`);
-        return null;
-    }
+    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'invocation');
 
     const stdRollData = {
         type: `invocation-${item.name}`,
@@ -295,18 +311,7 @@ export async function invokeRitualRoll(itemName, noDialog = false, myActor = nul
 }
 
 export async function usePsionicRoll(itemName, noDialog = false, myActor=null) {
-    const speaker = myActor instanceof Actor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
-    const actor = getActor(myActor, speaker);
-    if (!actor) {
-        ui.notifications.warn(`No actor for this action could be determined.`);
-        return null;
-    }
-
-    const item = combat.getItem(itemName, 'psionic', actor);
-    if (!item) {
-        ui.notifications.warn(`${itemName} could not be found in the list of psionic talents for ${actor.name}.`);
-        return null;
-    }
+    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'psionic');
 
     const stdRollData = {
         type: `psionic-${item.name}`,
@@ -347,20 +352,19 @@ export async function usePsionicRoll(itemName, noDialog = false, myActor=null) {
 }
 
 export async function testAbilityD6Roll(ability, noDialog = false, myActor=null) {
-    const speaker = myActor instanceof Actor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
-    const actor = getActor(myActor, speaker);
-    if (!actor) {
+    const actorInfo = getActor({actor: myActor, item: null, speaker: ChatMessage.getSpeaker()});
+    if (!actorInfo) {
         ui.notifications.warn(`No actor for this action could be determined.`);
         return null;
     }
 
     let abilities;
-    if (actor.type === 'character') {
-        abilities = Object.keys(game.system.model.Actor.character.abilities);
-    } else if (actor.type === 'creature') {
-        abilities = Object.keys(game.system.model.Actor.creature.abilities);
+    if (actorInfo.actor.type === 'character') {
+        abilities = Object.keys(game.model.Actor.character.abilities);
+    } else if (actorInfo.actor.type === 'creature') {
+        abilities = Object.keys(game.model.Actor.creature.abilities);
     } else {
-        ui.notifications.warn(`${actor.name} does not have ability scores.`);
+        ui.notifications.warn(`${actorInfo.name} does not have ability scores.`);
         return null;
     }
     if (!ability || !abilities.includes(ability)) return null;
@@ -369,25 +373,25 @@ export async function testAbilityD6Roll(ability, noDialog = false, myActor=null)
     const stdRollData = {
         type: `${ability}-d6`,
         label: `d6 ${ability[0].toUpperCase()}${ability.slice(1)} Roll`,
-        target: actor.system.abilities[ability].effective,
+        target: actorInfo.actor.system.abilities[ability].effective,
         numdice: 3,
         notesData: {},
-        speaker: speaker,
+        speaker: actorInfo.speaker,
         fastforward: noDialog,
         notes: ''
     };
-    if (actor.isToken) {
-        stdRollData.token = actor.token.id;
+    if (actorInfo.actor.isToken) {
+        stdRollData.token = actorInfo.actor.token.id;
     } else {
-        stdRollData.actor = actor.id;
+        stdRollData.actor = actorInfo.actor.id;
     }
     
-    const hooksOk = Hooks.call("hm3.preAbilityRollD6", stdRollData, actor);
+    const hooksOk = Hooks.call("hm3.preAbilityRollD6", stdRollData, actorInfo.actor);
     if (hooksOk) {
         const result = await DiceHM3.d6Roll(stdRollData);
         if (result) {
-            actor.runCustomMacro(result);
-            callOnHooks("hm3.onAbilityRollD6", actor, result, stdRollData);    
+            result.runCustomMacro(result);
+            callOnHooks("hm3.onAbilityRollD6", result, result, stdRollData);    
         }
         return result;
     }
@@ -395,20 +399,19 @@ export async function testAbilityD6Roll(ability, noDialog = false, myActor=null)
 }
 
 export async function testAbilityD100Roll(ability, noDialog = false, myActor = null, multiplier=5) {
-    const speaker = myActor instanceof Actor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
-    const actor = getActor(myActor, speaker);
-    if (!actor) {
+    const actorInfo = getActor({actor: myActor, item: null, speaker: ChatMessage.getSpeaker()});
+    if (!actorInfo) {
         ui.notifications.warn(`No actor for this action could be determined.`);
         return null;
     }
 
     let abilities;
-    if (actor.type === 'character') {
-        abilities = Object.keys(game.system.model.Actor.character.abilities);
-    } else if (actor.type === 'creature') {
-        abilities = Object.keys(game.system.model.Actor.creature.abilities);
+    if (actorInfo.actor.type === 'character') {
+        abilities = Object.keys(game.model.Actor.character.abilities);
+    } else if (actorInfo.actor.type === 'creature') {
+        abilities = Object.keys(game.model.Actor.creature.abilities);
     } else {
-        ui.notifications.warn(`${actor.name} does not have ability scores.`);
+        ui.notifications.warn(`${actorInfo.actor.name} does not have ability scores.`);
         return null;
     }
     if (!ability || !abilities.includes(ability)) return null;
@@ -416,24 +419,24 @@ export async function testAbilityD100Roll(ability, noDialog = false, myActor = n
     const stdRollData = {
         type: `${ability}-d100`,
         label: `d100 ${ability[0].toUpperCase()}${ability.slice(1)} Roll`,
-        target: Math.max(5, actor.system.abilities[ability].effective * multiplier),
+        target: Math.max(5, actorInfo.actor.system.abilities[ability].effective * multiplier),
         notesData: {},
-        speaker: speaker,
+        speaker: actorInfo.speaker,
         fastforward: noDialog,
         notes: ''
     };
-    if (actor.isToken) {
-        stdRollData.token = actor.token.id;
+    if (actorInfo.actor.isToken) {
+        stdRollData.token = actorInfo.actor.token.id;
     } else {
-        stdRollData.actor = actor.id;
+        stdRollData.actor = actorInfo.actor.id;
     }
     
-    const hooksOk = Hooks.call("hm3.preAbilityRollD100", stdRollData, actor);
+    const hooksOk = Hooks.call("hm3.preAbilityRollD100", stdRollData, actorInfo.actor);
     if (hooksOk) {
         const result = await DiceHM3.d100StdRoll(stdRollData);
         if (result) {
-            actor.runCustomMacro(result);
-            callOnHooks("hm3.onAbilityRollD100", actor, result, stdRollData);    
+            actorInfo.actor.runCustomMacro(result);
+            callOnHooks("hm3.onAbilityRollD100", actorInfo.actor, result, stdRollData);    
         }
         return result;
     }
@@ -441,13 +444,6 @@ export async function testAbilityD100Roll(ability, noDialog = false, myActor = n
 }
 
 export async function weaponDamageRoll(itemName, aspect=null, myActor = null) {
-    const speaker = myActor instanceof Actor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
-    const actor = getActor(myActor, speaker);
-    if (!actor) {
-        ui.notifications.warn(`No actor for this action could be determined.`);
-        return null;
-    }
-
     if (aspect) {
         if (!HM3.allowedAspects.includes(aspect)) {
             ui.notifications.warn(`Invalid aspect requested on damage roll: ${aspect}`);
@@ -455,11 +451,7 @@ export async function weaponDamageRoll(itemName, aspect=null, myActor = null) {
         }
     }
 
-    const item = combat.getItem(itemName, 'weapongear', actor);
-    if (!item) {
-        ui.notifications.warn(`${itemName} could not be found in the list of melee weapons for ${actor.name}.`);
-        return null;
-    }
+    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'weapongear');
 
     const rollData = {
         notesData: {
@@ -493,25 +485,15 @@ export async function weaponDamageRoll(itemName, aspect=null, myActor = null) {
 }
 
 export async function missileDamageRoll(itemName, range=null, myActor = null) {
-    const speaker = myActor instanceof Actor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
-    const actor = getActor(myActor, speaker);
-    if (!actor) {
-        ui.notifications.warn(`No actor for this action could be determined.`);
-        return null;
-    }
-
-    const item = combat.getItem(itemName, 'missilegear', actor);
-    if (!item) {
-        ui.notifications.warn(`${itemName} could not be found in the list of melee weapons for ${actor.name}.`);
-        return null;
-    }
-
+    myActor &&= myActor instanceof Actor ? myActor : await fromUuid(myActor);
     if (range) {
         if (!HM3.allowedRanges.includes(range)) {
             ui.notifications.warn(`Invalid range requested on damage roll: ${range}`);
             return null;
         }
     }
+
+    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'missilegear');
 
     const rollData = {
         notesData: {
@@ -551,18 +533,7 @@ export async function missileDamageRoll(itemName, range=null, myActor = null) {
 }
 
 export async function weaponAttackRoll(itemName, noDialog = false, myActor = null) {
-    const speaker = myActor instanceof Actor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
-    const actor = getActor(myActor, speaker);
-    if (!actor) {
-        ui.notifications.warn(`No actor for this action could be determined.`);
-        return null;
-    }
-
-    const item = combat.getItem(itemName, 'weapongear', actor);
-    if (!item) {
-        ui.notifications.warn(`${itemName} could not be found in the list of melee weapons for ${actor.name}.`);
-        return null;
-    }
+    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'weapongear');
 
     const stdRollData = {
         label: `${item.name} Attack`,
@@ -602,18 +573,7 @@ export async function weaponAttackRoll(itemName, noDialog = false, myActor = nul
 }
 
 export async function weaponDefendRoll(itemName, noDialog = false, myActor = null) {
-    const speaker = myActor instanceof Actor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
-    const actor = getActor(myActor, speaker);
-    if (!actor) {
-        ui.notifications.warn(`No actor for this action could be determined.`);
-        return null;
-    }
-
-    const item = combat.getItem(itemName, 'weapongear', actor);
-    if (!item) {
-        ui.notifications.warn(`${itemName} could not be found in the list of melee weapons for ${actor.name}.`);
-        return null;
-    }
+    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'weapongear');
 
     let outnumberedMod = 0;
     if (actor.system?.eph?.outnumbered > 1) {
@@ -658,20 +618,7 @@ export async function weaponDefendRoll(itemName, noDialog = false, myActor = nul
 }
 
 export async function missileAttackRoll(itemName, myActor = null) {
-    const actor = getActor(myActor);
-    if (!actor) {
-        ui.notifications.warn(`No actor for this action could be determined.`);
-        return null;
-    }
-
-    const speaker = ChatMessage.getSpeaker({actor: actor});
-
-    const item = combat.getItem(itemName, 'missilegear', actor);
-
-    if (!item) {
-        ui.notifications.warn(`${itemName} could not be found in the list of missile weapons for ${actor.name}.`);
-        return null;
-    }
+    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'missilegear');
 
     const rollData = {
         notesData: {
@@ -710,24 +657,23 @@ export async function missileAttackRoll(itemName, myActor = null) {
 }
 
 export async function injuryRoll(myActor = null, rollData = {}) {
-    const speaker = myActor instanceof Actor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
-    const actor = getActor(myActor, speaker);
-    if (!actor) {
+    const actorInfo = getActor({actor: myActor, item: null, speaker: ChatMessage.getSpeaker()});
+    if (!actorInfo) {
         ui.notifications.warn(`No actor for this action could be determined.`);
         return null;
     }
 
     rollData.notesData = {};
-    rollData.actor = actor;
-    rollData.speaker = speaker;
-    rollData.name = actor.token ? actor.token.name : actor.name;
+    rollData.actor = actorInfo.actor;
+    rollData.speaker = actorInfo.speaker;
+    rollData.name = actorInfo.actor.token ? actorInfo.actor.token.name : actorInfo.actor.name;
     rollData.notes = '';
 
-    const hooksOk = Hooks.call("hm3.preInjuryRoll", rollData, actor);
+    const hooksOk = Hooks.call("hm3.preInjuryRoll", rollData, actorInfo.actor);
     if (hooksOk) {
         const result = await DiceHM3.injuryRoll(rollData);
         if (result) {
-            callOnHooks("hm3.onInjuryRoll", actor, result, rollData);
+            callOnHooks("hm3.onInjuryRoll", actorInfo.actor, result, rollData);
         }
         return result;
     }
@@ -735,18 +681,7 @@ export async function injuryRoll(myActor = null, rollData = {}) {
 }
 
 export async function healingRoll(itemName, noDialog = false, myActor = null) {
-    const speaker = myActor instanceof Actor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
-    const actor = getActor(myActor, speaker);
-    if (!actor) {
-        ui.notifications.warn(`No actor for this action could be determined.`);
-        return null;
-    }
-
-    const item = combat.getItem(itemName, 'injury', actor);
-    if (!item) {
-        ui.notifications.warn(`${itemName} could not be found in the list of injuries for ${actor.name}.`);
-        return null;
-    }
+    const {actor, item, speaker} = await getItemAndActor(itemName, myActor, 'injury');
 
     const stdRollData = {
         type: 'healing',
@@ -784,9 +719,8 @@ export async function healingRoll(itemName, noDialog = false, myActor = null) {
 }
 
 export async function dodgeRoll(noDialog = false, myActor = null) {
-    const speaker = myActor instanceof Actor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
-    const actor = getActor(myActor, speaker);
-    if (!actor) {
+    const actorInfo = getActor({actor: myActor, item: null, speaker: ChatMessage.getSpeaker()});
+    if (!actorInfo) {
         ui.notifications.warn(`No actor for this action could be determined.`);
         return null;
     }
@@ -794,23 +728,23 @@ export async function dodgeRoll(noDialog = false, myActor = null) {
     const stdRollData = {
         type: 'dodge',
         label: `Dodge Roll`,
-        target: actor.system.dodge,
+        target: actorInfo.actor.system.dodge,
         notesData: {},
-        speaker: speaker,
+        speaker: actorInfo.speaker,
         fastforward: noDialog,
         notes: ''
     };
-    if (actor.isToken) {
-        stdRollData.token = actor.token.id;
+    if (actorInfo.actor.isToken) {
+        stdRollData.token = actorInfo.actor.token.id;
     } else {
-        stdRollData.actor = actor.id;
+        stdRollData.actor = actorInfo.actor.id;
     }
     
-    const hooksOk = Hooks.call("hm3.preDodgeRoll", stdRollData, actor);
+    const hooksOk = Hooks.call("hm3.preDodgeRoll", stdRollData, actorInfo.actor);
     if (hooksOk) {
         const result = await DiceHM3.d100StdRoll(stdRollData);
         if (result) {
-            callOnHooks("hm3.onDodgeRoll", actor, result, stdRollData);
+            callOnHooks("hm3.onDodgeRoll", actorInfo.actor, result, stdRollData);
         }
         return result;
     }
@@ -818,9 +752,8 @@ export async function dodgeRoll(noDialog = false, myActor = null) {
 }
 
 export async function shockRoll(noDialog = false, myActor = null) {
-    const speaker = myActor instanceof Actor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
-    const actor = getActor(myActor, speaker);
-    if (!actor) {
+    const actorInfo = getActor({actor: myActor, item: null, speaker: ChatMessage.getSpeaker()});
+    if (!actorInfo) {
         ui.notifications.warn(`No actor for this action could be determined.`);
         return null;
     }
@@ -830,25 +763,25 @@ export async function shockRoll(noDialog = false, myActor = null) {
     stdRollData = {
         type: 'shock',
         label: `Shock Roll`,
-        target: actor.system.endurance,
-        numdice: actor.system.universalPenalty,
+        target: actorInfo.actor.system.endurance,
+        numdice: actorInfo.actor.system.universalPenalty,
         notesData: {},
-        speaker: speaker,
+        speaker: actorInfo.speaker,
         fastforward: noDialog,
         notes: ''
     };
-    if (actor.isToken) {
-        stdRollData.token = actor.token.id;
+    if (actorInfo.actor.isToken) {
+        stdRollData.token = actorInfo.actor.token.id;
     } else {
-        stdRollData.actor = actor.id;
+        stdRollData.actor = actorInfo.actor.id;
     }
     
-    hooksOk = Hooks.call("hm3.preShockRoll", stdRollData, actor);
+    hooksOk = Hooks.call("hm3.preShockRoll", stdRollData, actorInfo.actor);
     if (hooksOk) {
         const result = await DiceHM3.d6Roll(stdRollData);
-        actor.runCustomMacro(result);
+        actorInfo.actor.runCustomMacro(result);
         if (result) {
-            callOnHooks("hm3.onShockRoll", actor, result, stdRollData);
+            callOnHooks("hm3.onShockRoll", actorInfo.actor, result, stdRollData);
         }
         return result;
     }
@@ -856,35 +789,34 @@ export async function shockRoll(noDialog = false, myActor = null) {
 }
 
 export async function stumbleRoll(noDialog = false, myActor = null) {
-    const speaker = myActor instanceof Actor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
-    const actor = getActor(myActor, speaker);
-    if (!actor) {
+    const actorInfo = getActor({actor: myActor, item: null, speaker: ChatMessage.getSpeaker()});
+    if (!actorInfo) {
         ui.notifications.warn(`No actor for this action could be determined.`);
         return null;
     }
 
     const stdRollData = {
         type: 'stumble',
-        label: `${actor.isToken ? actor.token.name : actor.name} Stumble Roll`,
-        target: actor.system.eph.stumbleTarget,
+        label: `${actorInfo.actor.isToken ? actorInfo.actor.token.name : actorInfo.actor.name} Stumble Roll`,
+        target: actorInfo.actor.system.eph.stumbleTarget,
         numdice: 3,
         notesData: {},
-        speaker: speaker,
+        speaker: actorInfo.speaker,
         fastforward: noDialog,
         notes: ''
     };
-    if (actor.isToken) {
-        stdRollData.token = actor.token.id;
+    if (actorInfo.actor.isToken) {
+        stdRollData.token = actorInfo.actor.token.id;
     } else {
-        stdRollData.actor = actor.id;
+        stdRollData.actor = actorInfo.actor.id;
     }
 
-    const hooksOk = Hooks.call("hm3.preStumbleRoll", stdRollData, actor);
+    const hooksOk = Hooks.call("hm3.preStumbleRoll", stdRollData, actorInfo.actor);
     if (hooksOk) {
         const result = await DiceHM3.d6Roll(stdRollData);
         if (result) {
-            actor.runCustomMacro(result);
-            callOnHooks("hm3.onStumbleRoll", actor, result, stdRollData);    
+            actorInfo.actor.runCustomMacro(result);
+            callOnHooks("hm3.onStumbleRoll", actorInfo.actor, result, stdRollData);    
         }
         return result;
     }
@@ -892,35 +824,34 @@ export async function stumbleRoll(noDialog = false, myActor = null) {
 }
 
 export async function fumbleRoll(noDialog = false, myActor = null) {
-    const speaker = myActor instanceof Actor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
-    const actor = getActor(myActor, speaker);
-    if (!actor) {
+    const actorInfo = getActor({actor: myActor, item: null, speaker: ChatMessage.getSpeaker()});
+    if (!actorInfo) {
         ui.notifications.warn(`No actor for this action could be determined.`);
         return null;
     }
 
     const stdRollData = {
         type: 'fumble',
-        label: `${actor.isToken ? actor.token.name : actor.name} Fumble Roll`,
-        target: actor.system.eph.fumbleTarget,
+        label: `${actorInfo.actor.isToken ? actorInfo.actor.token.name : actorInfo.actor.name} Fumble Roll`,
+        target: actorInfo.actor.system.eph.fumbleTarget,
         numdice: 3,
         notesData: {},
-        speaker: speaker,
+        speaker: actorInfo.speaker,
         fastforward: noDialog,
         notes: ''
     };
-    if (actor.isToken) {
-        stdRollData.token = actor.token.id;
+    if (actorInfo.actor.isToken) {
+        stdRollData.token = actorInfo.actor.token.id;
     } else {
-        stdRollData.actor = actor.id;
+        stdRollData.actor = actorInfo.actor.id;
     }
     
-    const hooksOk = Hooks.call("hm3.preFumbleRoll", stdRollData, actor);
+    const hooksOk = Hooks.call("hm3.preFumbleRoll", stdRollData, actorInfo.actor);
     if (hooksOk) {
         const result = await DiceHM3.d6Roll(stdRollData);
         if (result) {
-            actor.runCustomMacro(result);
-            callOnHooks("hm3.onFumbleRoll", actor, result, stdRollData);    
+            actorInfo.actor.runCustomMacro(result);
+            callOnHooks("hm3.onFumbleRoll", actorInfo.actor, result, stdRollData);    
         }
         return result;
     }
@@ -928,31 +859,30 @@ export async function fumbleRoll(noDialog = false, myActor = null) {
 }
 
 export async function genericDamageRoll(myActor = null) {
-    const speaker = myActor instanceof Actor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
-    const actor = getActor(myActor, speaker);
-    if (!actor) {
+    const actorInfo = getActor({actor: myActor, item: null, speaker: ChatMessage.getSpeaker()});
+    if (!actorInfo) {
         ui.notifications.warn(`No actor for this action could be determined.`);
         return null;
     }
 
     const rollData = {
         weapon: '',
-        data: actor,
-        speaker: speaker,
+        data: actorInfo.actor,
+        speaker: actorInfo.speaker,
         notesData: {},
         notes: ''
     };
-    if (actor.isToken) {
-        rollData.token = actor.token.id;
+    if (actorInfo.actor.isToken) {
+        rollData.token = actorInfo.actor.token.id;
     } else {
-        rollData.actor = actor.id;
+        rollData.actor = actorInfo.actor.id;
     }
     
-    const hooksOk = Hooks.call("hm3.preDamageRoll", rollData, actor);
+    const hooksOk = Hooks.call("hm3.preDamageRoll", rollData, actorInfo.actor);
     if (hooksOk) {
         const result = await DiceHM3.damageRoll(rollData);
         if (result) {
-            callOnHooks("hm3.onDamageRoll", actor, result, rollData);
+            callOnHooks("hm3.onDamageRoll", actorInfo.actor, result, rollData);
         }
         return result;
     }
@@ -960,41 +890,50 @@ export async function genericDamageRoll(myActor = null) {
 }
 
 export async function changeFatigue(newValue, myActor = null) {
-    const speaker = myActor instanceof Actor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
-    const actor = getActor(myActor, speaker);
-    if (!actor || !actor.isOwner) {
-        ui.notifications.warn(`You are not an owner of ${actor.name}, so you may not change fatigue.`);
-        return false;
+    const actorInfo = getActor({actor: myActor, item: null, speaker: ChatMessage.getSpeaker()});
+    if (!actorInfo) {
+        ui.notifications.warn(`No actor for this action could be determined.`);
+        return null;
     }
 
     const updateData = {};
     if (/^\s*[+-]/.test(newValue)) {
         // relative change
         const changeValue = parseInt(newValue, 10);
-        if (!isNaN(changeValue)) updateData['system.fatigue'] = Math.max(actor.system.fatigue + changeValue, 0);
+        if (!isNaN(changeValue)) updateData['system.fatigue'] = Math.max(actorInfo.actor.system.fatigue + changeValue, 0);
     } else {
         const value = parseInt(newValue, 10);
         if (!isNaN(value)) updateData['system.fatigue'] = value;
     }
     if (typeof updateData['system.fatigue'] !== 'undefined') {
-        await actor.update(updateData);
+        await actorInfo.actor.update(updateData);
     }
 
     return true;
 }
 
 export async function changeMissileQuanity(missileName, newValue, myActor = null) {
-    const speaker = myActor instanceof Actor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
-    const actor = getActor(myActor, speaker);
-    if (!actor.isOwner) {
-        ui.notifications.warn(`You are not an owner of ${actor.name}, so you may not change ${missileName} quantity.`);
-        return false;
+    myActor &&= myActor instanceof Actor ? myActor : await fromUuid(myActor);
+    const missile = await combat.getItem(missileName, 'missilegear', myActor);
+    const actorParam = {actor: myActor, item: null, speaker: ChatMessage.getSpeaker()};
+
+    if (missile?.type === 'missilegear') {
+
+        if (missile.parent) {
+            actorParam.actor = missile.parent;
+            actorParam.speaker = ChatMessage.getSpeaker({actor: missile.parent});
+        }
     }
 
-    const missile = combat.getItem(missileName, 'missilegear', actor);
+    const actorInfo = getActor(result, myActor);
+    if (!actorInfo) {
+        ui.notifications.warn(`No actor for this action could be determined.`);
+        return null;
+    }
+
     if (!missile) {
-        ui.notifications.warn(`${actor.name} does not have any missiles named ${missileName}.`);
-        return false;
+        ui.notifications.warn(`${missileName} could not be found in the list of missiles for ${actorInfo.actor.name}.`);
+        return null;
     }
 
     const updateData = {};
@@ -1008,28 +947,36 @@ export async function changeMissileQuanity(missileName, newValue, myActor = null
     }
 
     if (typeof updateData['system.quantity'] !== 'undefined') {
-        const item = actor.items.get(missile.id);
+        const item = actorInfo.actor.items.get(missile.id);
         await item.update(updateData);
     }
     return true;
 }
 
 export async function setSkillDevelopmentFlag(skillName, myActor = null) {
-    const speaker = myActor instanceof Actor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
-    const actor = getActor(myActor, speaker);
+    myActor &&= myActor instanceof Actor ? myActor : await fromUuid(myActor);
+    const skill = await combat.getItem(skillName, 'skill', myActor);
+    let speaker = myActor instanceof Actor ? ChatMessage.getSpeaker({actor: myActor}) : ChatMessage.getSpeaker();
+
+    if (skill?.type === 'skill') {
+        if (skill.parent) {
+            speaker = ChatMessage.getSpeaker({actor: skill.parent});
+        }
+    }
+
+    const actor = getActor(result, myActor);
     if (!actor) {
         ui.notifications.warn(`No actor for this action could be determined.`);
         return null;
     }
     
-    if (!actor.isOwner) {
-        ui.notifications.warn(`You are not an owner of ${actor.name}, so you may not set the skill development flag.`);
+    if (!skill) {
+        ui.notifications.warn(`${skillName} could not be found in the list of skills for ${actor.name}.`);
         return null;
     }
 
-    const skill = combat.getItem(skillName, 'skill', actor);
-    if (!skill) {
-        ui.notifications.warn(`${actor.name} does not have a skill named ${skillName}.`);
+    if (!actor.isOwner) {
+        ui.notifications.warn(`You are not an owner of ${actor.name}, so you may not set the skill development flag.`);
         return null;
     }
 
@@ -1054,7 +1001,7 @@ export async function weaponAttack(itemName = null, noDialog = false, myToken = 
 
     let weapon = null;
     if (itemName) {
-        weapon = combat.getItem(itemName, 'weapongear', combatant.actor);
+        weapon = await combat.getItem(itemName, 'weapongear', combatant.actor);
     }
 
     const hooksOk = Hooks.call("hm3.preMeleeAttack", combatant, targetToken, weapon);
@@ -1075,7 +1022,7 @@ export async function missileAttack(itemName = null, noDialog = false, myToken =
 
     let missile = null;
     if (itemName) {
-        missile = combat.getItem(itemName, 'missilegear', combatant.actor);
+        missile = await combat.getItem(itemName, 'missilegear', combatant.actor);
     }
 
     const hooksOk = Hooks.call("hm3.preMissileAttack", combatant, targetToken, missile);
@@ -1295,53 +1242,47 @@ function getUserTargetedToken(combatant) {
     return targetToken;
 }
 
-function getActor(actor, speaker) {
-    let resultActor = null;
-
-    // If actor is an object, we presume it is an Actor so we just return it
-    if (actor && typeof actor === 'object') {
-        resultActor = actor;
+function getActor({item, actor, speaker}={}) {
+    const result = {item, actor, speaker};
+    if (item?.actor) {
+        result.actor = item.actor;
+        result.speaker = ChatMessage.getSpeaker({actor: result.actor});
     } else {
-        if (!actor) {
-            // If actor was null, lets try to figure it out from the Speaker
-            if (!speaker) speaker = ChatMessage.getSpeaker();
-            if (speaker.token) {
-                const token = canvas.tokens.get(speaker.token)
-                resultActor = token.actor;
+        // If actor is an Actor, just return it
+        if (result.actor instanceof Actor) {
+            result.speaker ||= ChatMessage.getSpeaker({actor: result.actor});
+        } else {
+            if (!result.actor) {
+                // If actor was null, lets try to figure it out from the Speaker
+                result.speaker = ChatMessage.getSpeaker();
+                if (result.speaker?.token) {
+                    const token = canvas.tokens.get(result.speaker.token)
+                    result.actor = token.actor;
+                } else {
+                    result.actor = result.speaker?.actor;
+                }
+                if (!result.actor) {
+                    ui.notifications.warn(`No actor selected, roll ignored.`);
+                    return null;
+                }
+            } else {
+                result.actor = fromUuidSync(result.actor)
+                result.speaker = ChatMessage.getSpeaker({actor: result.actor});
             }
-            if (!resultActor) resultActor = game.actors.get(speaker.actor);
-            if (!resultActor) {
+        
+            if (!result.actor) {
                 ui.notifications.warn(`No actor selected, roll ignored.`);
                 return null;
             }    
-        } else {
-            // The actor must actually be either an Actor or Token id, or actor name
-            if (actor.startsWith('Actor$')) {
-                // We have a real actor id, so grab it from game.actors
-                resultActor = game.actors.get(actor.slice(6));
-            } else if (actor.startsWith('Token$')) {
-                // We have a token id, so grab it from canvas.tokens
-                const tokId = actor.slice(6);
-                const token = canvas.tokens.get(tokId);
-                resultActor = token.actor;
-            } else {
-                // This must be an actor name, grab it from game.actors by name
-                resultActor = game.actors.getName(actor);
-            }
         }
-    
-        if (!resultActor) {
-            ui.notifications.warn(`No actor selected, roll ignored.`);
-            return null;
-        }    
     }
 
-    if (!resultActor.isOwner) {
-        ui.notifications.warn(`You do not have permissions to control ${resultActor.name}.`);
+    if (!result.actor.isOwner) {
+        ui.notifications.warn(`You do not have permissions to control ${result.actor.name}.`);
         return null;
     }
 
-    return resultActor;
+    return result;
 }
 
 export function callOnHooks(hook, actor, result, rollData, item=null) {

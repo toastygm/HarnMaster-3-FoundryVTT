@@ -1,0 +1,37 @@
+{
+  "_id": "LIff6HDpqXppBwfA",
+  "name": "Violet Eye (I)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/divination.svg",
+  "effects": [],
+  "folder": "3TYjKHsSaszxaXv2",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A self-enchantment for divination. The enchantment allows the caster to ask one yes/no question of the GM (simulating the character has divined the answer). The enchantment never reveals arcane secrets, and cannot predict the future.</p><p>The success roll is always made secretly by the GM.  With MS, one piece of good information is learned. With CS; more detail is provided. CF causes the GM to mislead the caster, but does not normally cause misfire.</p><p>&nbsp;</p><p>Bonus Effect</p><table><tr><td style='width: 4em;'>CML60+</td><td>Caster may ask the GM a more complex question such as, “Where’s the nearest town?”</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI minutes (Trance)</p><p>Range: Self</p><p>Duration: One Question</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Savorya",
+    "level": 1,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284407783,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!LIff6HDpqXppBwfA"
+}

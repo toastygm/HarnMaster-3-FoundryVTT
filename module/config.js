@@ -22,6 +22,21 @@ HM3.skillTypes = ["Craft", "Physical", "Communication", "Combat", "Magic", "Ritu
 
 HM3.traitTypes = ["Physical", "Psyche"];
 
+HM3.ITEM_TYPE_LABEL = {
+    skill: {singular: 'Skill', plural: 'Skills'},
+    spell: {singular: 'Spell', plural: 'Spells'},
+    weapongear: {singular: 'Melee Weapon', plural: 'Melee Weapons'},
+    missilegear: {singular: 'Missile', plural: 'Missiles'},
+    armorgear: {singular: 'Armor', plural: 'Armor'},
+    miscgear: {singular: 'Misc Item', plural: 'Misc Items'},
+    containergear: {singular: 'Container', plural: 'Containers'},
+    injury: {singular: 'Injury', plural: 'Injuries'},
+    armorlocation: {singular: 'Armor Location', plural: 'Armor Locations'},
+    trait: {singular: 'Trait', plural: 'Traits'},
+    psionic: {singular: 'Psionic', plural: 'Psionics'},
+    incantation: {singular: 'Ritual Incantation', plural: 'Ritual Incantations'},
+};
+
 HM3.sunsigns = ['Ulandus', 'Ulandus-Aralius', 'Aralius', 'Aralius-Feniri', 'Feniri', 'Feniri-Ahnu',
     'Ahnu', 'Ahnu-Angberelius', 'Angberelius', 'Angberelius-Nadai', 'Nadai', 'Nadai-Hirin',
     'Hirin', 'Hirin-Tarael', 'Tarael', 'Tarael-Tai', 'Tai', 'Tai-Skorus', 'Skorus',

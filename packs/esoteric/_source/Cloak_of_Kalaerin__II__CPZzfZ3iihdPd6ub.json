@@ -1,0 +1,37 @@
+{
+  "_id": "CPZzfZ3iihdPd6ub",
+  "name": "Cloak of Kalaerin (II)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/wind.svg",
+  "effects": [],
+  "folder": "2JX6jkRSgMm48QyW",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A quasi-invisibility enchantment laid upon a single Lyahvi elemental object. The enchantment is useful if, for example, the caster wishes a focus to escape the notice of a search. Generally, the enchantment works by bending light about the object. The object’s tactile sensibility is unaffected.</p><p>The caster is not immune to the effect and must wait for the enchantment to expire before the item is visible.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML60+</td><td>Caster is immune to the effect and can see the object normally.</td></tr><tr><td style='width: 4em;'>CML70+</td><td>Caster may make all persons touched (while casting the enchantment) immune to the effect(s).</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Effect may be made tactile as well as visual.</td></tr><tr><td style='width: 4em;'>CML90+</td><td>Touch no longer required.  Range is CSI hexes.</td></tr></table><p>&nbsp;</p><p>Time: 35-CSI seconds</p><p>Range: Touch/CSI hexes at CML90+</p><p>Duration: CSI minutes</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Lyahvi",
+    "level": 2,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284362741,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!CPZzfZ3iihdPd6ub"
+}

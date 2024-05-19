@@ -1,0 +1,46 @@
+{
+  "_id": "mr7092he65wGIVxj",
+  "name": "Telepathy (F3)",
+  "type": "psionic",
+  "img": "systems/hm3/images/icons/svg/psionics.svg",
+  "effects": [],
+  "folder": "tDpiTQntA3rYW1PE",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "25-SI secs",
+    "description": "<p>The power to transmit thoughts or emotions to the mind of another individual (target). Transmission range is SI leagues, but clarity diminishes with range. The talent is invoked by concentrating on the thought/emotion for (15 &ndash; SI) &times; 2 seconds</p><p>The target is specified at the time transmission is attempted; the target&rsquo;s location does not need to be known by the invoker. The intended target must have a minimum Aura of 11, and is usually someone the invoker knows quite well (EML is reduced by 10&ndash;50 if this is not the case). Someone who receives an emotion will feel it&mdash;this can have an interesting effect.</p><p>If a person with the Sensitivity talent is near the target or the invoker at the time of transmission, they may receive the transmission along with, or instead of, the intended target.</p><p><strong>Psionic Episodes</strong>: Sharing dreams is very common. Broadcast of thought or emotion to nearby people can also occur.</p><p><strong>Misfire (CF)</strong>: Sending a transmission to the wrong person, releasing the wrong thought and/or emotion, etc.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "skillBase": {
+      "value": 0,
+      "formula": "@aur,@aur,@wil,Tarael,Tai,Skorus",
+      "isFormulaValid": true
+    },
+    "masteryLevel": 0,
+    "effectiveMasteryLevel": 0,
+    "improveFlag": false,
+    "fatigue": 3,
+    "ritual": {
+      "piety": 0
+    }
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284256178,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!mr7092he65wGIVxj"
+}

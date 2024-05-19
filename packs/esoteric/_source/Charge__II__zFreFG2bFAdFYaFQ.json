@@ -1,0 +1,37 @@
+{
+  "_id": "zFreFG2bFAdFYaFQ",
+  "name": "Charge (II)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/pentacle.svg",
+  "effects": [],
+  "folder": "g3J9Eik2awfBs91a",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A spell to recharge an enchanted artifact (see: Treasure 14). The caster must be attuned to the artifact.</p><p>The caster “installs” one (MS) or two (CS) charges per casting.</p><p>&nbsp;</p><h2>Bonus Effects</h2><p>(none)</p><p>&nbsp;</p><p>Time: 15-CSI minutes (Trance)</p><p>Range: Touch</p><p>Duration: None</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Neutral",
+    "level": 2,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284390936,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!zFreFG2bFAdFYaFQ"
+}

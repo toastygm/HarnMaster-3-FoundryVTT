@@ -1,0 +1,37 @@
+{
+  "_id": "I8dCxgwjl1sCBINx",
+  "name": "Eye of Kemdal (I)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/pentacle.svg",
+  "effects": [],
+  "folder": "g3J9Eik2awfBs91a",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A spell permitting the caster to survey the local environment for the nearest spatio-temporal discontinuity.  If the nearest discontinuity is within the spell’s Range, the caster learns the direction in which it lies and also its general type, namely a Barasi Point, Godstone, etc. With CS, the caster learns the distance to the discontinuity.</p><p>Eye of Kemdal is prone to disruption, and cannot work properly when cast within CSI hexes of a convocational sanctum, enchanted artifact, active spell, etc. An EML penalty of 10-30 should apply at GM discretion.</p><p>&nbsp;</p><p>Bonus Effect</p><table><tr><td style='width: 4em;'>CML70+</td><td>Caster may exclude the nearest discontinuity from the survey.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI minutes</p><p>Range: CSI miles</p><p>Duration: n/a</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Neutral",
+    "level": 1,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284390936,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!I8dCxgwjl1sCBINx"
+}

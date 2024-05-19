@@ -1,0 +1,46 @@
+{
+  "_id": "qTjoBuaj8bEZOkxL",
+  "name": "Sensitivity (F1)",
+  "type": "psionic",
+  "img": "systems/hm3/images/icons/svg/psionics.svg",
+  "effects": [],
+  "folder": "tDpiTQntA3rYW1PE",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "35-SI secs",
+    "description": "<p>Sensitivity is subject to Passive Triggering (psionics 4) and may be used actively to scan for magical or psionic residue/effects. EML may be adjusted to reflect the source and strength of any such effects. Maximum range at which a spell/artifact/talent can be detected is usually SI yards.</p><p>Sensitivity can also be used to attune (treasure 12) to magical artifacts or effects. Once attunement is achieved, it usually lasts as long as the invoker stays within range of the artifact/effect.</p><p><strong>Psionic Episodes</strong>: Shivers associated with feelings of Deja vu are common. Sometimes physical discomfort must be endured or a telepathic message intended for someone else is received.</p><p><strong>Misfire (CF)</strong>: False or random information is given to the invoker.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "skillBase": {
+      "value": 0,
+      "formula": "@aur,@aur,@wil,Tarael,Tai",
+      "isFormulaValid": true
+    },
+    "masteryLevel": 0,
+    "effectiveMasteryLevel": 0,
+    "improveFlag": false,
+    "fatigue": 1,
+    "ritual": {
+      "piety": 0
+    }
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284256178,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!qTjoBuaj8bEZOkxL"
+}

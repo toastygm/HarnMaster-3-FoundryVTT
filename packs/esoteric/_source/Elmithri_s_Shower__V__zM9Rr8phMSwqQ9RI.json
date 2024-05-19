@@ -1,0 +1,37 @@
+{
+  "_id": "zM9Rr8phMSwqQ9RI",
+  "name": "Elmithri’s Shower (V)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/siem.png",
+  "effects": [],
+  "folder": "vEue0eMD5ey8uFXc",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI minutes+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> RSI square miles+</td><td><b>Duration:</b> RSI Hours</td></tr></table><p>Creates a gentle shower over Range for Duration. With CS, the shower can become snow, hail, or just heavy rain.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Siem",
+    "circle": 5,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284313055,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!zM9Rr8phMSwqQ9RI"
+}

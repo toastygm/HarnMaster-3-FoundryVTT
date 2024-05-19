@@ -1,0 +1,37 @@
+{
+  "_id": "L5ww7wnpITgqiOcJ",
+  "name": "Dream of Galega (IV)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/tree.svg",
+  "effects": [],
+  "folder": "c3CaJqCvMmvbwM1T",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>Causes a person or animal to fall into a deep slumber that promotes healing. The subject must be touched by the caster in order to lay the enchantment. Dream of Galega cannot be a self-enchantment.</p><p>If cast successfully, a victim (unwilling subject) tests Will x5 to determine the effect of the enchantment. A willing subject chooses MF or CF.</p><p>&nbsp;</p><p>Test     Effect on Victim</p><p>CF      Falls asleep for 2d6 hours</p><p>MF       Falls asleep for 1d6 hours</p><p>MS       Drowsy for 1d6 rounds (-10 Special Penalty)</p><p>CS      Unaffected.</p><p>&nbsp;</p><p>The subject makes one healing roll for each injury/ ailment/disease (as applicable) per hour asleep.</p><p>The enchantment may not be cast on the same subject more than once per day.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML70+</td><td>Touch no longer required.</td></tr></table><p>&nbsp;</p><p>Range is CSI hexes.</p><p>&nbsp;</p><p>Time: 25-CSI seconds</p><p>Range: Touch/CSI hexes at CML70+</p><p>Duration: See table above</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Fyvria",
+    "level": 4,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284358457,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!L5ww7wnpITgqiOcJ"
+}

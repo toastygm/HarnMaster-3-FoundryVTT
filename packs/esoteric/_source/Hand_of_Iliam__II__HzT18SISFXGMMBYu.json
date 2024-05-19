@@ -1,0 +1,37 @@
+{
+  "_id": "HzT18SISFXGMMBYu",
+  "name": "Hand of Iliam (II)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/tree.svg",
+  "effects": [],
+  "folder": "c3CaJqCvMmvbwM1T",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>An enchantment which prevents one injury/ailment from infection, or from getting worse if already infected.  The enchantment does not promote healing, but stabilizes the patient for Duration. Touch is required. The basic enchantment cannot halt blood loss.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML60+</td><td>Enchantment may be used to stop the flow of blood from one bleeding wound. After Duration, the bleeding resumes at its previous rate.</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Enchantment may be simultaneously laid on all injuries/ailments of a person/animal.</td></tr></table><p>&nbsp;</p><p>Time: 25-CSI seconds</p><p>Range: Touch</p><p>Duration: CSI hours</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Fyvria",
+    "level": 2,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284358457,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!HzT18SISFXGMMBYu"
+}

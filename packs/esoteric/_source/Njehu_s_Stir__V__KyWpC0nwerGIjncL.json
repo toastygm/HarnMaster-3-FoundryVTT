@@ -1,0 +1,37 @@
+{
+  "_id": "KyWpC0nwerGIjncL",
+  "name": "Njehu’s Stir (V)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/sarajin.png",
+  "effects": [],
+  "folder": "gTMPd6VAWFd8nfM2",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 35−RSI seconds+</td><td><b>Ritual:</b> Chant/Salt Water</td></tr><tr><td><b>Range:</b> RML feet+</td><td><b>Duration:</b> 1 (MS); 3 (CS) hours</td></tr></table><p>Cleric stirs a pail of salt water while chanting. When dumped into the sea, a maelstrom with a radius of RML feet develops in one minute and lasts for Duration. The maelstrom will suck down any swimmer caught in its current, and the pilot of any vessel nearby must roll vs Piloting, to avoid the same fate.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Sarajin",
+    "circle": 5,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284299721,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!KyWpC0nwerGIjncL"
+}

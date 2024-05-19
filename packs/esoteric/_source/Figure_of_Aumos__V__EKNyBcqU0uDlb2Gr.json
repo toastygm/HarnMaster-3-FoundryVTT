@@ -1,0 +1,37 @@
+{
+  "_id": "EKNyBcqU0uDlb2Gr",
+  "name": "Figure of Aumos (V)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/water.svg",
+  "effects": [],
+  "folder": "gtGO9IFu3Gtp6l3r",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A self-enchantment which causes the caster to turn to water and flow away. The conversion to water takes the first ten seconds of Duration. While enchanted, the caster is unconscious, and acts as normal water except the entire volume remains contiguous.</p><p>The caster reassembles after 6d6 days (MS) or 2d6 days (CS) most often in a lake or sea. The caster’s possessions and clothing are left behind.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML70+</td><td>Enchantment may be laid upon a willing recipient. Touch is required.</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Enchantment may be laid upon an unwilling victim who fails a test against Will x4 (MS casting) or Will x2 (CS casting). Touch is required.</td></tr></table><p>&nbsp;</p><p>Time: 35-CSI seconds</p><p>Range: Self/Touch at CML70+</p><p>Duration: 6d6 days (CS: 2d6 days)</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Odivishe",
+    "level": 5,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284398122,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!EKNyBcqU0uDlb2Gr"
+}

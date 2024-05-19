@@ -1,0 +1,37 @@
+{
+  "_id": "WA7sLUXI1pXPYcK4",
+  "name": "Cloak of Klyss (III)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/morgath.png",
+  "effects": [],
+  "folder": "4u6Psw2rEtLt9ZMS",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Self/Touch+</td><td><b>Duration:</b> RSI hours</td></tr></table><p>Permits the subject to detect a Shadow of Bukrai and enter it with no penalty or risk for Duration. Inside the Shadow, the invoker’s body is semi-translucent and his bones are faintly visible where not obscured by clothing. The ritual is used to protect living clergy from the Shadow during ceremonies attended by Amorvrin, etc.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Morgath",
+    "circle": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284281965,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!WA7sLUXI1pXPYcK4"
+}

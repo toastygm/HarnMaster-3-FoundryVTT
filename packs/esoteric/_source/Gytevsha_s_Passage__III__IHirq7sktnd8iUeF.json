@@ -1,0 +1,37 @@
+{
+  "_id": "IHirq7sktnd8iUeF",
+  "name": "Gytevsha’s Passage (III)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/naveh.png",
+  "effects": [],
+  "folder": "J8M3FXoJSUHr5EYi",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI secs+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> RSI feet+</td><td><b>Duration:</b> One skill use</td></tr></table><p>Gives insight into the type of mechanism inside a lock, and a bonus to Lockcraft: MS +10 or CS +30 for one skill use.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Naveh",
+    "circle": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284286859,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!IHirq7sktnd8iUeF"
+}

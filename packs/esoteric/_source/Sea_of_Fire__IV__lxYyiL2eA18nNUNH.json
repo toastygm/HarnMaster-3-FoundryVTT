@@ -1,0 +1,37 @@
+{
+  "_id": "lxYyiL2eA18nNUNH",
+  "name": "Sea of Fire (IV)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/fire.svg",
+  "effects": [],
+  "folder": "aqY5F35ewokEjo5C",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>An enchantment laid upon a large area to cause it to ignite and burn rapidly with mundane fire. The enchantment may be laid upon any fuel, such as dry grass, pool of oil, etc. The quality and amount of fuel may (GM discretion) limit Duration. The fire may spread to adjacent areas. The caster is well advised to take note of the wind and topography.</p><p>The ground area of the effect is centered on a pre- designated (in range) spot. The area is circular and has a maximum radius of CSI x5 hexes. The caster is not immune to the fire.</p><p>Creatures in the sea of fire are subject (usually from the waist down) to burns of impact 2d6 (with MS) or 3d6 (with CS) per 10 seconds spent in the area. At GM discretion, smoke inhalation may require a shock roll after one minute.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML70+</td><td>Caster may limit the fire to the designated area; it will not spread afterwards unless the caster so allows.</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Range increases to CSI x10 hexes. Radius of the Sea is unchanged.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI seconds</p><p>Range: CSI x5 hexes/doubled at CML80+</p><p>Duration: CSI rounds (or until fuel is exhausted)</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Peleahn",
+    "level": 4,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284402933,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!lxYyiL2eA18nNUNH"
+}

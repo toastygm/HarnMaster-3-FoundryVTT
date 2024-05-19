@@ -1,0 +1,37 @@
+{
+  "_id": "RaoAOSU2YGSQToEi",
+  "name": "Esten’s Mirror (IV)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/pentacle.svg",
+  "effects": [],
+  "folder": "g3J9Eik2awfBs91a",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>An enchantment to create a major artifact by “investing” some of the caster’s Will.</p><p>The caster may invest up to CSI points of Will in the artifact. The amount must be declared before casting. For each point of Will invested:</p><p>CS: Ego is 1d8 per Will point.</p><p>MS: Ego is 1d6 per Will point.</p><p>MF: Spell aborted.</p><p>CF: Artifact destroyed; invested Will is permanently lost.</p><p>Example: if a caster invests three points of Will, the artifact has an Ego of 3d6 with MS, or 3d8 with CS.</p><p>If attuned to the artifact, the caster’s Will is normal, but is otherwise at the reduced level. That is, a character with a Will of 13, who invests three points, has a Will of 13 while attuned to the artifact, but a reduced Will of 10 if not attuned. If the artifact is destroyed, the invested Will points are permanently forfeit.</p><p>&nbsp;</p><p>Duration is Permanent if the enchantment is laid when the artifact is first created; otherwise, Duration is Indefine.</p><p>&nbsp;</p><h2>Bonus Effects</h2><p>&nbsp;</p><table><tr><td style='width: 4em;'>CML70+</td><td>Caster may install a Morality no more than three points higher/lower than his own.</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Caster may give the artifact a Purpose. See Treasure 15 for effect.</td></tr><tr><td style='width: 4em;'>CML90+</td><td>If the enchantment is Indefinite the caster (only) may terminate Esten’s Mirror with a successful “recasting,” thereby recovering the invested Will points. CF on this casting gives permanent loss.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI hours</p><p>Range: Touch</p><p>Duration: Indefinite/Permanent (see above)</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Neutral",
+    "level": 4,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284390936,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!RaoAOSU2YGSQToEi"
+}

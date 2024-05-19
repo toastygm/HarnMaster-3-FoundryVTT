@@ -1,0 +1,37 @@
+{
+  "_id": "HLvgDuejPcCh0J7l",
+  "name": "Dispell (I)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/pentacle.svg",
+  "effects": [],
+  "folder": "g3J9Eik2awfBs91a",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A spell to remove an enchantment. Dispell cannot counter a spell currently being cast, only existing magic effects.</p><p>With the basic spell, the caster must be able to cast the target enchantment (or something very similar), and only Temporary enchantments can be dispelled.</p><p>The success roll is modified by ten (10) times the complexity of the target spell, ward, etc. This is in additio to the normal five (5) point penalty for a first level spell.  For example, to remove a third level enchantment, EML is -30 for the target spell and -5 for Dispel for a total of -35.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML60+</td><td>Unknown enchantments may be dispelled.</td></tr></table><p>&nbsp;</p><table><tr><td style='width: 4em;'>CML80+</td><td>Indefinite enchantments may be dispelled.</td></tr></table><p>&nbsp;</p><p>Note 1: Critical Failure when casting Dispell might make the target enchantment misfire.</p><p>Note 2: A Permanent enchantment can never be dispelled.</p><p>&nbsp;</p><p>Time: 25-CSI seconds</p><p>Range: CSI hexes to target enchantment</p><p>Duration: n/a</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Neutral",
+    "level": 1,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284390936,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!HLvgDuejPcCh0J7l"
+}

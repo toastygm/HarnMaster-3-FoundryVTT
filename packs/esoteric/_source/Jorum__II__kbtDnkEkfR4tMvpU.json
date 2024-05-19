@@ -1,0 +1,37 @@
+{
+  "_id": "kbtDnkEkfR4tMvpU",
+  "name": "Jorum (II)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/pentacle.svg",
+  "effects": [],
+  "folder": "g3J9Eik2awfBs91a",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A major/minor artifact power installed in an object to enable it to hold and store raw Principle. The enchantment creates a neutral Jorum which can be filled with the Principle of any convocation to which the caster is attuned.  A Jorum holds sufficient Principle to power any one spell of the appropriate convocation.</p><p>If installed as a major power, a Jorum “occupies” th (3) points of Ego/Will. If installed as a minor power, it cannot be combined with any other enchantment. Duration is Permanent if the power is installed when the artifact is made/grown; otherwise, it is Indefinite.</p><p>The existence of a Jorum does not mean it actually contains any Principle. To fill a Jorum, a mage simply casts Jorum again, but uses the CML of the convocation to be stored. EML is still modified by Jorum complexity (-10).</p><p>A Jorum containing appropriate Principle is required for the attunement process to each new convocation.  Another mage from the desired convocation will have to fill the Jorum.</p><p>&nbsp;</p><h2>Bonus Effects</h2><p>Note: Principle stored in a Jorum is normally used to power a spell. It can, however, simply be released into the mundane world. This is very dangerous, but can create an interesting “diversion” provided the caster can effec a quick (preferably simultaneous) departure to avoid the consequences.</p><p>&nbsp;</p><p>Time: 15-CSI hours</p><p>Range: Touch</p><p>Duration: Indefinite/Permanent (see above)</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Neutral",
+    "level": 2,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284390936,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!kbtDnkEkfR4tMvpU"
+}

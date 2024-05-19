@@ -1,0 +1,46 @@
+{
+  "_id": "v4dlTLykzShPAfqp",
+  "name": "Transference (F4)",
+  "type": "psionic",
+  "img": "systems/hm3/images/icons/svg/psionics.svg",
+  "effects": [],
+  "folder": "tDpiTQntA3rYW1PE",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "25-SI secs",
+    "description": "<p>The ability to detect and employ Barasi Points* to transfer the invoker from one world to another. Objects or living entities within Aura inches of the invoker&rsquo;s skin may also be transferred. Less skilled users often lose things on the way.</p><p>The talent is fairly common among the older bloodlines of the Sindarin, but otherwise rare. The invoker does not necessarily know where the destination will be, although it is always a similar environment.</p><p><strong>Psionic Episodes</strong>: Headaches and dizziness, and rare bouts of semi-translucence, especially near Barasi Points.*</p><p><strong>Misfire (CF)</strong>: Invoker may arrive at an unexpected destination, most often on Yashain.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "skillBase": {
+      "value": 0,
+      "formula": "@aur,@aur,@wil,Tarael,Tai",
+      "isFormulaValid": true
+    },
+    "masteryLevel": 0,
+    "effectiveMasteryLevel": 0,
+    "improveFlag": false,
+    "fatigue": 4,
+    "ritual": {
+      "piety": 0
+    }
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284256178,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!v4dlTLykzShPAfqp"
+}

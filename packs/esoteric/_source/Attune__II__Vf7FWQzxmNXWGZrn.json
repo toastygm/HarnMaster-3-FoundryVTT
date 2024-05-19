@@ -1,0 +1,37 @@
+{
+  "_id": "Vf7FWQzxmNXWGZrn",
+  "name": "Attune (II)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/pentacle.svg",
+  "effects": [],
+  "folder": "g3J9Eik2awfBs91a",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A spell to create a bond of affinity between the caster and an enchanted artifact. Attune helps to control such an artifact, but does not provide “factual” information about it. The spell is not the only way to achieve artifact attunement.</p><p>Once attunement is achieved subsequent attempts at manipulating the artifact are enhanced. This is a highly variable effect. See Attunement (Treasure 12).</p><p>Attunement continues until mental linking is broken.  Mental linking is facilitated by physical proximity. If the artifact and the attuner are separated over time/distance, the relationship almost certainly terminates.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML60+</td><td>Touch no longer required.  Range is CSI hexes.</td></tr><tr><td style='width: 4em;'>CML90+</td><td>Upon attuning, the caster obtains some information about the object.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI seconds</p><p>Range: Touch/CSI hexes at CML60+</p><p>Duration: Indefinite (or until contact is broken).</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Neutral",
+    "level": 2,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284390936,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!Vf7FWQzxmNXWGZrn"
+}

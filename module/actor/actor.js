@@ -133,8 +133,8 @@ export class HarnMasterActor extends Actor {
      * @returns an armorlocation ItemData
      */
     static _setupLocation(locName, templateName) {
-        const armorLocationData = foundry.utils.deepClone(game.system.model.Item.armorlocation);
-        mergeObject(armorLocationData, HM3.injuryLocations[templateName])
+        const armorLocationData = foundry.utils.deepClone(game.model.Item.armorlocation);
+        foundry.utils.mergeObject(armorLocationData, HM3.injuryLocations[templateName])
         return { name: locName, type: 'armorlocation', system: armorLocationData };
     }
 
@@ -1111,7 +1111,7 @@ export class HarnMasterActor extends Actor {
         }
 
         // Expand the set of final overrides
-        mergeObject(this.overrides, foundry.utils.expandObject(overrides));
+        foundry.utils.mergeObject(this.overrides, foundry.utils.expandObject(overrides));
     }
 
     /**

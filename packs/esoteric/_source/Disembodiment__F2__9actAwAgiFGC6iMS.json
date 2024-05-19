@@ -1,0 +1,46 @@
+{
+  "_id": "9actAwAgiFGC6iMS",
+  "name": "Disembodiment (F2)",
+  "type": "psionic",
+  "img": "systems/hm3/images/icons/svg/psionics.svg",
+  "effects": [],
+  "folder": "tDpiTQntA3rYW1PE",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>The ability to detach the ethereal spirit from the body, which is left in a state of metabolic suspension. The disembodied spirit is referred to as an astral entity. Information about the abilities of astral entities is in HârnMaster Religion.</p><p>It is difficult to remain in a disembodied state for long. The talent lasts for ML&times;30 seconds, after which the astral entity instantly returns to its body (even if it does not want to return). If the body is vacant when the astral entity returns, it reunites with its body and a Shock Roll is then made. If the body has been occupied by another ethereal while the astral entity was away, Mental Conflict occurs (see SkillS 23).</p><p>Disembodiment is achieved by making one&rsquo;s body very relaxed (somewhat similar to how one falls asleep). The time needed to invoke the talent is (15 &ndash; SI) minutes.</p><p>Psionic Episodes: Sleepwalking, dreams of floating through space, various &ldquo;altered mental states,&rdquo; Jamais vu, lightheadedness, peculiar shivers, dizziness, or a feeling of being watched.</p><p>Misfire (CF): Extreme weakness, dizziness, disorientation, and loss of balance. Sometimes the invoker simply falls asleep.</p>\n\n\n",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "skillBase": {
+      "value": null,
+      "formula": "@aur, @aur, @wil, Hirin:1, Nadai:1",
+      "isFormulaValid": true
+    },
+    "masteryLevel": 0,
+    "effectiveMasteryLevel": 0,
+    "improveFlag": false,
+    "fatigue": 2,
+    "ritual": {
+      "piety": 0
+    }
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284256178,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!9actAwAgiFGC6iMS"
+}

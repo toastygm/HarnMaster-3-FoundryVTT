@@ -1,0 +1,37 @@
+{
+  "_id": "Xj51m00Yj4yXWTEt",
+  "name": "Beam of Nolar (IV)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/wind.svg",
+  "effects": [],
+  "folder": "2JX6jkRSgMm48QyW",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A spell to cause a beam of blinding, burning light to issue from the caster’s hand at a specific target within CSI hexes. The beam acts as a High Velocity (Dodge 50%) missile weapon with Fire impact of:</p><p>MS: CSI +1d6</p><p>CS: CSI +3d6</p><p>&nbsp;</p><p>The beam will be refracted/reflected as would ordinary light, and may be weakened or eliminated by darkness spells, etc. Armour and clothing reduce fire impact as normal.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML60+</td><td>Beam may originate from a Lyahvi elemental object within CSI hexes, line of sight.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI seconds</p><p>Range: CSI hexes</p><p>Duration: None</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Lyahvi",
+    "level": 4,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284362741,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!Xj51m00Yj4yXWTEt"
+}

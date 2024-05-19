@@ -1,0 +1,19 @@
+{
+  "name": "Odivishe",
+  "type": "Item",
+  "folder": "PR46ib7VZ7pTTkWv",
+  "_id": "gtGO9IFu3Gtp6l3r",
+  "sorting": "a",
+  "sort": -75000,
+  "flags": {},
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284398080,
+    "modifiedTime": 1689285083780,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "color": null,
+  "_key": "!folders!gtGO9IFu3Gtp6l3r"
+}

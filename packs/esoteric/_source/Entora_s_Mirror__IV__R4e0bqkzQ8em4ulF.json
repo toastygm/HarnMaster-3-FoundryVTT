@@ -1,0 +1,37 @@
+{
+  "_id": "R4e0bqkzQ8em4ulF",
+  "name": "Entora’s Mirror (IV)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/wind.svg",
+  "effects": [],
+  "folder": "2JX6jkRSgMm48QyW",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A spell that projects a two-dimensional image of an object to a remote location. The image is a “snapshot” of the object and will not normally change unless the object is destroyed, in which case the image vanishes.</p><p>With MS, the image is translucent; with CS, it is sharp and clear. The spell works best on simple objects/ images—more complex items should reduce EML.</p><p>With the basic spell, the object must be held by the caster and the image cannot be projected beyond good line of sight within CSI hexes.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML50+</td><td>Line of Sight to image no longer required, but Range is still CSI hexes.</td></tr><tr><td style='width: 4em;'>CML60+</td><td>Range increases to CSI miles.</td></tr><tr><td style='width: 4em;'>CML70+</td><td>Image now a 3–dimensional hologram.</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Image may be more closely linked to its object--it will move as the object moves, etc.</td></tr><tr><td style='width: 4em;'>CML90+</td><td>A single image attribute, such as size or</td></tr></table><p>color, may be varied slightly.</p><p>&nbsp;</p><p>Time: 35-CSI seconds</p><p>Range: Touch (to object)/CSI hexes (to image)</p><p>Duration: CSI minutes</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Lyahvi",
+    "level": 4,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284362741,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!R4e0bqkzQ8em4ulF"
+}

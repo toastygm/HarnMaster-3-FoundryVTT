@@ -1,0 +1,19 @@
+{
+  "name": "Skills",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "YlfJeB6S29hD769f",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284843915,
+    "modifiedTime": 1689285072071,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "_key": "!folders!YlfJeB6S29hD769f"
+}

@@ -1,0 +1,37 @@
+{
+  "_id": "PwIiQfETpO46JzyW",
+  "name": "Spirit of Shalka (III)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/sarajin.png",
+  "effects": [],
+  "folder": "gTMPd6VAWFd8nfM2",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Silent Prayer/Sled</td></tr><tr><td><b>Range:</b> Touch+</td><td><b>Duration:</b> 4 (MS); 12 (CS) hours.</td></tr></table><p>Blesses a sled for Duration. The sled will move at double its normal speed. If the ritual is accompanied by the slaughter of one reindeer, the effect will last for twice as long. Draft animals (dogs or reindeer) are required.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Sarajin",
+    "circle": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284299721,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!PwIiQfETpO46JzyW"
+}

@@ -1,0 +1,37 @@
+{
+  "_id": "LDtrpKMyozi0oy9R",
+  "name": "Focus (III)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/pentacle.svg",
+  "effects": [],
+  "folder": "g3J9Eik2awfBs91a",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>An enchantment to create a focus artifact of a chosen convocation. The caster must be attuned to that convocation. The caster is instinctively aware of the direction to a focus if separated from it.</p><p>Focus installs a major or minor power in an artifact.  If installed as a major power, Focus occupies three (3) points of Ego/Will. If installed as a minor power, it cannot be combined with any other enchantment. Duration is Permanent if the power is installed when the artifact is made/grown; otherwise, it is Indefinite.</p><p>The value of a focus depends on casting success and the CSI of the chosen convocation:</p><p>MS = CSI          CS = CSI x2</p><p>Example: a mage with Neutral CML 50 has a Focus EML of 50-15=35. The 15 point penalty is for the complexity level of Focus. The mage wishes to create a Jmorvi focus.  With MS, and a Jmorvi CSI 6, a Jmorvi Focus +6 is created.</p><p>To use a Focus, the caster must be in direct skin contact. A focus adds its value to spell EMLs of the same convocation. That is, a Jmorvi Focus +6 provides a bonus of +6 to all Jmorvi spells.</p><p>Mages can re-enchant their foci of Indefinite Duration, raising them to a higher value with a CS casting or when CSI improves. Foci of Permanent Duration cannot be re- enchanted. CF dispells the original enchantment.</p><p>&nbsp;</p><p>Bonus Effect</p><table><tr><td style='width: 4em;'>CML80+</td><td>A caster attuned to all convocations has the option to create a Rainbow Focus. This artifact enhances all magic equally. Focus value is MS=CSI/2 or CS=CSI (50% normal).</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI hours</p><p>Range: Touch</p><p>Duration: Indefinite/Permanent (see above)</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Neutral",
+    "level": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284390936,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!LDtrpKMyozi0oy9R"
+}

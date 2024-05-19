@@ -1,0 +1,19 @@
+{
+  "name": "Lyahvi",
+  "type": "Item",
+  "folder": "PR46ib7VZ7pTTkWv",
+  "_id": "2JX6jkRSgMm48QyW",
+  "sorting": "a",
+  "sort": -100000,
+  "flags": {},
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284362703,
+    "modifiedTime": 1689285083780,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "color": null,
+  "_key": "!folders!2JX6jkRSgMm48QyW"
+}

@@ -1,0 +1,37 @@
+{
+  "_id": "eBo5aVI3U5VcHjsp",
+  "name": "Barl’s Cloak (VI)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/anvil.svg",
+  "effects": [],
+  "folder": "dILaYsjczUReYHlC",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A self-enchantment which toughens the caster’s skin to protect like plate armour, except where skin is absent such as the eyes or any open wound. The enchanted skin stiffens as the caster is struck but otherwise retains its normal qualities. The skin assumes a slight blue-black color while the enchantment is in place.</p><p>The enchantment is active only when the caster is struck by a weapon and does not allow the wearer to strike with an iron fist.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML60+</td><td>Enchantment may be laid upon a willing subject. Touch is required.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI seconds</p><p>Range: Self/Touch at CML 60+</p><p>Duration: CSI minutes</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Jmorvi",
+    "level": 6,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284381758,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!eBo5aVI3U5VcHjsp"
+}

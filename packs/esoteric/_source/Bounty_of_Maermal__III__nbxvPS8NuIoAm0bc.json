@@ -1,0 +1,37 @@
+{
+  "_id": "nbxvPS8NuIoAm0bc",
+  "name": "Bounty of Maermal (III)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/peoni.png",
+  "effects": [],
+  "folder": "vgrw7aVTemgPWZxh",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> Self/Touch+</td><td><b>Duration:</b> One skill use</td></tr></table><p>Enhances the subject’s agricultural or wilderness skills for one skill use: MS +20, CS +50.</p><p>The bonus, at the cleric’s option, is applied to one of Agriculture, Animalcraft, Fishing, Foraging, Herblore, Survival, or Tracking skills. Failure has no effect.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Peoni",
+    "circle": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284294673,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!nbxvPS8NuIoAm0bc"
+}

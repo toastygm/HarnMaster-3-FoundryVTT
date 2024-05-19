@@ -1,0 +1,37 @@
+{
+  "_id": "dUq7sZzZkqV31RKY",
+  "name": "Ablarin’s Field (I)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/wind.svg",
+  "effects": [],
+  "folder": "2JX6jkRSgMm48QyW",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A spell to generate semi-audible (white) noise to muffle or blanket other noises. The basic spell will prevent anyone within its field from hearing quiet noises, such as normal footsteps or subdued conversation.</p><p>The white noise is itself detectable by normal senses: test Hearing x5 (MS casting) or Hearing x3 (CS casting).</p><p>The field is sphere centered on the caster’s head or focus, CSI hexes in radius. The field is mobile with the root object. The caster is not immune to the effect.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML50+</td><td>Field is harder to detect. Test Hearing x4 (MS) or Hearing x2 (CS).</td></tr><tr><td style='width: 4em;'>CML60+</td><td>Field blankets loud noises such as shouting, battle noise, etc.</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Field may be rooted to an inanimate object instead of the caster’s head/focus.</td></tr><tr><td style='width: 4em;'>CML90+</td><td>Field blankets all noise short of major explosions.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI rounds</p><p>Range: Sphere, CSI hexes radius</p><p>Duration: CSI rounds</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Lyahvi",
+    "level": 1,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284362741,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!dUq7sZzZkqV31RKY"
+}

@@ -1,0 +1,37 @@
+{
+  "_id": "B4FxQOdY92ZmCW0i",
+  "name": "Passage of Chabar (VI)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/tree.svg",
+  "effects": [],
+  "folder": "c3CaJqCvMmvbwM1T",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A self-enchantment to allow the caster to &quot;ooze&quot; through stone, earth, or wood, but not forged metal or enchanted objects. With the basic enchantment, only the caster's naked body is affected.</p><p>Speed of penetration varies according to the substance, and is expressed as a percentage of the caster's Move attribute:</p><p>Earth 50% Move</p><p>Wood 25% Move</p><p>Stone 10% Move</p><p>&nbsp;</p><p>The obstacle must be traversed before Duration expires or else a character may be buried alive. Entities undergoing Passage of Chabar are often unnerved by the experience.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML50+</td><td>Enchantment may include organic materials (such as clothes) within one foot of the caster's skin.</td></tr><tr><td style='width: 4em;'>CML70+</td><td>Enchantment may include up to CSI living entities in physical contact with the caster.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI minutes</p><p>Range: Self/Touch CSI subjects at CML70+</p><p>Duration: CSI rounds</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Fyvria",
+    "level": 6,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284358457,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!B4FxQOdY92ZmCW0i"
+}

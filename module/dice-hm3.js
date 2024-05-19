@@ -49,7 +49,7 @@ export class DiceHM3 {
         // Prepare for Chat Message
         const chatTemplate = 'systems/hm3/templates/chat/standard-test-card.html';
 
-        const notesData = mergeObject(rollData.notesData, {
+        const notesData = foundry.utils.mergeObject(rollData.notesData, {
             actor: speaker.alias,
             target: rollData.target,
             modifier: rollData.modifier,
@@ -190,7 +190,7 @@ export class DiceHM3 {
         // Prepare for Chat Message
         const chatTemplate = 'systems/hm3/templates/chat/standard-test-card.html';
 
-        const notesData = mergeObject(rollData.notesData, {
+        const notesData = foundry.utils.mergeObject(rollData.notesData, {
             actor: speaker.alias,
             target: rollData.target,
             roll: roll.rollObj.total,
@@ -370,7 +370,7 @@ export class DiceHM3 {
         // Prepare for Chat Message
         const chatTemplate = 'systems/hm3/templates/chat/injury-card.html';
 
-        const chatTemplateData = mergeObject({
+        const chatTemplateData = foundry.utils.mergeObject({
             title: `${rollData.actor.token ? rollData.actor.token.name : rollData.actor.name} Injury`,
             visibleActorId: rollData.actor.id
         }, result);
@@ -412,27 +412,30 @@ export class DiceHM3 {
 
         if (result.injuryLevel === 0) return;
 
-        let injuryData = {};
-        mergeObject(injuryData, game.system.model.Item.injury);
-
-        injuryData.injuryLevel = result.injuryLevel;
-        if (injuryData.injuryLevel === 1) {
-            injuryData.severity = 'M';
-        } else if (injuryData.injuryLevel <= 3) {
-            injuryData.severity = 'S';
+        let sev;
+        if (result.injuryLevel === 1) {
+            sev = 'M';
+        } else if (result.injuryLevel <= 3) {
+            sev = 'S';
         } else {
-            injuryData.severity = 'G';
+            sev = 'G';
         }
-        
-        injuryData.notes = `Aspect: ${result.aspect}`;
 
         let locationName = result.location;
         if (injuryDesc[result.aspect]) {
-            locationName = `${result.location} ${injuryDesc[result.aspect][injuryData.severity]}`;
+            locationName = `${result.location} ${injuryDesc[result.aspect][sev]}`;
         }
 
-        injuryData.healRate = 0;  // until it is tended, we can't determine HR
-        let item = Item.create({name: locationName, type: 'injury', data: injuryData}, {parent: actor});
+        let item = Item.create({
+            name: locationName,
+            type: "injury",
+            system: {
+                severity: sev,
+                injuryLevel: result.injuryLevel,
+                healRate: 0,
+                notes: `Aspect: ${result.aspect}`,
+            }
+        }, {parent: actor});
 
         return item;
     }
@@ -751,7 +754,7 @@ export class DiceHM3 {
 
         const totalImpact = weapon.aspects[roll.chosenAspect] + roll.addlWeaponImpact + roll.rollObj.total;
 
-        const notesData = mergeObject(rollData.notesData, {
+        const notesData = foundry.utils.mergeObject(rollData.notesData, {
             actor: speaker.alias,
             aspect: roll.chosenAspect,
             dice: Number(roll.damageDice),
@@ -910,7 +913,7 @@ export class DiceHM3 {
         // Prepare for Chat Message
         const chatTemplate = 'systems/hm3/templates/chat/missile-attack-card.html';
 
-        const notesData = mergeObject(rollData.notesData, {
+        const notesData = foundry.utils.mergeObject(rollData.notesData, {
             actor: speaker.alias,
             aspect: rollData.aspect,
             range: roll.range,
@@ -1087,7 +1090,7 @@ export class DiceHM3 {
 
         const totalImpact = Number(rangeImpact) + Number(roll.addlImpact) + Number(roll.rollObj.total);
 
-        const notesData = mergeObject(rollData.notesData, {
+        const notesData = foundry.utils.mergeObject(rollData.notesData, {
             actor: speaker.alias,
             aspect: rollData.aspect,
             range: roll.range,

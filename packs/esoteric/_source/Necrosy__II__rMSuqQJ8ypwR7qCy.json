@@ -1,0 +1,37 @@
+{
+  "_id": "rMSuqQJ8ypwR7qCy",
+  "name": "Necrosy (II)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/morgath.png",
+  "effects": [],
+  "folder": "4u6Psw2rEtLt9ZMS",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI minutes+</td><td><b>Ritual:</b> Prayer & Chant</td></tr><tr><td><b>Range:</b> Touch corpse+</td><td><b>Duration:</b> 3 (MS); 9 (CS) days</td></tr></table><p>Permits the invoker to preserve a corpse at its current state of decomposition for Duration. CF will turn the corpse into a pile of dust.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Morgath",
+    "circle": 2,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284281965,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!rMSuqQJ8ypwR7qCy"
+}

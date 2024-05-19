@@ -1,0 +1,37 @@
+{
+  "_id": "CVKATfSoC8PgqVby",
+  "name": "Spirit Block (IV)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/divination.svg",
+  "effects": [],
+  "folder": "3TYjKHsSaszxaXv2",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>An enchantment intended to force a live animal/ person to obey the caster’s orders. If the casting is successful, the victim tests Will x4 (MS casting) or Will x (CS casting). Touch is required.</p><p>Spirit Block creates a psychic bond between the subject and the caster. The caster can read surface thoughts and emotions, direct the subject’s physical actions, and ask questions. Non-sentient creatures cannot answer questions.  Questions must be very simple and specific; controlled entities do not volunteer information. The subject must remain in plain view of the caster, and cannot be directed to perform strenuous or complex physical activities.</p><p>An intense psychic bond is created between the caster and all affected living entities. Any pain received by an affected victim also applies to the caster at GM discretion.  The victim has a “vague” recollection of the intrusion af the enchantment expires.</p><p>Special Bonus: A caster with Sensitivity or Telepathy adds the higher talent’s SI to EML.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML60+</td><td>Touch not required. Range is CSI hexes.</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Caster may attempt to repress the subject’s memory of the intrusion. This requires another successful casting of Spirit Block before Duration expires:</td></tr></table><p>CS: Intrusion forgotten permanently.</p><p>MS: Intrusion forgotten indefinitely.</p><p>MF: Repression fails. Intrusion recalled.</p><p>CF: Repression fails. Intrusion recalled. Both parties acquire F3 fatigue.</p><p>&nbsp;</p><p>Time: 25-CSI seconds</p><p>Range: Touch/CSI hexes at CML60+</p><p>Duration: CSI minutes</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Savorya",
+    "level": 4,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284407783,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!CVKATfSoC8PgqVby"
+}

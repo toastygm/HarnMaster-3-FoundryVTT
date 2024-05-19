@@ -1,0 +1,37 @@
+{
+  "_id": "kSwprZPyeRC2MpjR",
+  "name": "Mask of Shinjur (V)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/pentacle.svg",
+  "effects": [],
+  "folder": "g3J9Eik2awfBs91a",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A self-enchantment to change the shape of the caster.  The basic spell can only modify facial features to that of someone well known to the caster.</p><p>Transformation actually takes the first 15-CSI minutes of Duration.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML60+</td><td>Caster can enchant other willing subjects.  Touch is required.</td></tr><tr><td style='width: 4em;'>CML70+</td><td>Caster can conjure an appearance from imagination.</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Full body transformations may be achieved. Body mass must be preserved within twenty percent (20%).</td></tr><tr><td style='width: 4em;'>CML90+</td><td>May be cast on an unwilling subject. If successful, the target resists with a Will x5 (MS casting) or a Will x2 (CS casting) morale check.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI seconds (casting)</p><p>15-CSI minutes (transformation)</p><p>Range: Self/Touch at CML60+</p><p>Duration: CSI hours</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Neutral",
+    "level": 5,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284390936,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!kSwprZPyeRC2MpjR"
+}

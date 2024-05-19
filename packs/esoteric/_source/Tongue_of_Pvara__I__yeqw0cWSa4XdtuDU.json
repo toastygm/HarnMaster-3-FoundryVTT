@@ -1,0 +1,37 @@
+{
+  "_id": "yeqw0cWSa4XdtuDU",
+  "name": "Tongue of Pvara (I)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/pentacle.svg",
+  "effects": [],
+  "folder": "g3J9Eik2awfBs91a",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A self-enchantment which enables the caster to communicate with a target person in the absence of a common language. The basic enchantment establishes a special relationship between the caster and the target, and cannot be expanded to include others. This is not true telepathy, and is not subject to psionic interference.</p><p>The depth of understanding depends on the success level achieved. MS allows communication roughly at the level of eight-year-olds; understanding with CS is complete. Regardless of success, this enchantment will not make an inarticulate person suddenly articulate, nor does it guarantee an ignorant person will understand what they are hearing or saying.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML60+</td><td>Enchantment may be laid upon a willing recipient. Touch is required.</td></tr><tr><td style='width: 4em;'>CML80+</td><td>The effect becomes universal—the subject will be able to communicate with any intelligent species in earshot for Duration.</td></tr><tr><td style='width: 4em;'>CML90+</td><td>Limited communication with unintelligent or semi-intelligent creatures is possible (at GM discretion).</td></tr></table><p>&nbsp;</p><p>Time: 25-CSI seconds</p><p>Range: Self/Touch at CML60+</p><p>Duration: CSI x10 minutes</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Neutral",
+    "level": 1,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284390936,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!yeqw0cWSa4XdtuDU"
+}

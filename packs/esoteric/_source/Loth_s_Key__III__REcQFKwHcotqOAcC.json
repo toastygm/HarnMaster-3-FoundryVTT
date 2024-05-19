@@ -1,0 +1,37 @@
+{
+  "_id": "REcQFKwHcotqOAcC",
+  "name": "Loth’s Key (III)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/divination.svg",
+  "effects": [],
+  "folder": "3TYjKHsSaszxaXv2",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A self-enchantment which allows the caster to read a document written in unknown languages/scripts. With the basic enchantment, the caster must know the script. EML is affected by the condition of the document (see Savorya 1).</p><p>The spell creates a special relationship between the caster and one written work; this relationship cannot be extended to include other written works or readers. A separate casting is required for each written work.</p><p>Each page is presumed to take one minute to read.  The caster cannot talk or write (translate) while reading.</p><p>Special Bonus: A caster with Psychometry adds that psionic talent’s SI to EML.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML70+</td><td>Caster may write/speak a translation of the work.</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Caster need not know the Script to read the document.</td></tr><tr><td style='width: 4em;'>CML90+</td><td>Duration is extended to allow the caster to read the entire document.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI minutes</p><p>Range: Touch (written work)</p><p>Duration: CSI minutes (pages)</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Savorya",
+    "level": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284407783,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!REcQFKwHcotqOAcC"
+}

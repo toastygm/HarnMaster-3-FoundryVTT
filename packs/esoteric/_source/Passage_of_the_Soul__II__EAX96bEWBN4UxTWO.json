@@ -1,0 +1,37 @@
+{
+  "_id": "EAX96bEWBN4UxTWO",
+  "name": "Passage of the Soul (II)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/morgath.png",
+  "effects": [],
+  "folder": "4u6Psw2rEtLt9ZMS",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI mins+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> N/A+</td><td><b>Duration:</b> N/A</td></tr></table><p>A funeral ceremony to aid a soul to make a quick and uneventful death journey. The intent is for the cleric and/or any attendees to give the departed sufficient piety to ensure Divine Grace.</p><p>The cleric provides 3d6 piety and each attendee provides 1d6 piety to the departed. Individuals may give additional piety by special prayer, etc.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Morgath",
+    "circle": 2,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284281965,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!EAX96bEWBN4UxTWO"
+}

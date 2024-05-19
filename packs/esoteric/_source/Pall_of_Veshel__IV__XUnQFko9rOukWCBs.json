@@ -1,0 +1,37 @@
+{
+  "_id": "XUnQFko9rOukWCBs",
+  "name": "Pall of Veshel (IV)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/water.svg",
+  "effects": [],
+  "folder": "gtGO9IFu3Gtp6l3r",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>Causes a dark, icy fog to rise from the caster’s mout The cloud extends CSI hexes horizontally from the caster and is CSI feet deep. Within the cloud, visibility is zero, except the caster is unaffected.</p><p>The cloud drains energy from those it touches, inflicting Fatigue and causing a shock roll. For each round of exposure, a victim tests Endurance; the test-multiple depends on casting success and the victim’s Immersion. A victim whose mouth/nose are within the cloud for (most of) a round is Fully Immersed. This is determined by comparing the victim’s height with the depth of the Pall.</p><p>Pall demands concentration for Duration; the caster must remain still. On termination, the cloud dissipates in two rounds.</p><p>Pall Success Partially Immersed Fully Immersed</p><p>MS         Test END x 2     Test END x 4</p><p>CS         Test END x 1     Test END x 2</p><p>&nbsp;</p><p>Test    Effect on Victim</p><p>&nbsp;</p><p>CF       Victim accrues two Fatigue Levels and then makes a shock roll.</p><p>MF       Victim accrues one Fatigue Level and then makes a shock roll.</p><p>MS     Victim unaffected.</p><p>CS     Victim unaffected.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML50+</td><td>Caster may move up to two (2) hexes per round. The cloud moves with the caster.</td></tr><tr><td style='width: 4em;'>CML60+</td><td>Caster may move the cloud by itself up to 2 hexes per round in line of sight; it must adhere to the surface.</td></tr></table><p>&nbsp;</p><p>Time: 35-CSI seconds</p><p>Range: CSI Hexes</p><p>Duration: CSI rounds</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Odivishe",
+    "level": 4,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284398122,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!XUnQFko9rOukWCBs"
+}

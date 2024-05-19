@@ -1,0 +1,46 @@
+{
+  "_id": "87mjqtk1RidQWlnq",
+  "name": "Mental Bolt (F1)",
+  "type": "psionic",
+  "img": "systems/hm3/images/icons/svg/psionics.svg",
+  "effects": [],
+  "folder": "tDpiTQntA3rYW1PE",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "25-SI Sec",
+    "description": "<p>The ability to project a blast of mental energy at a single mind within SI &times; 5 yards and line of sight. MS causes the victim to accrue two Fatigue Levels (F2); CS inflicts four Fatigue Levels (F4). After accruing the fatigue, the victim immediately makes a Shock Roll (SkillS 22).</p><p>Psionic Episodes: Devastating headaches, dizziness, etc. for the character or innocent bystanders.</p><p>Misfire (CF): The invoker, or some randomly chosen person/animal nearby, suffers the talent&rsquo;s full effect.</p>\n\n\n",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "skillBase": {
+      "value": 0,
+      "formula": "@aur,@aur,@wil,Ahnu",
+      "isFormulaValid": true
+    },
+    "masteryLevel": 0,
+    "effectiveMasteryLevel": 0,
+    "improveFlag": false,
+    "fatigue": 1,
+    "ritual": {
+      "piety": 0
+    }
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284256178,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!87mjqtk1RidQWlnq"
+}

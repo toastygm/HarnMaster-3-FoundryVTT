@@ -1,0 +1,19 @@
+{
+  "name": "Magic",
+  "type": "Item",
+  "folder": "YlfJeB6S29hD769f",
+  "_id": "zQdlAO8iJ9sy3s9l",
+  "sorting": "a",
+  "sort": -200000,
+  "flags": {},
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284340710,
+    "modifiedTime": 1689285072071,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "color": null,
+  "_key": "!folders!zQdlAO8iJ9sy3s9l"
+}

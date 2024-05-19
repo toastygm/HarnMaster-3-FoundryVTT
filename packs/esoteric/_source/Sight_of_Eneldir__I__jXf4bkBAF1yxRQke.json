@@ -1,0 +1,37 @@
+{
+  "_id": "jXf4bkBAF1yxRQke",
+  "name": "Sight of Eneldir (I)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/anvil.svg",
+  "effects": [],
+  "folder": "dILaYsjczUReYHlC",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A spell to detect/identify metallic minerals. The caster declares a specific metallic mineral and learns the direction to the nearest (single) “good source” within CSI x 500 f With CS, the caster also learns the distance to the source.</p><p>Good sources vary at GM discretion. A small amount of refined metal in close proximity is more noticeable than a large deposit of ore a hundred yards away. Although the spell ignores any Focus through which it is cast, it may detect a companion’s sword.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML70+</td><td>Caster may narrow the direction of the search, such as to ignore everything behind the caster, or search only in a cone within 20 degrees of true north, etc.</td></tr></table><p>Note: This spell has been used more than once to determine the size of a nearby person’s moneypurse.</p><p>&nbsp;</p><p>Time: 15-CSI minutes (Trance)</p><p>Range: CSI x500 feet</p><p>Duration: None</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Jmorvi",
+    "level": 1,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284381758,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!jXf4bkBAF1yxRQke"
+}

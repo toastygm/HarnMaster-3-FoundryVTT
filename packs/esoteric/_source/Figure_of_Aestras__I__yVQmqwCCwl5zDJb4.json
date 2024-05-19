@@ -1,0 +1,37 @@
+{
+  "_id": "yVQmqwCCwl5zDJb4",
+  "name": "Figure of Aestras (I)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/tree.svg",
+  "effects": [],
+  "folder": "c3CaJqCvMmvbwM1T",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>An enchantment which causes a single plant to grow in a particular configuration. The enchantment could, for example, be used to shape a tree to look like a person, or, with multiple castings, to make a row of bushes weave themselves into a tight hedge/wall.</p><p>The enchantment does not speed growth. The enchantment only works on a plant that is alive. Multiple castings are generally necessary because of the short Duration.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML60+</td><td>Enchantment may be laid upon an animal.  It can only work, however, when the animal is growing. Multiple castings are nearly always necessary to achieve noticeable results.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI hours</p><p>Range: Touch</p><p>Duration: CSI-10 days</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Fyvria",
+    "level": 1,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284358457,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!yVQmqwCCwl5zDJb4"
+}

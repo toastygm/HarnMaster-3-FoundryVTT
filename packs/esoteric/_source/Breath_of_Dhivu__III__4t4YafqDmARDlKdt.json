@@ -1,0 +1,37 @@
+{
+  "_id": "4t4YafqDmARDlKdt",
+  "name": "Breath of Dhivu (III)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/water.svg",
+  "effects": [],
+  "folder": "gtGO9IFu3Gtp6l3r",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>Causes a cone of cold air to emanate forward from the caster (who is unaffected). The affected area is an equilateral, sixty degree cone. The Frost Impact of the blast is determined by distance. The following table shows Frost Impact with MS. Add 1d6 for CS.</p><p>Target Range              Distance           MS Impact</p><p>Short                    CSI ÷ 2 hexes        CSI +3d6</p><p>Medium                    CSI hexes           CSI +2d6</p><p>Long                     CSI x 2 hexes        CSI +1d6</p><p>Example: A caster with Odivshe CSI 8 has effective ranges of Short 1-4 hexes, Medium 5-8 hexes, and Long 9-16 hexes.  Achieving MS on a target at range 5 hexes (Medium Range) gives Frost Impact of 8+2d6 (8+3d6 with CS). This impact applies to 1d6 randomly generated body parts.</p><p>The effect is achieved by using ethereal ice to rapidly condense atmospheric moisture. If the air is very humid, this can produce spectacular visual effects. Since the spell condenses almost all the moisture in the air, it has little effect if used the same day in the same vicinity.</p><p>&nbsp;</p><h2>Bonus Effects</h2><p>(None)</p><p>&nbsp;</p><p>Time: 25-CSI seconds</p><p>Range: See Table above</p><p>Duration: Negligible</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Odivishe",
+    "level": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284398122,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!4t4YafqDmARDlKdt"
+}

@@ -1,0 +1,37 @@
+{
+  "_id": "EGUOTbyK5X5K0Bxx",
+  "name": "Mamaka’s Cry (III)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/agrik.png",
+  "effects": [],
+  "folder": "jOppWJPOPMwgDYFG",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI Seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> RML Yards+</td><td><b>Duration:</b> Instantaneous</td></tr></table><p>Causes an immediate Morale Check for everyone within Range.  Agrikans get a a +20 (MS); +50 (CS) bonus.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Agrik",
+    "circle": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284264856,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!EGUOTbyK5X5K0Bxx"
+}

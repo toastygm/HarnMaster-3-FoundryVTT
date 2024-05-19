@@ -1,0 +1,37 @@
+{
+  "_id": "nc8bpoX1BHcm1MMt",
+  "name": "Searing Hand (III)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/agrik.png",
+  "effects": [],
+  "folder": "jOppWJPOPMwgDYFG",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI Seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Self/RSI hexes+</td><td><b>Duration:</b> One Touch or Impact</td></tr></table><p>A ball of mundane fire appears in the invoker’s hand for Duration. It may be used to burn a victim touched, or may be cast as a low velocity missile up to Range by using the Missile Combat system. The fireball vanishes after impact. Fire impact for touch/fireball is 3d6 (MS) or 5d6 (CS).</p><p>&nbsp;</p><p>CF: Fireball explodes in cleric’s hand, causing 3d6 fire impact to 1d6 randomly generated body parts.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Agrik",
+    "circle": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284264856,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!nc8bpoX1BHcm1MMt"
+}

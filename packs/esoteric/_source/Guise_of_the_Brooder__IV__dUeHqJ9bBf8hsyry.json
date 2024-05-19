@@ -1,0 +1,37 @@
+{
+  "_id": "dUeHqJ9bBf8hsyry",
+  "name": "Guise of the Brooder (IV)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/ilvir.png",
+  "effects": [],
+  "folder": "olFsheWfuwIH41Tk",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI minutes+</td><td><b>Ritual:</b> Prayer/Meditation</td></tr><tr><td><b>Range:</b> Self/Touch+</td><td><b>Duration:</b> RSI hours.</td></tr></table><p>Creates a were-creature with a temporary possession of the subject by the spirit of a creature, typically a wolf or bear. The subject changes over five minutes into the designated were-creature for Duration, having the body and physical attributes of the subject, but personality of the possessing creature. The possessing spirit departs voluntarily after Duration.</p><p>An unwilling subject tests Will to resist possession:</p><p>MS: Subject tests WIL ×5 to resist possession.</p><p>CS: Subject tests WIL ×2 to resist possession.</p><p>CF: The invoker tests WIL ×5 to resist possession.</p><p>Note: An unwilling subject is unlikely to be friendly after the mutation, and cannot be controlled by the invoker.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Ilvir",
+    "circle": 4,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284270245,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!dUeHqJ9bBf8hsyry"
+}

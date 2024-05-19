@@ -1,0 +1,19 @@
+{
+  "name": "Communication",
+  "type": "Item",
+  "folder": "YlfJeB6S29hD769f",
+  "_id": "J0xwQtSGnFyerX7W",
+  "sorting": "a",
+  "sort": 0,
+  "flags": {},
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284325343,
+    "modifiedTime": 1689285072071,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "color": null,
+  "_key": "!folders!J0xwQtSGnFyerX7W"
+}

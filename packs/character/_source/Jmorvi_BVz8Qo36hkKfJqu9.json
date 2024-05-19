@@ -1,0 +1,46 @@
+{
+  "_id": "BVz8Qo36hkKfJqu9",
+  "name": "Jmorvi",
+  "type": "skill",
+  "img": "systems/hm3/images/icons/svg/anvil.svg",
+  "effects": [],
+  "folder": "zQdlAO8iJ9sy3s9l",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "",
+    "source": "HM Magic, Shek-pvar 6",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "type": "Magic",
+    "skillBase": {
+      "value": 0,
+      "formula": "@aur, @aur, @str, Ulandus, Aralius:2, Feneri:3, Ahnu:2, Angberelius:1, Hirin:-1, Tarael:-2, Tai:-3, Skorus:-2, Masara:-1",
+      "isFormulaValid": true
+    },
+    "masteryLevel": 0,
+    "effectiveMasteryLevel": 0,
+    "ritual": {
+      "piety": 0
+    },
+    "improveFlag": false
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284340747,
+    "modifiedTime": 1689285072117,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!BVz8Qo36hkKfJqu9"
+}

@@ -1,0 +1,37 @@
+{
+  "_id": "WreYjACTmnc2ZxOL",
+  "name": "Orb of Zatara (III)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/fire.svg",
+  "effects": [],
+  "folder": "aqY5F35ewokEjo5C",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A spell which creates, in the caster’s hand, a mundane fireball that may be directed in a straight line towards a target in line of sight. A spark or other seed fire is required.  The fireball is six inches in diameter.</p><p>The fireball is accurate, but fairly slow; it may be dodged as a Low Velocity missile. Upon touching any solid object or enchantment the fireball explodes. If it intercepts no obstacle during its traverse (CSI x10 hexes) the fireball blinks harmlessly out of existence.</p><p>The radius of the explosion, which cannot be dodged, is CSI feet. The impact of the exploding fireball is 1d6 (MS) or 2d6 (CS). This impact is rolled for once, and then applied separately to 1d6 randomly generated body parts for each affected person. Armour and clothing reduce impact normally.</p><p>Except in the case of misfire, the caster is immune to the fireball, but not to the explosion.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML50+</td><td>Spark or seed fire no longer required.</td></tr><tr><td style='width: 4em;'>CML70+</td><td>Caster may command the fireball to explode at any point along its traverse.</td></tr><tr><td style='width: 4em;'>CML90+</td><td>Fireball may be made to originate in a seed fire or focus anywhere within CSI hexes and good line of sight of the caster. Traverse is measured from the seed fire/focus.</td></tr></table><p>&nbsp;</p><p>Note: Orb of Zatara is designed to incapacitate opponents rather than killing them. The Fire Impact inflicted is not enough to cause grievous burns, and will not set armour or clothing aflame.</p><p>&nbsp;</p><p>Time: 15-CSI seconds</p><p>Range: CSI x10 hexes</p><p>Duration: Until explosion or end of traverse</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Peleahn",
+    "level": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284402933,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!WreYjACTmnc2ZxOL"
+}

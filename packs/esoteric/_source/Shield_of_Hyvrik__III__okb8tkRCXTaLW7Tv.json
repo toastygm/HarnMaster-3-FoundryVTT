@@ -1,0 +1,37 @@
+{
+  "_id": "okb8tkRCXTaLW7Tv",
+  "name": "Shield of Hyvrik (III)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/larani.png",
+  "effects": [],
+  "folder": "cKpd7e8LEPwE5H2E",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Self/Touch+</td><td><b>Duration:</b> 2 (MS); 5 (CS) rounds.</td></tr></table><p>Provided the subject bears a checkered shield, the EML of a BLOCK defense increases by RSI×5 for Duration. That is, wth RSI of 8, the shield Block defense is +40.</p><p>CF: causes the shield to shatter into several pieces.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Larani",
+    "circle": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284275736,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!okb8tkRCXTaLW7Tv"
+}

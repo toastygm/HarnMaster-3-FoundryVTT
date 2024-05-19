@@ -1,0 +1,19 @@
+{
+  "name": "Religion",
+  "type": "Item",
+  "folder": "YlfJeB6S29hD769f",
+  "_id": "ehEs3IXsjATxYb8d",
+  "sorting": "a",
+  "sort": -250000,
+  "flags": {},
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284353416,
+    "modifiedTime": 1689285072071,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "color": null,
+  "_key": "!folders!ehEs3IXsjATxYb8d"
+}

@@ -1,0 +1,37 @@
+{
+  "_id": "b06RKifJitJJWyxV",
+  "name": "Pillar of Fire (V)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/agrik.png",
+  "effects": [],
+  "folder": "jOppWJPOPMwgDYFG",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 25−RSI seconds+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> RML yards+</td><td><b>Duration:</b> instantaneous</td></tr></table><p>Calls down a pillar of mundane fire which can be directed at a specific target in Range. Fire will impact three (3) random strike locations.</p><p>CS: 6d6 Fire Impact</p><p>MS: 3d6 Fire Impact</p><p>CF: Fire strikes invoker with 3d6 impact.</p><p>When directed at an object, such as a building, tree, or wagon, ignition is immediate, and the object burns at double (MS) or triple (CS) normal rate.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Agrik",
+    "circle": 5,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284264856,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!b06RKifJitJJWyxV"
+}

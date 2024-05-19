@@ -1,0 +1,37 @@
+{
+  "_id": "4jPIharyNUDU2YlX",
+  "name": "Library of the Hyn-Aelori (II)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/saveknor.png",
+  "effects": [],
+  "folder": "Q1GdIqZAQz4oVhEd",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> One object+</td><td><b>Duration:</b> 10 (MS); 30 (CS) minutes.</td></tr></table><p>Protects a book, scroll, or other object with recorded information from discovery. Only a dedicated search will have any chance (roll vs Awareness) of finding the object.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Save-K'nor",
+    "circle": 2,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284305234,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!4jPIharyNUDU2YlX"
+}

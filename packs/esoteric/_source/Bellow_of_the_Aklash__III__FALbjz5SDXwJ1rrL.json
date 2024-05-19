@@ -1,0 +1,37 @@
+{
+  "_id": "FALbjz5SDXwJ1rrL",
+  "name": "Bellow of the Aklash (III)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/ilvir.png",
+  "effects": [],
+  "folder": "olFsheWfuwIH41Tk",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> RSI hexes+</td><td><b>Duration:</b> 1 (MS); 3 (CS) mins</td></tr></table><p>Invoker’s breathe is foul and causes nausea and sickness in those within Range. Victims roll vs SML ×3 (MS) or SML ×5 (CS) or lose their turn due to nausea. Alternatively, the invoker can project a massive blast of air, causing a strong (MS) or gale force wind (CS). This may be enough to deflect missiles, or knockback opponents, at GM discretion.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Ilvir",
+    "circle": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284270245,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!FALbjz5SDXwJ1rrL"
+}

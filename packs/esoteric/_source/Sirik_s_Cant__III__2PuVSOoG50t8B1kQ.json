@@ -1,0 +1,37 @@
+{
+  "_id": "2PuVSOoG50t8B1kQ",
+  "name": "Sirik’s Cant (III)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/anvil.svg",
+  "effects": [],
+  "folder": "dILaYsjczUReYHlC",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>An enchantment which causes a wholly metallic object to resonate and grow warmer. This makes the object difficult to use and justifies an immediate Special Penalty of at least 20. With CS, the caster may cause the object to shatter which terminates the enchantment. The object cannot weigh more than CSI lbs.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML70+</td><td>Enchantment may be laid upon a mostly metallic object.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI seconds</p><p>Range: CSI hexes</p><p>Duration: CSI minutes</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Jmorvi",
+    "level": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284381758,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!2PuVSOoG50t8B1kQ"
+}

@@ -1,0 +1,37 @@
+{
+  "_id": "iffJpH5KgZEBZ6yu",
+  "name": "Zyrgin’s Heat (I)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/fire.svg",
+  "effects": [],
+  "folder": "aqY5F35ewokEjo5C",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>An enchantment laid upon an existing mundane fire to consume more of its fuel, produce more heat, and leave less residue. The basic enchantment allows the fire to burn up to 50% (MS) or 100% (CS) longer, while leaving far less unburned fuel and ash than normal. The enchantment is dispelled if fuel is added to the fire.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML70+</td><td>Caster may eliminate smoke from the fire.</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Fuel may be added without terminating the enchantment.</td></tr><tr><td style='width: 4em;'>CML90+</td><td>Fire’s consumption may be made complete (i.e., no ashes). The fire cannot, however, be made to burn nonflammable materials.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI seconds</p><p>Range: CSI feet</p><p>Duration: CSI x10 minutes (or until fuel is exhausted)</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Peleahn",
+    "level": 1,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284402933,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!iffJpH5KgZEBZ6yu"
+}

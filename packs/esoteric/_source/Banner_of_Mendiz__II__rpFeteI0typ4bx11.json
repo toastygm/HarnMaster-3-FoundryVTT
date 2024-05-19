@@ -1,0 +1,37 @@
+{
+  "_id": "rpFeteI0typ4bx11",
+  "name": "Banner of Mendiz (II)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/larani.png",
+  "effects": [],
+  "folder": "cKpd7e8LEPwE5H2E",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> RML Yards+</td><td><b>Duration:</b> Instantaneous</td></tr></table><p>Causes an immediate Morale Check for everyone within Range.  Laranians get a +20 (MS); +50 (CS) bonus.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Larani",
+    "circle": 2,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284275736,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!rpFeteI0typ4bx11"
+}

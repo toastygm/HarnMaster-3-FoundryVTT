@@ -1,0 +1,37 @@
+{
+  "_id": "oSOHAc6g67UBPudm",
+  "name": "Prism of Gethan (III)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/wind.svg",
+  "effects": [],
+  "folder": "2JX6jkRSgMm48QyW",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A spell to create and manipulate illusions. Images may be made visible which exist only in the imagination of the caster; but, unless CS is achieved, the illusions seem insubstantial and tend to flicker in and out of existence.  Normally, effects are stationary and must be in clear view of the caster. The illusions are purely visual. They are not self-illuminating and cannot be seen in the dark.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML50+</td><td>Illusions may be made to move, but the caster must remain in line of sight and the effect requires great concentration.</td></tr><tr><td style='width: 4em;'>CML60+</td><td>Caster may operate simple illusions beyond line of sight, provided the caster knows the geography.</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Caster may enter a trance and operate illusions beyond line of sight (this amounts to a kind of clairvoyance).</td></tr></table><p>&nbsp;</p><p>Note: General illusion spells, such as Prism of Gethan, lack the nicety of detail, realism, and quality possible with a specific illusion spell which creates the same image with each casting. Mages who desire a better illusion with a MS casting need to research a specific illusion spell.</p><p>&nbsp;</p><p>Time: 25-CSI seconds</p><p>Range: Line of Sight, CSI x5 hexes</p><p>Duration: CSI rounds</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Lyahvi",
+    "level": 3,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284362741,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!oSOHAc6g67UBPudm"
+}

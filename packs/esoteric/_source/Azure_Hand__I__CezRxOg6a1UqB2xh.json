@@ -1,0 +1,37 @@
+{
+  "_id": "CezRxOg6a1UqB2xh",
+  "name": "Azure Hand (I)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/water.svg",
+  "effects": [],
+  "folder": "gtGO9IFu3Gtp6l3r",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>An enchantment to gently reduce the temperature of an object. It works best on objects with high proportions of water such as organic creatures. Azure Hand is a good treatment for sunstroke and can deaden pain. Touch is required.</p><p>Effects vary according to the subject’s health and condition. In general, Azure Hand allows an immediate bonus Healing Roll (see: Physician 2).</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML70+</td><td>Victim may be made to suffer frostbite of impact: 1d6 (MS) or 3d6 (CS) to the body part touched. Impact is reduced by armour or clothing.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI seconds</p><p>Range: Touch</p><p>Duration: None</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Odivishe",
+    "level": 1,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284398122,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!CezRxOg6a1UqB2xh"
+}

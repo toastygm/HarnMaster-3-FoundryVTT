@@ -1,0 +1,46 @@
+{
+  "_id": "P1dqO6I4kNJStZCH",
+  "name": "Prescience (F2)",
+  "type": "psionic",
+  "img": "systems/hm3/images/icons/svg/psionics.svg",
+  "effects": [],
+  "folder": "tDpiTQntA3rYW1PE",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "15-SI Hours",
+    "description": "<p>The ability to determine the &ldquo;fate&rdquo; of a group, person, or item. Subject to passive triggering (psionics&nbsp;4). There are two active forms:</p><p>[1] Prescient Vision: The invoker specifies the subject of inquiry and makes a success roll. With any success, the invoker enters a trance for (13 &ndash; SI) hours, during which a prescient vision occurs concerning the subject. EML is reduced if the subject is hidden by magic, etc. Normally, the invoker lacks control over the vision, but with CS it is possible to direct the inquiry somewhat. Prescience can only reveal likely future events; the future may be altered.</p><p>[2] Sense of Danger: An attempt to assess danger in a specific location. The invoker enters a trance for about a minute. MS gives a vague feeling of danger if there are traps or lurking dangers within ML feet. CS improves detail and/or range.</p><p>GM Note: Prescient visions can be symbolic in nature. Folklore (SkillS 16) may be used to interpret the vision. Some clerics and divinators specialize in interpretation of prescient visions.</p><p>Psionic Episodes: A kind of passive triggering of the sense of danger. Violent dreams and/or nightmares about loved ones dying or having severe difficulties are also common.</p><p>Misfire (CF): False or random information is given to the invoker.</p>\n\n\n",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "skillBase": {
+      "value": 0,
+      "formula": "@aur,@aur,@wil,Tai,Tarael",
+      "isFormulaValid": true
+    },
+    "masteryLevel": 0,
+    "effectiveMasteryLevel": 0,
+    "improveFlag": false,
+    "fatigue": 2,
+    "ritual": {
+      "piety": 0
+    }
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284256178,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!P1dqO6I4kNJStZCH"
+}

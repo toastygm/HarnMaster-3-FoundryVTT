@@ -1,0 +1,37 @@
+{
+  "_id": "ymXOhrT6VhR7WPmf",
+  "name": "Vapor of Hirin (VI)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/wind.svg",
+  "effects": [],
+  "folder": "2JX6jkRSgMm48QyW",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>An enchantment to dematerialize a living entity including the caster. The enchantment cannot be laid upon an unwilling subject.</p><p>With a successful casting, the enchantment is laid and may be instantly invoked at any time in Duration by the caster’s act of will. If laid on a another subject, invocat requires caster touch.</p><p>Upon invocation, the subject evaporates in 15-CSI seconds. Any non-Lyahvi elemental objects on the subject’s person are left behind. The caster may choose a place (same world) where recombination will occur. A second roll against Vapor EML determines when the subject will rematerialize:</p><p>CS: 1d6 hours</p><p>MS: 1d6 days</p><p>MF: 1d6 months</p><p>CF: 1d6 years</p><p>Upon recombination, non-permanent enchantments on the subject are lost (dispelled). A dematerialized entity has no consciousness; it ceases to exist until recombination.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML70+</td><td>An injured entity may (caster option) heal one Injury Level while dematerialized.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI minutes</p><p>Range: Self or Touch</p><p>Duration: CSI days (Indefinite with CS)</p><p>==</p><p>Aeric’s Whisper (I)</p><p>A spell which allows the caster to speak a message which a remote, single, caster-designated individual can/ will hear. The message will sound as if someone were whispering in the recipient’s ear.</p><p>Communication is unidirectional (one-way). The message may be as long as the caster can manage in Duration. The recipient must be in Range.</p><p>With the basic spell, the caster must speak the message out loud (although softly).</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML70+</td><td>Caster need not speak the message out loud (thinking it suffices).</td></tr><tr><td style='width: 4em;'>CML80+</td><td>Range is CSI miles.</td></tr><tr><td style='width: 4em;'>CML90+</td><td>Up to CSI recipients may be designated; all receive the same message.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI seconds</p><p>Range: Line of Sight/CSI miles at CML80+</p><p>Duration: CSI rounds</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Lyahvi",
+    "level": 6,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284362741,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!ymXOhrT6VhR7WPmf"
+}

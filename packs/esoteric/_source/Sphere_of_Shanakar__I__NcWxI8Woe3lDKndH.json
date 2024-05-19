@@ -1,0 +1,37 @@
+{
+  "_id": "NcWxI8Woe3lDKndH",
+  "name": "Sphere of Shanakar (I)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/fire.svg",
+  "effects": [],
+  "folder": "aqY5F35ewokEjo5C",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>A self-enchantment which creates a sphere of ethereal fire, two inches in diameter, in the caster’s hand. The caster cannot release the sphere. The fireball illuminates a spherical area, of radius CSI hexes, with orange/red, gently-flickering light. No seed fire or spark is required.</p><p>The sphere is primarily used as a light source, but it will inflict an ethereal burn of CSI+1d6 (MS) or CSI+2d6 (CS) if it touches a mundane or ethereal entity. Generated impact is a burn against ethereals, but a shock roll for mundane creatures. See note below</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML50+</td><td>Caster may terminate the enchantment by releasing the sphere.</td></tr><tr><td style='width: 4em;'>CML90+</td><td>Caster may throw (with throwing skill) the sphere up to CSI hexes. The sphere is a Low Velocity missile and may be dodged as such.</td></tr></table><p>&nbsp;</p><p>Note: To a mundane creature, an Ethereal Burn is a Shock Roll: if the generated “Fire Impact” exceeds Endurance, the victim loses consciousness.</p><p>&nbsp;</p><p>Time: 15-CSI seconds</p><p>Range: Self/CSI hexes at CML90+</p><p>Duration: CSI rounds</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Peleahn",
+    "level": 1,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284402933,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!NcWxI8Woe3lDKndH"
+}

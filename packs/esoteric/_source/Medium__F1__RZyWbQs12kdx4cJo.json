@@ -1,0 +1,46 @@
+{
+  "_id": "RZyWbQs12kdx4cJo",
+  "name": "Medium (F1)",
+  "type": "psionic",
+  "img": "systems/hm3/images/icons/svg/psionics.svg",
+  "effects": [],
+  "folder": "tDpiTQntA3rYW1PE",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "F1 15-SI minutes",
+    "description": "\n\n\n<h1>Medium (F1) 15&ndash;SI Mins</h1><p>Medium is subject to passive triggering (psionics 4). The talent may be used in one of three ways. Each requires a trance, accumulates fatigue, and has a separate skill roll.</p><p><strong>[1] Communion</strong>: If successful, the invoker is able to clearly perceive and communicate, for SI minutes, with any ethereal within ML yards.</p><p><strong>[2] Summon</strong>: An attempt to summon an ethereal currently perceived by the invoker, or whose true name is known. Some entities require CS to be summoned. CF breaks the trance.</p><p><strong>[3] Control</strong>: An attempt to command an ethereal the invoker has summoned. If the ethereal&rsquo;s will is greater, invoker EML is reduced by five times the difference. Some ethereals are beyond control. With MS, the ethereal may be commanded to perform&nbsp; a simple task such as answer a yes/no question within its knowledge, or dispossess a body. With CS, the task/question may be more complex. With MF, the ethereal probably departs. With CF, the spirit may have possessed the invoker (see HârnMaster Religion).</p><p><strong>Psionic Episodes</strong>: Very scary nightmares, the dim perception of &ldquo;ghosts&rdquo; here and there, a dread of graveyards, hearing voices, etc.</p><p><strong>Misfire (CF)</strong>: Sometimes an itinerant ethereal is released into the invoker&rsquo;s world. This occurs more often when such entities are hostile, violent, or in search of a body.</p>\n\n\n",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "skillBase": {
+      "value": 0,
+      "formula": "@aur, @aur, @wil, Tai:1",
+      "isFormulaValid": true
+    },
+    "masteryLevel": 0,
+    "effectiveMasteryLevel": 0,
+    "improveFlag": false,
+    "fatigue": 1,
+    "ritual": {
+      "piety": 0
+    }
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284256178,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!RZyWbQs12kdx4cJo"
+}

@@ -1,0 +1,37 @@
+{
+  "_id": "BJUcI9zPgq77ANq7",
+  "name": "Ward of Sirik (I)",
+  "type": "spell",
+  "img": "systems/hm3/images/icons/svg/anvil.svg",
+  "effects": [],
+  "folder": "dILaYsjczUReYHlC",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<p>An enchantment to temporarily protect a wholly metallic object from physical damage. The enchantment lies dormant until it is invoked or its Duration expires.</p><p>The Ward is invoked by the first event which could cause damage to the object, such as a weapon damage check.</p><p>A weapon enchanted with Ward makes at 2d6 (instead of 3d6) damage check when required. Once invoked, the enchantment is dispelled (it only works once). Touch is required to lay the enchantment.</p><p>&nbsp;</p><h2>Bonus Effects</h2><table><tr><td style='width: 4em;'>CML50+</td><td>Enchantment will work on mostly metallic object.</td></tr><tr><td style='width: 4em;'>CML70+</td><td>Enchantment is not lost upon its first invocation. The spell gives 3 charges (MS) and 6 charges (CS). It will then work until all charges are expended, or until Duration expires.</td></tr></table><p>&nbsp;</p><p>Time: 15-CSI rounds</p><p>Range: Touch</p><p>Duration: CSI minutes</p>",
+    "source": "HM3 Magic",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "convocation": "Jmorvi",
+    "level": 1,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284381758,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!BJUcI9zPgq77ANq7"
+}

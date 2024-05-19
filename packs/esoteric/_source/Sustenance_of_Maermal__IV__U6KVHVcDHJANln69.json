@@ -1,0 +1,37 @@
+{
+  "_id": "U6KVHVcDHJANln69",
+  "name": "Sustenance of Maermal (IV)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/peoni.png",
+  "effects": [],
+  "folder": "vgrw7aVTemgPWZxh",
+  "flags": {
+    "core": {}
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI minutes+</td><td><b>Ritual:</b> Chant</td></tr><tr><td><b>Range:</b> Touch+</td><td><b>Duration:</b> 2 (MS); 6 (CS) days</td></tr></table><p>Subject is unaffected by hunger and thirst for Duration. Any damage caused by malnutrition is cured. May not be performed on the same subject more than once per month.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Peoni",
+    "circle": 4,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284294673,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!U6KVHVcDHJANln69"
+}
