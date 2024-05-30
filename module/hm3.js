@@ -52,7 +52,28 @@ Hooks.once('init', async function () {
 
     // Define custom Document classes
     CONFIG.Actor.documentClass = HarnMasterActor;
+    CONFIG.Actor.typeLabels = {
+        base: "Base",
+        character: "Character",
+        creature: "Creature",
+        container: "Container"
+    };
     CONFIG.Item.documentClass = HarnMasterItem;
+    CONFIG.Item.typeLabels = {
+        base: "Base",
+        skill: "Skill",
+        spell: "Spell",
+        invocation: "Invocation",
+        psionic: "Psionic",
+        weapongear: "Melee Weapon",
+        containergear: "Container",
+        missilegear: "Missile Weapon",
+        armorgear: "Armor",
+        miscgear: "Misc. Gear",
+        injury: "Injury",
+        armorlocation: "Armor Location",
+        trait: "Trait"    
+    };
     CONFIG.Combat.documentClass = HarnMasterCombat;
     CONFIG.TinyMCE.style_formats[0].items.push({
         title: 'Highlight',
