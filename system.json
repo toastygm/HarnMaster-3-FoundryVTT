@@ -3,7 +3,7 @@
   "name": "hm3",
   "title": "HarnMaster 3",
   "description": "The HarnMaster system for FoundryVTT!",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "authors": [
     {
       "name": "Toasty",
@@ -78,7 +78,7 @@
   ],
   "socket": true,
   "manifest": "https://github.com/toastygm/HarnMaster-3-FoundryVTT/releases/latest/download/system.json",
-  "download": "https://github.com/toastygm/HarnMaster-3-FoundryVTT/releases/download/v1.6.0/system.zip",
+  "download": "https://github.com/toastygm/HarnMaster-3-FoundryVTT/releases/download/v1.6.1/system.zip",
   "grid": {
     "distance": 5,
     "units": "ft"
