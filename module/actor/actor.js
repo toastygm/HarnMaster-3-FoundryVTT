@@ -9,48 +9,91 @@ import * as utility from '../utility.js';
  */
 export class HarnMasterActor extends Actor {
 
-    static async createDialog(data = {}, options = {}) {
-
-        // Collect data
+    static defaultName({type, parent, pack}={}) {
         const documentName = this.metadata.name;
-        const types = game.system.documentTypes[documentName].filter(t => t !== CONST.BASE_DOCUMENT_TYPE);
-        const folders = game.folders.filter(f => (f.type === documentName) && f.displayed);
+        let collection;
+        if ( parent ) collection = parent.getEmbeddedCollection(documentName);
+        else if ( pack ) collection = game.packs.get(pack);
+        else collection = game.collections.get(documentName);
+        const takenNames = new Set();
+        for ( const document of collection ) takenNames.add(document.name);
+        const baseName = CONFIG.Actor.typeLabels[type] ? CONFIG.Actor.typeLabels[type] : type;
+        let name = baseName;
+        let index = 1;
+        while ( takenNames.has(name) ) name = `${baseName} (${++index})`;
+        return name;
+    }
+  
+    static async createDialog(data = {}, {parent=null, pack=null, types, ...options} = {}) {
+        if ( this.hasTypeData && types ) {
+            if ( types.length === 0 ) throw new Error("The array of sub-types to restrict to must not be empty");
+            for ( const type of types ) {
+                if ( (type === CONST.BASE_DOCUMENT_TYPE) || !this.TYPES.includes(type) ) {
+                    throw new Error(`Invalid ${this.documentName} sub-type: "${type}"`);
+                }
+            }
+        }
+    
+        // Collect data
+        const documentTypes = this.TYPES.filter(t => (t !== CONST.BASE_DOCUMENT_TYPE)
+            && (types?.includes(t) !== false));
+        let collection;
+        if ( !parent ) {
+            if ( pack ) collection = game.packs.get(pack);
+            else collection = game.collections.get(this.documentName);
+        }
+        const folders = collection?._formatFolderSelectOptions() ?? [];
         const label = game.i18n.localize(this.metadata.label);
-        const title = game.i18n.format("DOCUMENT.Create", { type: label });
+        const title = game.i18n.format("DOCUMENT.Create", {type: label});
+        let defaultType = CONFIG[this.documentName]?.defaultType;
+        if ( !defaultType || (types?.includes(defaultType) === false) ) defaultType = documentTypes[0];
+        const type = data.type || defaultType;
 
         // Render the document creation form
-        const html = await renderTemplate(`systems/hm3/templates/dialog/actor-create.html`, {
-            name: data.name || game.i18n.format("DOCUMENT.New", { type: label }),
+        const html = await renderTemplate(`templates/sidebar/document-create.html`, {
+            folders,
+            name: data.name || "",
+            defaultName: this.implementation.defaultName({type, parent, pack}),
             folder: data.folder,
-            folders: folders,
             hasFolders: folders.length > 1,
-            type: data.type || CONFIG[documentName]?.defaultType || types[0],
-            types: types.reduce((obj, t) => {
-                const label = CONFIG[documentName]?.typeLabels?.[t] ?? t;
-                obj[t] = game.i18n.has(label) ? game.i18n.localize(label) : t;
-                return obj;
-            }, {}),
-            hasTypes: types.length > 1
+            type,
+            types: Object.fromEntries(documentTypes.map(t => {
+                const label = CONFIG[this.documentName]?.typeLabels?.[t] ?? t;
+                return [t, game.i18n.has(label) ? game.i18n.localize(label) : t];
+              }).sort((a, b) => a[1].localeCompare(b[1], game.i18n.lang))),
+            hasTypes: this.hasTypeData,
+            content: `<div class="form-group">
+            <label class="init-checkbox">Initialize default skills &amp; locations</label>
+            <input type="checkbox" name="initDefaults" checked />
+            </div>`
         });
 
         // Render the confirmation dialog window
         return Dialog.prompt({
-            title: title,
+            title,
             content: html,
             label: title,
+            render: html => {
+                if ( !this.hasTypeData ) return;
+                html[0].querySelector('[name="type"]').addEventListener("change", e => {
+                    html[0].querySelector('[name="name"]').placeholder = this.implementation.defaultName(
+                        {type: e.target.value, parent, pack});
+                });
+            },
             callback: html => {
-                const createOptions = { renderSheet: true };
                 const form = html[0].querySelector("form");
                 const fd = new FormDataExtended(form);
-                data = foundry.utils.mergeObject(data, fd.object);
+                foundry.utils.mergeObject(data, fd.object, {inplace: true});
+                if (!data.folder) delete data["folder"];
+                if ( documentTypes.length === 1 ) data.type = documentTypes[0];
+                if ( !data.name?.trim() ) data.name = this.implementation.defaultName({type: data.type, parent, pack});
+                const createOptions = { parent, pack, renderSheet: true };
                 if (!data.initDefaults) createOptions.skipDefaults = true;
                 delete data["initDefaults"];
-                if (!data.folder) delete data["folder"];
-                if (types.length === 1) data.type = types[0];
                 return this.create(data, createOptions);
             },
             rejectClose: false,
-            options: options
+            options
         });
     }
 

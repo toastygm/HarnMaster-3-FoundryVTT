@@ -626,3 +626,24 @@ HM3.missileCombatTable = {
         'cs': { wild: false, block: false, miss: false, atkDice: 3 },
     }
 }
+
+HM3.actorLabels = {
+    character: "Character",
+    creature: "Creature",
+    container: "Container",
+}
+
+HM3.itemLabels = {
+    skill: "Skill",
+    spell: "Spell",
+    invocation: "Invocation",
+    psionic: "Psionic",
+    weapongear: "Melee Weapon",
+    containergear: "Container",
+    missilegear: "Missile Weapon",
+    armorgear: "Armor",
+    miscgear: "Misc. Gear",
+    injury: "Injury",
+    armorlocation: "Armor Location",
+    trait: "Trait"
+}
