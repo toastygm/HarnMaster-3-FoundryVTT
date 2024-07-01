@@ -68,11 +68,11 @@
             <div class="form-group">
                 <label>Type</label>
                 <select name="system.macros.type">
-                    {{#select idata.macros.type}}
+                    {{#selectOptions idata.macros.type}}
                     {{#each macroTypes}}
                     <option value="{{this}}">{{this}}</option>
                     {{/each}}
-                    {{/select}}
+                    {{/selectOptions}}
                 </select>
             </div>
         
