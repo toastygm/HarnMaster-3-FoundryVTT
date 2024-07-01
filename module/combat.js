@@ -67,6 +67,10 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
         return null;
     }
 
+    if (attackToken.actor?.system?.eph?.missileAMLMod !== undefined) {
+        options['defaultModifier'] = attackToken.actor.system.eph.missileAMLMod;
+    }
+
     const dialogResult = await attackDialog(options);
 
     // If user cancelled the dialog, then return immediately
@@ -86,6 +90,7 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
         item.update({'system.quantity': missileItem.system.quantity - 1});
     }
 
+    dialogResult.addlModifier += dialogResult.aim === 'Mid' ? 0 : -10;
     const effAML = dialogResult.weapon.system.attackMasteryLevel + dialogResult.addlModifier + dialogResult.rangeMod;
 
     // Prepare for Chat Message
@@ -213,6 +218,10 @@ export async function meleeAttack(attackToken, defendToken, weaponItem=null) {
         options['defaultWeapon'] = defWpns.defaultWeapon;
     }
 
+    if (attackToken.actor?.system?.eph?.meleeAMLMod !== undefined) {
+        options['defaultModifier'] = attackToken.actor.system.eph.meleeAMLMod;
+    }
+
     const dialogResult = await attackDialog(options);
 
     // If user cancelled the dialog, then return immediately
@@ -221,7 +230,8 @@ export async function meleeAttack(attackToken, defendToken, weaponItem=null) {
     if (!weaponItem) {
         weaponItem = dialogResult.weapon;
     }
-    
+
+    dialogResult.addlModifier += dialogResult.aim === 'Mid' ? 0 : -10;
     const effAML = dialogResult.weapon.system.attackMasteryLevel + dialogResult.addlModifier;
 
     // Prepare for Chat Message
