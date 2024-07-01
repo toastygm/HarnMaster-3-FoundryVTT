@@ -24,11 +24,11 @@
                     <label class="resource-label" for="system.diety">Diety</label>
                     {{#if hasRitualSkills}}
                         <select class="resource-value" name="system.diety" data-dtype="String">
-                            {{#select idata.diety}}
+                            {{#selectOptions idata.diety}}
                                 {{#each dieties}}
                                     <option value="{{this}}">{{this}}</option>
                                 {{/each}}
-                            {{/select}}
+                            {{/selectOptions}}
                         </select>
                     {{else}}
                         <input type="text" name="system.diety" value="{{idata.diety}}" data-dtype="String" />
@@ -59,11 +59,11 @@
             <div class="form-group">
                 <label>Type</label>
                 <select name="system.macros.type">
-                    {{#select idata.macros.type}}
+                    {{#selectOptions idata.macros.type}}
                     {{#each macroTypes}}
                     <option value="{{this}}">{{this}}</option>
                     {{/each}}
-                    {{/select}}
+                    {{/selectOptions}}
                 </select>
             </div>
         
