@@ -24,11 +24,11 @@
                     <label class="resource-label" for="system.convocation">Convocation</label>
                     {{#if hasMagicSkills}}
                         <select class="resource-value" name="system.convocation" data-dtype="String">
-                            {{#select idata.convocation}}
+                            {{#selectOptions idata.convocation}}
                                 {{#each convocations}}
                                     <option value="{{this}}">{{this}}</option>
                                 {{/each}}
-                            {{/select}}
+                            {{/selectOptions}}
                         </select>
                     {{else}}
                         <input type="text" name="system.convocation" value="{{idata.convocation}}" data-dtype="String" />
@@ -59,11 +59,11 @@
             <div class="form-group">
                 <label>Type</label>
                 <select name="system.macros.type">
-                    {{#select idata.macros.type}}
+                    {{#selectOptions idata.macros.type}}
                     {{#each macroTypes}}
                     <option value="{{this}}">{{this}}</option>
                     {{/each}}
-                    {{/select}}
+                    {{/selectOptions}}
                 </select>
             </div>
         
