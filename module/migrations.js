@@ -3,13 +3,13 @@
  * @return {Promise}      A Promise which resolves once the migration is completed
  */
 export const migrateWorld = async function () {
-  ui.notifications.info(`Applying HM3 System Migration for version ${game.system.data.version}. Please be patient and do not close your game or shut down your server.`, { permanent: true });
+  ui.notifications.info(`Applying HM3 System Migration for version ${game.system.version}. Please be patient and do not close your game or shut down your server.`, { permanent: true });
   console.log(`HM3 | Starting Migration`);
 
   // Migrate World Actors
   for (let a of game.actors.contents) {
     try {
-      const updateData = migrateActorData(a.data);
+      const updateData = migrateActorData(a.toObject());
       if (!foundry.utils.isObjectEmpty(updateData)) {
         console.log(`HM3 | Migrating Actor ${a.name}`);
         await a.update(updateData, { enforceTypes: false });
@@ -23,7 +23,7 @@ export const migrateWorld = async function () {
   // Migrate World Items
   for (let i of game.items.contents) {
     try {
-      const updateData = migrateItemData(i.data);
+      const updateData = migrateItemData(i.toObject());
       if (!foundry.utils.isObjectEmpty(updateData)) {
         console.log(`HM3 | Migrating Item ${i.name}`);
         await i.update(updateData, { enforceTypes: false });
@@ -37,7 +37,7 @@ export const migrateWorld = async function () {
   // Migrate Actor Override Tokens
   for (let s of game.scenes.contents) {
     try {
-      const updateData = migrateSceneData(s.data);
+      const updateData = migrateSceneData(s.toObject());
       if (!foundry.utils.ObjectEmpty(updateData)) {
         console.log(`HM3 | Migrating Scene ${s.name}`);
         await s.update(updateData, { enforceTypes: false });
@@ -58,9 +58,9 @@ export const migrateWorld = async function () {
   }
 
   // Set the migration as complete
-  game.settings.set("hm3", "systemMigrationVersion", game.system.data.version);
+  game.settings.set("hm3", "systemMigrationVersion", game.system.version);
   console.log(`HM3 | Migration Complete`)
-  ui.notifications.info(`HM3 System Migration to version ${game.system.data.version} completed!`, { permanent: true });
+  ui.notifications.info(`HM3 System Migration to version ${game.system.version} completed!`, { permanent: true });
 };
 
 /* -------------------------------------------- */
@@ -88,13 +88,13 @@ export const migrateWorld = async function () {
     try {
       switch (doc) {
         case "Actor":
-          updateData = migrateActorData(doc.data);
+          updateData = migrateActorData(doc.toObject());
           break;
         case "Item":
           updateData = migrateItemData(doc.toObject());
           break;
         case "Scene":
-          updateData = migrateSceneData(doc.data);
+          updateData = migrateSceneData(doc.toObject());
           break;
       }
 
@@ -128,7 +128,7 @@ export const migrateWorld = async function () {
  */
 export const migrateActorData = function (actor) {
   const updateData = {};
-  const actorData = actor.data;
+  const actorData = actor.system;
 
   // Actor Data Updates
   /*
@@ -302,7 +302,7 @@ function cleanActorData(actorData) {
 
   // Scrub system data
   const model = game.model.Actor[actorData.type];
-  actorData.data = filterObject(actorData.data, model);
+  actorData.system = filterObject(actorData.system, model);
 
   // Scrub system flags
   const allowedFlags = CONFIG.HM3.allowedActorFlags.reduce((obj, f) => {
@@ -330,100 +330,100 @@ export const migrateItemData = function (item) {
   /*
   * -------- ITEM UPDATES GO HERE -------------
   */
-  if (!item.data.macros?.hasOwnProperty('type')) {
+  if (!item.system.macros?.hasOwnProperty('type')) {
     updateData['system.macros.command'] = '';
     updateData['system.macros.type'] = 'script';
   }
 
   if (item.type === 'weapongear') {
-    if (item.data.hasOwnProperty('squeeze')) {
-      if (item.data.squeeze) {
-        updateData['flags.hm-gold.squeeze-impact'] = item.data.squeeze;
+    if (item.system.hasOwnProperty('squeeze')) {
+      if (item.system.squeeze) {
+        updateData['flags.hm-gold.squeeze-impact'] = item.system.squeeze;
       }
       updateData['system.-=squeeze'] = null;
     }
 
-    if (item.data.hasOwnProperty('tear')) {
-      if (item.data.squeeze) {
-        updateData['flags.hm-gold.tear-impact'] = item.data.tear;
+    if (item.system.hasOwnProperty('tear')) {
+      if (item.system.squeeze) {
+        updateData['flags.hm-gold.tear-impact'] = item.system.tear;
       }
       updateData['system.-=tear'] = null;
     }
   }
 
   if (item.type === 'missilegear') {
-    if (item.data.range.hasOwnProperty('extreme64')) {
+    if (item.system.range.hasOwnProperty('extreme64')) {
       updateData['system.range.-=extreme64'] = null;
     }
 
-    if (item.data.range.hasOwnProperty('extreme128')) {
+    if (item.system.range.hasOwnProperty('extreme128')) {
       updateData['system.range.-=extreme128'] = null;
     }
 
-    if (item.data.range.hasOwnProperty('extreme256')) {
+    if (item.system.range.hasOwnProperty('extreme256')) {
       updateData['system.range.-=extreme256'] = null;
     }
 
-    if (item.data.impact.hasOwnProperty('extreme64')) {
-      if (item.data.impact.extreme64) {
-        updateData['flags.hm-gold.range4-impact'] = item.data.impact.short;
-        updateData['flags.hm-gold.range8-impact'] = item.data.impact.medium;
-        updateData['flags.hm-gold.range16-impact'] = item.data.impact.long;
-        updateData['flags.hm-gold.range32-impact'] = item.data.impact.extreme;
-        updateData['flags.hm-gold.range64-impact'] = item.data.impact.extreme64;
+    if (item.system.impact.hasOwnProperty('extreme64')) {
+      if (item.system.impact.extreme64) {
+        updateData['flags.hm-gold.range4-impact'] = item.system.impact.short;
+        updateData['flags.hm-gold.range8-impact'] = item.system.impact.medium;
+        updateData['flags.hm-gold.range16-impact'] = item.system.impact.long;
+        updateData['flags.hm-gold.range32-impact'] = item.system.impact.extreme;
+        updateData['flags.hm-gold.range64-impact'] = item.system.impact.extreme64;
       }
       updateData['system.impact.-=extreme64'] = null;
     }
   
-    if (item.data.impact.hasOwnProperty('extreme128')) {
-      if (item.data.impact.extreme128) {
-        updateData['flags.hm-gold.range128-impact'] = item.data.impact.extreme128;
+    if (item.system.impact.hasOwnProperty('extreme128')) {
+      if (item.system.impact.extreme128) {
+        updateData['flags.hm-gold.range128-impact'] = item.system.impact.extreme128;
       }
       updateData['system.impact.-=extreme128'] = null;
     }
 
-    if (item.data.impact.hasOwnProperty('extreme256')) {
-      if (item.data.impact.extreme256) {
-        updateData['flags.hm-gold.range256-impact'] = item.data.impact.extreme256;
+    if (item.system.impact.hasOwnProperty('extreme256')) {
+      if (item.system.impact.extreme256) {
+        updateData['flags.hm-gold.range256-impact'] = item.system.impact.extreme256;
       }
       updateData['system.impact.-=extreme256'] = null;
     }  
   }
 
   if (item.type === 'armorgear') {
-    if (!item.data.protection.hasOwnProperty('squeeze')) {
-      if (item.data.protection.squeeze) {
-        updateData['flags.hm-gold.squeeze'] = item.data.protection.squeeze;
+    if (!item.system.protection.hasOwnProperty('squeeze')) {
+      if (item.system.protection.squeeze) {
+        updateData['flags.hm-gold.squeeze'] = item.system.protection.squeeze;
       }
       updateData['system.protection.-=squeeze'] = null;
     }
 
-    if (item.data.protection.hasOwnProperty('tear')) {
-      if (item.data.protection.tear) {
-        updateData['flags.hm-gold.tear'] = item.data.protection.tear;
+    if (item.system.protection.hasOwnProperty('tear')) {
+      if (item.system.protection.tear) {
+        updateData['flags.hm-gold.tear'] = item.system.protection.tear;
       }
       updateData['system.protection.-=tear'] = null;
     }
   }
 
   if (item.type === 'armorlocation') {
-    if (item.data.hasOwnProperty('squeeze')) {
-      if (item.data.squeeze) {
-        updateData['flags.hm-gold.squeeze'] = item.data.squeeze;
+    if (item.system.hasOwnProperty('squeeze')) {
+      if (item.system.squeeze) {
+        updateData['flags.hm-gold.squeeze'] = item.system.squeeze;
       }      
       updateData['system.-=squeeze'] = null;
     }
 
-    if (item.data.hasOwnProperty('tear')) {
-      if (item.data.tear) {
-        updateData['flags.hm-gold.tear'] = item.data.tear;
+    if (item.system.hasOwnProperty('tear')) {
+      if (item.system.tear) {
+        updateData['flags.hm-gold.tear'] = item.system.tear;
       }
       updateData['system.-=tear'] = null;
     }
 
-    if (item.data.probWeight.hasOwnProperty('arms')) {
-      if (item.data.probWeight.arms) {
-        updateData['flags.hm-gold.probweight-arms'] = item.data.probWeight.arms;
+    if (item.system.probWeight.hasOwnProperty('arms')) {
+      if (item.system.probWeight.arms) {
+        updateData['flags.hm-gold.probweight-arms'] = item.system.probWeight.arms;
       }
       updateData['system.probWeight.-=arms'] = null;
     }
@@ -485,7 +485,7 @@ export const migrateItemData = function (item) {
  */
 //   function _migrateActorBonuses(actor, updateData) {
 //     const b = game.model.Actor.character.bonuses;
-//     for ( let k of Object.keys(actor.data.bonuses || {}) ) {
+//     for ( let k of Object.keys(actor.system.bonuses || {}) ) {
 //       if ( k in b ) updateData[`data.bonuses.${k}`] = b[k];
 //       else updateData[`data.bonuses.-=${k}`] = null;
 //     }
@@ -500,7 +500,7 @@ export const migrateItemData = function (item) {
  * @private
  */
 const _migrateRemoveDeprecated = function (ent, updateData) {
-  const flat = flattenObject(ent.data);
+  const flat = flattenObject(ent);
 
   const toPreDep = Object.entries(updateData).filter(e => e[0])
   // Identify objects to deprecate
@@ -535,9 +535,9 @@ export async function purgeFlags(pack) {
   await pack.configure({ locked: false });
   const content = await pack.getDocuments();
   for (let doc of content) {
-    const update = { flags: cleanFlags(doc.data.flags) };
+    const update = { flags: cleanFlags(doc.flags) };
     if (pack.documentName === "Actor") {
-      update.items = doc.data.items.map(i => {
+      update.items = doc.items.map(i => {
         i.flags = cleanFlags(i.flags);
         return i;
       });
