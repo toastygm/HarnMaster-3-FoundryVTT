@@ -1,13 +1,13 @@
 {
   "id": "hm3",
-  "name": "hm3",
   "title": "HarnMaster 3",
   "description": "The HarnMaster system for FoundryVTT!",
   "version": "1.6.1",
   "authors": [
     {
       "name": "Toasty",
-      "discord": "toasty#8538"
+      "discord": "toasty#8538",
+      "flags": {}
     }
   ],
   "url": "https://github.com/toastygm/HarnMaster-3-FoundryVTT/",
@@ -17,10 +17,9 @@
   "flags": {
     "allowBugReporter": true
   },
-  "minimumCoreVersion": "12",
   "compatibility": {
     "minimum": "12",
-    "verified": "12.323"
+    "verified": "12.331"
   },
   "esmodules": [
     "module/hm3.js"
@@ -32,14 +31,20 @@
     {
       "lang": "en",
       "name": "English",
-      "path": "lang/en.json"
+      "path": "lang/en.json",
+      "flags": {}
     }
   ],
   "packFolders": [
     {
       "name": "HârnMaster 3 System",
       "sorting": "m",
-      "packs": ["character", "possessions", "esoteric", "system-help"]
+      "packs": [
+        "character",
+        "possessions",
+        "esoteric",
+        "system-help"
+      ]
     }
   ],
   "packs": [
@@ -49,7 +54,11 @@
       "name": "character",
       "system": "hm3",
       "path": "packs/character",
-      "private": false
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     },
     {
       "label": "Possessions",
@@ -57,7 +66,11 @@
       "name": "possessions",
       "system": "hm3",
       "path": "packs/possessions",
-      "private": false
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     },
     {
       "label": "Esoteric",
@@ -65,7 +78,11 @@
       "name": "esoteric",
       "system": "hm3",
       "path": "packs/esoteric",
-      "private": false
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     },
     {
       "label": "System Help",
@@ -73,7 +90,11 @@
       "path": "packs/system-help",
       "system": "hm3",
       "type": "JournalEntry",
-      "private": false
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     }
   ],
   "socket": true,
