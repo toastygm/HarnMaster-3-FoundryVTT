@@ -139,9 +139,9 @@ If you wish to fork this code and build your own version, that is completely fin
 ```
 #!/bin/sh
 
-VERSION=$(jq --raw-output .version /Users/tomr/dev/github/HarnMaster-3-FoundryVTT/system.json)
+VERSION=$(jq --raw-output .version $HOME/dev/github/HarnMaster-3-FoundryVTT/system.json)
 BUILDDIR=$(mktemp -d -t hmk-$VERSION-XXXXXX)
-RELEASEDIR=/Users/tomr/Games/fvtt/releases/hm3/$VERSION
+RELEASEDIR=$HOME/Games/fvtt/releases/hm3/$VERSION
 HM3FILE=hm3-$VERSION
 echo "Begin packaging HarnMaster 3 $VERSION"
 # If any prior version of the release exists, remove it
@@ -159,7 +159,7 @@ for i in $(jq -r '.packs[] | [.name, .type] | @csv' HarnMaster-3-FoundryVTT/syst
     PACK=${SPEC[0]}
     TYPE=${SPEC[1]}
     mkdir -p $BUILDDIR/packs/$PACK
-    fvtt package pack -n $PACK -v --type System --id hm3 -t $TYPE --in /Users/tomr/dev/github/HarnMaster-3-FoundryVTT/packs/$PACK/_source --out $BUILDDIR/packs/
+    fvtt package pack -n $PACK -v --type System --id hm3 -t $TYPE --in $HOME/github/HarnMaster-3-FoundryVTT/packs/$PACK/_source --out $BUILDDIR/packs/
 done
 
 # Create release zip file in release directory
