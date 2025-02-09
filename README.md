@@ -132,6 +132,52 @@ Hit locations play a big part in the H&acirc;rnMaster combat system.  In order t
 
 There are separate probability weights for High, Mid, and Low aiming points.  For humanoid characters, if you chose to have the armor locations pre-loaded, these will already be setup to default values.  For creatures, no armor locations are available so you will need to enter your own armor locations and the probability weights for those.
 
+# Building
+
+If you wish to fork this code and build your own version, that is completely fine.  You will ultimately need to package the system into two files: a ZIP and a MANIFEST.  The following BASH script is an example of how to do this:
+
+```
+#!/bin/sh
+
+VERSION=$(jq --raw-output .version /Users/tomr/dev/github/HarnMaster-3-FoundryVTT/system.json)
+BUILDDIR=$(mktemp -d -t hmk-$VERSION-XXXXXX)
+RELEASEDIR=/Users/tomr/Games/fvtt/releases/hm3/$VERSION
+HM3FILE=hm3-$VERSION
+echo "Begin packaging HarnMaster 3 $VERSION"
+# If any prior version of the release exists, remove it
+rm -rf $RELEASEDIR
+
+# Create the release directory
+mkdir -p $RELEASEDIR
+
+# Copy all releaseable parts of the system
+rsync -avz -f "- _source" -f "- scss" -f "- package.json" -f "- package-lock.json" -f "- lib" -f "- packs" -f "- .git" -f "- nogit" -f "- .DS_Store" -f "- .gitignore" -f "- .vscode/*" -f "- *.code-workspace" HarnMaster-3-FoundryVTT/* $BUILDDIR
+
+# Build the packs from source files
+for i in $(jq -r '.packs[] | [.name, .type] | @csv' HarnMaster-3-FoundryVTT/system.json | sed 's/"//g'); do
+    SPEC=(${i//,/ })
+    PACK=${SPEC[0]}
+    TYPE=${SPEC[1]}
+    mkdir -p $BUILDDIR/packs/$PACK
+    fvtt package pack -n $PACK -v --type System --id hm3 -t $TYPE --in /Users/tomr/dev/github/HarnMaster-3-FoundryVTT/packs/$PACK/_source --out $BUILDDIR/packs/
+done
+
+# Create release zip file in release directory
+(cd $BUILDDIR; zip -r $RELEASEDIR/$HM3FILE.zip * -x "*/.DS_Store")
+
+# Copy release manifest to release directory
+cp $BUILDDIR/system.json $RELEASEDIR/$HM3FILE.json
+
+ln $RELEASEDIR/$HM3FILE.zip $RELEASEDIR/system.zip
+ln $RELEASEDIR/$HM3FILE.json $RELEASEDIR/system.json
+
+echo "Finished packaging HarnMaster 3 $VERSION"
+```
+
+This script depends on the `foundryvtt-cli` package in order to run; see https://github.com/foundryvtt/foundryvtt-cli.  This package, in turn, requires Node.js to be installed.
+
+You can then unzip the ZIP file into your `$FOUNDRY_DATA_DIR/systems/hm3` directory (create that directory if it doesn't exist).
+
 # Credits
 
 The following images were taken from [The Noun Project](https://thenounproject.com/) and [Game-Icons](https://game-icons.net/) under the Creative Commons (CC BY 3.0) license:
