@@ -568,13 +568,29 @@ export class DiceHM3 {
         // Determine Injury Level
         if (result.effectiveImpact === 0) {
             result.injuryLevelText = 'NA';
-        } else if (result.effectiveImpact >= 17) {
+        } else if(aspect === "Blunt" && result.effectiveImpact >= 25) {
             result.injuryLevelText = armorLocationData.effectiveImpact.ei17;
-        } else if (result.effectiveImpact >= 13) {
+        } else if(aspect === "Piercing" && result.effectiveImpact >= 21) {
+            result.injuryLevelText = armorLocationData.effectiveImpact.ei17;
+        } else if(aspect === "Edged" && result.effectiveImpact >= 17) {
+            result.injuryLevelText = armorLocationData.effectiveImpact.ei17;
+        } else if(aspect === "Blunt" && result.effectiveImpact >= 19) {
             result.injuryLevelText = armorLocationData.effectiveImpact.ei13;
-        } else if (result.effectiveImpact >= 9) {
+        } else if(aspect === "Piercing" && result.effectiveImpact >= 16) {
+            result.injuryLevelText = armorLocationData.effectiveImpact.ei13;
+        } else if(aspect === "Edged" && result.effectiveImpact >= 13) {
+            result.injuryLevelText = armorLocationData.effectiveImpact.ei13;
+        } else if(aspect === "Blunt" && result.effectiveImpact >= 13) {
             result.injuryLevelText = armorLocationData.effectiveImpact.ei9;
-        } else if (result.effectiveImpact >= 5) {
+        } else if(aspect === "Piercing" && result.effectiveImpact >= 11) {
+            result.injuryLevelText = armorLocationData.effectiveImpact.ei9;
+        } else if(aspect === "Edged" && result.effectiveImpact >= 9) {
+            result.injuryLevelText = armorLocationData.effectiveImpact.ei9;
+        } else if(aspect === "Blunt" && result.effectiveImpact >= 7) {
+            result.injuryLevelText = armorLocationData.effectiveImpact.ei5;
+        } else if(aspect === "Piercing" && result.effectiveImpact >= 6) {
+            result.injuryLevelText = armorLocationData.effectiveImpact.ei5;
+        } else if(aspect === "Edged" && result.effectiveImpact >= 5) {
             result.injuryLevelText = armorLocationData.effectiveImpact.ei5;
         } else {
             result.injuryLevelText = armorLocationData.effectiveImpact.ei1;
