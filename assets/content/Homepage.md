@@ -15,7 +15,7 @@ supply buffs and debuffs, and macros extend it with your own behaviour.
 
 ## Install
 
-In Foundry, add this manifest URL under **Game Systems → Install System**:
+In Foundry, add this manifest URL under **Game Systems > Install System**:
 
 ```text
 https://github.com/HeroicLands/HarnMaster-3-FoundryVTT/releases/latest/download/system.json
